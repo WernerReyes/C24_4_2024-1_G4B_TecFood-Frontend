@@ -23,7 +23,7 @@ export const CreateUserDto = z.object({
       message: "Lastname must be at most 200 characters long",
     }),
   email: z.string().email({
-    message: "Invalid email",
+    message: "Invalid email, It must be a valid email",
   }),
   password: z
     .string({
@@ -31,7 +31,7 @@ export const CreateUserDto = z.object({
     })
     .refine((value) => PASSWORD.test(value), {
       message:
-        "Password must contain at least one lowercase, one uppercase, one numeric, and be at least 8 characters long",
+        "Password invalid, follow the suggestions and try again",
     }),
   dni: z.string().refine((value) => DNI.test(value), {
     message: "DNI must be 8 characters long and contain only numbers",
