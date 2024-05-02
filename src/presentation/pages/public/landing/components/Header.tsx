@@ -18,7 +18,7 @@ export const Header = () => {
   const handleToggleShowNavbar = () => setHiddenNavbar(!hiddenNavbar);
 
   return (
-    <header className="bg-trasparent sticky left-0 right-0 top-0 z-10 transform bg-opacity-50 font-sans shadow-md backdrop-blur-md backdrop-filter  transition-transform duration-500 dark:shadow-[#fdce7708]">
+    <header className="sticky left-0 right-0 top-0 z-10 transform bg-opacity-50 font-sans shadow-md backdrop-blur-md backdrop-filter  transition-transform duration-500 dark:shadow-[#fdce7708]">
       <AlertOffers
         title="Get 50% off on your first order."
         subtitle="Available for April 18 - 25"

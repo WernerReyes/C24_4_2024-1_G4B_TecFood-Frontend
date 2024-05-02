@@ -5,7 +5,7 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { Button } from "@/presentation/components";
 import { Card } from "./Card";
 import { useDishOffer, useWindowSize } from "@/presentation/hooks";
-import { breakPointsSwiper, responsiveDesign } from "@/utilities";
+import { breakPointsSwiper } from "@/utilities";
 
 const breakpointsButtons = breakPointsSwiper({
   slidesPerViewSm: 3,
@@ -19,8 +19,6 @@ const breakpointsMenu = breakPointsSwiper({
   slidesPerViewLg: 4,
   slidesPerViewXl: 4,
 });
-
-const SCREEN_WIDTH = responsiveDesign.md;
 
 const buttonLabels = [
   "Ramen",
@@ -39,7 +37,7 @@ type Props = {
 
 export const Menu = ({ marginContainer }: Props) => {
   const { dishOffers } = useDishOffer();
-  const { width } = useWindowSize();
+  const { isMobile } = useWindowSize();
   const [selectedButton, setSelectedButton] = useState<string>("Ramen");
 
   const handleSelectButton = (label: string) => {
@@ -78,7 +76,7 @@ export const Menu = ({ marginContainer }: Props) => {
           </SwiperSlide>
         ))}
       </Swiper>
-      {width < SCREEN_WIDTH ? (
+      {isMobile ? (
         <Swiper
           modules={[Navigation]}
           slidesPerView={1}
