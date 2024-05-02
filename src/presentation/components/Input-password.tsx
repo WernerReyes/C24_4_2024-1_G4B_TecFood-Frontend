@@ -1,12 +1,14 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import clsx from "clsx";
 import { Password } from "primereact/password";
 import type { PasswordProps } from "primereact/password";
+import { SonnerManager } from "@/utilities";
 
 interface Props extends PasswordProps {
   label?: string;
   smallDescription?: string;
   error?: string;
+  showAlertError?: boolean;
 }
 
 const defaultClassName = "border border-gray-300 w-full rounded-lg p-2";
@@ -22,17 +24,24 @@ export const InputPassword = forwardRef<Password, Props>(
       pt,
       error,
       smallDescription,
+      showAlertError,
       ...props
     },
     ref,
   ) => {
+    useEffect(() => {
+      if (error && showAlertError) {
+        SonnerManager.error(error);
+      }
+    }, [error, showAlertError]);
     return (
       <div className="flex flex-col justify-center">
         {label && <label htmlFor={name}>{label}</label>}
         <Password
           inputClassName={clsx(
             !unstyled && defaultClassName,
-            error ? "border-2 border-red-500" : inputClassName,
+            error && "border-red-500",
+            inputClassName,
           )}
           className={clsx(
             !unstyled && "flex w-full justify-end",
@@ -40,8 +49,8 @@ export const InputPassword = forwardRef<Password, Props>(
             className,
           )}
           pt={{
-            showIcon: { className: " me-4" },
-            hideIcon: { className: " me-4" },
+            showIcon: { className: "me-4" },
+            hideIcon: { className: "me-4" },
             info: { className: "hidden" },
             ...pt,
           }}
@@ -51,7 +60,9 @@ export const InputPassword = forwardRef<Password, Props>(
           {...props}
         />
         {smallDescription && !error && <small>{smallDescription}</small>}
-        {error && <small className="text-red-500">{error}</small>}
+        {error && !showAlertError && (
+          <small className="text-red-500">{error}</small>
+        )}
       </div>
     );
   },
