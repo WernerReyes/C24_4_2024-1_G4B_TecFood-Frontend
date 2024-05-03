@@ -1,10 +1,11 @@
 import { z } from "zod";
 import { regularExpressions } from "@/utilities";
+import { RoleEnum } from "@/domain/entities";
 
 const { PASSWORD, DNI, PHONE } = regularExpressions;
 
-export const CreateUserDto = z.object({
-  name: z
+export const registerUserDto = z.object({
+  firstName: z
     .string({
       message: "Invalid name",
     })
@@ -14,7 +15,7 @@ export const CreateUserDto = z.object({
     .max(200, {
       message: "Name must be at most 200 characters long",
     }),
-  lastname: z
+  lastName: z
     .string()
     .min(3, {
       message: "Lastname must be at least 3 characters long",
@@ -30,13 +31,23 @@ export const CreateUserDto = z.object({
       message: "Invalid password",
     })
     .refine((value) => PASSWORD.test(value), {
-      message:
-        "Password invalid, follow the suggestions and try again",
+      message: "Password invalid, follow the suggestions and try again",
     }),
   dni: z.string().refine((value) => DNI.test(value), {
     message: "DNI must be 8 characters long and contain only numbers",
   }),
-  phone: z.string().refine((value) => PHONE.test(value), {
+  phoneNumber: z.string().refine((value) => PHONE.test(value), {
     message: "Phone must be 9 characters long and contain only numbers",
   }),
+  role: z.nativeEnum(RoleEnum).optional().default(RoleEnum.CLIENT_ROLE),
 });
+
+export type RegisterUserDto = z.infer<typeof registerUserDto>;
+
+
+// first_name VARCHAR(255) NOT NULL ,
+//                        last_name VARCHAR(255) NOT NULL ,
+//                        phone_number INT(9),
+//                        email VARCHAR(255) UNIQUE NOT NULL ,
+//                        password VARCHAR(255) NOT NULL ,
+//                        dni INT,

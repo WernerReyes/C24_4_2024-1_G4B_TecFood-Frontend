@@ -3,32 +3,41 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
 import { AuthLayout } from "../../layout";
 import { Button, InputPassword, InputText } from "@/presentation/components";
-import { CreateUserDto } from "@/domain/dtos";
+import { RegisterUserDto, registerUserDto } from "@/domain/dtos";
 import { SonnerManager } from "@/utilities";
-import { useTheme } from "@/presentation/hooks";
+import { useTheme, useAuthStore } from "@/presentation/hooks";
+
+// first_name VARCHAR(255) NOT NULL ,
+//                        last_name VARCHAR(255) NOT NULL ,
+//                        phone_number INT(9),
+//                        email VARCHAR(255) UNIQUE NOT NULL ,
+//                        password VARCHAR(255) NOT NULL ,
+//                        dni INT,
 
 type RegisterFields = {
   email: string;
   password: string;
-  name: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   dni: string;
-  phone: string;
+  phoneNumber: string;
 };
 
 export const RegisterPage = () => {
   const { isDark } = useTheme();
+  const { startRegisteringUser } = useAuthStore();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFields>({
-    resolver: zodResolver(CreateUserDto),
+    resolver: zodResolver(registerUserDto),
   });
 
   const handleRegister: SubmitHandler<RegisterFields> = (data) => {
-    SonnerManager.success(data.name);
+    startRegisteringUser(data as RegisterUserDto);
+    SonnerManager.success("Usuario registrado correctamente");
   };
 
   return (
@@ -58,6 +67,7 @@ export const RegisterPage = () => {
               showAlertError
             />
           )}
+        
         />
         <Controller
           name="password"
@@ -73,13 +83,14 @@ export const RegisterPage = () => {
               inputClassName="border-2 border-primary text-sm py-3 bg-transparent"
               panelClassName="dark:bg-[#1e293b] dark:text-slate-300 text-xs p-4"
               showAlertError
+              
             />
           )}
         />
 
         <div className={clsx("grid w-full gap-x-4", "sm:grid-cols-2")}>
           <Controller
-            name="name"
+            name="firstName"
             control={control}
             defaultValue=""
             render={({ field }) => (
@@ -97,7 +108,7 @@ export const RegisterPage = () => {
             )}
           />
           <Controller
-            name="lastname"
+            name="lastName"
             control={control}
             defaultValue=""
             render={({ field }) => (
@@ -133,7 +144,7 @@ export const RegisterPage = () => {
             )}
           />
           <Controller
-            name="phone"
+            name="phoneNumber"
             control={control}
             defaultValue=""
             render={({ field }) => (
@@ -161,3 +172,11 @@ export const RegisterPage = () => {
 };
 
 export default RegisterPage;
+
+
+// first_name VARCHAR(255) NOT NULL ,
+//                        last_name VARCHAR(255) NOT NULL ,
+//                        phone_number INT(9),
+//                        email VARCHAR(255) UNIQUE NOT NULL ,
+//                        password VARCHAR(255) NOT NULL ,
+//                        dni INT,

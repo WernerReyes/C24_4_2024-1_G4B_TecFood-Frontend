@@ -1,3 +1,5 @@
+import { RoleEntity } from "./role.entity";
+
 export interface UserEntity {
   id: number;
   name: string;
@@ -9,6 +11,7 @@ export interface UserEntity {
   img?: string;
   status: boolean;
   password: string;
+  role: RoleEntity;
   emailVerified: boolean;
   createdAt: Date;
   updatedAt: Date;

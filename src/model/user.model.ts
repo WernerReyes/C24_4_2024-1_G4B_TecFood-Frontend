@@ -1,3 +1,5 @@
+import { RoleEnum } from "@/domain/entities";
+
 export interface User {
   id: number;
   name: string;
@@ -6,6 +8,7 @@ export interface User {
   email: string;
   dni: string;
   img?: string;
+  role: RoleEnum;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,4 +25,6 @@ export const userEmptyState: UserState = {
   phone: "",
   email: "",
   dni: "",
+  img: "",
+  role: "" as RoleEnum,
 };

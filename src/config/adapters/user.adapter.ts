@@ -9,6 +9,7 @@ export const userAdapter = (user: UserEntity): User => {
     phone: user.phone,
     email: user.email,
     dni: user.dni,
+    role: user.role.name,
     img: user.img,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
