@@ -2,7 +2,7 @@ import { forwardRef, useEffect } from "react";
 import clsx from "clsx";
 import { Password } from "primereact/password";
 import type { PasswordProps } from "primereact/password";
-import { SonnerManager } from "@/utilities";
+import { SonnerManager } from "@/presentation/utilities";
 
 interface Props extends PasswordProps {
   label?: string;
@@ -45,7 +45,6 @@ export const InputPassword = forwardRef<Password, Props>(
           )}
           className={clsx(
             !unstyled && "flex w-full justify-end",
-
             className,
           )}
           pt={{
@@ -81,3 +80,5 @@ const footer = (
     </ul>
   </>
 );
+
+

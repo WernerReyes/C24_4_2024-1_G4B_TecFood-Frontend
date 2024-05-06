@@ -1,6 +1,6 @@
 export enum RoleEnum {
-  ADMIN_ROLE = "ADMIN_ROLE",
-  CLIENT_ROLE = "CLIENT_ROLE",
+  ROLE_ADMIN = "ROLE_ADMIN",
+  ROLE_USER = "ROLE_USER",
 }
 
 export interface RoleEntity {

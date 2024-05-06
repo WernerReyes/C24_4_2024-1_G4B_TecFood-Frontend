@@ -1,15 +1,15 @@
 import { AuthRepository } from "@/domain/interfaces";
-import { User } from "@/model";
+import { CreateUser } from "@/model";
 import { RegisterUserDto } from "../../dtos/auth";
 
 interface registerUserUseCase {
-  exceute(registerUserDto: RegisterUserDto): Promise<User>;
+  execute(registerUserDto: RegisterUserDto): Promise<CreateUser>;
 }
 export const registerUser = (
   repository: AuthRepository,
 ): registerUserUseCase => {
   return {
-    async exceute(registerUserDto: RegisterUserDto): Promise<User> {
+    async execute(registerUserDto: RegisterUserDto): Promise<CreateUser> {
       return await repository.registerUser(registerUserDto);
     },
   };

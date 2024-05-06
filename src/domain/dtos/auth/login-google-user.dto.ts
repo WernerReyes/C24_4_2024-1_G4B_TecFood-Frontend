@@ -2,9 +2,9 @@ import { z } from "zod";
 import { regularExpressions } from "@/presentation/utilities";
 import { RoleEnum } from "@/domain/entities";
 
-const { PASSWORD, DNI, PHONE, EMAIL } = regularExpressions;
+const { EMAIL, URL } = regularExpressions;
 
-export const registerUserDto = z.object({
+export const loginGoogleUserDto = z.object({
   firstName: z
     .string({
       message: "Invalid name",
@@ -26,26 +26,16 @@ export const registerUserDto = z.object({
   email: z.string().refine((value) => EMAIL.test(value), {
     message: "Email invalid, follow the suggestions and try again",
   }),
-  password: z
-    .string({
-      message: "Invalid password",
-    })
-    .refine((value) => PASSWORD.test(value), {
-      message: "Password invalid, follow the suggestions and try again",
-    }),
-  dni: z
-    .string()
-    .optional()
-    .refine((value) => (value ? DNI.test(value) : true), {
-      message: "DNI must be 8 characters long and contain only numbers",
-    }),
-  phoneNumber: z
-    .string()
-    .optional()
-    .refine((value) => (value ? PHONE.test(value) : true), {
-      message: "Phone must be 9 characters long and contain only numbers",
-    }),
+  imgUrl: z.string().refine((value) => URL.test(value), {
+    message: "Invalid image url",
+  }),
+  isGoogleAccount: z.boolean().refine(value => value === true, {
+    message: "googleAccountId must be true",
+  }),
+  isEmailVerified: z.boolean().refine(value => value === true, {
+    message: "verifiedEmail must be true",
+  }),
   role: z.nativeEnum(RoleEnum).optional().default(RoleEnum.ROLE_USER),
 });
 
-export type RegisterUserDto = z.infer<typeof registerUserDto>;
+export type LoginGoogleUserDto = z.infer<typeof loginGoogleUserDto>;

@@ -4,9 +4,9 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
-    isLoading: true,
+    isLoading: false,
     user: userEmptyState,
-    errorMessage: undefined as string | undefined,
+    message: undefined as string | undefined,
   },
   reducers: {
     onCheking: (state) => {
@@ -21,16 +21,17 @@ export const authSlice = createSlice({
       return { ...state, user: userEmptyState, isLoading: false };
     },
 
-    setErrorMessage: (state, { payload }: PayloadAction<string>) => {
-      return { ...state, errorMessage: payload, isLoading: false };
+    setMessages: (state, { payload }: PayloadAction<string>) => {
+      return { ...state, message: payload, isLoading: false };
     },
 
-    clearErrorMessage: (state) => {
-      state.errorMessage = undefined;
+    clearMessages: (state) => {
+      return { ...state, message: undefined, errorMessage: undefined };
     },
+
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { onCheking, onLogin, onLogout, clearErrorMessage } =
+export const { onCheking, onLogin, onLogout, setMessages, clearMessages } =
   authSlice.actions;

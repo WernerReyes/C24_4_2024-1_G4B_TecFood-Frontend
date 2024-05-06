@@ -22,7 +22,7 @@ export interface AppState {
   auth: {
     isLoading: boolean;
     user: UserState;
-    errorMessage: string | undefined;
+    message: string | undefined;
   };
 }
 

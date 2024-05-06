@@ -4,15 +4,9 @@ import clsx from "clsx";
 import { AuthLayout } from "../../layout";
 import { Button, InputPassword, InputText } from "@/presentation/components";
 import { RegisterUserDto, registerUserDto } from "@/domain/dtos";
-import { SonnerManager } from "@/utilities";
+import { SonnerManager } from "@/presentation/utilities";
 import { useTheme, useAuthStore } from "@/presentation/hooks";
-
-// first_name VARCHAR(255) NOT NULL ,
-//                        last_name VARCHAR(255) NOT NULL ,
-//                        phone_number INT(9),
-//                        email VARCHAR(255) UNIQUE NOT NULL ,
-//                        password VARCHAR(255) NOT NULL ,
-//                        dni INT,
+import { useEffect } from "react";
 
 type RegisterFields = {
   email: string;
@@ -25,7 +19,7 @@ type RegisterFields = {
 
 export const RegisterPage = () => {
   const { isDark } = useTheme();
-  const { startRegisteringUser } = useAuthStore();
+  const { startRegisteringUser, clearMessages, message, isLoading } = useAuthStore();
 
   const {
     control,
@@ -35,9 +29,15 @@ export const RegisterPage = () => {
     resolver: zodResolver(registerUserDto),
   });
 
+  useEffect(() => {
+    if (message) {
+      SonnerManager.success(message);
+      clearMessages();
+    }
+  }, [message]);
+
   const handleRegister: SubmitHandler<RegisterFields> = (data) => {
     startRegisteringUser(data as RegisterUserDto);
-    SonnerManager.success("Usuario registrado correctamente");
   };
 
   return (
@@ -67,7 +67,6 @@ export const RegisterPage = () => {
               showAlertError
             />
           )}
-        
         />
         <Controller
           name="password"
@@ -83,7 +82,6 @@ export const RegisterPage = () => {
               inputClassName="border-2 border-primary text-sm py-3 bg-transparent"
               panelClassName="dark:bg-[#1e293b] dark:text-slate-300 text-xs p-4"
               showAlertError
-              
             />
           )}
         />
@@ -132,7 +130,7 @@ export const RegisterPage = () => {
             render={({ field }) => (
               <InputText
                 {...field}
-                label="DNI"
+                label="DNI (Optional)"
                 placeholder="Ingresa tu DNI"
                 error={errors[field.name]?.message}
                 className={clsx(
@@ -149,8 +147,8 @@ export const RegisterPage = () => {
             defaultValue=""
             render={({ field }) => (
               <InputText
-                {...field}
-                label="Telefono"
+                {...field} 
+                label="Telefono (Optional)"
                 placeholder="Ingresa telefono"
                 error={errors[field.name]?.message}
                 className="border-2 border-primary bg-transparent py-3 text-sm"
@@ -165,6 +163,7 @@ export const RegisterPage = () => {
           label="Registrarse"
           className="mt-5 w-full rounded-md dark:text-slate-100"
           disabled={Object.keys(errors).length > 0}
+          loading={isLoading}
         />
       </form>
     </AuthLayout>
@@ -172,11 +171,3 @@ export const RegisterPage = () => {
 };
 
 export default RegisterPage;
-
-
-// first_name VARCHAR(255) NOT NULL ,
-//                        last_name VARCHAR(255) NOT NULL ,
-//                        phone_number INT(9),
-//                        email VARCHAR(255) UNIQUE NOT NULL ,
-//                        password VARCHAR(255) NOT NULL ,
-//                        dni INT,

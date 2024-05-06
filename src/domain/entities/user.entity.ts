@@ -2,17 +2,16 @@ import { RoleEntity } from "./role.entity";
 
 export interface UserEntity {
   id: number;
-  name: string;
-  lastname: string;
-  phone: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
   email: string;
-  dni: string;
-  google: boolean;
-  img?: string;
-  status: boolean;
+  dni?: string;
+  isGoogleAccount: boolean;
+  imgUrl?: string;
   password: string;
   role: RoleEntity;
-  emailVerified: boolean;
+  isVerifiedEmail: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

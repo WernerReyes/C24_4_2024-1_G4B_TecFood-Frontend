@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { PrivateRoutes, PublicRoutes } from "../routes";
-import { useUser } from "../hooks";
+import { useAuthStore } from "../hooks";
 
 interface Props {
   privateValidation: boolean;
@@ -13,7 +13,8 @@ const PublicValidationFragment = (
 );
 
 export const AuthGuard = ({ privateValidation }: Props) => {
-  const { user } = useUser();
+  const { user } = useAuthStore();
+  console.log(user.name);
   return user.name ? (
     privateValidation ? (
       PrivateValidationFragment

@@ -2,7 +2,7 @@ import { forwardRef, useEffect } from "react";
 import clsx from "clsx";
 import { InputText as InputTextPrimeReact } from "primereact/inputtext";
 import type { InputTextProps } from "primereact/inputtext";
-import { SonnerManager } from "@/utilities";
+import { SonnerManager } from "@/presentation/utilities";
 
 interface Props extends InputTextProps {
   label?: string;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { responsiveDesign } from "@/utilities";
+import { responsiveDesign } from "@/presentation/utilities";
 
 export const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
