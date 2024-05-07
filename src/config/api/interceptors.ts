@@ -4,7 +4,7 @@ import daysjs from "dayjs";
 import { getEnvs, SonnerManager } from "@/presentation/utilities";
 
 let token = localStorage.getItem("token")
-  ? JSON.parse(localStorage.getItem("token")!)
+  ? localStorage.getItem("token")
   : null;
 
 const baseURL = getEnvs().VITE_API_URL;
@@ -14,6 +14,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   axiosInstance.interceptors.request.use(async (req) => {
     if (token) {
       const user = jwtDecode<JwtPayload>(token);
+      console.log(user);
       const isExpired = daysjs.unix(user.exp!).diff(daysjs()) < 1;
       if (!isExpired) {
         req.headers.Authorization = `Bearer ${token}`;
