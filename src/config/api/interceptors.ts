@@ -9,7 +9,6 @@ let token = localStorage.getItem("token")
 
 const baseURL = getEnvs().VITE_API_URL;
 
-console.log(token);
 
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
