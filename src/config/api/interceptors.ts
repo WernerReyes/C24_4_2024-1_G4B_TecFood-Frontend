@@ -9,12 +9,13 @@ let token = localStorage.getItem("token")
 
 const baseURL = getEnvs().VITE_API_URL;
 
+console.log(token);
+
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
   axiosInstance.interceptors.request.use(async (req) => {
     if (token) {
       const user = jwtDecode<JwtPayload>(token);
-      console.log(user);
       const isExpired = daysjs.unix(user.exp!).diff(daysjs()) < 1;
       if (!isExpired) {
         req.headers.Authorization = `Bearer ${token}`;
@@ -22,7 +23,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
       }
 
       const response = await axios.post(`${baseURL}/auth/refresh-token`, {
-        id: token.id
+        id: user.sub,
       });
 
       token = response.data.token;
