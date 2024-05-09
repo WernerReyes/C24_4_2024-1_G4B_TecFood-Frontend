@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { responsiveDesign } from "@/presentation/utilities";
 
 export const useWindowSize = () => {
   const [windowSize, setWindowSize] = useState({
@@ -21,8 +22,21 @@ export const useWindowSize = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const isMobile = windowSize.width < responsiveDesign.sm;
+  const isTablet =
+    windowSize.width < responsiveDesign.md &&
+    windowSize.width >= responsiveDesign.sm;
+  const isDesktop =
+    windowSize.width >= responsiveDesign.md &&
+    windowSize.width < responsiveDesign.lg;
+  const isLargeDesktop = windowSize.width >= responsiveDesign.lg;
+
   return {
     width: windowSize.width,
     height: windowSize.height,
+    isMobile,
+    isTablet,
+    isDesktop,
+    isLargeDesktop,
   };
 };

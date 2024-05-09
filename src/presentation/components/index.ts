@@ -9,3 +9,4 @@ export * from "./Avatar";
 export * from "./Card";
 export * from "./Button";
 export * from "./Input-password";
+export * from "./Divider";

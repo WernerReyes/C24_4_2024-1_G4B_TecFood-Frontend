@@ -3,6 +3,7 @@ import { DishOfferState, UserState } from "@/model";
 import { userSlice } from "./slice/user.slice";
 import { themesSlice } from "./slice/theme.slice";
 import { dishOfferSlice } from "./slice/dis-offer.slice";
+import { AuthStatus, authSlice } from "./slice/auth.slice";
 
 export interface AppState {
   user: {
@@ -18,6 +19,11 @@ export interface AppState {
     dishOffer: DishOfferState;
     dishOffers: DishOfferState[];
   };
+  auth: {
+    status: AuthStatus;
+    user: UserState;
+    message: string | undefined;
+  };
 }
 
 export const store = configureStore<AppState>({
@@ -25,9 +31,11 @@ export const store = configureStore<AppState>({
     user: userSlice.reducer,
     themes: themesSlice.reducer,
     dishOffer: dishOfferSlice.reducer,
+    auth: authSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
 });
+

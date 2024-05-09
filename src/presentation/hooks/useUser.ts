@@ -31,7 +31,6 @@ export const useUser = () => {
     updateUser(userRepositoryImpl)
       .execute(user)
       .then((user) => {
-        console.log(user);
         dispatch(onUpdateUser(user));
         startLoadingUsers();
       })

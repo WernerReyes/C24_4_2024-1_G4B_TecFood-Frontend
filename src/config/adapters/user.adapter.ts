@@ -4,12 +4,13 @@ import { User } from "@/model";
 export const userAdapter = (user: UserEntity): User => {
   return {
     id: user.id,
-    name: user.name,
-    lastname: user.lastname,
-    phone: user.phone,
+    name: user.firstName,
+    lastname: user.lastName,
+    phone: user.phoneNumber,
     email: user.email,
     dni: user.dni,
-    img: user.img,
+    role: user.role.name,
+    img: user.imgUrl,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
   };

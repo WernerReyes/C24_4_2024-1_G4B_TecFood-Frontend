@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { getEnvs } from "@/utilities";
+import { getEnvs } from "@/presentation/utilities";
 import { setupInterceptors } from "./interceptors";
 
 type ResponseData<T> = {

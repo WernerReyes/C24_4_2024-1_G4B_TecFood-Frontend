@@ -1,181 +1,171 @@
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import clsx from "clsx";
+import { RegisterUserDto, registerUserDto } from "@/domain/dtos";
+import { Button, InputPassword, InputText } from "@/presentation/components";
+import { useAuthStore, useTheme } from "@/presentation/hooks";
+import { SonnerManager } from "@/presentation/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Toaster } from "sonner";
-import {
-  Button,
-  Image,
-  InputPassword,
-  InputText,
-  Link,
-} from "@/presentation/components";
-import { useTheme } from "@/presentation/hooks";
-import { CreateUserDto } from "@/domain/dtos";
-import { SonnerManager } from "@/utilities";
+import clsx from "clsx";
+import { useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { AuthLayout } from "../../layout";
 
 type RegisterFields = {
   email: string;
   password: string;
-  name: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   dni: string;
-  phone: string;
+  phoneNumber: string;
 };
 
 export const RegisterPage = () => {
   const { isDark } = useTheme();
+  const { startRegisteringUser, clearMessages, message, isLoading } =
+    useAuthStore();
+
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFields>({
-    resolver: zodResolver(CreateUserDto),
+    resolver: zodResolver(registerUserDto),
   });
 
+  useEffect(() => {
+    if (message) {
+      SonnerManager.success(message);
+      clearMessages();
+    }
+  }, [message]);
+
   const handleRegister: SubmitHandler<RegisterFields> = (data) => {
-    SonnerManager.success("Hello world");
+    startRegisteringUser(data as RegisterUserDto);
   };
 
   return (
-    <div
-      className={clsx(
-        "flex h-full max-h-full min-h-screen w-full flex-col items-center justify-center",
-        isDark ? "bg-gradient-primary-dark" : "bg-gradient-primary",
-      )}
+    <AuthLayout
+      title="Regístrate"
+      label="¿Ya tienes una cuenta?"
+      link="/login"
+      labelLink="Inicia sesión"
+      showGoogleAuth
+      isDark={isDark}
     >
-      <Toaster position="top-center" />
-      <div className="flex w-full justify-start">
-        <Image src="/logo-dark.svg" width="100" className="ml-10 mb-4" />
-      </div>
-      <div
-        className={clsx(
-          "mx-10 w-full max-w-lg rounded-3xl bg-white p-10",
-          "lg:mx-0",
-        )}
+      <form
+        className="mt-4 flex flex-col space-y-4"
+        onSubmit={handleSubmit(handleRegister)}
       >
-        <div className="flex justify-between">
-          <span>Bienvenido</span>
-          <div className="flex flex-col">
-            <span className="text-sm">Tienes una cuenta?</span>
-            <Link
-              to="/login"
-              className="text-sm text-primary"
-              label="Iniciar Sesión"
-              unstyled
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <InputText
+              {...field}
+              label="Correo Electrónico"
+              placeholder="Ingresa tu email"
+              error={errors[field.name]?.message}
+              className="border-2 border-primary bg-transparent py-3 text-sm"
+              showAlertError
             />
-          </div>
-        </div>
-        <h2 className="text-4xl font-bold">Registro</h2>
-        <form
-          className="mt-4 flex flex-col space-y-4"
-          onSubmit={handleSubmit(handleRegister)}
-        >
+          )}
+        />
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <InputPassword
+              {...field}
+              label="Contraseña"
+              placeholder="Ingresa tu contraseña"
+              error={errors[field.name]?.message}
+              inputClassName="border-2 border-primary text-sm py-3 bg-transparent"
+              showAlertError
+            />
+          )}
+        />
+
+        <div className={clsx("grid w-full gap-x-4", "sm:grid-cols-2")}>
           <Controller
-            name="email"
+            name="firstName"
             control={control}
             defaultValue=""
             render={({ field }) => (
               <InputText
                 {...field}
-                label="Correo Electrónico"
-                placeholder="Ingresa tu email"
+                label="Nombres"
+                placeholder="Ingresa tus nombres"
                 error={errors[field.name]?.message}
-                className="border-2 border-primary py-3 text-sm"
+                className={clsx(
+                  "border-2 border-primary bg-transparent py-3 text-sm",
+                  "max-sm:mb-3",
+                )}
+                showAlertError
               />
             )}
           />
           <Controller
-            name="password"
+            name="lastName"
             control={control}
             defaultValue=""
             render={({ field }) => (
-              <InputPassword
+              <InputText
                 {...field}
-                label="Contraseña"
-                placeholder="Ingresa tu contraseña"
-                toggleMask
+                label="Apellidos"
+                placeholder="Ingresa tus nombres"
                 error={errors[field.name]?.message}
-                inputClassName="border-2 border-primary text-sm py-3"
+                className="border-2 border-primary bg-transparent py-3 text-sm"
+                showAlertError
               />
             )}
           />
+        </div>
 
-          <div className={clsx("grid w-full gap-x-2", "sm:grid-cols-2")}>
-            <Controller
-              name="name"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  label="Nombres"
-                  placeholder="Ingresa tus nombres"
-                  error={errors[field.name]?.message}
-                  className={clsx(
-                    "border-2 border-primary py-3 text-sm",
-                    "max-sm:mb-3",
-                  )}
-                />
-              )}
-            />
-            <Controller
-              name="lastname"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  label="Apellidos"
-                  placeholder="Ingresa tus nombres"
-                  error={errors[field.name]?.message}
-                  className="border-2 border-primary py-3 text-sm"
-                />
-              )}
-            />
-          </div>
-
-          <div className={clsx("grid w-full gap-x-2", "sm:grid-cols-2")}>
-            <Controller
-              name="dni"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  label="DNI"
-                  placeholder="Ingresa tu DNI"
-                  error={errors[field.name]?.message}
-                  className={clsx(
-                    "border-2 border-primary py-3 text-sm",
-                    "max-sm:mb-3",
-                  )}
-                />
-              )}
-            />
-            <Controller
-              name="phone"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <InputText
-                  {...field}
-                  label="Telefono"
-                  placeholder="Ingresa tu numero de telefono"
-                  error={errors[field.name]?.message}
-                  className="border-2 border-primary py-3 text-sm"
-                />
-              )}
-            />
-          </div>
-
-          <Button
-            type="submit"
-            label="Sign in"
-            className="mt-5 w-full rounded-md"
+        <div className={clsx("grid w-full gap-x-4", "sm:grid-cols-2")}>
+          <Controller
+            name="dni"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <InputText
+                {...field}
+                label="DNI (Optional)"
+                placeholder="Ingresa tu DNI"
+                error={errors[field.name]?.message}
+                className={clsx(
+                  "border-2 border-primary bg-transparent py-3 text-sm",
+                  "max-sm:mb-4",
+                )}
+                showAlertError
+              />
+            )}
           />
-        </form>
-      </div>
-    </div>
+          <Controller
+            name="phoneNumber"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <InputText
+                {...field}
+                label="Telefono (Optional)"
+                placeholder="Ingresa telefono"
+                error={errors[field.name]?.message}
+                className="border-2 border-primary bg-transparent py-3 text-sm"
+                showAlertError
+              />
+            )}
+          />
+        </div>
+
+        <Button
+          type="submit"
+          label="Registrarse"
+          className="mt-5 w-full rounded-md dark:text-slate-100"
+          disabled={Object.keys(errors).length > 0}
+          loading={isLoading}
+        />
+      </form>
+    </AuthLayout>
   );
 };
 

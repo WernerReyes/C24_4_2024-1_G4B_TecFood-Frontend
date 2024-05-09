@@ -4,7 +4,7 @@ import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Card } from "./";
 import { useDishOffer } from "@/presentation/hooks";
-import { breakPointsSwiper } from "@/utilities";
+import { breakPointsSwiper } from "@/presentation/utilities";
 
 const breakpoints = breakPointsSwiper({
   slidesPerViewMd: 2,

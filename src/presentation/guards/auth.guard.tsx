@@ -1,7 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuthStore } from "../hooks";
 import { PrivateRoutes, PublicRoutes } from "../routes";
-import { useUser } from "../hooks";
-
 interface Props {
   privateValidation: boolean;
 }
@@ -13,15 +12,15 @@ const PublicValidationFragment = (
 );
 
 export const AuthGuard = ({ privateValidation }: Props) => {
-  const { user } = useUser();
-  return user.name ? (
+  const { isAuthenticate } = useAuthStore();
+  return isAuthenticate ? (
     privateValidation ? (
       PrivateValidationFragment
     ) : (
       PublicValidationFragment
     )
   ) : (
-    <Navigate replace to={PublicRoutes.HOME} />
+    <Navigate replace to={PublicRoutes.LOGIN} /> 
   );
 };
 
