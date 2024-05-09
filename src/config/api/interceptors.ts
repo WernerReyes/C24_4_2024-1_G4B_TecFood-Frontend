@@ -21,9 +21,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
         return req;
       }
 
-      const response = await axios.post(`${baseURL}/auth/refresh-token`, {
-        id: user.sub,
-      });
+      const response = await axios.get(`${baseURL}/auth/revalidate-token`);
 
       token = response.data.token;
       localStorage.setItem("token", JSON.stringify(token));
