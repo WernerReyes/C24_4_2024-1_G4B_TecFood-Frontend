@@ -1,7 +1,10 @@
 import { httpRequest } from "@/config/api";
-import { RegisterUserDto } from "@/domain/dtos";
+import {
+  RegisterUserDto,
+  LoginGoogleUserDto,
+  LoginUserDto,
+} from "@/domain/dtos";
 import { CreateUser } from "@/model";
-import { LoginGoogleUserDto } from "../../domain/dtos/auth";
 import { userAdapter } from "@/config/adapters";
 import { UserEntity } from "@/domain/entities";
 
@@ -25,6 +28,19 @@ export const loginGoogleUser = async (
       baseUrl + "/login-google",
       "POST",
       loginGoogleUserDto,
+    );
+    return { ...data, user: userAdapter(data.user) };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const loginUser = async (loginUserDto: LoginUserDto) => {
+  try {
+    const { data } = await httpRequest<LoginUser>(
+      baseUrl + "/login",
+      "POST",
+      loginUserDto,
     );
     return { ...data, user: userAdapter(data.user) };
   } catch (error) {

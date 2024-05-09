@@ -40,7 +40,7 @@ export const InputText = forwardRef<HTMLInputElement, Props>(
           ref={ref}
           className={clsx(
             !unstyled && defaultClassName,
-            error && "border-red-500",
+            error && "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-400",
             className,
           )}
         />

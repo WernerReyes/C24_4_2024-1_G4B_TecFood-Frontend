@@ -2,7 +2,6 @@ import { UserEntity } from "@/domain/entities";
 import { User } from "@/model";
 
 export const userAdapter = (user: UserEntity): User => {
-  console.log(user);
   return {
     id: user.id,
     name: user.firstName,

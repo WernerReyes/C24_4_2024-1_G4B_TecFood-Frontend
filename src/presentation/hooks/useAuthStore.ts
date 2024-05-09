@@ -1,8 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RegisterUserDto, LoginGoogleUserDto } from "@/domain/dtos";
-import { registerUser, loginGoogleUser } from "@/domain/use-cases/auth";
+import {
+  RegisterUserDto,
+  LoginGoogleUserDto,
+  LoginUserDto,
+} from "@/domain/dtos";
+import {
+  registerUser,
+  loginGoogleUser,
+  loginUser,
+} from "@/domain/use-cases/auth";
 import { authRepositoryImpl } from "@/infraestructure/repositories";
-import { AppState, onCheking, setMessages, clearMessages, onLogin } from "@/infraestructure/store";
+import {
+  AppState,
+  onCheking,
+  setMessages,
+  clearMessages,
+  onLogin,
+  onLogout,
+} from "@/infraestructure/store";
 
 export const useAuthStore = () => {
   const dispatch = useDispatch();
@@ -22,6 +37,19 @@ export const useAuthStore = () => {
       })
       .catch((error) => error);
   };
+
+  const startLoginUser = (loginUserDto: LoginUserDto) => {
+    loginUser(authRepositoryImpl)
+      .execute(loginUserDto)
+      .then((data) => {
+        dispatch(onCheking());
+        dispatch(onLogin(data.user));
+        localStorage.setItem("token", data.token);
+        dispatch(setMessages(data.message));
+      })
+      .catch((error) => error);
+  };
+
   const startRegisteringUser = (registerUserDto: RegisterUserDto) => {
     registerUser(authRepositoryImpl)
       .execute(registerUserDto)
@@ -32,7 +60,12 @@ export const useAuthStore = () => {
       .catch((error) => error);
   };
 
+  const checkAuthToken = () => {
+    const token = localStorage.getItem("token");
+    if (!token || token?.length < 5) return dispatch(onLogout());
 
+    
+  };
 
   return {
     //* Attributes
@@ -43,6 +76,7 @@ export const useAuthStore = () => {
     //* Methods
     startRegisteringUser,
     startGoogleLoginUser,
+    startLoginUser,
     clearMessages: () => dispatch(clearMessages()),
   };
 };
