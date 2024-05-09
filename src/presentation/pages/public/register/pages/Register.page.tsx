@@ -1,12 +1,12 @@
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { RegisterUserDto, registerUserDto } from "@/domain/dtos";
+import { Button, InputPassword, InputText } from "@/presentation/components";
+import { useAuthStore, useTheme } from "@/presentation/hooks";
+import { SonnerManager } from "@/presentation/utilities";
 import { zodResolver } from "@hookform/resolvers/zod";
 import clsx from "clsx";
-import { AuthLayout } from "../../layout";
-import { Button, InputPassword, InputText } from "@/presentation/components";
-import { RegisterUserDto, registerUserDto } from "@/domain/dtos";
-import { SonnerManager } from "@/presentation/utilities";
-import { useTheme, useAuthStore } from "@/presentation/hooks";
 import { useEffect } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { AuthLayout } from "../../layout";
 
 type RegisterFields = {
   email: string;
@@ -19,7 +19,8 @@ type RegisterFields = {
 
 export const RegisterPage = () => {
   const { isDark } = useTheme();
-  const { startRegisteringUser, clearMessages, message, isLoading } = useAuthStore();
+  const { startRegisteringUser, clearMessages, message, isLoading } =
+    useAuthStore();
 
   const {
     control,
@@ -77,10 +78,8 @@ export const RegisterPage = () => {
               {...field}
               label="Contraseña"
               placeholder="Ingresa tu contraseña"
-              toggleMask
               error={errors[field.name]?.message}
               inputClassName="border-2 border-primary text-sm py-3 bg-transparent"
-              panelClassName="dark:bg-[#1e293b] dark:text-slate-300 text-xs p-4"
               showAlertError
             />
           )}
@@ -147,7 +146,7 @@ export const RegisterPage = () => {
             defaultValue=""
             render={({ field }) => (
               <InputText
-                {...field} 
+                {...field}
                 label="Telefono (Optional)"
                 placeholder="Ingresa telefono"
                 error={errors[field.name]?.message}
