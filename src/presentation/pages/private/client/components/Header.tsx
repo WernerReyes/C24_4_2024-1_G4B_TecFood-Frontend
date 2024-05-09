@@ -1,8 +1,10 @@
 import { InputSearch } from "@/presentation/components";
+import { useAuthStore } from "@/presentation/hooks";
 import clsx from "clsx";
 import { useState } from "react";
 
 export const Header = () => {
+  const { user } = useAuthStore();
   const [collapseMenu, setCollapseMenu] = useState<string>("hidden");
 
   const handleToggleOpen = () => setCollapseMenu("");
@@ -75,7 +77,7 @@ export const Header = () => {
           </div>
         </div>
         <div className="w-full md:hidden">
-          <InputSearch placeholder="Search" className="w-full bg-gray-100" />
+          <InputSearch placeholder="Search" value={user.name} className="w-full bg-gray-100" />
         </div>
       </section>
 

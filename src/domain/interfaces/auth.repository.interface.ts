@@ -6,4 +6,5 @@ export interface AuthRepository {
   ) => Promise<LoginUser>;
   loginUser: (loginUserDto: LoginUserDto) => Promise<LoginUser>;
   registerUser: (registerUserDto: RegisterUserDto) => Promise<CreateUser>;
+  revalidateToken: () => Promise<LoginUser>;
 }

@@ -9,7 +9,6 @@ let token = localStorage.getItem("token")
 
 const baseURL = getEnvs().VITE_API_URL;
 
-
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
   axiosInstance.interceptors.request.use(async (req) => {
@@ -22,7 +21,6 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
       }
 
       const response = await axios.get(`${baseURL}/auth/revalidate-token`);
-
       token = response.data.token;
       localStorage.setItem("token", JSON.stringify(token));
       req.headers.Authorization = `Bearer ${token}`;
@@ -33,7 +31,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
 
   axiosInstance.interceptors.response.use(
     (res) => res,
-    (error) => {  
+    (error) => {
       if (!error.response) {
         return Promise.reject({
           status: 500,

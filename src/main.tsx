@@ -17,6 +17,5 @@ import "swiper/css/scrollbar";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
-    {/* <LoginPage /> */}
   </React.StrictMode>,
 );

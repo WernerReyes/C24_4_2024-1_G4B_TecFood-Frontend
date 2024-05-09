@@ -6,6 +6,8 @@ import { Button, InputPassword, InputText } from "@/presentation/components";
 import { loginUserDto } from "@/domain/dtos";
 import { SonnerManager } from "@/presentation/utilities";
 import { useTheme, useAuthStore } from "@/presentation/hooks";
+import { useNavigate } from "react-router-dom";
+import { PrivateRoutes } from "@/presentation/routes";
 
 type LoginFields = {
   email: string;
@@ -15,6 +17,7 @@ type LoginFields = {
 export const LoginPage = () => {
   const { isDark } = useTheme();
   const { isLoading, message, clearMessages, startLoginUser } = useAuthStore();
+  const navigate = useNavigate();
 
   const {
     control,
@@ -31,8 +34,10 @@ export const LoginPage = () => {
     }
   }, [message]);
 
-  const handleLogin: SubmitHandler<LoginFields> = (data) =>
-    startLoginUser(data);
+  const handleLogin: SubmitHandler<LoginFields> = async (data) => {
+    await startLoginUser(data);
+    navigate(PrivateRoutes.PRIVATE);
+  };
 
   return (
     <AuthLayout

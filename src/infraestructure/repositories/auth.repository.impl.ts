@@ -4,6 +4,7 @@ import {
   loginGoogleUser,
   loginUser,
   registerUser,
+  revalidateToken,
 } from "@/infraestructure/services";
 import { LoginGoogleUserDto, LoginUserDto } from "../../domain/dtos/auth";
 
@@ -13,4 +14,5 @@ export const authRepositoryImpl: AuthRepository = {
   loginUser: async (loginUserDto: LoginUserDto) => loginUser(loginUserDto),
   registerUser: async (registerUserDto: RegisterUserDto) =>
     registerUser(registerUserDto),
+  revalidateToken: async () => revalidateToken(),
 };

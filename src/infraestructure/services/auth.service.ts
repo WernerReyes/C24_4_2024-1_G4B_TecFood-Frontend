@@ -4,13 +4,13 @@ import {
   LoginGoogleUserDto,
   LoginUserDto,
 } from "@/domain/dtos";
-import { CreateUser } from "@/model";
+import { CreateUser, LoginUser } from "@/model";
 import { userAdapter } from "@/config/adapters";
 import { UserEntity } from "@/domain/entities";
 
 const baseUrl = "/auth";
 
-type LoginUser = {
+type LoginUserResponse = {
   user: UserEntity;
   token: string;
   message: string;
@@ -22,9 +22,9 @@ type RegisterUserResponse = {
 
 export const loginGoogleUser = async (
   loginGoogleUserDto: LoginGoogleUserDto,
-) => {
+): Promise<LoginUser> => {
   try {
-    const { data } = await httpRequest<LoginUser>(
+    const { data } = await httpRequest<LoginUserResponse>(
       baseUrl + "/login-google",
       "POST",
       loginGoogleUserDto,
@@ -35,9 +35,11 @@ export const loginGoogleUser = async (
   }
 };
 
-export const loginUser = async (loginUserDto: LoginUserDto) => {
+export const loginUser = async (
+  loginUserDto: LoginUserDto,
+): Promise<LoginUser> => {
   try {
-    const { data } = await httpRequest<LoginUser>(
+    const { data } = await httpRequest<LoginUserResponse>(
       baseUrl + "/login",
       "POST",
       loginUserDto,
@@ -58,6 +60,18 @@ export const registerUser = async (
       registerUserDto,
     );
     return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const revalidateToken = async (): Promise<LoginUser> => {
+  try {
+    const { data } = await httpRequest<LoginUserResponse>(
+      baseUrl + "/revalidate-token",
+      "GET",
+    );
+    return { ...data, user: userAdapter(data.user) };
   } catch (error) {
     throw error;
   }

@@ -1,10 +1,16 @@
 import { User, userEmptyState } from "@/model";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+export enum AuthStatus {
+  CHECKING = "checking",
+  AUTHENTICATE = "authenticated",
+  NOT_AUTHENTICATE = "not-authenticated",
+}
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
-    isLoading: false,
+    status: AuthStatus.CHECKING,
     user: userEmptyState,
     message: undefined as string | undefined,
   },
@@ -14,11 +20,15 @@ export const authSlice = createSlice({
     },
 
     onLogin: (state, { payload }: PayloadAction<User>) => {
-      return { ...state, user: payload, isLoading: false };
+      return { ...state, user: payload, status: AuthStatus.AUTHENTICATE };
     },
 
     onLogout: (state) => {
-      return { ...state, user: userEmptyState, isLoading: false };
+      return {
+        ...state,
+        user: userEmptyState,
+        status: AuthStatus.NOT_AUTHENTICATE,
+      };
     },
 
     setMessages: (state, { payload }: PayloadAction<string>) => {
@@ -28,7 +38,6 @@ export const authSlice = createSlice({
     clearMessages: (state) => {
       return { ...state, message: undefined, errorMessage: undefined };
     },
-
   },
 });
 

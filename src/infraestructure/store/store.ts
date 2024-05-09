@@ -3,7 +3,7 @@ import { DishOfferState, UserState } from "@/model";
 import { userSlice } from "./slice/user.slice";
 import { themesSlice } from "./slice/theme.slice";
 import { dishOfferSlice } from "./slice/dis-offer.slice";
-import { authSlice } from "./slice/auth.slice";
+import { AuthStatus, authSlice } from "./slice/auth.slice";
 
 export interface AppState {
   user: {
@@ -20,7 +20,7 @@ export interface AppState {
     dishOffers: DishOfferState[];
   };
   auth: {
-    isLoading: boolean;
+    status: AuthStatus;
     user: UserState;
     message: string | undefined;
   };
@@ -38,3 +38,4 @@ export const store = configureStore<AppState>({
       serializableCheck: false,
     }),
 });
+

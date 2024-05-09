@@ -1,10 +1,10 @@
 import clsx from "clsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
-import type { IconFieldProps } from "primereact/iconfield";
+import type { InputTextProps } from "primereact/inputtext";
 import { InputText } from "./Input-text";
 
-interface Props extends IconFieldProps {}
+interface Props extends InputTextProps {}
 
 const defaultClassName = "border border-gray-300 w-full rounded-lg p-2";
 
@@ -13,6 +13,7 @@ export const InputSearch = ({
   type,
   className,
   unstyled,
+  ...props
 }: Props) => {
   return (
     <>
@@ -22,6 +23,7 @@ export const InputSearch = ({
           placeholder={placeholder}
           type={type}
           className={clsx(!unstyled && defaultClassName, className)}
+          {...props}
         />
       </IconField>
     </>

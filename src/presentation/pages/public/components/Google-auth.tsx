@@ -7,6 +7,8 @@ import { jwtDecode } from "jwt-decode";
 import { getEnvs } from "@/presentation/utilities";
 import { useAuthStore } from "@/presentation/hooks";
 import { RoleEnum } from "@/domain/entities";
+import { useNavigate } from "react-router-dom";
+import { PrivateRoutes } from "@/presentation/routes";
 
 const { VITE_GOOGLE_CLIENT_ID } = getEnvs();
 
@@ -29,11 +31,12 @@ type GoogleResponse = {
 };
 
 export const GoogleAuth = () => {
+  const navigate = useNavigate();
   const { startGoogleLoginUser } = useAuthStore();
 
-  const handleGoogleLogin = (response: CredentialResponse) => {
+  const handleGoogleLogin = async (response: CredentialResponse) => {
     const data = jwtDecode(response.credential as string) as GoogleResponse;
-    startGoogleLoginUser({
+    await startGoogleLoginUser({
       firstName: data.given_name,
       lastName: data.family_name,
       email: data.email,
@@ -42,6 +45,7 @@ export const GoogleAuth = () => {
       isEmailVerified: data.email_verified,
       role: RoleEnum.ROLE_USER,
     });
+    navigate(PrivateRoutes.PRIVATE);
   };
 
   const handleFailure = () => console.log("Failed to login");
@@ -60,4 +64,3 @@ export const GoogleAuth = () => {
     </section>
   );
 };
-
