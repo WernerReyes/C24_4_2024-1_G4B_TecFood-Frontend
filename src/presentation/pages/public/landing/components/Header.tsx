@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { AlertOffers } from "./Alert-offers";
 import { useState } from "react";
 import { useTheme, useWindowSize } from "@/presentation/hooks";
-import { responsiveDesign } from "@/utilities";
+import { responsiveDesign } from "@/presentation/utilities";
 import { Link, Image, ChangeTheme } from "@/presentation/components";
 
 const { lg: SCREEN_WIDTH_LG, sm: SCREEN_WIDTH_SM } = responsiveDesign;

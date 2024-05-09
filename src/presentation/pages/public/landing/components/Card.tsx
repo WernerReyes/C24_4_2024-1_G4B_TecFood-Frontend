@@ -7,7 +7,7 @@ import {
   AvatarGroup,
   Card as CardComponent,
 } from "@/presentation/components";
-import { formatNumber } from "@/utilities";
+import { formatNumber } from "@/presentation/utilities";
 
 const bgCardDark =
   "linear-gradient(to bottom, #322e2e, #3e3535, #493d3d, #564444, #624c4c)";
@@ -175,8 +175,6 @@ const footer = (
         "md:bottom-0 md:w-40",
         "xl:bottom-[-15px]",
       )}
-      loading
-      time={2000}
     />
   </div>
 );

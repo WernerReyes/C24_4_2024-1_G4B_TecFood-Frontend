@@ -1,16 +1,18 @@
+import { userAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
+import { UserEntity } from "@/domain/entities";
 import { UpdateUser, User } from "@/model";
 
 const baseURL = "/users";
 
 export const updateUser = async (user: UpdateUser): Promise<User> => {
   try {
-    const { data } = await httpRequest<User>(
+    const { data } = await httpRequest<UserEntity>(
       `${baseURL}/${user.id}`,
       "PUT",
       user,
     );
-    return data;
+    return userAdapter(data);
   } catch (error) {
     throw error;
   }
@@ -18,8 +20,8 @@ export const updateUser = async (user: UpdateUser): Promise<User> => {
 
 export const getAllUsers = async (): Promise<User[]> => {
   try {
-    const { data } = await httpRequest<User[]>(baseURL, "GET");
-    return data;
+    const { data } = await httpRequest<UserEntity[]>(baseURL, "GET");
+    return data.map(userAdapter);
   } catch (error) {
     throw error;
   }

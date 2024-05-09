@@ -5,7 +5,7 @@ import { SwiperSlide, Swiper } from "swiper/react";
 import { Button } from "@/presentation/components";
 import { Card } from "./Card";
 import { useDishOffer, useWindowSize } from "@/presentation/hooks";
-import { breakPointsSwiper, responsiveDesign } from "@/utilities";
+import { breakPointsSwiper, responsiveDesign } from "@/presentation/utilities";
 
 const breakpointsButtons = breakPointsSwiper({
   slidesPerViewSm: 3,

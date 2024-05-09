@@ -1,13 +1,14 @@
 import axios, { AxiosInstance } from "axios";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import daysjs from "dayjs";
-import { getEnvs, SonnerManager } from "@/utilities";
+import { getEnvs, SonnerManager } from "@/presentation/utilities";
 
 let token = localStorage.getItem("token")
-  ? JSON.parse(localStorage.getItem("token")!)
+  ? localStorage.getItem("token")
   : null;
 
 const baseURL = getEnvs().VITE_API_URL;
+
 
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
@@ -21,7 +22,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
       }
 
       const response = await axios.post(`${baseURL}/auth/refresh-token`, {
-        refresh: token.refresh,
+        id: user.sub,
       });
 
       token = response.data.token;
@@ -34,15 +35,14 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
 
   axiosInstance.interceptors.response.use(
     (res) => res,
-    (error) => {
+    (error) => {  
       if (!error.response) {
         return Promise.reject({
           status: 500,
           message: "Error Server, please try again later",
         });
       }
-
-      SonnerManager.error(error.response.data.message ?? "No hay errores");
+      SonnerManager.error(error.response.data.error);
       return Promise.reject(error.response.data);
     },
   );
