@@ -1,4 +1,4 @@
-import { CreateUser, LoginUser } from "@/model";
+import type { CreateUser, LoginUser } from "@/model";
 import { LoginGoogleUserDto, LoginUserDto, RegisterUserDto } from "../dtos";
 export interface AuthRepository {
   loginGoogleUser: (
