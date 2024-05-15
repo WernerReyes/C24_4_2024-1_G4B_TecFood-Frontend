@@ -1,7 +1,5 @@
-import { InputText } from "primereact/inputtext";
 import clsx from "clsx";
-import { Button as ButtonPrimerReact } from "primereact/button";
-import { Button, Image } from "@/presentation/components";
+import { Button, Image, InputSearch } from "@/presentation/components";
 
 type Props = {
   marginContainer: string;
@@ -44,28 +42,28 @@ export const Main = ({ marginContainer }: Props) => {
           perferendis sit maiores quae? Ex recusandae, autem quas iusto non
           omnis assumenda fugit?
         </p>
-        <div className={clsx("mt-5 flex w-full items-center", "md:w-3/4")}>
-          <div
-            className={clsx(
-              "p-inputgroup ml-auto max-h-12 min-h-12 max-w-sm flex-1 rounded-full border-2 p-2",
-              "md:me-4",
-            )}
-          >
-            <ButtonPrimerReact
-              icon="pi pi-search"
-              className="bg-transparent text-black dark:text-white"
-            />
-            <InputText
+        <div
+          className={clsx("mt-5 flex w-full items-center", "md:justify-center")}
+        >
+          <div className="flex">
+            <InputSearch
+              className={clsx(
+                "ml-auto max-h-12 min-h-12 max-w-sm flex-1 rounded-full border-2 bg-transparent p-2",
+                "md:me-4",
+              )}
               placeholder="Keyword"
-              className="bg-transparent text-black shadow-none dark:text-white"
+              iconPosition="left"
+              iconClassName="text-black dark:text-white"
+              unstyled
+            />
+
+            <Button
+              icon="pi pi-search"
+              className={clsx(
+                "me-auto ml-5 cursor-pointer bg-secondary p-3.5 text-black",
+              )}
             />
           </div>
-          <span
-            className={clsx(
-              "pi pi-search me-auto ml-5 cursor-pointer rounded-full bg-[#FDCE77] p-3.5 text-black",
-              "md:ml-0",
-            )}
-          ></span>
         </div>
         <div className="mt-5 flex w-full items-center justify-evenly ">
           <Button
@@ -78,7 +76,13 @@ export const Main = ({ marginContainer }: Props) => {
               "lg:flex lg:items-center lg:justify-center",
             )}
           >
-            <span className="pi pi-play bg-trasparent cursor-pointer rounded-full p-3.5 text-primary shadow-md shadow-amber-400"></span>
+            <Button
+              icon="pi pi-play"
+              className={clsx(
+                "h-10 w-10 bg-transparent text-primary shadow-md shadow-amber-400",
+                "sm:h-12 sm:w-12",
+              )}
+            />
             <p className={clsx("ml-4 mt-2 dark:text-slate-200", "lg:mt-0")}>
               Whatch the video
             </p>
