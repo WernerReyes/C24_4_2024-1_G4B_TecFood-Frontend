@@ -1,4 +1,5 @@
 import { DishEntity } from "@/domain/entities";
+import { dishCategoryAdapter } from "./";
 export const dishAdapter = (dishEntity: DishEntity) => {
   return {
     id: dishEntity.idProducto,
@@ -6,7 +7,7 @@ export const dishAdapter = (dishEntity: DishEntity) => {
     price: dishEntity.price,
     img: dishEntity.imgUrl,
     stock: dishEntity.stock,
-    category: dishEntity.category,
+    category: dishCategoryAdapter(dishEntity.category),
     description: dishEntity.description,
   };
 };
