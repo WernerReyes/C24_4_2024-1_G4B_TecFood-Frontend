@@ -98,7 +98,7 @@ export const Main = ({ marginContainer }: Props) => {
       >
         <Image
           width="520"
-          src="landing/main.png"
+          src="/landing/main.png"
           alt="landing"
           className=" animate-float drop-shadow-primary dark:drop-shadow-primary-dark"
         />
