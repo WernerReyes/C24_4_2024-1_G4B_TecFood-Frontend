@@ -1,5 +1,5 @@
+import type { DishOffer } from "@/model";
 import { httpRequest } from "@/config/api";
-import { DishOffer } from "@/model";
 
 const baseUrl = "/dishOffers";
 

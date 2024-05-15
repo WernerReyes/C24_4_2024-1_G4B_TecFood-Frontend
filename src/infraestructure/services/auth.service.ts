@@ -1,12 +1,12 @@
+import type { UserEntity } from "@/domain/entities";
+import type { CreateUser, LoginUser } from "@/model";
 import { httpRequest } from "@/config/api";
 import {
   RegisterUserDto,
   LoginGoogleUserDto,
   LoginUserDto,
 } from "@/domain/dtos";
-import { CreateUser, LoginUser } from "@/model";
 import { userAdapter } from "@/config/adapters";
-import { UserEntity } from "@/domain/entities";
 
 const baseUrl = "/auth";
 

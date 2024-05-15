@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { DishOfferState, UserState } from "@/model";
+import type { DishOfferState, DishState, UserState } from "@/model";
 import { userSlice } from "./slice/user.slice";
 import { themesSlice } from "./slice/theme.slice";
 import { dishOfferSlice } from "./slice/dis-offer.slice";
 import { AuthStatus, authSlice } from "./slice/auth.slice";
+import { dishSlice } from "./slice/dish.slice";
 
 export interface AppState {
   user: {
@@ -24,6 +25,11 @@ export interface AppState {
     user: UserState;
     message: string | undefined;
   };
+  dish: {
+    isLoading: boolean;
+    dish: DishState;
+    dishes: DishState[];
+  };
 }
 
 export const store = configureStore<AppState>({
@@ -32,10 +38,10 @@ export const store = configureStore<AppState>({
     themes: themesSlice.reducer,
     dishOffer: dishOfferSlice.reducer,
     auth: authSlice.reducer,
+    dish: dishSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
 });
-
