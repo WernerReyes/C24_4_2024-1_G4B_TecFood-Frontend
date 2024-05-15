@@ -156,7 +156,7 @@ const header = (image: string, prince: number, priceOffer?: number) => (
         className={clsx(
           priceOffer
             ? "text-xs text-black/25 line-through dark:text-black/25"
-            : "text-white dark:text-black",
+            : "text-white text-sm dark:text-black",
         )}
       >
         S/.{prince}

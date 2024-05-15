@@ -1,11 +1,11 @@
-import { useState } from "react";
-import clsx from "clsx";
-import { Navigation } from "swiper/modules";
-import { SwiperSlide, Swiper } from "swiper/react";
 import { Button } from "@/presentation/components";
-import { Card } from "./Card";
-import { useDishOffer, useWindowSize } from "@/presentation/hooks";
+import { useDishStore, useWindowSize } from "@/presentation/hooks";
 import { breakPointsSwiper, responsiveDesign } from "@/presentation/utilities";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Card } from "./Card";
 
 const breakpointsButtons = breakPointsSwiper({
   slidesPerViewSm: 3,
@@ -38,7 +38,7 @@ type Props = {
 };
 
 export const Menu = ({ marginContainer }: Props) => {
-  const { dishOffers } = useDishOffer();
+  const { dishes, startLoadingDishes } = useDishStore();
   const { width } = useWindowSize();
   const [selectedButton, setSelectedButton] = useState<string>("Ramen");
 
@@ -46,10 +46,18 @@ export const Menu = ({ marginContainer }: Props) => {
     setSelectedButton(label);
   };
 
+  useEffect(() => {
+    startLoadingDishes();
+  }, []);
+
   return (
     <section
       id="our-menu"
-      className={clsx("mt-20 text-xs text-center", "sm:text-sm", marginContainer)}
+      className={clsx(
+        "mt-20 text-center text-xs",
+        "sm:text-sm",
+        marginContainer,
+      )}
     >
       <h2 className={clsx("text-2xl font-extrabold", "md:text-3xl")}>
         <span className="text-primary">Menu </span>
@@ -86,7 +94,7 @@ export const Menu = ({ marginContainer }: Props) => {
           className="mt-10"
           breakpoints={breakpointsMenu}
         >
-          {dishOffers.map((dishOffer) => (
+          {dishes.map((dishOffer) => (
             <SwiperSlide key={dishOffer.id}>
               <Card
                 key={dishOffer.id}
@@ -109,7 +117,7 @@ export const Menu = ({ marginContainer }: Props) => {
             "xl:grid-cols-4",
           )}
         >
-          {dishOffers.map((dishOffer) => (
+          {dishes.map((dishOffer) => (
             <Card
               key={dishOffer.id}
               title={dishOffer.name}
