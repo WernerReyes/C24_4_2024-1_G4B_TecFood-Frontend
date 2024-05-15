@@ -1,4 +1,5 @@
-import clsx from "clsx";
+import { Image } from "@/presentation/components";
+import { ThemeLayout } from "../../layout";
 import {
   AboutUs,
   DowloadMobileApp,
@@ -8,20 +9,17 @@ import {
   Menu,
   SpecialOffers,
 } from "../components";
-import { Image } from "@/presentation/components";
-import { useTheme } from "@/presentation/hooks";
+import { useWindowSize } from "@/presentation/hooks";
+import { responsiveDesign } from "@/presentation/utilities";
+
+const { lg: SCREEN_WIDTH_LG } = responsiveDesign;
 
 const marginContainer = "mx-10 lg:mx-20";
 
 export const HomePage = () => {
-  const { isDark } = useTheme();
+  const { width } = useWindowSize();
   return (
-    <main
-      className={clsx(
-        "h-full max-h-full min-h-screen w-full",
-        isDark ? "bg-gradient-primary-dark" : "bg-gradient-primary",
-      )}
-    >
+    <ThemeLayout offset={width < SCREEN_WIDTH_LG ? -460 : -200} to="home">
       <Header />
       <Main marginContainer={marginContainer} />
       <SpecialOffers marginContainer={marginContainer} />
@@ -32,7 +30,7 @@ export const HomePage = () => {
       <Menu marginContainer={marginContainer} />
       <DowloadMobileApp marginContainer={marginContainer} />
       <Footer />
-    </main>
+    </ThemeLayout>
   );
 };
 

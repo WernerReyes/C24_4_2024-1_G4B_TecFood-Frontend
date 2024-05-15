@@ -7,7 +7,7 @@ import { loginUserDto } from "@/domain/dtos";
 import { SonnerManager } from "@/presentation/utilities";
 import { useTheme, useAuthStore } from "@/presentation/hooks";
 import { useNavigate } from "react-router-dom";
-import { PrivateRoutes } from "@/presentation/routes";
+import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
 
 type LoginFields = {
   email: string;
@@ -36,14 +36,14 @@ export const LoginPage = () => {
 
   const handleLogin: SubmitHandler<LoginFields> = async (data) => {
     await startLoginUser(data);
-    navigate(PrivateRoutes.PRIVATE);
+    navigate(PrivateRoutes.ADMIN);
   };
 
   return (
     <AuthLayout
       title="Inicia sesión"
       label="¿No tienes una cuenta?"
-      link="/register"
+      link={PublicRoutes.REGISTER}
       labelLink="Regístrate"
       showGoogleAuth
       isDark={isDark}

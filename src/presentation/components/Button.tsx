@@ -11,7 +11,6 @@ const defaultClassName = "px-4 py-2 text-black rounded-full bg-primary";
 
 export const Button = ({
   children,
-  color = "primary",
   className,
   isLoading,
   onClick,

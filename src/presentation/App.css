@@ -1,0 +1,13 @@
+:root {
+  --color-primary: #00b1f7;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 30px;
+  cursor: pointer;
+}

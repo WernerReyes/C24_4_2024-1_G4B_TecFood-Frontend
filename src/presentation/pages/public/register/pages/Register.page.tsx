@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { AuthLayout } from "../../layout";
+import { PublicRoutes } from "@/presentation/routes";
 
 type RegisterFields = {
   email: string;
@@ -45,7 +46,7 @@ export const RegisterPage = () => {
     <AuthLayout
       title="Regístrate"
       label="¿Ya tienes una cuenta?"
-      link="/login"
+      link={PublicRoutes.LOGIN}
       labelLink="Inicia sesión"
       showGoogleAuth
       isDark={isDark}

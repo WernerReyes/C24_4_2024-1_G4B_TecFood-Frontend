@@ -3,7 +3,7 @@ import { httpRequest } from "@/config/api";
 import { UserEntity } from "@/domain/entities";
 import { UpdateUser, User } from "@/model";
 
-const baseURL = "/users";
+const baseURL = "/user";
 
 export const updateUser = async (user: UpdateUser): Promise<User> => {
   try {
