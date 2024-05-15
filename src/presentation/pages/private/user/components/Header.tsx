@@ -1,9 +1,32 @@
-import { InputSearch } from "@/presentation/components";
+import { Avatar, Image, InputSearch } from "@/presentation/components";
 import { useAuthStore } from "@/presentation/hooks";
 import clsx from "clsx";
-import { useState } from "react";
+import { LegacyRef, useState } from "react";
+import { useRef } from "react";
+import { Menu } from "primereact/menu";
+import { Toast } from "primereact/toast";
+import { Button } from "primereact/button";
+import { MenuItem } from "primereact/menuitem";
+import { Badge } from "primereact/badge";
+
+const items = [
+  {
+    label: "Profile",
+    items: [
+      {
+        label: "Settings",
+        icon: "pi pi-cog",
+      },
+      {
+        label: "Logout",
+        icon: "pi pi-sign-out",
+      },
+    ],
+  },
+];
 
 export const Header = () => {
+  const menuLeft = useRef<Menu>(null);
   const { user } = useAuthStore();
   const [collapseMenu, setCollapseMenu] = useState<string>("hidden");
 
@@ -13,72 +36,49 @@ export const Header = () => {
 
   return (
     <header className="relative z-50 bg-white font-[sans-serif] tracking-wide shadow-md">
-      <section className="flex min-h-[75px] flex-wrap items-center gap-4 border-b border-gray-200 px-4 py-3 sm:px-10 lg:justify-center">
-        <div className="absolute left-10 z-50 flex rounded  max-lg:left-60 max-md:hidden">
-          <InputSearch placeholder="Search" className="bg-gray-100" />
-        </div>
-
-        <a>
-          <img
-            src="https://readymadeui.com/readymadeui.svg"
-            alt="logo"
-            className="w-48 md:w-[170px]"
-          />
-        </a>
+      <section className="flex min-h-[75px] flex-wrap items-center gap-4 border-b border-gray-200 px-4 py-2 sm:px-10 lg:justify-center">
+        <Image
+          src="/logo.svg"
+          alt="logo"
+          className={clsx("w-20", "md:w-24", "lg:w-28")}
+        />
 
         <div className="ml-auto flex items-center space-x-8 lg:absolute lg:right-10">
-          <span className="relative">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20px"
-              className="inline-block cursor-pointer fill-[#333] hover:fill-[#007bff]"
-              viewBox="0 0 64 64"
-            >
-              <path
-                d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                data-original="#000000"
-              />
-            </svg>
-            <span className="absolute left-auto top-0 -ml-1 rounded-full bg-black px-1 py-0 text-xs text-white">
-              1
-            </span>
-          </span>
-          <span className="relative">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20px"
-              height="20px"
-              className="inline-block cursor-pointer fill-[#333] hover:fill-[#007bff]"
-              viewBox="0 0 512 512"
-            >
-              <path
-                d="M164.96 300.004h.024c.02 0 .04-.004.059-.004H437a15.003 15.003 0 0 0 14.422-10.879l60-210a15.003 15.003 0 0 0-2.445-13.152A15.006 15.006 0 0 0 497 60H130.367l-10.722-48.254A15.003 15.003 0 0 0 105 0H15C6.715 0 0 6.715 0 15s6.715 15 15 15h77.969c1.898 8.55 51.312 230.918 54.156 243.71C131.184 280.64 120 296.536 120 315c0 24.812 20.188 45 45 45h272c8.285 0 15-6.715 15-15s-6.715-15-15-15H165c-8.27 0-15-6.73-15-15 0-8.258 6.707-14.977 14.96-14.996zM477.114 90l-51.43 180H177.032l-40-180zM150 405c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zm167 15c0 24.813 20.188 45 45 45s45-20.188 45-45-20.188-45-45-45-45 20.188-45 45zm45-15c8.27 0 15 6.73 15 15s-6.73 15-15 15-15-6.73-15-15 6.73-15 15-15zm0 0"
-                data-original="#000000"
-              ></path>
-            </svg>
-            <span className="absolute left-auto top-0 -ml-1 rounded-full bg-black px-1 py-0 text-xs text-white">
-              4
-            </span>
-          </span>
-          <div className="inline-block cursor-pointer border-gray-300">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20px"
-              height="20px"
-              viewBox="0 0 24 24"
-              className="hover:fill-[#007bff]"
-            >
-              <circle cx="10" cy="7" r="6" data-original="#000000" />
-              <path
-                d="M14 15H6a5 5 0 0 0-5 5 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 5 5 0 0 0-5-5zm8-4h-2.59l.3-.29a1 1 0 0 0-1.42-1.42l-2 2a1 1 0 0 0 0 1.42l2 2a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42l-.3-.29H22a1 1 0 0 0 0-2z"
-                data-original="#000000"
-              />
-            </svg>
-          </div>
+          <i className="pi pi-search text-xl"></i>
+          <i className="pi pi-heart-fill p-overlay-badge text-2xl text-red-600">
+            <Badge value="0" className="bg-primary" size="normal" />
+          </i>
+          <i className="pi pi-shopping-cart p-overlay-badge text-2xl">
+            <Badge value="0" className="bg-primary" size="normal" />
+          </i>
+
+          {user.img ? (
+            <Avatar
+              image={user.img}
+              shape="circle"
+              className="m-0"
+              onClick={(event) => menuLeft.current?.toggle(event)}
+              // aria-controls="left"
+              aria-haspopup
+            />
+          ) : (
+            <Avatar
+              label="W"
+              shape="circle"
+              className="bg-primary text-white"
+              onClick={(event) => menuLeft.current?.toggle(event)}
+              // aria-controls="left"
+              aria-haspopup
+            ></Avatar>
+          )}
+
+          <Menu model={items} popup ref={menuLeft} id="popup_menu_left" />
+
+          {/* </div> */}
         </div>
-        <div className="w-full md:hidden">
-          <InputSearch placeholder="Search" value={user.name} className="w-full bg-gray-100" />
-        </div>
+        {/* <div className="w-full  md:hidden">
+          <InputSearch placeholder="Search" value={user.name} />
+        </div> */}
       </section>
 
       <div className="relative flex flex-wrap justify-center px-10 py-3">

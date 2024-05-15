@@ -1,5 +1,5 @@
-import { Avatar as AvatarPrimeReact } from "primereact/avatar";
 import type { AvatarProps } from "primereact/avatar";
+import { Avatar as AvatarPrimeReact } from "primereact/avatar";
 import { AvatarGroup as AvatarGroupPrimeReact } from "primereact/avatargroup";
 
 interface Props extends AvatarProps {}

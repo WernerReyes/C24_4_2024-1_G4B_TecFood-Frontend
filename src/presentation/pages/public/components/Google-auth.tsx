@@ -45,7 +45,7 @@ export const GoogleAuth = () => {
       isEmailVerified: data.email_verified,
       role: RoleEnum.ROLE_USER,
     });
-    navigate(PrivateRoutes.PRIVATE);
+    navigate(PrivateRoutes.USER);
   };
 
   const handleFailure = () => console.log("Failed to login");

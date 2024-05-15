@@ -1,9 +1,10 @@
-import clsx from "clsx";
-import { AlertOffers } from "./Alert-offers";
 import { useState } from "react";
+import clsx from "clsx";
+import { Image, Link } from "@/presentation/components";
 import { useTheme, useWindowSize } from "@/presentation/hooks";
 import { responsiveDesign } from "@/presentation/utilities";
-import { Link, Image, ChangeTheme } from "@/presentation/components";
+import { AlertOffers } from "./Alert-offers";
+import { PublicRoutes } from "@/presentation/routes";
 
 const { lg: SCREEN_WIDTH_LG, sm: SCREEN_WIDTH_SM } = responsiveDesign;
 
@@ -45,9 +46,10 @@ export const Header = () => {
           <i className="pi pi-facebook me-5 cursor-pointer text-black hover:text-primary dark:text-white dark:hover:text-primary"></i>
           <i className="pi pi-instagram me-5 cursor-pointer text-black hover:text-primary dark:text-white dark:hover:text-primary"></i>
           <i className="pi pi-linkedin me-5 cursor-pointer text-black hover:text-primary dark:text-white dark:hover:text-primary"></i>
-          <ChangeTheme />
           <div className="inline-block cursor-pointer border-l-2 border-black pl-6 dark:border-gray-300">
-            <i className="pi pi-user animate-bounce text-3xl text-black hover:text-primary dark:text-white dark:hover:text-primary"></i>
+            <Link type="router" to={PublicRoutes.LOGIN} unstyled>
+              <i className="pi pi-user animate-bounce text-3xl text-black hover:text-primary dark:text-white dark:hover:text-primary"></i>
+            </Link>
           </div>
         </div>
       </nav>
