@@ -1,8 +1,11 @@
-import { DishCategoryEntity } from "@/domain/entities";
+import type { DishCategoryEntity } from "@/domain/entities";
+import type { DishCategory } from "@/model";
 
-export const dishCategoryAdapter = (dishCategotyEntity: DishCategoryEntity) => {
+export const dishCategoryAdapter = (
+  dishCategotyEntity: DishCategoryEntity,
+): DishCategory => {
   return {
-    id: dishCategotyEntity.idCategory,
+    id: dishCategotyEntity.idDishCategory,
     name: dishCategotyEntity.name,
   };
 };

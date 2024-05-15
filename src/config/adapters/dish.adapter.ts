@@ -1,8 +1,9 @@
-import { DishEntity } from "@/domain/entities";
+import type { DishEntity } from "@/domain/entities";
+import type { Dish } from "@/model";
 import { dishCategoryAdapter } from "./";
-export const dishAdapter = (dishEntity: DishEntity) => {
+export const dishAdapter = (dishEntity: DishEntity): Dish => {
   return {
-    id: dishEntity.idProducto,
+    id: dishEntity.idDish,
     name: dishEntity.name,
     price: dishEntity.price,
     img: dishEntity.imgUrl,

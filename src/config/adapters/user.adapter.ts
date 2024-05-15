@@ -1,5 +1,5 @@
-import { UserEntity } from "@/domain/entities";
-import { User } from "@/model";
+import type { UserEntity } from "@/domain/entities";
+import type { User } from "@/model";
 
 export const userAdapter = (user: UserEntity): User => {
   return {
