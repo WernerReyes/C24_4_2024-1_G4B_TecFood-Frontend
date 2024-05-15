@@ -1,5 +1,5 @@
-import { AuthRepository } from "@/domain/interfaces";
-import { CreateUser } from "@/model";
+import type { AuthRepository } from "@/domain/interfaces";
+import type { CreateUser } from "@/model";
 import { RegisterUserDto } from "../../dtos/auth";
 
 interface registerUserUseCase {

@@ -1,5 +1,5 @@
-import { AuthRepository } from "@/domain/interfaces";
-import { LoginUser } from "@/model";
+import type { AuthRepository } from "@/domain/interfaces";
+import type { LoginUser } from "@/model";
 import { LoginGoogleUserDto } from '../../dtos/auth';
 
 interface loginGoogleUserUseCase {
