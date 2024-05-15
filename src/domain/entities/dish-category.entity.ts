@@ -1,4 +1,4 @@
 export interface DishCategoryEntity {
-  idCategory: number;
+  idDishCategory: number;
   name: string;
 }
