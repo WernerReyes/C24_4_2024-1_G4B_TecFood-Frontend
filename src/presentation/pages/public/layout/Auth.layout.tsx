@@ -2,7 +2,7 @@ import { Divider, Image, Link } from "@/presentation/components";
 import { useWindowSize } from "@/presentation/hooks";
 import clsx from "clsx";
 import { Toaster } from "sonner";
-import { ThemeLayout } from "./Theme.ayout";
+import { ThemeLayout } from "./Theme.layout";
 import { GoogleAuth } from "../components";
 
 interface Props {

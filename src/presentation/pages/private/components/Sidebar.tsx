@@ -8,7 +8,7 @@ type Props = {
   links: { label: string; url: string }[];
 };
 
-export const SidebarLayout = ({
+export const Sidebar = ({
   collapseMenu,
   handleToggleClose,
   links,

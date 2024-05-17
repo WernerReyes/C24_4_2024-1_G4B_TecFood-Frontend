@@ -1,11 +1,11 @@
-import { Avatar, Button, InputSearch } from "@/presentation/components";
-import { useAuthStore } from "@/presentation/hooks";
 import clsx from "clsx";
+import { useRef, useState } from "react";
+import { Avatar, Button, InputSearch} from "@/presentation/components";
+import { HeaderLayout } from "../../layout";
+import { Sidebar } from "../../components";
 import { Badge } from "primereact/badge";
 import { Menu } from "primereact/menu";
-import { useRef, useState } from "react";
-import { HeaderLayout, SidebarLayout } from "../../layout";
-
+import { useAuthStore } from "@/presentation/hooks";
 const items = [
   {
     label: "Profile",
@@ -38,7 +38,7 @@ export const Header = () => {
 
   return (
     <HeaderLayout>
-      <SidebarLayout
+      <Sidebar
         collapseMenu={collapseMenu}
         handleToggleClose={handleToggleClose}
         links={LINKS_SIDEBAR}
