@@ -1,36 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import type { DishOfferState, DishState, UserState } from "@/model";
-import { userSlice } from "./slice/user.slice";
-import { themesSlice } from "./slice/theme.slice";
+import { authSlice } from "./slice/auth.slice";
 import { dishOfferSlice } from "./slice/dis-offer.slice";
-import { AuthStatus, authSlice } from "./slice/auth.slice";
+import { dishCategorySlice } from "./slice/dish-category.slice";
 import { dishSlice } from "./slice/dish.slice";
-
-export interface AppState {
-  user: {
-    isLoading: boolean;
-    user: UserState;
-    users: UserState[];
-  };
-  themes: {
-    currentTheme: string;
-  };
-  dishOffer: {
-    isLoading: boolean;
-    dishOffer: DishOfferState;
-    dishOffers: DishOfferState[];
-  };
-  auth: {
-    status: AuthStatus;
-    user: UserState;
-    message: string | undefined;
-  };
-  dish: {
-    isLoading: boolean;
-    dish: DishState;
-    dishes: DishState[];
-  };
-}
+import { themesSlice } from "./slice/theme.slice";
+import { userSlice } from "./slice/user.slice";
+import { AppState } from "./state";
 
 export const store = configureStore<AppState>({
   reducer: {
@@ -39,6 +14,7 @@ export const store = configureStore<AppState>({
     dishOffer: dishOfferSlice.reducer,
     auth: authSlice.reducer,
     dish: dishSlice.reducer,
+    dishCategory: dishCategorySlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
