@@ -29,54 +29,60 @@ export const useAuthStore = () => {
 
   const startGoogleLoginUser = async (
     loginGoogleUserDto: LoginGoogleUserDto,
-  ): Promise<void> => {
-    try {
-      dispatch(onCheking());
-      const data =
-        await loginGoogleUser(authRepositoryImpl).execute(loginGoogleUserDto);
-      localStorage.setItem("token", data.token);
-      dispatch(onLogin(data.user));
-    } catch (error) {
-      dispatch(onLogout());
-      throw error;
-    }
+  ) => {
+    dispatch(onCheking());
+
+    await loginGoogleUser(authRepositoryImpl)
+      .execute(loginGoogleUserDto)
+      .then(({ user, token }) => {
+        dispatch(onLogin(user));
+        localStorage.setItem("token", token);
+      })
+      .catch((error) => {
+        dispatch(onLogout());
+        console.error(error);
+      });
   };
 
   const startLoginUser = async (loginUserDto: LoginUserDto) => {
-    try {
-      dispatch(onCheking());
-      const data = await loginUser(authRepositoryImpl).execute(loginUserDto);
-      dispatch(onLogin(data.user));
-      localStorage.setItem("token", data.token);
-    } catch (error) {
-      dispatch(onLogout());
-      throw error;
-    }
+    dispatch(onCheking());
+
+    await loginUser(authRepositoryImpl)
+      .execute(loginUserDto)
+      .then(({ user, token }) => {
+        dispatch(onLogin(user));
+        localStorage.setItem("token", token);
+      })
+      .catch((error) => {
+        dispatch(onLogout());
+        console.error(error);
+      });
   };
 
   const startRegisteringUser = async (registerUserDto: RegisterUserDto) => {
-    try {
-      const data =
-        await registerUser(authRepositoryImpl).execute(registerUserDto);
-      dispatch(onCheking());
-      dispatch(setMessages(data.message));
-    } catch (error) {
-      throw error;
-    }
+    dispatch(onCheking());
+
+    await registerUser(authRepositoryImpl)
+      .execute(registerUserDto)
+      .then(({ message }) => dispatch(setMessages(message)))
+      .catch((error) => {
+        dispatch(onLogout());
+        console.error(error);
+      });
   };
 
   const startRevalidateToken = async () => {
-    try {
-      dispatch(onCheking());
-      const token = localStorage.getItem("token");
-      if (!token || token?.length < 5) return dispatch(onLogout());
+    dispatch(onCheking());
+    const token = localStorage.getItem("token");
+    if (!token || token?.length < 5) return dispatch(onLogout());
 
-      const data = await revalidateToken(authRepositoryImpl).execute();
-      dispatch(onLogin(data.user));
-    } catch (error) {
-      dispatch(onLogout());
-      throw error;
-    }
+    await revalidateToken(authRepositoryImpl)
+      .execute()
+      .then(({ user }) => dispatch(onLogin(user)))
+      .catch((error) => {
+        dispatch(onLogout());
+        console.error(error);
+      });
   };
 
   return {
