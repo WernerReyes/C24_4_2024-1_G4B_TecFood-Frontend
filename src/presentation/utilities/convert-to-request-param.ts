@@ -4,7 +4,7 @@ export const convertToRequestParam = <T>(object: Record<string, T>): string => {
     "?" +
     Object.keys(object)
       .map((key) => {
-        if(object[key] === null) return "";
+        if(object[key] === null || undefined) return "";
         return `${key}=${object[key]}`;
       })
       .join("&")
