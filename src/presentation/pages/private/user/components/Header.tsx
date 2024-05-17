@@ -1,13 +1,9 @@
-import { Avatar, Image, InputSearch } from "@/presentation/components";
+import { Avatar, Image } from "@/presentation/components";
 import { useAuthStore } from "@/presentation/hooks";
 import clsx from "clsx";
-import { LegacyRef, useState } from "react";
-import { useRef } from "react";
-import { Menu } from "primereact/menu";
-import { Toast } from "primereact/toast";
-import { Button } from "primereact/button";
-import { MenuItem } from "primereact/menuitem";
 import { Badge } from "primereact/badge";
+import { Menu } from "primereact/menu";
+import { useRef, useState } from "react";
 
 const items = [
   {
