@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getDishes } from "@/domain/use-cases/dish";
+import { getDishes } from "@/domain/use-cases";
 import { dishRepositoryImpl } from "@/infraestructure/repositories";
 import { AppState, onLoadDishes, onLoadingDish } from "@/infraestructure/store";
 import type { GetDishesDto } from "@/domain/dtos";

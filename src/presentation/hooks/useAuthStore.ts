@@ -9,7 +9,7 @@ import {
   loginGoogleUser,
   loginUser,
   revalidateToken,
-} from "@/domain/use-cases/auth";
+} from "@/domain/use-cases";
 import { authRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
