@@ -1,2 +1,2 @@
-export * from './Auth-layout';
-export * from './Theme-layout';
+export * from './Auth.layout';
+export * from './Theme.ayout';

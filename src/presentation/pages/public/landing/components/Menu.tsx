@@ -40,9 +40,9 @@ export const Menu = ({ marginContainer }: Props) => {
   const { dishCategories, startLoadingDishCategories } = useDishCategoryStore();
   const { width } = useWindowSize();
   const [selectedButton, setSelectedButton] = useState<string>("all");
-  const [selectedCategoryId, setSelectedCategoryId] = useState<
-    number | null
-  >(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null,
+  );
 
   const handleSelectButton = (name: string, id: number | null) => {
     setSelectedButton(name);
@@ -53,6 +53,7 @@ export const Menu = ({ marginContainer }: Props) => {
     const getDishesDto = exceptionDto(
       {
         idCategory: selectedCategoryId,
+        search: null,
       },
       getDishesDtoSchema,
     ) as GetDishesDto;
