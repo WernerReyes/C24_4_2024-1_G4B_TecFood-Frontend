@@ -16,14 +16,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Card } from "./Card";
 import { GetDishesDto, getDishesDtoSchema } from "@/domain/dtos";
 
-const breakpointsButtons = breakPointsSwiper({
+const BREAK_POINTS_BUTTONS = breakPointsSwiper({
   slidesPerViewSm: 3,
   slidesPerViewMd: 4,
   slidesPerViewLg: 5,
   slidesPerViewXl: 6,
 });
 
-const breakpointsMenu = breakPointsSwiper({
+const BREAK_POINTS_MENU = breakPointsSwiper({
   slidesPerViewMd: 2,
   slidesPerViewLg: 4,
   slidesPerViewXl: 4,
@@ -46,7 +46,7 @@ export const Menu = ({ marginContainer }: Props) => {
 
   const handleSelectButton = (name: string, id: number | null) => {
     setSelectedButton(name);
-    setSelectedCategoryId(id);
+    setSelectedCategoryId(id ?? null);
   };
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export const Menu = ({ marginContainer }: Props) => {
         modules={[Navigation]}
         slidesPerView={3}
         className="mt-10"
-        breakpoints={breakpointsButtons}
+        breakpoints={BREAK_POINTS_BUTTONS}
       >
         <SwiperSlide key={"all"} className="m-0">
           <Button
@@ -116,7 +116,7 @@ export const Menu = ({ marginContainer }: Props) => {
           slidesPerView={1}
           spaceBetween={50}
           className="mt-10"
-          breakpoints={breakpointsMenu}
+          breakpoints={BREAK_POINTS_MENU}
         >
           {dishes.map((dish) => (
             <SwiperSlide key={dish.id}>
