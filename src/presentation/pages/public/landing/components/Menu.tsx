@@ -1,5 +1,9 @@
 import { Button } from "@/presentation/components";
-import { useDishStore, useWindowSize } from "@/presentation/hooks";
+import {
+  useDishCategoryStore,
+  useDishStore,
+  useWindowSize,
+} from "@/presentation/hooks";
 import {
   breakPointsSwiper,
   exceptionDto,
@@ -27,38 +31,36 @@ const breakpointsMenu = breakPointsSwiper({
 
 const SCREEN_WIDTH = responsiveDesign.md;
 
-const buttonLabels = [
-  "Ramen",
-  "Breakfast",
-  "Lunch",
-  "Dinner",
-  "Maxican",
-  "Desserts",
-  "Italian",
-  "Drinks",
-];
-
 type Props = {
   marginContainer: string;
 };
 
 export const Menu = ({ marginContainer }: Props) => {
   const { dishes, startLoadingDishes } = useDishStore();
+  const { dishCategories, startLoadingDishCategories } = useDishCategoryStore();
   const { width } = useWindowSize();
-  const [selectedButton, setSelectedButton] = useState<string>("Ramen");
+  const [selectedButton, setSelectedButton] = useState<string>("all");
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    number | null
+  >(null);
 
-  const handleSelectButton = (label: string) => {
-    setSelectedButton(label);
+  const handleSelectButton = (name: string, id: number | null) => {
+    setSelectedButton(name);
+    setSelectedCategoryId(id);
   };
 
   useEffect(() => {
     const getDishesDto = exceptionDto(
       {
-        idCategory: 1,
+        idCategory: selectedCategoryId,
       },
       getDishesDtoSchema,
     ) as GetDishesDto;
     startLoadingDishes(getDishesDto);
+  }, [selectedCategoryId]);
+
+  useEffect(() => {
+    startLoadingDishCategories();
   }, []);
 
   return (
@@ -83,13 +85,24 @@ export const Menu = ({ marginContainer }: Props) => {
         className="mt-10"
         breakpoints={breakpointsButtons}
       >
-        {buttonLabels.map((label) => (
-          <SwiperSlide key={label}>
+        <SwiperSlide key={"all"} className="m-0">
+          <Button
+            label={"Todo"}
+            onClick={() => handleSelectButton("all", null)}
+            className={clsx(
+              selectedButton === "all"
+                ? ""
+                : "border-2 border-zinc-400 bg-transparent text-zinc-400",
+            )}
+          />
+        </SwiperSlide>
+        {dishCategories.map(({ name, id }) => (
+          <SwiperSlide key={id}>
             <Button
-              label={label}
-              onClick={() => handleSelectButton(label)}
+              label={name}
+              onClick={() => handleSelectButton(name, id)}
               className={clsx(
-                selectedButton === label
+                selectedButton === name
                   ? ""
                   : "border-2 border-zinc-400 bg-transparent text-zinc-400",
               )}
@@ -105,15 +118,15 @@ export const Menu = ({ marginContainer }: Props) => {
           className="mt-10"
           breakpoints={breakpointsMenu}
         >
-          {dishes.map((dishOffer) => (
-            <SwiperSlide key={dishOffer.id}>
+          {dishes.map((dish) => (
+            <SwiperSlide key={dish.id}>
               <Card
-                key={dishOffer.id}
-                title={dishOffer.name}
-                description={dishOffer.description}
+                key={dish.id}
+                title={dish.name}
+                description={dish.description}
                 rating={5}
-                price={dishOffer.price}
-                image={dishOffer.img}
+                price={dish.price}
+                image={dish.img}
               />
             </SwiperSlide>
           ))}
@@ -128,14 +141,14 @@ export const Menu = ({ marginContainer }: Props) => {
             "xl:grid-cols-4",
           )}
         >
-          {dishes.map((dishOffer) => (
+          {dishes.map((dish) => (
             <Card
-              key={dishOffer.id}
-              title={dishOffer.name}
-              description={dishOffer.description}
+              key={dish.id}
+              title={dish.name}
+              description={dish.description}
               rating={5}
-              price={dishOffer.price}
-              image={dishOffer.img}
+              price={dish.price}
+              image={dish.img}
             />
           ))}
         </div>
