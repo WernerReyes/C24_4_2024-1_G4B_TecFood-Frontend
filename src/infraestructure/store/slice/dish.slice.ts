@@ -11,7 +11,6 @@ export const dishSlice = createSlice({
   },
   reducers: {
     onLoadDishes(state, action: PayloadAction<DishState[]>) {
-        console.log('action.payload', action.payload)
       return { ...state, dishes: action.payload, isLoading: false };
     },
 
