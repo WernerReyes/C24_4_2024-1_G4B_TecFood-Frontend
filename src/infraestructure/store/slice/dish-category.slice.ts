@@ -1,6 +1,6 @@
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { DishCategoryState } from "@/model";
 import { dishCategoryEmptyState } from "@/model";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export const dishCategorySlice = createSlice({
   name: "dishCategory",
