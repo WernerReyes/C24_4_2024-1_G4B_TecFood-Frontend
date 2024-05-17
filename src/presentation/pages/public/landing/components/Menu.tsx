@@ -1,3 +1,7 @@
+import clsx from "clsx";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import { useEffect, useState } from "react";
 import { Button } from "@/presentation/components";
 import {
   useDishCategoryStore,
@@ -9,10 +13,6 @@ import {
   exceptionDto,
   responsiveDesign,
 } from "@/presentation/utilities";
-import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { Navigation } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { Card } from "./Card";
 import { GetDishesDto, getDishesDtoSchema } from "@/domain/dtos";
 
