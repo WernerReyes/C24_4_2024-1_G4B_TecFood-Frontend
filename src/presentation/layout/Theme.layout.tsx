@@ -9,6 +9,7 @@ type Props = {
   duration?: number;
   showIconTheme?: boolean;
   className?: string;
+  colorTheme?: string;
 };
 
 export const ThemeLayout = ({
@@ -18,11 +19,13 @@ export const ThemeLayout = ({
   to = "",
   offset = 50,
   duration = 700,
+  colorTheme,
 }: Props) => {
   return (
     <main
       className={clsx(
-        "h-full max-h-full min-h-screen w-full bg-gradient-primary dark:bg-gradient-primary-dark",
+        "h-full max-h-full min-h-screen w-full",
+        colorTheme,
         className,
       )}
     >

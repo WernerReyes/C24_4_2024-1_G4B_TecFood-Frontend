@@ -16,6 +16,7 @@ export const getDishes = async (
       baseUrl + requestParam,
       "GET",
     );
+    console.log(data);
     return { ...data, dishes: data.dishes.map(dishAdapter) };
   } catch (error) {
     throw error;

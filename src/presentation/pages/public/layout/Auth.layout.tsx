@@ -2,8 +2,8 @@ import { Divider, Image, Link } from "@/presentation/components";
 import { useWindowSize } from "@/presentation/hooks";
 import clsx from "clsx";
 import { Toaster } from "sonner";
-import { ThemeLayout } from "./Theme.layout";
 import { GoogleAuth } from "../components";
+import { ThemeLayout } from "@/presentation/layout";
 
 interface Props {
   children: React.ReactNode;
@@ -33,6 +33,7 @@ export const AuthLayout = ({
       )}
       to="auth"
       offset={-200}
+      colorTheme="bg-gradient-primary dark:bg-gradient-primary-dark"
     >
       <Toaster
         position="top-right"

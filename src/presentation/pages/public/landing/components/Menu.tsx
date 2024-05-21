@@ -53,7 +53,6 @@ export const Menu = ({ marginContainer }: Props) => {
     const getDishesDto = exceptionDto(
       {
         idCategory: selectedCategoryId,
-        search: null,
       },
       getDishesDtoSchema,
     ) as GetDishesDto;

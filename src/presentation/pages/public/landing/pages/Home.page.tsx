@@ -1,5 +1,4 @@
 import { Image } from "@/presentation/components";
-import { ThemeLayout } from "../../layout";
 import {
   AboutUs,
   DowloadMobileApp,
@@ -11,6 +10,7 @@ import {
 } from "../components";
 import { useWindowSize } from "@/presentation/hooks";
 import { responsiveDesign } from "@/presentation/utilities";
+import { ThemeLayout } from "@/presentation/layout";
 
 const { lg: SCREEN_WIDTH_LG } = responsiveDesign;
 
@@ -19,7 +19,11 @@ const marginContainer = "mx-10 lg:mx-20";
 export const HomePage = () => {
   const { width } = useWindowSize();
   return (
-    <ThemeLayout offset={width < SCREEN_WIDTH_LG ? -460 : -200} to="home">
+    <ThemeLayout
+      offset={width < SCREEN_WIDTH_LG ? -460 : -200}
+      to="home"
+      colorTheme="bg-gradient-primary dark:bg-gradient-primary-dark"
+    >
       <Header />
       <Main marginContainer={marginContainer} />
       <SpecialOffers marginContainer={marginContainer} />

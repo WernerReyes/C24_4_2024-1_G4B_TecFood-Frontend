@@ -13,12 +13,23 @@ export default {
         'primary-darker': '#006BA9',
         'primary-light': '#33C6FF',
         'primary-lighter': '#66D4FF',
+        'primary-lightest': '#99E2FF',
+
 
         'secondary': '#FDC55E',
         'secondary-dark': '#FDCE71',
         'secondary-darker': '#FDD785',
         'secondary-light': '#FDD785',
         'secondary-lighter': '#FDE399',
+
+
+        "dashboard-dark": "#111827",
+         
+        "skeleton": "#f4f5f7",
+        "skeleton-dark": "#1f2937",
+        "skeleton-darker": "#111827",
+        "skeleton-light": "#f9fafb",
+        "skeleton-lighter": "#f9fafb",
       },
       fontFamily: {
         'cabin': ['"Cabin", sans-serif'],

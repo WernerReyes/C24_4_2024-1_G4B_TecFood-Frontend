@@ -10,3 +10,8 @@ export * from "./Card";
 export * from "./Button";
 export * from "./Input-password";
 export * from "./Divider";
+export * from "./Menu";
+export * from "./Badge";
+export * from "./Alert-offers";
+export * from "./Bread-crumb";
+export * from "./Skeleton";

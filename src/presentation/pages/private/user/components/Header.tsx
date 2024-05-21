@@ -1,36 +1,41 @@
-import clsx from "clsx";
 import { useRef, useState } from "react";
-import { Avatar, Button, InputSearch} from "@/presentation/components";
-import { HeaderLayout } from "../../layout";
-import { Sidebar } from "../../components";
-import { Badge } from "primereact/badge";
-import { Menu } from "primereact/menu";
+import clsx from "clsx";
+import {
+  Avatar,
+  Button,
+  InputSearch,
+  Menu,
+  MenuRef,
+  Badge,
+} from "@/presentation/components";
 import { useAuthStore } from "@/presentation/hooks";
-const items = [
+import { Sidebar } from "../../components";
+import { HeaderLayout } from "../../layout";
+
+const ITEMS = [
   {
-    label: "Profile",
-    items: [
-      {
-        label: "Settings",
-        icon: "pi pi-cog",
-      },
-      {
-        label: "Logout",
-        icon: "pi pi-sign-out",
-      },
-    ],
+    label: "Settings",
+    icon: "pi pi-cog",
+    className: "hover:bg-none hover:text-red-500 bg-red-500 dark:hover:bg-red-500",
+  },
+  {
+    label: "Logout",
+    icon: "pi pi-sign-out",
+    className: "dark:hover:bg-red-500",
   },
 ];
 
+const ULR_BASE = "/user";
+
 const LINKS_SIDEBAR = [
-  { label: "Home", url: "javascript:void(0)" },
-  { label: "Men", url: "javascript:void(0)" },
-  { label: "Women", url: "javascript:void(0)" },
-  { label: "Kids", url: "javascript:void(0)" },
+  { label: "Home", url: ULR_BASE + "/home" },
+  { label: "Profile", url: ULR_BASE + "/profile" },
+  { label: "Women", url: ULR_BASE + "/home2" },
+  { label: "Kids", url: ULR_BASE + "/home3" },
 ];
 
 export const Header = () => {
-  const menuLeft = useRef<Menu>(null);
+  const menuLeft = useRef<MenuRef>(null);
   const { user } = useAuthStore();
   const [collapseMenu, setCollapseMenu] = useState<string>("hidden");
   const handleToggleOpen = () => setCollapseMenu("");
@@ -46,15 +51,19 @@ export const Header = () => {
 
       <div className="ml-auto flex  gap-y-4">
         <InputSearch
+          unstyled
           placeholder="Search something..."
-          iconClassName={clsx("hidden cursor-pointer text-primary", "lg:block")}
+          iconClassName={clsx(
+            "hidden cursor-pointer text-primary-dark",
+            "lg:block",
+          )}
           className={clsx(
-            "hidden w-full rounded-lg border-2 border-primary bg-transparent p-2 text-sm outline-none placeholder:text-primary",
+            "hidden w-64 rounded-full border-2 border-primary bg-primary-lightest bg-transparent p-2 text-sm outline-none placeholder:text-primary-dark",
             "lg:block",
           )}
         />
 
-        <div className="flex items-center space-x-6">
+        <div className="flex ITEMS-center space-x-6">
           <i
             className={clsx("pi pi-search cursor-pointer text-xl", "lg:hidden")}
           ></i>
@@ -67,14 +76,19 @@ export const Header = () => {
 
           <Avatar
             image={user.img}
-            label={user.name[0]}
+            label={user.name[0].toUpperCase()}
             shape="circle"
             className="bg-primary text-white"
             onClick={(event) => menuLeft.current?.toggle(event)}
             aria-haspopup
           ></Avatar>
 
-          <Menu model={items} popup ref={menuLeft} id="popup_menu_left" />
+          <Menu
+            model={ITEMS}
+            popup
+            ref={menuLeft}
+            className="dark:bg-skeleton-dark"
+          />
 
           <Button unstyled onClick={handleToggleOpen} className="lg:hidden">
             <i className="pi pi-bars text-2xl"></i>

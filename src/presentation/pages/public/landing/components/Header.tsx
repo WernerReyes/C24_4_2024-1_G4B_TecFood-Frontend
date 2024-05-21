@@ -1,9 +1,8 @@
 import { useState } from "react";
 import clsx from "clsx";
-import { Image, Link } from "@/presentation/components";
+import { Image, Link, AlertOffers } from "@/presentation/components";
 import { useTheme, useWindowSize } from "@/presentation/hooks";
 import { responsiveDesign } from "@/presentation/utilities";
-import { AlertOffers } from "./Alert-offers";
 import { PublicRoutes } from "@/presentation/routes";
 
 const { lg: SCREEN_WIDTH_LG, sm: SCREEN_WIDTH_SM } = responsiveDesign;

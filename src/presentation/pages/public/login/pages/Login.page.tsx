@@ -16,7 +16,7 @@ type LoginFields = {
 
 export const LoginPage = () => {
   const { isDark } = useTheme();
-  const { isLoading, message, clearMessages, startLoginUser } = useAuthStore();
+  const { isLoading, message, clearMessages, startLoginUser, user } = useAuthStore();
   const navigate = useNavigate();
 
   const {
