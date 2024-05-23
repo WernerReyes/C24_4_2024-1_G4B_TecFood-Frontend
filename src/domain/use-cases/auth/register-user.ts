@@ -1,16 +1,14 @@
 import type { AuthRepository } from "@/domain/interfaces";
-import type { CreateUser } from "@/model";
+import type { CreateUserModel } from "@/model";
 import { RegisterUserDto } from "../../dtos/auth";
 
-interface registerUserUseCase {
-  execute(registerUserDto: RegisterUserDto): Promise<CreateUser>;
+interface RegisterUserUseCase {
+  execute(registerUserDto: RegisterUserDto): Promise<CreateUserModel>;
 }
-export const registerUser = (
-  repository: AuthRepository,
-): registerUserUseCase => {
-  return {
-    async execute(registerUserDto: RegisterUserDto): Promise<CreateUser> {
-      return await repository.registerUser(registerUserDto);
-    },
-  };
-};
+export class RegisterUser implements RegisterUserUseCase {
+  constructor(private readonly repository: AuthRepository) {}
+
+  async execute(registerUserDto: RegisterUserDto): Promise<CreateUserModel> {
+    return await this.repository.registerUser(registerUserDto);
+  }
+}

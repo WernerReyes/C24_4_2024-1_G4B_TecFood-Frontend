@@ -1,15 +1,13 @@
 import type { AuthRepository } from "@/domain/interfaces";
-import type { LoginUser } from "@/model";
+import type { LoginUserModel } from "@/model";
 
-interface revalidateTokenUseCase {
-  execute(): Promise<LoginUser>;
+interface RevalidateTokenUseCase {
+  execute(): Promise<LoginUserModel>;
 }
-export const revalidateToken = (
-  repository: AuthRepository,
-): revalidateTokenUseCase => {
-  return {
-    async execute(): Promise<LoginUser> {
-      return await repository.revalidateToken();
-    },
-  };
-};
+export class RevalidateToken implements RevalidateTokenUseCase {
+  constructor(private readonly repository: AuthRepository) {}
+
+  async execute(): Promise<LoginUserModel> {
+    return await this.repository.revalidateToken();
+  }
+}

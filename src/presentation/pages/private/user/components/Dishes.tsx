@@ -1,16 +1,19 @@
+import { GetDishesDto } from "@/domain/dtos";
 import { Image } from "@/presentation/components";
-import { Card } from "./Card";
 import { useDishStore } from "@/presentation/hooks";
 import { useEffect } from "react";
-import { GetDishesDto, getDishesDtoSchema } from "@/domain/dtos";
-import { exceptionDto } from "@/presentation/utilities";
+import { Card } from "./Card";
 
 export const Dishes = () => {
   const { dishes, startLoadingDishes } = useDishStore();
 
   useEffect(() => {
-    const getDishesDto = exceptionDto({}, getDishesDtoSchema) as GetDishesDto;
-    console.log(dishes);
+    const getDishesDto = GetDishesDto.create({
+      page: 1,
+      limit: 10,
+      idCategory: null,
+      search: null,
+    });
     startLoadingDishes(getDishesDto);
   }, []);
 

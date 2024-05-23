@@ -1,6 +1,10 @@
 import type { DishCategoryRepository } from "@/domain/interfaces";
-import { getDishCategories } from "../services";
+import { DishCategoryService } from "../services";
 
-export const dishCategoryRepositoryImpl: DishCategoryRepository = {
-  getAll: async () => getDishCategories(),
-};
+export class DishCategoryRepositoryImpl implements DishCategoryRepository {
+  constructor(private readonly dishCategoryService: DishCategoryService) {}
+
+  async getAll() {
+    return await this.dishCategoryService.getAll();
+  }
+}

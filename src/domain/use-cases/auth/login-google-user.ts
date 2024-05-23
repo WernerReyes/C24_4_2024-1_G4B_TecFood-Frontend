@@ -1,16 +1,17 @@
 import type { AuthRepository } from "@/domain/interfaces";
-import type { LoginUser } from "@/model";
-import { LoginGoogleUserDto } from '../../dtos/auth';
+import type { LoginUserModel } from "@/model";
+import { LoginGoogleUserDto } from "../../dtos/auth";
 
-interface loginGoogleUserUseCase {
-  execute(loginGoogleUserDto: LoginGoogleUserDto): Promise<LoginUser>;
+interface LoginGoogleUserUseCase {
+  execute(loginGoogleUserDto: LoginGoogleUserDto): Promise<LoginUserModel>;
 }
-export const loginGoogleUser = (
-  repository: AuthRepository,
-): loginGoogleUserUseCase => {
-  return {
-    async execute(loginGoogleUserDto: LoginGoogleUserDto): Promise<LoginUser> {
-      return await repository.loginGoogleUser(loginGoogleUserDto);
-    },
-  };
-};
+
+export class LoginGoogleUser implements LoginGoogleUserUseCase {
+  constructor(private readonly repository: AuthRepository) {}
+
+  async execute(
+    loginGoogleUserDto: LoginGoogleUserDto,
+  ): Promise<LoginUserModel> {
+    return await this.repository.loginGoogleUser(loginGoogleUserDto);
+  }
+}

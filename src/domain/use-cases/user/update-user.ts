@@ -1,16 +1,14 @@
 import { UserRepository } from "@/domain/interfaces";
-import { UpdateUser, User } from "@/model";
+import { UpdateUserModel, UserModel } from "@/model";
 
 interface UpdateUserUseCase {
-  execute(user: UpdateUser): Promise<User>;
+  execute(user: UpdateUserModel): Promise<UserModel>;
 }
 
-export const updateUser = (
-  userRepository: UserRepository,
-): UpdateUserUseCase => {
-  return {
-    async execute(user: UpdateUser): Promise<User> {
-      return await userRepository.update(user);
-    },
-  };
-};
+export class UpdateUser implements UpdateUserUseCase {
+  constructor(private readonly repository: UserRepository) {}
+
+  async execute(user: UpdateUserModel): Promise<UserModel> {
+    return await this.repository.update(user);
+  }
+}

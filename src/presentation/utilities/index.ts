@@ -5,5 +5,5 @@ export * from "./break-points-swiper";
 export * from "./responsive-design";
 export * from "./regular-expressions";
 export * from "./routes-roles";
-export * from "./exeption-dto";
 export * from "./convert-to-request-param";
+export * from "./from-object-to-array";

@@ -1,43 +1,41 @@
 import { useEffect } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthLayout } from "../../layout";
-import { Button, InputPassword, InputText } from "@/presentation/components";
-import { loginUserDto } from "@/domain/dtos";
-import { SonnerManager } from "@/presentation/utilities";
-import { useTheme, useAuthStore } from "@/presentation/hooks";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { LoginUserDto } from "@/domain/dtos";
+import { loginUserValidation } from "@/infraestructure/validations";
+import { Button, InputPassword, InputText } from "@/presentation/components";
+import { useAuthStore, useMessage, useTheme } from "@/presentation/hooks";
 import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
-
-type LoginFields = {
-  email: string;
-  password: string;
-};
+import { AuthLayout } from "../../layout";
+import { TypeMessage } from "@/infraestructure/store";
+import { fromObjectToArray } from "@/presentation/utilities";
 
 export const LoginPage = () => {
   const { isDark } = useTheme();
-  const { isLoading, message, clearMessages, startLoginUser, user } = useAuthStore();
+  const { isLoading, startLoginUser } = useAuthStore();
+  const { startSetMessages } = useMessage();
   const navigate = useNavigate();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginFields>({
-    resolver: zodResolver(loginUserDto),
+  } = useForm<LoginUserDto>({
+    resolver: zodResolver(loginUserValidation),
   });
 
-  useEffect(() => {
-    if (message) {
-      SonnerManager.success(message);
-      clearMessages();
-    }
-  }, [message]);
-
-  const handleLogin: SubmitHandler<LoginFields> = async (data) => {
+  const handleLogin: SubmitHandler<LoginUserDto> = async (data) => {
     await startLoginUser(data);
-    navigate(PrivateRoutes.ADMIN);
+    navigate(PrivateRoutes.USER);
   };
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const messages = fromObjectToArray(errors).map((error) => error.message);
+      startSetMessages(messages as string[], TypeMessage.ERROR);
+    }
+  }, [errors]);
 
   return (
     <AuthLayout
@@ -59,11 +57,11 @@ export const LoginPage = () => {
           render={({ field }) => (
             <InputText
               {...field}
+              type="email"
               label="Correo Electrónico"
               placeholder="Ingresa tu email"
-              error={errors[field.name]?.message}
+              error={!!errors[field.name]?.message}
               className="border-2 border-primary bg-transparent py-3 text-sm"
-              showAlertError
             />
           )}
         />
@@ -76,9 +74,8 @@ export const LoginPage = () => {
               {...field}
               label="Contraseña"
               placeholder="Ingresa tu contraseña"
-              error={errors[field.name]?.message}
+              error={!!errors[field.name]?.message}
               inputClassName="border-2 border-primary text-sm py-3 bg-transparent"
-              showAlertError
             />
           )}
         />

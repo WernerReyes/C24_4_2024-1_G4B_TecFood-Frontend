@@ -1,7 +1,7 @@
 import type { DishEntity } from "@/domain/entities";
-import type { Dish } from "@/model";
+import type { DishModel } from "@/model";
 import { dishCategoryAdapter } from "./";
-export const dishAdapter = (dishEntity: DishEntity): Dish => {
+export const dishAdapter = (dishEntity: DishEntity): DishModel => {
   return {
     id: dishEntity.idDish,
     name: dishEntity.name,

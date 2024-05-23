@@ -1,20 +1,16 @@
 import clsx from "clsx";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
 import { useEffect, useState } from "react";
+import { Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { GetDishesDto } from "@/domain/dtos";
 import { Button } from "@/presentation/components";
 import {
   useDishCategoryStore,
   useDishStore,
   useWindowSize,
 } from "@/presentation/hooks";
-import {
-  breakPointsSwiper,
-  exceptionDto,
-  responsiveDesign,
-} from "@/presentation/utilities";
+import { breakPointsSwiper, responsiveDesign } from "@/presentation/utilities";
 import { Card } from "./Card";
-import { GetDishesDto, getDishesDtoSchema } from "@/domain/dtos";
 
 const BREAK_POINTS_BUTTONS = breakPointsSwiper({
   slidesPerViewSm: 3,
@@ -50,12 +46,12 @@ export const Menu = ({ marginContainer }: Props) => {
   };
 
   useEffect(() => {
-    const getDishesDto = exceptionDto(
-      {
-        idCategory: selectedCategoryId,
-      },
-      getDishesDtoSchema,
-    ) as GetDishesDto;
+    const getDishesDto = GetDishesDto.create({
+      page: 1,
+      limit: 10,
+      idCategory: selectedCategoryId,
+      search: null,
+    });
     startLoadingDishes(getDishesDto);
   }, [selectedCategoryId]);
 

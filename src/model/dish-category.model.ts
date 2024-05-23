@@ -1,14 +1,14 @@
-export interface DishCategory {
+export interface DishCategoryModel {
   id: number;
   name: string;
 }
 
-export interface GetDishCategories {
+export interface GetDishCategoriesModel {
   message: string;
-  dishCategories: DishCategory[];
+  dishCategories: DishCategoryModel[];
 }
 
-export interface DishCategoryState extends DishCategory {}
+export interface DishCategoryState extends DishCategoryModel {}
 
 export const dishCategoryEmptyState: DishCategoryState = {
   id: 0,

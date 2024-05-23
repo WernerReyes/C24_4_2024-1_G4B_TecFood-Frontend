@@ -1,11 +1,17 @@
-import { getDishesCategory } from "@/domain/use-cases";
-import { dishCategoryRepositoryImpl } from "@/infraestructure/repositories";
+import { useDispatch, useSelector } from "react-redux";
+import { GetDishCategories } from "@/domain/use-cases";
+import { DishCategoryRepositoryImpl } from "@/infraestructure/repositories";
+import { DishCategoryService } from "@/infraestructure/services";
 import {
   AppState,
   onLoadDishCategories,
   onLoadingDishCategory,
 } from "@/infraestructure/store";
-import { useDispatch, useSelector } from "react-redux";
+
+const dishCategoryService = new DishCategoryService();
+const dishCategoryRepositoryImpl = new DishCategoryRepositoryImpl(
+  dishCategoryService,
+);
 
 export const useDishCategoryStore = () => {
   const dispatch = useDispatch();
@@ -16,7 +22,7 @@ export const useDishCategoryStore = () => {
 
   const startLoadingDishCategories = async () => {
     dispatch(onLoadingDishCategory());
-    await getDishesCategory(dishCategoryRepositoryImpl)
+    await new GetDishCategories(dishCategoryRepositoryImpl)
       .execute()
       .then(({ dishCategories }) =>
         dispatch(onLoadDishCategories(dishCategories)),

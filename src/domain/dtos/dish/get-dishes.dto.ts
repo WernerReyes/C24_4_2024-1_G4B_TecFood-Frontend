@@ -1,10 +1,25 @@
-import { z } from "zod";
-import { paginationDto } from "../common";
+import { getDishesValidation } from "@/infraestructure/validations";
+import { PaginationDto } from "../common";
+import { ZodError } from "zod";
 
-export const getDishesDtoSchema = z.object({
-  ...paginationDto.shape,
-  idCategory: z.nullable(z.number().int().positive()).default(null),
-  search: z.nullable(z.string()).default(null),
-});
+export class GetDishesDto extends PaginationDto {
+  private constructor(
+    public readonly page: number,
+    public readonly limit: number,
+    public readonly idCategory: number | null,
+    public readonly search: string | null,
+  ) {
+    super(page, limit);
+  }
 
-export type GetDishesDto = z.infer<typeof getDishesDtoSchema>;
+  public static create(data: GetDishesDto): [GetDishesDto?, string[]?] {
+    try {
+      const validatedData = getDishesValidation.parse(data);
+      return [validatedData, undefined];
+    } catch (error) {
+      if (error instanceof ZodError)
+        return [undefined, error.issues.map((issue) => issue.message)];
+      throw error;
+    }
+  }
+}

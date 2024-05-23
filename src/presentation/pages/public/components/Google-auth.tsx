@@ -1,14 +1,15 @@
+import { LoginGoogleUserDto } from "@/domain/dtos";
+import { RoleEnum } from "@/domain/entities";
+import { useAuthStore } from "@/presentation/hooks";
+import { PrivateRoutes } from "@/presentation/routes";
+import { getEnvs } from "@/presentation/utilities";
 import {
-  GoogleOAuthProvider,
-  GoogleLogin,
   CredentialResponse,
+  GoogleLogin,
+  GoogleOAuthProvider,
 } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { getEnvs } from "@/presentation/utilities";
-import { useAuthStore } from "@/presentation/hooks";
-import { RoleEnum } from "@/domain/entities";
 import { useNavigate } from "react-router-dom";
-import { PrivateRoutes } from "@/presentation/routes";
 
 const { VITE_GOOGLE_CLIENT_ID } = getEnvs();
 
@@ -34,9 +35,9 @@ export const GoogleAuth = () => {
   const navigate = useNavigate();
   const { startGoogleLoginUser } = useAuthStore();
 
-  const handleGoogleLogin = async (response: CredentialResponse) => {
+  const handleGoogleLogin = (response: CredentialResponse) => {
     const data = jwtDecode(response.credential as string) as GoogleResponse;
-    await startGoogleLoginUser({
+    const loginGoogleUserDto = LoginGoogleUserDto.create({
       firstName: data.given_name,
       lastName: data.family_name,
       email: data.email,
@@ -45,7 +46,9 @@ export const GoogleAuth = () => {
       isEmailVerified: data.email_verified,
       role: RoleEnum.ROLE_USER,
     });
-    navigate(PrivateRoutes.USER);
+    startGoogleLoginUser(loginGoogleUserDto).then(() =>
+      navigate(PrivateRoutes.USER),
+    );
   };
 
   const handleFailure = () => console.log("Failed to login");

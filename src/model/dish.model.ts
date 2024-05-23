@@ -1,6 +1,6 @@
 import { DishCategory } from "./";
 
-export interface Dish {
+export interface DishModel {
   id: number;
   name: string;
   description: string;
@@ -10,9 +10,9 @@ export interface Dish {
   category: DishCategory;
 }
 
-export interface GetDishes {
+export interface GetDishesModel {
   message: string;
-  dishes: Dish[];
+  dishes: DishModel[];
   currentPage: number;
   totalPages: number;
   limit: number;
@@ -21,7 +21,7 @@ export interface GetDishes {
   previous: string;
 }
 
-export interface DishState extends Dish {}
+export interface DishState extends DishModel {}
 
 export const dishEmptyState: DishState = {
   id: 0,

@@ -1,18 +1,21 @@
 import { RegisterUserDto } from "@/domain/dtos";
 import { AuthRepository } from "@/domain/interfaces";
-import {
-  loginGoogleUser,
-  loginUser,
-  registerUser,
-  revalidateToken,
-} from "@/infraestructure/services";
+import { AuthService } from "@/infraestructure/services";
 import { LoginGoogleUserDto, LoginUserDto } from "../../domain/dtos/auth";
 
-export const authRepositoryImpl: AuthRepository = {
-  loginGoogleUser: async (loginGoogleUserDto: LoginGoogleUserDto) =>
-    loginGoogleUser(loginGoogleUserDto),
-  loginUser: async (loginUserDto: LoginUserDto) => loginUser(loginUserDto),
-  registerUser: async (registerUserDto: RegisterUserDto) =>
-    registerUser(registerUserDto),
-  revalidateToken: async () => revalidateToken(),
-};
+export class AuthRepositoryImpl implements AuthRepository {
+  constructor(private readonly authService: AuthService) {}
+
+  async loginGoogleUser(loginGoogleUserDto: LoginGoogleUserDto) {
+    return await this.authService.loginGoogle(loginGoogleUserDto);
+  }
+  async loginUser(loginUserDto: LoginUserDto) {
+    return await this.authService.login(loginUserDto);
+  }
+  async registerUser(registerUserDto: RegisterUserDto) {
+    return await this.authService.register(registerUserDto);
+  }
+  async revalidateToken() {
+    return await this.authService.revalidateToken();
+  }
+}

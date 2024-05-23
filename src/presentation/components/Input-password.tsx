@@ -1,19 +1,16 @@
 import clsx from "clsx";
-import { SonnerManager } from "@/presentation/utilities";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useState } from "react";
 
-interface Props  {
+interface Props {
   label?: string;
   smallDescription?: string;
-  error?: string;
-  showAlertError?: boolean;
+  error?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   value?: string;
   inputClassName?: string;
   unstyled?: boolean;
   disabled?: boolean;
-  // ref?: React.ForwardedRef<HTMLInputElement>;
   name: string;
   placeholder?: string;
 }
@@ -29,7 +26,6 @@ export const InputPassword = forwardRef<HTMLInputElement, Props>(
       name,
       error,
       smallDescription,
-      showAlertError,
       ...props
     },
     ref,
@@ -40,11 +36,6 @@ export const InputPassword = forwardRef<HTMLInputElement, Props>(
       setEye(eye === "pi-eye" ? "pi-eye-slash" : "pi-eye");
     };
 
-    useEffect(() => {
-      if (error && showAlertError) {
-        SonnerManager.error(error);
-      }
-    }, [error, showAlertError]);
     return (
       <div className="flex flex-col justify-center">
         {label && <label htmlFor={name}>{label}</label>}
@@ -55,7 +46,8 @@ export const InputPassword = forwardRef<HTMLInputElement, Props>(
             type={clsx(eye === "pi-eye" ? "password" : "text")}
             className={clsx(
               !unstyled && defaultClassName,
-              error && "border-red-500 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-400",
+              error &&
+                "border-red-500 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-400",
               inputClassName,
             )}
             ref={ref}
@@ -71,9 +63,6 @@ export const InputPassword = forwardRef<HTMLInputElement, Props>(
           </button>
         </div>
         {smallDescription && !error && <small>{smallDescription}</small>}
-        {error && !showAlertError && (
-          <small className="text-red-500">{error}</small>
-        )}
       </div>
     );
   },

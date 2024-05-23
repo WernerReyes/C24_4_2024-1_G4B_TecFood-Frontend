@@ -1,8 +1,15 @@
 import { UserRepository } from "@/domain/interfaces";
-import { getAllUsers, updateUser } from "../services";
-import { UpdateUser } from "@/model";
+import { UpdateUserModel, UserModel } from "@/model";
+import { UserService } from "../services";
 
-export const userRepositoryImpl: UserRepository = {
-  getAll: async () => getAllUsers(),
-  update: async (user: UpdateUser) => updateUser(user),
-};
+export class UserRepositoryImpl implements UserRepository {
+  constructor(private readonly userService: UserService) {}
+
+  async getAll(): Promise<UserModel[]> {
+    return await this.userService.getAll();
+  }
+
+  async update(updateUserModel: UpdateUserModel): Promise<UpdateUserModel> {
+    return await this.userService.update(updateUserModel);
+  }
+}

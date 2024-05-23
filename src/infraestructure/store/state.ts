@@ -5,15 +5,20 @@ import type {
   UserState,
 } from "@/model";
 import { AuthStatus } from "./slice/auth.slice";
+import { TypeMessage } from "./slice/message.slice";
 
 export interface AppState {
+  themes: {
+    currentTheme: string;
+  };
+  message: {
+    type: TypeMessage;
+    messages: string[],
+  };
   user: {
     isLoading: boolean;
     user: UserState;
     users: UserState[];
-  };
-  themes: {
-    currentTheme: string;
   };
   dishOffer: {
     isLoading: boolean;
@@ -23,7 +28,6 @@ export interface AppState {
   auth: {
     status: AuthStatus;
     user: UserState;
-    message: string | undefined;
   };
   dish: {
     isLoading: boolean;

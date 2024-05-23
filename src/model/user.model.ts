@@ -1,6 +1,6 @@
 import { RoleEnum } from "@/domain/entities";
 
-export interface User {
+export interface UserModel {
   id: number;
   name: string;
   lastname: string;
@@ -13,20 +13,20 @@ export interface User {
   updatedAt: Date;
 }
 
-export interface CreateUser {
+export interface CreateUserModel {
   message: string;
 }
 
-export interface LoginUser {
-  user: User;
+export interface LoginUserModel {
+  user: UserModel;
   token: string;
   message: string;
 }
 
-export interface UpdateUser
-  extends Omit<User, "createdAt" | "updatedAt" | "email"> {}
+export interface UpdateUserModel
+  extends Omit<UserModel, "createdAt" | "updatedAt" | "email"> {}
 
-export interface UserState extends Omit<User, "createdAt" | "updatedAt"> {}
+export interface UserState extends Omit<UserModel, "createdAt" | "updatedAt"> {}
 
 export const userEmptyState: UserState = {
   id: 0,

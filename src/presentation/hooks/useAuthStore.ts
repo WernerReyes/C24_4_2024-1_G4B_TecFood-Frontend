@@ -1,39 +1,45 @@
-import { useDispatch, useSelector } from "react-redux";
 import {
-  RegisterUserDto,
   LoginGoogleUserDto,
   LoginUserDto,
+  RegisterUserDto,
 } from "@/domain/dtos";
 import {
-  registerUser,
-  loginGoogleUser,
-  loginUser,
-  revalidateToken,
+  LoginGoogleUser,
+  LoginUser,
+  RegisterUser,
+  RevalidateToken,
 } from "@/domain/use-cases";
-import { authRepositoryImpl } from "@/infraestructure/repositories";
+import { AuthRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
+  AuthStatus,
+  TypeMessage,
   onCheking,
-  setMessages,
-  clearMessages,
   onLogin,
   onLogout,
-  AuthStatus,
 } from "@/infraestructure/store";
+import { useDispatch, useSelector } from "react-redux";
+import { useMessage } from "./useMessage";
+import { AuthService } from "@/infraestructure/services";
+
+const authService = new AuthService();
+const authRepositoryImpl = new AuthRepositoryImpl(authService);
 
 export const useAuthStore = () => {
-  const { user, status, message } = useSelector(
-    (state: AppState) => state.auth,
-  );
+  const { startSetMessages } = useMessage();
+  const { user, status } = useSelector((state: AppState) => state.auth);
+
   const dispatch = useDispatch();
 
   const startGoogleLoginUser = async (
-    loginGoogleUserDto: LoginGoogleUserDto,
+    loginGoogleUserDto: [LoginGoogleUserDto?, string[]?],
   ) => {
+    const [validatedData, errors] = loginGoogleUserDto;
+    if (errors) return startSetMessages(errors, TypeMessage.ERROR);
     dispatch(onCheking());
 
-    await loginGoogleUser(authRepositoryImpl)
-      .execute(loginGoogleUserDto)
+    await new LoginGoogleUser(authRepositoryImpl)
+      .execute(validatedData!)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
         localStorage.setItem("token", token);
@@ -47,7 +53,7 @@ export const useAuthStore = () => {
   const startLoginUser = async (loginUserDto: LoginUserDto) => {
     dispatch(onCheking());
 
-    await loginUser(authRepositoryImpl)
+    await new LoginUser(authRepositoryImpl)
       .execute(loginUserDto)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
@@ -62,9 +68,9 @@ export const useAuthStore = () => {
   const startRegisteringUser = async (registerUserDto: RegisterUserDto) => {
     dispatch(onCheking());
 
-    await registerUser(authRepositoryImpl)
+    await new RegisterUser(authRepositoryImpl)
       .execute(registerUserDto)
-      .then(({ message }) => dispatch(setMessages(message)))
+      .then(({ message }) => startSetMessages([message], TypeMessage.SUCCESS))
       .catch((error) => {
         dispatch(onLogout());
         console.error(error);
@@ -76,7 +82,7 @@ export const useAuthStore = () => {
     const token = localStorage.getItem("token");
     if (!token || token?.length < 5) return dispatch(onLogout());
 
-    await revalidateToken(authRepositoryImpl)
+    await new RevalidateToken(authRepositoryImpl)
       .execute()
       .then(({ user }) => dispatch(onLogin(user)))
       .catch((error) => {
@@ -91,13 +97,11 @@ export const useAuthStore = () => {
     isAuthenticate: status === AuthStatus.AUTHENTICATE,
     isLoading: status === AuthStatus.CHECKING,
     status,
-    message,
 
     //* Methods
     startRegisteringUser,
     startGoogleLoginUser,
     startLoginUser,
     startRevalidateToken,
-    clearMessages: () => dispatch(clearMessages()),
   };
 };

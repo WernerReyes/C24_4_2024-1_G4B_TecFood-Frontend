@@ -1,7 +1,7 @@
 import type { UserEntity } from "@/domain/entities";
-import type { User } from "@/model";
+import type { UserModel } from "@/model";
 
-export const userAdapter = (user: UserEntity): User => {
+export const userAdapter = (user: UserEntity): UserModel => {
   return {
     id: user.id,
     name: user.firstName,

@@ -1,46 +1,39 @@
-import { RegisterUserDto, registerUserDto } from "@/domain/dtos";
-import { Button, InputPassword, InputText } from "@/presentation/components";
-import { useAuthStore, useTheme } from "@/presentation/hooks";
-import { SonnerManager } from "@/presentation/utilities";
-import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
 import { useEffect } from "react";
+import clsx from "clsx";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { AuthLayout } from "../../layout";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { TypeMessage } from "@/infraestructure/store";
+import { Button, InputPassword, InputText } from "@/presentation/components";
+import { useAuthStore, useMessage, useTheme } from "@/presentation/hooks";
 import { PublicRoutes } from "@/presentation/routes";
-
-type RegisterFields = {
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phoneNumber: string;
-};
+import { AuthLayout } from "../../layout";
+import { fromObjectToArray } from "@/presentation/utilities";
+import { registerUserValidation } from "@/infraestructure/validations";
+import { RegisterUserDto } from "@/domain/dtos";
 
 export const RegisterPage = () => {
   const { isDark } = useTheme();
-  const { startRegisteringUser, clearMessages, message, isLoading } =
-    useAuthStore();
+  const { startSetMessages } = useMessage();
+  const { startRegisteringUser, isLoading } = useAuthStore();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterFields>({
-    resolver: zodResolver(registerUserDto),
+  } = useForm<RegisterUserDto>({
+    resolver: zodResolver(registerUserValidation),
   });
 
-  useEffect(() => {
-    if (message) {
-      SonnerManager.success(message);
-      clearMessages();
-    }
-  }, [message]);
-
-  const handleRegister: SubmitHandler<RegisterFields> = (data) => {
-    startRegisteringUser(data as RegisterUserDto);
+  const handleRegister: SubmitHandler<RegisterUserDto> = (data) => {
+    startRegisteringUser(data);
   };
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      const messages = fromObjectToArray(errors).map((error) => error.message);
+      startSetMessages(messages as string[], TypeMessage.ERROR);
+    }
+  }, [errors]);
 
   return (
     <AuthLayout
@@ -64,9 +57,8 @@ export const RegisterPage = () => {
               {...field}
               label="Correo Electrónico"
               placeholder="Ingresa tu email"
-              error={errors[field.name]?.message}
+              error={!!errors[field.name]?.message}
               className="border-2 border-primary bg-transparent py-3 text-sm"
-              showAlertError
             />
           )}
         />
@@ -79,9 +71,8 @@ export const RegisterPage = () => {
               {...field}
               label="Contraseña"
               placeholder="Ingresa tu contraseña"
-              error={errors[field.name]?.message}
+              error={!!errors[field.name]?.message}
               inputClassName="border-2 border-primary text-sm py-3 bg-transparent"
-              showAlertError
             />
           )}
         />
@@ -96,12 +87,11 @@ export const RegisterPage = () => {
                 {...field}
                 label="Nombres"
                 placeholder="Ingresa tus nombres"
-                error={errors[field.name]?.message}
+                error={!!errors[field.name]?.message}
                 className={clsx(
                   "border-2 border-primary bg-transparent py-3 text-sm",
                   "max-sm:mb-3",
                 )}
-                showAlertError
               />
             )}
           />
@@ -114,9 +104,8 @@ export const RegisterPage = () => {
                 {...field}
                 label="Apellidos"
                 placeholder="Ingresa tus nombres"
-                error={errors[field.name]?.message}
+                error={!!errors[field.name]?.message}
                 className="border-2 border-primary bg-transparent py-3 text-sm"
-                showAlertError
               />
             )}
           />
@@ -132,12 +121,11 @@ export const RegisterPage = () => {
                 {...field}
                 label="DNI (Optional)"
                 placeholder="Ingresa tu DNI"
-                error={errors[field.name]?.message}
+                error={!!errors[field.name]?.message}
                 className={clsx(
                   "border-2 border-primary bg-transparent py-3 text-sm",
                   "max-sm:mb-4",
                 )}
-                showAlertError
               />
             )}
           />
@@ -150,9 +138,8 @@ export const RegisterPage = () => {
                 {...field}
                 label="Telefono (Optional)"
                 placeholder="Ingresa telefono"
-                error={errors[field.name]?.message}
+                error={!!errors[field.name]?.message}
                 className="border-2 border-primary bg-transparent py-3 text-sm"
-                showAlertError
               />
             )}
           />

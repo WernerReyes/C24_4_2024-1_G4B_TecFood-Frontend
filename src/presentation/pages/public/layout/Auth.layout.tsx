@@ -1,9 +1,7 @@
-import { Divider, Image, Link } from "@/presentation/components";
-import { useWindowSize } from "@/presentation/hooks";
 import clsx from "clsx";
-import { Toaster } from "sonner";
-import { GoogleAuth } from "../components";
+import { Divider, Image, Link } from "@/presentation/components";
 import { ThemeLayout } from "@/presentation/layout";
+import { GoogleAuth } from "../components";
 
 interface Props {
   children: React.ReactNode;
@@ -24,7 +22,6 @@ export const AuthLayout = ({
   showGoogleAuth,
   isDark,
 }: Props) => {
-  const { isMobile } = useWindowSize();
   return (
     <ThemeLayout
       className={clsx(
@@ -35,17 +32,10 @@ export const AuthLayout = ({
       offset={-200}
       colorTheme="bg-gradient-primary dark:bg-gradient-primary-dark"
     >
-      <Toaster
-        position="top-right"
-        theme={isDark ? "dark" : "light"}
-        richColors
-        expand={!isMobile}
-        pauseWhenPageIsHidden
-        visibleToasts={6}
-        duration={5000}
-        closeButton
-      />
-      <div id="auth" className={clsx("flex w-full justify-start", "md:absolute")}>
+      <div
+        id="auth"
+        className={clsx("flex w-full justify-start", "md:absolute")}
+      >
         <Image
           src={clsx(isDark ? "/logo-dark.svg" : "/logo.svg")}
           width="100"

@@ -1,24 +1,27 @@
 import type { GetDishesResponse } from "@/domain/entities";
-import type { GetDishes } from "@/model";
-import type { GetDishesDto } from "@/domain/dtos";
+import type { GetDishesModel } from "@/model";
+import { GetDishesDto } from "@/domain/dtos";
 import { dishAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
 import { convertToRequestParam } from "@/presentation/utilities";
 
-const baseUrl = "/dish";
+interface IDishService {
+  getAll(getDishesDto: GetDishesDto): Promise<GetDishesModel>;
+}
 
-export const getDishes = async (
-  getDishesDto: GetDishesDto,
-): Promise<GetDishes> => {
-  try {
-    const requestParam = convertToRequestParam(getDishesDto);
-    const { data } = await httpRequest<GetDishesResponse>(
-      baseUrl + requestParam,
-      "GET",
-    );
-    console.log(data);
-    return { ...data, dishes: data.dishes.map(dishAdapter) };
-  } catch (error) {
-    throw error;
+export class DishService implements IDishService {
+  private baseUrl = "/dish";
+
+  public async getAll(getDishesDto: GetDishesDto): Promise<GetDishesModel> {
+    try {
+      const requestParam = convertToRequestParam(getDishesDto);
+      const { data } = await httpRequest<GetDishesResponse>(
+        this.baseUrl + requestParam,
+        "GET",
+      );
+      return { ...data, dishes: data.dishes.map(dishAdapter) };
+    } catch (error) {
+      throw error;
+    }
   }
-};
+}

@@ -1,10 +1,16 @@
-export const convertToRequestParam = <T>(object: Record<string, T>): string => {
+interface IndexableType {
+  [key: string]: any;
+}
+export const convertToRequestParam = (object: IndexableType): string => {
+  if (object === null || object === undefined) return "";
   if (Object.keys(object).length === 0) return "";
+
+  console.log(object);
   return (
     "?" +
     Object.keys(object)
       .map((key) => {
-        if(object[key] === null || undefined) return "";
+        if (object[key] === null || object[key] === undefined) return "";
         return `${key}=${object[key]}`;
       })
       .join("&")

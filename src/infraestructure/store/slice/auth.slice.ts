@@ -12,7 +12,6 @@ export const authSlice = createSlice({
   initialState: {
     status: AuthStatus.CHECKING,
     user: userEmptyState,
-    message: undefined as string | undefined,
   },
   reducers: {
     onCheking: (state) => {
@@ -30,17 +29,8 @@ export const authSlice = createSlice({
         status: AuthStatus.NOT_AUTHENTICATE,
       };
     },
-
-    setMessages: (state, { payload }: PayloadAction<string>) => {
-      return { ...state, message: payload, isLoading: false };
-    },
-
-    clearMessages: (state) => {
-      return { ...state, message: undefined, errorMessage: undefined };
-    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { onCheking, onLogin, onLogout, setMessages, clearMessages } =
-  authSlice.actions;
+export const { onCheking, onLogin, onLogout } = authSlice.actions;

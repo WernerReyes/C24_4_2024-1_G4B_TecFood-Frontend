@@ -1,7 +1,7 @@
+import { errorMessage, getEnvs } from "@/presentation/utilities";
 import axios, { AxiosInstance } from "axios";
-import { jwtDecode, JwtPayload } from "jwt-decode";
 import daysjs from "dayjs";
-import { getEnvs, SonnerManager } from "@/presentation/utilities";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 let token = localStorage.getItem("token")
   ? localStorage.getItem("token")
@@ -33,12 +33,14 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
     (res) => res,
     (error) => {
       if (!error.response) {
+        const message = "Error Server, please try again later";
+        errorMessage([message]);
         return Promise.reject({
           status: 500,
-          message: "Error Server, please try again later",
+          message,
         });
       }
-      SonnerManager.error(error.response.data.error);
+      errorMessage([error.response.data.error]);
       return Promise.reject(error.response.data);
     },
   );

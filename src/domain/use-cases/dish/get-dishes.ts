@@ -1,15 +1,15 @@
 import type { DishRepository } from "@/domain/interfaces";
-import type { GetDishes } from "@/model";
+import type { GetDishesModel } from "@/model";
 import type { GetDishesDto } from "../../dtos/dish/";
 
 interface GetDishesUseCase {
-  execute(getDishesDto?: GetDishesDto): Promise<GetDishes>;
+  execute(getDishesDto?: GetDishesDto): Promise<GetDishesModel>;
 }
 
-export const getDishes = (repository: DishRepository): GetDishesUseCase => {
-  return {
-    async execute(getDishesDto: GetDishesDto): Promise<GetDishes> {
-      return await repository.getAll(getDishesDto);
-    },
-  };
-};
+export class GetDishes implements GetDishesUseCase {
+  constructor(private readonly repository: DishRepository) {}
+
+  async execute(getDishesDto: GetDishesDto): Promise<GetDishesModel> {
+    return await this.repository.getAll(getDishesDto);
+  }
+}

@@ -1,14 +1,14 @@
 import { UserRepository } from "@/domain/interfaces";
-import { User } from "@/model";
+import { UserModel } from "@/model";
 
 interface GetUsersUseCase {
-  execute(): Promise<User[]>;
+  execute(): Promise<UserModel[]>;
 }
 
-export const getUsers = (userRepository: UserRepository): GetUsersUseCase => {
-  return {
-    async execute(): Promise<User[]> {
-      return await userRepository.getAll();
-    },
-  };
-};
+export class GetUsers implements GetUsersUseCase {
+  constructor(private readonly repository: UserRepository) {}
+
+  async execute(): Promise<UserModel[]> {
+    return await this.repository.getAll();
+  }
+}

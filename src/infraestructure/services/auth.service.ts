@@ -1,5 +1,5 @@
 import type { UserEntity } from "@/domain/entities";
-import type { CreateUser, LoginUser } from "@/model";
+import type { CreateUserModel, LoginUserModel } from "@/model";
 import { httpRequest } from "@/config/api";
 import {
   RegisterUserDto,
@@ -7,8 +7,6 @@ import {
   LoginUserDto,
 } from "@/domain/dtos";
 import { userAdapter } from "@/config/adapters";
-
-const baseUrl = "/auth";
 
 type LoginUserResponse = {
   user: UserEntity;
@@ -20,59 +18,70 @@ type RegisterUserResponse = {
   message: string;
 };
 
-export const loginGoogleUser = async (
-  loginGoogleUserDto: LoginGoogleUserDto,
-): Promise<LoginUser> => {
-  try {
-    const { data } = await httpRequest<LoginUserResponse>(
-      baseUrl + "/login-google",
-      "POST",
-      loginGoogleUserDto,
-    );
-    return { ...data, user: userAdapter(data.user) };
-  } catch (error) {
-    throw error;
-  }
-};
+interface IAuthService {
+  loginGoogle(
+    loginGoogleUserDto: LoginGoogleUserDto,
+  ): Promise<LoginUserModel>;
+  login(loginUserDto: LoginUserDto): Promise<LoginUserModel>;
+  register(registerUserDto: RegisterUserDto): Promise<CreateUserModel>;
+  revalidateToken(): Promise<LoginUserModel>;
+}
 
-export const loginUser = async (
-  loginUserDto: LoginUserDto,
-): Promise<LoginUser> => {
-  try {
-    const { data } = await httpRequest<LoginUserResponse>(
-      baseUrl + "/login",
-      "POST",
-      loginUserDto,
-    );
-    return { ...data, user: userAdapter(data.user) };
-  } catch (error) {
-    throw error;
-  }
-};
+export class AuthService implements IAuthService {
+  private baseUrl = "/auth";
 
-export const registerUser = async (
-  registerUserDto: RegisterUserDto,
-): Promise<CreateUser> => {
-  try {
-    const { data } = await httpRequest<RegisterUserResponse>(
-      baseUrl + "/register",
-      "POST",
-      registerUserDto,
-    );
-    return data;
-  } catch (error) {
-    throw error;
+  public async loginGoogle(
+    loginGoogleUserDto: LoginGoogleUserDto,
+  ): Promise<LoginUserModel> {
+    try {
+      const { data } = await httpRequest<LoginUserResponse>(
+        this.baseUrl + "/login-google",
+        "POST",
+        loginGoogleUserDto,
+      );
+      return { ...data, user: userAdapter(data.user) };
+    } catch (error) {
+      throw error;
+    }
   }
-};
 
-export const revalidateToken = async (): Promise<LoginUser> => {
-  try {
-    const { data } = await httpRequest<LoginUserResponse>(
-      baseUrl + "/revalidate-token",
-      "GET",
-    );
-    return { ...data, user: userAdapter(data.user) };
-  } catch (error) {
-    throw error;
+  public async login(loginUserDto: LoginUserDto): Promise<LoginUserModel> {
+    try {
+      const { data } = await httpRequest<LoginUserResponse>(
+        this.baseUrl + "/login",
+        "POST",
+        loginUserDto,
+      );
+      return { ...data, user: userAdapter(data.user) };
+    } catch (error) {
+      throw error;
+    }
   }
-};
+
+  public async register(
+    registerUserDto: RegisterUserDto,
+  ): Promise<CreateUserModel> {
+    try {
+      const { data } = await httpRequest<RegisterUserResponse>(
+        this.baseUrl + "/register",
+        "POST",
+        registerUserDto,
+      );
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async revalidateToken(): Promise<LoginUserModel> {
+    try {
+      const { data } = await httpRequest<LoginUserResponse>(
+        this.baseUrl + "/revalidate-token",
+        "GET",
+      );
+      return { ...data, user: userAdapter(data.user) };
+    } catch (error) {
+      throw error;
+    }
+  }
+}

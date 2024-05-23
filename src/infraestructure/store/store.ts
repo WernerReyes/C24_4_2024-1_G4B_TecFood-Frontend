@@ -6,11 +6,13 @@ import { dishSlice } from "./slice/dish.slice";
 import { themesSlice } from "./slice/theme.slice";
 import { userSlice } from "./slice/user.slice";
 import { AppState } from "./state";
+import { messageSlice } from "./slice/message.slice";
 
 export const store = configureStore<AppState>({
   reducer: {
-    user: userSlice.reducer,
     themes: themesSlice.reducer,
+    message: messageSlice.reducer,
+    user: userSlice.reducer,
     dishOffer: dishOfferSlice.reducer,
     auth: authSlice.reducer,
     dish: dishSlice.reducer,

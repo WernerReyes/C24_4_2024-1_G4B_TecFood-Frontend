@@ -1,21 +1,27 @@
+import type { GetDishCategoriesResponse } from "@/domain/entities";
+import type { GetDishCategoriesModel } from "@/model";
 import { dishCategoryAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import type { GetDishCategoriesResponse } from "@/domain/entities";
-import type { GetDishCategories } from "@/model";
 
-const baseUrl = "/dish-category";
+interface IDishCategoryService {
+  getAll(): Promise<GetDishCategoriesModel>;
+}
 
-export const getDishCategories = async (): Promise<GetDishCategories> => {
-  try {
-    const { data } = await httpRequest<GetDishCategoriesResponse>(
-      baseUrl,
-      "GET",
-    );
-    return {
-      ...data,
-      dishCategories: data.dishCategories.map(dishCategoryAdapter),
-    };
-  } catch (error) {
-    throw error;
+export class DishCategoryService implements IDishCategoryService {
+  private baseUrl = "/dish-category";
+
+  public async getAll(): Promise<GetDishCategoriesModel> {
+    try {
+      const { data } = await httpRequest<GetDishCategoriesResponse>(
+        this.baseUrl,
+        "GET",
+      );
+      return {
+        ...data,
+        dishCategories: data.dishCategories.map(dishCategoryAdapter),
+      };
+    } catch (error) {
+      throw error;
+    }
   }
-};
+}
