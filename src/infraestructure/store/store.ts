@@ -7,6 +7,8 @@ import { themesSlice } from "./slice/theme.slice";
 import { userSlice } from "./slice/user.slice";
 import { AppState } from "./state";
 import { messageSlice } from "./slice/message.slice";
+import { cartSlice } from "./slice/cart.slice";
+import { paginatorSlice } from "./slice/paginator.slice";
 
 export const store = configureStore<AppState>({
   reducer: {
@@ -17,6 +19,8 @@ export const store = configureStore<AppState>({
     auth: authSlice.reducer,
     dish: dishSlice.reducer,
     dishCategory: dishCategorySlice.reducer,
+    cart: cartSlice.reducer,
+    paginator: paginatorSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

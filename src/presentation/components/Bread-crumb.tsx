@@ -13,7 +13,7 @@ interface Props {
   unistyled?: boolean;
 }
 
-const DEFAULT_CLASSNAME = "dark:bg-skeleton-dark bg-skeleton rounded-none";
+const DEFAULT_CLASSNAME = "dark:bg-skeleton-dark bg-skeleton rounded-none border-none";
 
 export const BreadCrumb = ({ role, className, unistyled }: Props) => {
   const location = useLocation();
@@ -74,11 +74,6 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
       model={items}
       unstyled={unistyled}
       className={clsx(!unistyled && DEFAULT_CLASSNAME, className)}
-      pt={{
-        icon: { className: "dark:text-white text-black" },
-        separatorIcon: { className: "dark:text-white text-black" },
-        label: { className: "dark:text-white text-black" },
-      }}
     />
   );
 };

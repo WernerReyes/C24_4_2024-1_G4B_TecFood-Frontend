@@ -25,7 +25,7 @@ export const Sidebar = ({ collapseMenu, handleToggleClose, links }: Props) => {
         onClick={handleToggleClose}
         className="fixed right-4 top-2 z-[100]  flex h-10 w-10 rounded-full dark:bg-dashboard-dark bg-white p-3 lg:hidden"
       >
-        <i className="pi pi-times font-extrabold"></i>
+        <i className="pi pi-times text-black dark:text-white font-extrabold"></i>
       </Button>
 
       <ul

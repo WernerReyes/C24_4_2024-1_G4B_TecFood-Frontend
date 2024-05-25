@@ -7,6 +7,11 @@ export const enum TypeMessage {
   INFO = "info",
 }
 
+export type MessageSliceState = {
+  type: TypeMessage;
+  messages: string[];
+};
+
 export const messageSlice = createSlice({
   name: "message",
   initialState: {

@@ -1,13 +1,11 @@
-import { errorMessage, getEnvs } from "@/presentation/utilities";
-import axios, { AxiosInstance } from "axios";
+import { errorMessage } from "@/presentation/utilities";
+import { AxiosInstance } from "axios";
 import daysjs from "dayjs";
-import { jwtDecode, JwtPayload } from "jwt-decode";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 
 let token = localStorage.getItem("token")
   ? localStorage.getItem("token")
   : null;
-
-const baseURL = getEnvs().VITE_API_URL;
 
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
@@ -19,11 +17,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
         req.headers.Authorization = `Bearer ${token}`;
         return req;
       }
-
-      const response = await axios.get(`${baseURL}/auth/revalidate-token`);
-      token = response.data.token;
-      localStorage.setItem("token", JSON.stringify(token));
-      req.headers.Authorization = `Bearer ${token}`;
+      localStorage.removeItem("token");
     }
 
     return req;
@@ -32,6 +26,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   axiosInstance.interceptors.response.use(
     (res) => res,
     (error) => {
+      console.error(error);
       if (!error.response) {
         const message = "Error Server, please try again later";
         errorMessage([message]);
@@ -40,7 +35,11 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
           message,
         });
       }
-      errorMessage([error.response.data.error]);
+
+      const errorMsg = error.response.data.error;
+      if (errorMsg) {
+        errorMessage([errorMsg]);
+      }
       return Promise.reject(error.response.data);
     },
   );

@@ -10,6 +10,7 @@ import {
 } from "@/infraestructure/store";
 import type { GetDishesDto } from "@/domain/dtos";
 import { useMessage } from "./useMessage";
+import { usePaginatorStore } from "./usePaginatorStore";
 
 const dishService = new DishService();
 const dishRepositoryImpl = new DishRepositoryImpl(dishService);
@@ -17,6 +18,7 @@ const dishRepositoryImpl = new DishRepositoryImpl(dishService);
 export const useDishStore = () => {
   const dispatch = useDispatch();
   const { startSetMessages } = useMessage();
+  const { startChangePaginator } = usePaginatorStore();
 
   const { dishes, isLoading } = useSelector((state: AppState) => state.dish);
 
@@ -29,7 +31,17 @@ export const useDishStore = () => {
     dispatch(onLoadingDish());
     await new GetDishes(dishRepositoryImpl)
       .execute(validatedGetDishesDto!)
-      .then(({ dishes }) => dispatch(onLoadDishes(dishes)))
+      .then((data) => {
+        dispatch(onLoadDishes(data.dishes));
+        console.log(data);
+        startChangePaginator({
+          currentPage: data.currentPage,
+          limit: data.limit,
+          total: data.total,
+          next: data.next,
+          previous: data.previous,
+        });
+      })
       .catch(console.error);
   };
 

@@ -1,4 +1,4 @@
-import { DishCategory } from "./";
+import { DishCategoryModel, dishCategoryEmptyState } from "./";
 
 export interface DishModel {
   id: number;
@@ -7,7 +7,7 @@ export interface DishModel {
   price: number;
   img: string;
   stock: number;
-  category: DishCategory;
+  category: DishCategoryModel;
 }
 
 export interface GetDishesModel {
@@ -30,8 +30,5 @@ export const dishEmptyState: DishState = {
   price: 0,
   img: "",
   stock: 0,
-  category: {
-    id: 0,
-    name: "",
-  },
+  category: dishCategoryEmptyState,
 };

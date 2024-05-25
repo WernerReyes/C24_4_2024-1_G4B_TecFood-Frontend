@@ -19,9 +19,7 @@ type RegisterUserResponse = {
 };
 
 interface IAuthService {
-  loginGoogle(
-    loginGoogleUserDto: LoginGoogleUserDto,
-  ): Promise<LoginUserModel>;
+  loginGoogle(loginGoogleUserDto: LoginGoogleUserDto): Promise<LoginUserModel>;
   login(loginUserDto: LoginUserDto): Promise<LoginUserModel>;
   register(registerUserDto: RegisterUserDto): Promise<CreateUserModel>;
   revalidateToken(): Promise<LoginUserModel>;

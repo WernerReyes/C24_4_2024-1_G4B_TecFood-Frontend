@@ -1,38 +1,60 @@
+import { TypeMessage } from "@/infraestructure/store";
 import { Button, CardSkeleton, Image, Link } from "@/presentation/components";
+import { useCartStore, useMessage } from "@/presentation/hooks";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   className?: string;
+  dishId: number;
   imgSrc: string;
   title: string;
   price: number;
+  quantity: number;
 };
 
-export const Card = ({ imgSrc, title, price }: Props) => {
+export const Card = ({ dishId, imgSrc, title, price, quantity }: Props) => {
+  const { startSetMessages } = useMessage();
+  const { startAddOneDish, startDeleteOneDish, startdeleteAllDishes, totalQuantity, isLoading } = useCartStore();
   const [heart, setHeart] = useState<string>("pi pi-heart");
-  const [quantity, setQuantity] = useState<number>(0);
   const [isAddToCart, setIsAddToCart] = useState<boolean>(false);
+  const [quantityMemory, setQuantityMemory] = useState<number>(0);
   const [loaded, setLoaded] = useState(false);
 
-  const handleAddToCart = () => {
-    setQuantity(quantity + 1);
+  const handleAddToCart = async () => {
+    if (quantityMemory > 5 || totalQuantity > 5)
+      return startSetMessages(
+        ["You can't add more than 5 items"],
+        TypeMessage.ERROR,
+      );
+
+    await startAddOneDish(dishId);
+    setQuantityMemory(quantityMemory + 1);
     setIsAddToCart(true);
   };
 
-  const handleResetCart = () => {
-    setQuantity(0);
+  const handleResetCart = async() => {
+    await startdeleteAllDishes(dishId);
+    setQuantityMemory(0);
     setIsAddToCart(false);
   };
 
-  const handleRemoveToCart = () => {
-    setQuantity(quantity - 1);
-    if (quantity === 1) {
+  const handleRemoveToCart = async() => {
+    await startDeleteOneDish(dishId);
+    setQuantityMemory(quantityMemory - 1);
+    if (quantityMemory === 1) {
       setIsAddToCart(false);
     }
   };
 
   const handleLoaded = () => setLoaded(true);
+
+  useEffect(() => {
+    if (quantity > 0) {
+      setIsAddToCart(true);
+      setQuantityMemory(quantity);
+    }
+  }, [quantity]);
 
   return (
     <>
@@ -94,15 +116,16 @@ export const Card = ({ imgSrc, title, price }: Props) => {
                   <i
                     className={clsx(
                       "pi text-xs",
-                      quantity > 1 ? "pi-minus" : "pi-trash text-red-500",
+                      quantityMemory > 1 ? "pi-minus" : "pi-trash text-red-500",
                     )}
                   ></i>
                 </Button>
-                <p className="min-w-[45px] text-center"> {quantity} </p>
+                <p className="min-w-[45px] text-center"> {quantityMemory} </p>
                 <Button
                   onClick={handleAddToCart}
+                  disabled={quantityMemory >= 5 || totalQuantity >= 5 || isLoading}
                   unstyled
-                  className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-slate-300 text-sm dark:bg-slate-700"
+                  className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-slate-300 text-sm disabled:cursor-not-allowed disabled:bg-slate-300 dark:bg-slate-700 disabled:dark:bg-slate-400"
                 >
                   +
                 </Button>
@@ -111,9 +134,10 @@ export const Card = ({ imgSrc, title, price }: Props) => {
             <Button
               unstyled
               onClick={handleAddToCart}
+              disabled={quantityMemory >= 5 || totalQuantity >= 5}
               className={clsx(
                 isAddToCart ? "hidden" : "inline-flex",
-                "relative z-10 !w-full items-center  justify-center rounded-lg bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-primary-dark lg:w-auto",
+                "relative z-10 !w-full items-center  justify-center rounded-lg bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-primary-dark disabled:bg-primary-lighter disabled:dark:cursor-not-allowed lg:w-auto",
               )}
             >
               <i className="pi pi-shopping-cart me-2 text-lg"></i>

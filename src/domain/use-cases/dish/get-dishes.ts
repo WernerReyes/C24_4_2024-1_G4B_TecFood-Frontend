@@ -3,7 +3,7 @@ import type { GetDishesModel } from "@/model";
 import type { GetDishesDto } from "../../dtos/dish/";
 
 interface GetDishesUseCase {
-  execute(getDishesDto?: GetDishesDto): Promise<GetDishesModel>;
+  execute(getDishesDto: GetDishesDto): Promise<GetDishesModel>;
 }
 
 export class GetDishes implements GetDishesUseCase {

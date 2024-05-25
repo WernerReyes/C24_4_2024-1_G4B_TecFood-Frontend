@@ -28,6 +28,7 @@ export const AppRouter = () => {
   const { startRevalidateToken, isLoading, user } = useAuthStore();
   const { messages, type, startClearMessages } = useMessage();
 
+  
   useEffect(() => {
     startRevalidateToken();
   }, []);
@@ -40,6 +41,7 @@ export const AppRouter = () => {
 
   if (isLoading) return <ProgressSpinner />;
 
+ 
   return (
     <BrowserRouter>
       <Toaster
@@ -89,5 +91,6 @@ export const AppRouter = () => {
         )}
       </RouterWithNotFound>
     </BrowserRouter>
+   
   );
 };

@@ -24,7 +24,7 @@ export const ThemeLayout = ({
   return (
     <main
       className={clsx(
-        "h-full max-h-full min-h-screen w-full",
+        "h-full min-h-screen w-full",
         colorTheme,
         className,
       )}

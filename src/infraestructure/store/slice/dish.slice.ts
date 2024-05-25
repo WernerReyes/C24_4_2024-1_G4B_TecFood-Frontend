@@ -1,6 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { DishState } from "@/model";
-import { dishEmptyState } from "@/model";
+import { dishEmptyState, type DishState } from "@/model";
+
+export type DishSliceState = {
+  isLoading: boolean;
+  dish: DishState;
+  dishes: DishState[];
+};
 
 export const dishSlice = createSlice({
   name: "dish",
@@ -21,3 +26,4 @@ export const dishSlice = createSlice({
 });
 
 export const { onLoadingDish, onLoadDishes } = dishSlice.actions;
+

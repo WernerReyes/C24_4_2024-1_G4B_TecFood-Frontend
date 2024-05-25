@@ -28,12 +28,6 @@ export const Menu = forwardRef<MenuRef, Props>((props, ref) => {
     <MenuPrimeReact
       {...props}
       ref={menuRef}
-      //  unstyled
-      pt={{
-        // menu: { className: "bg-skeleton-light"  },
-        menuitem: { className: "hover:bg-none"  },
-      }}
-      
     />
   );
 });

@@ -4,8 +4,6 @@ interface IndexableType {
 export const convertToRequestParam = (object: IndexableType): string => {
   if (object === null || object === undefined) return "";
   if (Object.keys(object).length === 0) return "";
-
-  console.log(object);
   return (
     "?" +
     Object.keys(object)

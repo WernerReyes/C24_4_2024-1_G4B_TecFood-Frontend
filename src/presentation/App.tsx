@@ -13,6 +13,8 @@ function App() {
         <Suspense fallback={<ProgressSpinner darkColor="bg-[#111827]" lightColor="bg-white" />}>
           <PrimeReactProvider>
             <AppRouter />
+            {/* <h1 className="text-4xl text-center">Hello World</h1> */}
+            
           </PrimeReactProvider>
         </Suspense>
       </Provider>

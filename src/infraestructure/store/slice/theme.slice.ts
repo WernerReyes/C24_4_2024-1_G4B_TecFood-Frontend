@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export type ThemeSliceState = {
+  currentTheme: string;
+};
+
 export const themesSlice = createSlice({
   name: "themes",
   initialState: {

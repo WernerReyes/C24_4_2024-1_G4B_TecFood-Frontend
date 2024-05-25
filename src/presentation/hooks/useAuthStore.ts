@@ -77,12 +77,12 @@ export const useAuthStore = () => {
       });
   };
 
-  const startRevalidateToken = async () => {
+  const startRevalidateToken = () => {
     dispatch(onCheking());
     const token = localStorage.getItem("token");
     if (!token || token?.length < 5) return dispatch(onLogout());
-
-    await new RevalidateToken(authRepositoryImpl)
+    
+    new RevalidateToken(authRepositoryImpl)
       .execute()
       .then(({ user }) => dispatch(onLogin(user)))
       .catch((error) => {

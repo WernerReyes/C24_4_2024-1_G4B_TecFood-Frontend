@@ -1,15 +1,15 @@
-import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { LoginUserDto } from "@/domain/dtos";
+import { TypeMessage } from "@/infraestructure/store";
 import { loginUserValidation } from "@/infraestructure/validations";
 import { Button, InputPassword, InputText } from "@/presentation/components";
 import { useAuthStore, useMessage, useTheme } from "@/presentation/hooks";
 import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
-import { AuthLayout } from "../../layout";
-import { TypeMessage } from "@/infraestructure/store";
 import { fromObjectToArray } from "@/presentation/utilities";
+import { useNavigate } from "react-router-dom";
+import { AuthLayout } from "../../layout";
 
 export const LoginPage = () => {
   const { isDark } = useTheme();

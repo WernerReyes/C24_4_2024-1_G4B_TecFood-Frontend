@@ -8,7 +8,7 @@ import {
   Menu,
   SpecialOffers,
 } from "../components";
-import { useWindowSize } from "@/presentation/hooks";
+import { useWindowSize  } from "@/presentation/hooks";
 import { responsiveDesign } from "@/presentation/utilities";
 import { ThemeLayout } from "@/presentation/layout";
 
@@ -18,6 +18,7 @@ const marginContainer = "mx-10 lg:mx-20";
 
 export const HomePage = () => {
   const { width } = useWindowSize();
+
   return (
     <ThemeLayout
       offset={width < SCREEN_WIDTH_LG ? -460 : -200}

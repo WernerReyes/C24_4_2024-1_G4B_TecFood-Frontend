@@ -9,6 +9,7 @@ const localStorageTheme = (theme: string) => {
     document.querySelector("html")?.classList.add("dark");
     localStorage.setItem("theme", "dark");
   }
+  document.querySelector("#theme-link")?.setAttribute("href", `/themes/lara-${theme}-cyan/theme.css`);
 };
 
 export const useTheme = () => {
@@ -28,6 +29,7 @@ export const useTheme = () => {
 
   const startLoadTheme = (theme: string) => {
     document.querySelector("html")?.classList.toggle(theme, theme === "dark");
+    document.querySelector("#theme-link")?.setAttribute("href", `/themes/lara-${theme}-cyan/theme.css`);
   };
 
   return {

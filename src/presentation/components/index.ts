@@ -15,3 +15,4 @@ export * from "./Badge";
 export * from "./Alert-offers";
 export * from "./Bread-crumb";
 export * from "./Skeleton";
+export * from "./Paginator";

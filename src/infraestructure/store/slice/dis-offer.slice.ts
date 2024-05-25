@@ -1,6 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { DishOfferState, dishOfferEmptyState } from "@/model";
 
+export type DishOfferSliceState = {
+  dishOffer: DishOfferState;
+  dishOffers: DishOfferState[];
+  isLoading: boolean;
+};
+
 export const dishOfferSlice = createSlice({
   name: "dishOffer",
   initialState: {

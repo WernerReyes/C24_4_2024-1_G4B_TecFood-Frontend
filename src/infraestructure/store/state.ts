@@ -1,42 +1,21 @@
-import type {
-  DishCategoryState,
-  DishOfferState,
-  DishState,
-  UserState,
-} from "@/model";
-import { AuthStatus } from "./slice/auth.slice";
-import { TypeMessage } from "./slice/message.slice";
+import type { AuthSliceState } from "./slice/auth.slice";
+import type { CartSliceState } from "./slice/cart.slice";
+import type { DishOfferSliceState } from "./slice/dis-offer.slice";
+import type { DishCategorySliceState } from "./slice/dish-category.slice";
+import type { DishSliceState } from "./slice/dish.slice";
+import type { MessageSliceState } from "./slice/message.slice";
+import type { PaginatorSliceState } from "./slice/paginator.slice";
+import type { ThemeSliceState } from "./slice/theme.slice";
+import type { UserSliceState } from "./slice/user.slice";
 
 export interface AppState {
-  themes: {
-    currentTheme: string;
-  };
-  message: {
-    type: TypeMessage;
-    messages: string[],
-  };
-  user: {
-    isLoading: boolean;
-    user: UserState;
-    users: UserState[];
-  };
-  dishOffer: {
-    isLoading: boolean;
-    dishOffer: DishOfferState;
-    dishOffers: DishOfferState[];
-  };
-  auth: {
-    status: AuthStatus;
-    user: UserState;
-  };
-  dish: {
-    isLoading: boolean;
-    dish: DishState;
-    dishes: DishState[];
-  };
-  dishCategory: {
-    isLoading: boolean;
-    dishCategory: DishCategoryState;
-    dishCategories: DishCategoryState[];
-  };
+  themes: ThemeSliceState;
+  message: MessageSliceState;
+  user: UserSliceState;
+  dishOffer: DishOfferSliceState;
+  auth: AuthSliceState;
+  dish: DishSliceState;
+  dishCategory: DishCategorySliceState;
+  cart: CartSliceState;
+  paginator: PaginatorSliceState;
 }

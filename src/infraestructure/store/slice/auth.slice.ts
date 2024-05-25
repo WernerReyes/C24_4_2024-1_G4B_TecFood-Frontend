@@ -1,4 +1,4 @@
-import { User, userEmptyState } from "@/model";
+import { UserState, userEmptyState } from "@/model";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export enum AuthStatus {
@@ -6,6 +6,11 @@ export enum AuthStatus {
   AUTHENTICATE = "authenticated",
   NOT_AUTHENTICATE = "not-authenticated",
 }
+
+export type AuthSliceState = {
+  status: AuthStatus;
+  user: UserState;
+};
 
 export const authSlice = createSlice({
   name: "auth",
@@ -18,7 +23,7 @@ export const authSlice = createSlice({
       return { ...state, isLoading: true };
     },
 
-    onLogin: (state, { payload }: PayloadAction<User>) => {
+    onLogin: (state, { payload }: PayloadAction<UserState>) => {
       return { ...state, user: payload, status: AuthStatus.AUTHENTICATE };
     },
 

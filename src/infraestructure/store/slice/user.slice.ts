@@ -1,5 +1,11 @@
+import { UserState, userEmptyState } from "@/model";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { User, UserState, userEmptyState } from "@/model";
+
+export type UserSliceState = {
+  user: UserState;
+  users: UserState[];
+  isLoading: boolean;
+};
 
 export const userSlice = createSlice({
   name: "user",
@@ -9,11 +15,11 @@ export const userSlice = createSlice({
     users: [] as UserState[],
   },
   reducers: {
-    onLoadUser: (state, action: PayloadAction<User>) => {
+    onLoadUser: (state, action: PayloadAction<UserState>) => {
       return { ...state, user: action.payload, isLoading: false };
     },
 
-    onUpdateUser: (state, action: PayloadAction<User>) => {
+    onUpdateUser: (state, action: PayloadAction<UserState>) => {
       return { ...state, user: action.payload, isLoading: false };
     },
 
@@ -21,7 +27,7 @@ export const userSlice = createSlice({
       return { ...state, user: userEmptyState, isLoading: false };
     },
 
-    onLoadUsers: (state, action: PayloadAction<User[]>) => {
+    onLoadUsers: (state, action: PayloadAction<UserState[]>) => {
       return { ...state, users: action.payload, isLoading: false };
     },
 
