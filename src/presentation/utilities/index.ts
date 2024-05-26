@@ -7,3 +7,4 @@ export * from "./regular-expressions";
 export * from "./routes-roles";
 export * from "./convert-to-request-param";
 export * from "./from-object-to-array";
+export * from "./user-google-info";

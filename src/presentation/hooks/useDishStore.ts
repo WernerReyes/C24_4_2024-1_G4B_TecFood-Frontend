@@ -33,7 +33,6 @@ export const useDishStore = () => {
       .execute(validatedGetDishesDto!)
       .then((data) => {
         dispatch(onLoadDishes(data.dishes));
-        console.log(data);
         startChangePaginator({
           currentPage: data.currentPage,
           limit: data.limit,

@@ -1,15 +1,11 @@
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 import { LoginGoogleUserDto } from "@/domain/dtos";
 import { RoleEnum } from "@/domain/entities";
+import { Button, Image } from "@/presentation/components";
 import { useAuthStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
-import { getEnvs } from "@/presentation/utilities";
-import {
-  CredentialResponse,
-  GoogleLogin,
-  GoogleOAuthProvider,
-} from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import { getEnvs, userGoogleInfo } from "@/presentation/utilities";
 
 const { VITE_GOOGLE_CLIENT_ID } = getEnvs();
 
@@ -32,38 +28,53 @@ type GoogleResponse = {
 };
 
 export const GoogleAuth = () => {
+  return (
+    <section className="w-full">
+      <GoogleOAuthProvider clientId={VITE_GOOGLE_CLIENT_ID}>
+        <CustomGoogleLogin />
+      </GoogleOAuthProvider>
+    </section>
+  );
+};
+
+const CustomGoogleLogin = () => {
   const navigate = useNavigate();
   const { startGoogleLoginUser } = useAuthStore();
 
-  const handleGoogleLogin = (response: CredentialResponse) => {
-    const data = jwtDecode(response.credential as string) as GoogleResponse;
-    const loginGoogleUserDto = LoginGoogleUserDto.create({
-      firstName: data.given_name,
-      lastName: data.family_name,
-      email: data.email,
-      imgUrl: data.picture,
-      isGoogleAccount: true,
-      isEmailVerified: data.email_verified,
-      role: RoleEnum.ROLE_USER,
-    });
-    startGoogleLoginUser(loginGoogleUserDto).then(() =>
-      navigate(PrivateRoutes.USER),
-    );
-  };
-
-  const handleFailure = () => console.log("Failed to login");
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const userInfo = await userGoogleInfo<GoogleResponse>(
+        tokenResponse.access_token,
+      );
+      const loginGoogleUserDto = LoginGoogleUserDto.create({
+        firstName: userInfo.given_name,
+        lastName: userInfo.family_name,
+        email: userInfo.email,
+        imgUrl: userInfo.picture,
+        isGoogleAccount: true,
+        isEmailVerified: userInfo.email_verified,
+        role: RoleEnum.ROLE_USER,
+      });
+      startGoogleLoginUser(loginGoogleUserDto).then(() =>
+        navigate(PrivateRoutes.USER),
+      );
+    },
+    onError: (error) => console.log("Login Failed:", error),
+  });
 
   return (
-    <section className="flex justify-center">
-      <GoogleOAuthProvider clientId={VITE_GOOGLE_CLIENT_ID}>
-        <GoogleLogin
-          size="large"
-          shape="square"
-          theme="filled_blue"
-          onSuccess={handleGoogleLogin}
-          onError={handleFailure}
-        />
-      </GoogleOAuthProvider>
-    </section>
+    <Button
+      unstyled
+      onClick={() => login()}
+      className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-center text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow dark:border-slate-700 dark:text-slate-200 dark:hover:border-slate-500 dark:hover:text-slate-300"
+    >
+      <Image
+        className="h-6 w-6"
+        src="https://www.svgrepo.com/show/475656/google-color.svg"
+        loading="lazy"
+        alt="google logo"
+      />
+      <span>Login with Google</span>
+    </Button>
   );
 };

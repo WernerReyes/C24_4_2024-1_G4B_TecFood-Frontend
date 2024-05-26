@@ -37,7 +37,9 @@ export const useCartStore = () => {
         dispatch(onAddOneDish());
         startSetMessages([message], TypeMessage.SUCCESS);
       })
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startDeleteOneDish = async (dishId: number) => {
@@ -45,7 +47,9 @@ export const useCartStore = () => {
     await new DeleteOneDish(cartRepositoryImpl)
       .execute(dishId)
       .then(() => dispatch(onDeleteOneDish()))
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startdeleteAllDishes = async (cartId: number) => {
@@ -56,7 +60,9 @@ export const useCartStore = () => {
         console.log(quantity);
         dispatch(ondeleteAllDishes(quantity));
       })
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startLoadingDishesByUser = async () => {
@@ -72,7 +78,9 @@ export const useCartStore = () => {
           }),
         );
       })
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   return {

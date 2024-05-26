@@ -15,33 +15,43 @@ type Props = {
 
 export const Card = ({ dishId, imgSrc, title, price, quantity }: Props) => {
   const { startSetMessages } = useMessage();
-  const { startAddOneDish, startDeleteOneDish, startdeleteAllDishes, totalQuantity, isLoading } = useCartStore();
+  const {
+    startAddOneDish,
+    startDeleteOneDish,
+    startdeleteAllDishes,
+    totalQuantity,
+    isLoading,
+  } = useCartStore();
   const [heart, setHeart] = useState<string>("pi pi-heart");
   const [isAddToCart, setIsAddToCart] = useState<boolean>(false);
   const [quantityMemory, setQuantityMemory] = useState<number>(0);
   const [loaded, setLoaded] = useState(false);
 
-  const handleAddToCart = async () => {
+  const handleAddToCart = () => {
     if (quantityMemory > 5 || totalQuantity > 5)
       return startSetMessages(
         ["You can't add more than 5 items"],
         TypeMessage.ERROR,
       );
 
-    await startAddOneDish(dishId);
-    setQuantityMemory(quantityMemory + 1);
-    setIsAddToCart(true);
+    startAddOneDish(dishId).then(() => {
+      setQuantityMemory(quantityMemory + 1);
+      setIsAddToCart(true);
+    });
   };
 
-  const handleResetCart = async() => {
-    await startdeleteAllDishes(dishId);
-    setQuantityMemory(0);
-    setIsAddToCart(false);
+  const handleResetCart = () => {
+    startdeleteAllDishes(dishId).then(() => {
+      setQuantityMemory(0);
+      setIsAddToCart(false);
+    });
   };
 
-  const handleRemoveToCart = async() => {
-    await startDeleteOneDish(dishId);
-    setQuantityMemory(quantityMemory - 1);
+  const handleRemoveToCart = () => {
+    startDeleteOneDish(dishId).then(() => {
+      setQuantityMemory(quantityMemory - 1);
+    });
+    
     if (quantityMemory === 1) {
       setIsAddToCart(false);
     }
@@ -123,7 +133,9 @@ export const Card = ({ dishId, imgSrc, title, price, quantity }: Props) => {
                 <p className="min-w-[45px] text-center"> {quantityMemory} </p>
                 <Button
                   onClick={handleAddToCart}
-                  disabled={quantityMemory >= 5 || totalQuantity >= 5 || isLoading}
+                  disabled={
+                    quantityMemory >= 5 || totalQuantity >= 5 || isLoading
+                  }
                   unstyled
                   className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-slate-300 text-sm disabled:cursor-not-allowed disabled:bg-slate-300 dark:bg-slate-700 disabled:dark:bg-slate-400"
                 >
