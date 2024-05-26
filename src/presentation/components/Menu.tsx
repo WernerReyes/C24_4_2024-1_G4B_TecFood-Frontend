@@ -1,7 +1,10 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { Menu as MenuPrimeReact, MenuProps } from "primereact/menu";
+import { Menu as MenuPrimeReact, MenuProps} from "primereact/menu";
+import { MenuItem as MenuItemPrimeReact } from "primereact/menuitem";
 
 interface Props extends MenuProps {}
+
+export interface MenuItem extends MenuItemPrimeReact {}
 
 export interface MenuRef {
   toggle(event: React.SyntheticEvent): void;
@@ -24,10 +27,5 @@ export const Menu = forwardRef<MenuRef, Props>((props, ref) => {
     },
   }));
 
-  return (
-    <MenuPrimeReact
-      {...props}
-      ref={menuRef}
-    />
-  );
+  return <MenuPrimeReact {...props} ref={menuRef} />;
 });

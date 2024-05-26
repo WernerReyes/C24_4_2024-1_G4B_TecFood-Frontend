@@ -81,7 +81,7 @@ export const useAuthStore = () => {
     dispatch(onCheking());
     const token = localStorage.getItem("token");
     if (!token || token?.length < 5) return dispatch(onLogout());
-    
+
     new RevalidateToken(authRepositoryImpl)
       .execute()
       .then(({ user }) => dispatch(onLogin(user)))
@@ -89,6 +89,11 @@ export const useAuthStore = () => {
         dispatch(onLogout());
         console.error(error);
       });
+  };
+
+  const startLogout = () => {
+    dispatch(onLogout());
+    localStorage.removeItem("token");
   };
 
   return {
@@ -103,5 +108,6 @@ export const useAuthStore = () => {
     startGoogleLoginUser,
     startLoginUser,
     startRevalidateToken,
+    startLogout,
   };
 };

@@ -1,16 +1,10 @@
-import { useRef, useState } from "react";
-import {
-  Avatar,
-  Badge,
-  Button,
-  Menu,
-  MenuRef
-} from "@/presentation/components";
-import { useAuthStore, useCartStore } from "@/presentation/hooks";
-import { Sidebar } from "../../components";
+import { useState } from "react";
+import { Badge, Button, MenuItem } from "@/presentation/components";
+import { useCartStore } from "@/presentation/hooks";
+import { AvatarMenu, Sidebar } from "../../components";
 import { HeaderLayout } from "../../layout";
 
-const ITEMS = [
+const ITEMS: MenuItem[] = [
   {
     label: "Settings",
     icon: "pi pi-cog",
@@ -32,8 +26,6 @@ const LINKS_SIDEBAR = [
 ];
 
 export const Header = () => {
-  const menuLeft = useRef<MenuRef>(null);
-  const { user } = useAuthStore();
   const { totalQuantity } = useCartStore();
   const [collapseMenu, setCollapseMenu] = useState<string>("hidden");
 
@@ -49,38 +41,19 @@ export const Header = () => {
       />
 
       <div className="ml-auto flex  gap-y-4">
-      
-
-        <div className="items-center flex space-x-6">
-          <i
-            className="pi pi-search text-black dark:text-white cursor-pointer text-xl"
-          ></i>
+        <div className="flex items-center space-x-6">
+          <i className="pi pi-search cursor-pointer text-xl text-black dark:text-white"></i>
           <i className="pi pi-heart-fill p-overlay-badge text-2xl text-red-600">
             <Badge value="0" className="bg-primary text-white" size="normal" />
           </i>
-          <i className="pi pi-shopping-cart text-black dark:text-white p-overlay-badge text-2xl">
+          <i className="pi pi-shopping-cart p-overlay-badge text-2xl text-black dark:text-white">
             <Badge
               value={totalQuantity}
               className="bg-primary text-white"
               size="normal"
             />
           </i>
-
-          <Avatar
-            image={user.img}
-            label={user.name[0].toUpperCase()}
-            shape="circle"
-            className="bg-primary text-white"
-            onClick={(event) => menuLeft.current?.toggle(event)}
-            aria-haspopup
-          ></Avatar>
-
-          <Menu
-            model={ITEMS}
-            popup
-            ref={menuLeft}
-          />
-
+          <AvatarMenu items={ITEMS} />
           <Button unstyled onClick={handleToggleOpen} className="lg:hidden">
             <i className="pi pi-bars text-2xl text-black dark:text-white"></i>
           </Button>
