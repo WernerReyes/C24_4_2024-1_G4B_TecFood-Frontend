@@ -1,2 +1,3 @@
 export * from "./Sidebar";
-export * from "./AvatarMenu";
+export * from "./Avatar-menu";
+export * from "./Highlighted-text";

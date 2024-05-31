@@ -8,3 +8,5 @@ export * from "./routes-roles";
 export * from "./convert-to-request-param";
 export * from "./from-object-to-array";
 export * from "./user-google-info";
+export * from "./local-storage";
+export * from "./from-string-to-url";

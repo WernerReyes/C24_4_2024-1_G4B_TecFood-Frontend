@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { BreadCrumb as BreadCrumbPrimeReact } from "primereact/breadcrumb";
 import { RoleEnum } from "@/domain/entities";
 import { PrivateRoutes } from "../routes";
-import { routeRole } from "../utilities";
+import { fromUrlToString, routeRole } from "../utilities";
 import clsx from "clsx";
 import { Link } from "./Link";
 
@@ -46,6 +46,7 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
   const items = useMemo(() => {
     return urlSegments.map((segment, index, array) => {
       const url = `${roleRoute}/${array.slice(0, index + 1).join("/")}`;
+      // console.log(url, location.pathname);
       return {
         label: segment[0].toUpperCase() + segment.slice(1),
         template: () => {
@@ -81,5 +82,6 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
 const filterSegments = (segments: string[], roleRoute: string) => {
   return segments
     .filter((segment) => `/${segment}` !== roleRoute && segment !== "home")
-    .filter((segment) => segment !== "");
+    .filter((segment) => segment !== "")
+    .map((segment) => fromUrlToString(segment));
 };

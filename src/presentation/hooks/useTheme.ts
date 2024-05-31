@@ -1,13 +1,14 @@
 import { AppState, changeTheme } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
+import { setStorage } from "../utilities";
 
 const localStorageTheme = (theme: string) => {
   if (theme === "light") {
     document.querySelector("html")?.classList.remove("dark");
-    localStorage.setItem("theme", "light");
+    setStorage("theme", "light");
   } else {
     document.querySelector("html")?.classList.add("dark");
-    localStorage.setItem("theme", "dark");
+    setStorage("theme", "dark");
   }
   document.querySelector("#theme-link")?.setAttribute("href", `/themes/lara-${theme}-cyan/theme.css`);
 };

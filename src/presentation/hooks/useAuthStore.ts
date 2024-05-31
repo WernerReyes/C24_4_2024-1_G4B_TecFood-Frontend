@@ -31,6 +31,8 @@ export const useAuthStore = () => {
 
   const dispatch = useDispatch();
 
+  const startCheking = () => dispatch(onCheking());
+
   const startGoogleLoginUser = async (
     loginGoogleUserDto: [LoginGoogleUserDto?, string[]?],
   ) => {
@@ -108,6 +110,7 @@ export const useAuthStore = () => {
     startGoogleLoginUser,
     startLoginUser,
     startRevalidateToken,
+    startCheking,
     startLogout,
   };
 };

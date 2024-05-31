@@ -1,15 +1,20 @@
-import { errorMessage } from "@/presentation/utilities";
+import {
+  errorMessage,
+  getStorage,
+  removeStorage,
+} from "@/presentation/utilities";
 import { AxiosInstance } from "axios";
 import daysjs from "dayjs";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 
-let token = localStorage.getItem("token")
-  ? localStorage.getItem("token")
-  : null;
+let token = getStorage<string>("token") ? getStorage<string>("token") : null;
 
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
   axiosInstance.interceptors.request.use(async (req) => {
+    if (!token)
+      token = getStorage<string>("token") ? getStorage<string>("token") : null;
+
     if (token) {
       const user = jwtDecode<JwtPayload>(token);
       const isExpired = daysjs.unix(user.exp!).diff(daysjs()) < 1;
@@ -17,7 +22,7 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
         req.headers.Authorization = `Bearer ${token}`;
         return req;
       }
-      localStorage.removeItem("token");
+      removeStorage("token");
     }
 
     return req;

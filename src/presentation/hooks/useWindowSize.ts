@@ -30,6 +30,7 @@ export const useWindowSize = () => {
     windowSize.width >= responsiveDesign.md &&
     windowSize.width < responsiveDesign.lg;
   const isLargeDesktop = windowSize.width >= responsiveDesign.lg;
+  const isExtraLargeDesktop = windowSize.width >= responsiveDesign.xl;
 
   return {
     width: windowSize.width,
@@ -38,5 +39,6 @@ export const useWindowSize = () => {
     isTablet,
     isDesktop,
     isLargeDesktop,
+    isExtraLargeDesktop,
   };
 };

@@ -8,4 +8,8 @@ export class DishRepositoryImpl implements DishRepository {
   async getAll(getDishesDto: GetDishesDto) {
     return await this.dishService.getAll(getDishesDto);
   }
+
+  async getAllToSearch() {
+    return await this.dishService.getAllToSearch();
+  }
 }

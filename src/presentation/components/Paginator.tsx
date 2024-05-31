@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import {
   PaginatorPageChangeEvent as PaginatorPageChangeEventPrimeReact,
+  PaginatorPassThroughMethodOptions,
   Paginator as PaginatorPrimeReact,
   PaginatorProps,
 } from "primereact/paginator";
@@ -15,8 +16,8 @@ interface Props extends PaginatorProps {
 }
 
 export const Paginator = ({ rowsPerPage, ...props }: Props) => {
-  const { startChangePaginator, total, next, previous } = usePaginatorStore();
-  const [first, setFirst] = useState<number>(0);
+  const { startChangePaginator, total, next, previous, currentPage, limit } = usePaginatorStore();
+  const [first, setFirst] = useState<number>(currentPage * limit! - limit!);
   const [rows, setRows] = useState<number>(rowsPerPage[0]);
 
   const onPageChange = (event: PaginatorPageChangeEvent) => {
@@ -40,7 +41,7 @@ export const Paginator = ({ rowsPerPage, ...props }: Props) => {
       onPageChange={onPageChange}
       {...props}
       pt={{
-        pageButton: ({ context }: any): any => ({
+        pageButton: ({ context }: PaginatorPassThroughMethodOptions) => ({
           className: clsx(
             "dark:border-blue-300 dark:text-white", // Dark Mode
 

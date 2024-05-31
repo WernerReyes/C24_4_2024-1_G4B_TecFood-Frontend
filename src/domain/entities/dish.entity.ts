@@ -17,6 +17,9 @@ export interface GetDishesResponse {
   totalPages: number;
   limit: number;
   total: number;
-  next: string;
-  previous: string;
+  next: string | null;
+  previous: string | null;
 }
+
+export interface GetDishesToSearchResponse
+  extends Pick<GetDishesResponse, "message" | "dishes"> {}

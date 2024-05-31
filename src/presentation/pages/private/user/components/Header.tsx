@@ -3,6 +3,8 @@ import { Badge, Button, MenuItem } from "@/presentation/components";
 import { useCartStore } from "@/presentation/hooks";
 import { AvatarMenu, Sidebar } from "../../components";
 import { HeaderLayout } from "../../layout";
+import { HeaderSeach } from "./Header-seach";
+import { PrivateRoutes } from "@/presentation/routes";
 
 const ITEMS: MenuItem[] = [
   {
@@ -15,19 +17,20 @@ const ITEMS: MenuItem[] = [
   },
 ];
 
-const ULR_BASE = "/user";
+const { USER } = PrivateRoutes;
 
 const LINKS_SIDEBAR = [
-  { label: "Home", url: ULR_BASE + "/home" },
-  { label: "Profile", url: ULR_BASE + "/profile" },
-  { label: "Women", url: ULR_BASE + "/home2" },
-  { label: "Kids", url: ULR_BASE + "/home3" },
-  { label: "Accessories", url: ULR_BASE + "/home4" },
+  { label: "Home", url: USER + "/home" },
+  { label: "Profile", url: USER + "/profile" },
+  { label: "Women", url: USER+ "/home2" },
+  { label: "Kids", url: USER + "/home3" },
+  { label: "Accessories", url: USER + "/home4" },
 ];
 
 export const Header = () => {
   const { totalQuantity } = useCartStore();
   const [collapseMenu, setCollapseMenu] = useState<string>("hidden");
+  const [visible, setVisible] = useState(false);
 
   const handleToggleOpen = () => setCollapseMenu("");
   const handleToggleClose = () => setCollapseMenu("hidden");
@@ -42,7 +45,10 @@ export const Header = () => {
 
       <div className="ml-auto flex  gap-y-4">
         <div className="flex items-center space-x-6">
-          <i className="pi pi-search cursor-pointer text-xl text-black dark:text-white"></i>
+          <i
+            onClick={() => setVisible(true)}
+            className="pi pi-search cursor-pointer text-xl text-black dark:text-white"
+          ></i>
           <i className="pi pi-heart-fill p-overlay-badge text-2xl text-red-600">
             <Badge value="0" className="bg-primary text-white" size="normal" />
           </i>
@@ -59,6 +65,7 @@ export const Header = () => {
           </Button>
         </div>
       </div>
+      <HeaderSeach visible={visible} setVisible={setVisible} />
     </HeaderLayout>
   );
 };

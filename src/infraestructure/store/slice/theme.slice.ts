@@ -1,3 +1,4 @@
+import { getStorage } from "@/presentation/utilities";
 import { createSlice } from "@reduxjs/toolkit";
 
 export type ThemeSliceState = {
@@ -7,7 +8,7 @@ export type ThemeSliceState = {
 export const themesSlice = createSlice({
   name: "themes",
   initialState: {
-    currentTheme: localStorage.getItem("theme") || "light",
+    currentTheme: getStorage<string>("theme") || "light",
   },
   reducers: {
     changeTheme: (state, action) => {

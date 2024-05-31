@@ -5,7 +5,8 @@ import { RoleEnum } from "@/domain/entities";
 import { Button, Image } from "@/presentation/components";
 import { useAuthStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
-import { getEnvs, userGoogleInfo } from "@/presentation/utilities";
+import { getEnvs, routeRole, userGoogleInfo } from "@/presentation/utilities";
+import { useState } from "react";
 
 const { VITE_GOOGLE_CLIENT_ID } = getEnvs();
 
@@ -39,7 +40,13 @@ export const GoogleAuth = () => {
 
 const CustomGoogleLogin = () => {
   const navigate = useNavigate();
-  const { startGoogleLoginUser } = useAuthStore();
+  const { startGoogleLoginUser, user } = useAuthStore();
+  const [isLoginGoogle, setIsLoadinGoogle] = useState(false);
+
+  const handleGoogleLogin = () => {
+    setIsLoadinGoogle(true);
+    login();
+  }
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -55,17 +62,19 @@ const CustomGoogleLogin = () => {
         isEmailVerified: userInfo.email_verified,
         role: RoleEnum.ROLE_USER,
       });
-      startGoogleLoginUser(loginGoogleUserDto).then(() =>
-        navigate(PrivateRoutes.USER),
-      );
+      startGoogleLoginUser(loginGoogleUserDto).then(() => {
+        navigate(PrivateRoutes[routeRole(user.role)] as string)
+      });
     },
     onError: (error) => console.log("Login Failed:", error),
+    onNonOAuthError: () => setIsLoadinGoogle(false),
   });
 
   return (
     <Button
       unstyled
-      onClick={() => login()}
+      onClick={handleGoogleLogin}
+      isLoading={isLoginGoogle}
       className="flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-center text-slate-700 transition duration-150 hover:border-slate-400 hover:text-slate-900 hover:shadow dark:border-slate-700 dark:text-slate-200 dark:hover:border-slate-500 dark:hover:text-slate-300"
     >
       <Image

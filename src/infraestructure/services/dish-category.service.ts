@@ -16,6 +16,7 @@ export class DishCategoryService implements IDishCategoryService {
         this.baseUrl,
         "GET",
       );
+      
       return {
         ...data,
         dishCategories: data.dishCategories.map(dishCategoryAdapter),

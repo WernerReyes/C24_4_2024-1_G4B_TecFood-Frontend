@@ -1,5 +1,11 @@
 import { TypeMessage } from "@/infraestructure/store";
-import { Button, CardSkeleton, Image, Link } from "@/presentation/components";
+import {
+  Button,
+  CardSkeleton,
+  Image,
+  Link,
+  Tooltip,
+} from "@/presentation/components";
 import { useCartStore, useMessage } from "@/presentation/hooks";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
@@ -10,10 +16,18 @@ type Props = {
   imgSrc: string;
   title: string;
   price: number;
+  stock: number;
   quantity: number;
 };
 
-export const Card = ({ dishId, imgSrc, title, price, quantity }: Props) => {
+export const Card = ({
+  dishId,
+  imgSrc,
+  title,
+  price,
+  stock,
+  quantity,
+}: Props) => {
   const { startSetMessages } = useMessage();
   const {
     startAddOneDish,
@@ -51,7 +65,7 @@ export const Card = ({ dishId, imgSrc, title, price, quantity }: Props) => {
     startDeleteOneDish(dishId).then(() => {
       setQuantityMemory(quantityMemory - 1);
     });
-    
+
     if (quantityMemory === 1) {
       setIsAddToCart(false);
     }
@@ -77,11 +91,19 @@ export const Card = ({ dishId, imgSrc, title, price, quantity }: Props) => {
       >
         <div className="group relative divide-y overflow-hidden rounded-lg">
           <div className="mx-auto mb-4">
+            <Tooltip
+              target=".img-dish"
+              mouseTrack
+              mouseTrackTop={10}
+            />
             <Image
+              className="img-dish"
+              unstyled
               src={imgSrc}
-              alt={title}
+              // alt={title}
               handleLoaded={handleLoaded}
               imageClassName="rounded-lg w-full h-52 object-cover transition-all group-hover:scale-105"
+              data-pr-tooltip={`Stock: ${stock}`}
             />
           </div>
           <div className="pt-2 dark:border-slate-700">
@@ -143,6 +165,7 @@ export const Card = ({ dishId, imgSrc, title, price, quantity }: Props) => {
                 </Button>
               </div>
             </div>
+
             <Button
               unstyled
               onClick={handleAddToCart}

@@ -9,7 +9,7 @@ interface Props {
 const PrivateValidationFragment = <Outlet />;
 
 export const AuthGuard = ({ privateValidation }: Props) => {
-  const { isAuthenticate, user } = useAuthStore();
+  const { isAuthenticate, user } =  useAuthStore();
 
   return isAuthenticate ? (
     privateValidation ? (
