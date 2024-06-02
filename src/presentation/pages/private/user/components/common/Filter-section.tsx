@@ -1,5 +1,5 @@
 import { AccordionTab } from "primereact/accordion";
-import { DishCategories, PriceRange } from "./";
+import { DishCategories, PriceRange } from "..";
 import { Accordion, Image, Card, Button } from "@/presentation/components";
 import { useDishStore } from "@/presentation/hooks";
 

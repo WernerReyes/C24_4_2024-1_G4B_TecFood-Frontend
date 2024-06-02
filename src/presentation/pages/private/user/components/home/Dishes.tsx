@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import clsx from "clsx";
-import { GetDishesDto } from "@/domain/dtos";
 import { DishModel } from "@/model";
 import { Button, Image, Paginator } from "@/presentation/components";
 import {
@@ -9,7 +7,7 @@ import {
   usePaginatorStore,
   useWindowSize,
 } from "@/presentation/hooks";
-import { Card } from "./Card";
+import { Card } from "../common/Card";
 
 const ROW_PER_PAGE = [5, 10, 15];
 
@@ -19,30 +17,15 @@ type Props = {
 };
 
 export const Dishes = ({ setVisible }: Props) => {
-  const { dishes, startLoadingDishes, filters } = useDishStore();
-  const { currentPage, limit, total } = usePaginatorStore();
+  const { dishes } = useDishStore();
+  const {  total } = usePaginatorStore();
   const { isExtraLargeDesktop } = useWindowSize();
-  const { cart, startLoadingDishesByUser } = useCartStore();
+  const { cart } = useCartStore();
 
   const handleLoadCartQuantity = (dish: DishModel): number => {
     const cartItem = cart.find((cartItem) => cartItem.dish.id === dish.id);
     return cartItem?.quantity || 0;
   };
-
-  useEffect(() => {
-    const getDishesDto = GetDishesDto.create({
-      page: currentPage,
-      limit: limit || ROW_PER_PAGE[0],
-      idCategory: filters.idCategory,
-      priceRange: filters.priceRange,
-      search: null,
-    });
-    startLoadingDishes(getDishesDto);
-  }, [currentPage, limit, filters]);
-
-  useEffect(() => {
-    startLoadingDishesByUser();
-  }, []);
 
   return (
     <>

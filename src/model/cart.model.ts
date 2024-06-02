@@ -28,6 +28,11 @@ export interface DeleteOneDishModel {
 
 export interface DeleteAllDishesModel extends DeleteOneDishModel {}
 
+export interface GetDishByDishIdModel {
+  message: string;
+  cartItem: CartModel;
+}
+
 // <------------------ STATE ------------------>
 
 export interface CartState {

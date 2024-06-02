@@ -5,7 +5,7 @@ export type IPrivateRoutes = {
   USER: string;
   user: {
     HOME: string;
-    DETAIL_DISH: string;
+    DISHES: string;
     PROFILE: string;
   };
   ADMIN: string;
@@ -21,7 +21,7 @@ export const PrivateRoutes: IPrivateRoutes = {
   USER: USER_BASE,
   user: {
     HOME: "home",
-    DETAIL_DISH: "detail",
+    DISHES: "dishes",
     PROFILE: "profile",
   },
 

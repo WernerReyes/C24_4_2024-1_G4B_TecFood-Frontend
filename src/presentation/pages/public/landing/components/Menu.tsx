@@ -50,6 +50,7 @@ export const Menu = ({ marginContainer }: Props) => {
       page: 1,
       limit: 10,
       idCategory: selectedCategoryId,
+      priceRange: null,
       search: null,
     });
     startLoadingDishes(getDishesDto);

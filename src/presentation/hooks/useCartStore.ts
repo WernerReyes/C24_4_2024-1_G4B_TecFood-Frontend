@@ -8,12 +8,14 @@ import {
   ondeleteAllDishes,
   onLoadCart,
   onLoadingCart,
+  onLoadCartItem,
 } from "@/infraestructure/store";
 import {
   AddOneDish,
   DeleteOneDish,
   GetDishesByUser,
   DeleteAllDishes,
+  GetDishByDishId,
 } from "@/domain/use-cases";
 import { CartService } from "../../infraestructure/services";
 import { useMessage } from "./useMessage";
@@ -25,7 +27,7 @@ export const useCartStore = () => {
   const dispatch = useDispatch();
   const { startSetMessages } = useMessage();
 
-  const { isLoading, cart, totalQuantity, totalPayment } = useSelector(
+  const { isLoading, cart, cartItem, totalQuantity, totalPayment } = useSelector(
     (state: AppState) => state.cart,
   );
 
@@ -83,11 +85,28 @@ export const useCartStore = () => {
       });
   };
 
+  const startLoadingDishByDishId = async (dishId: number) => {
+    dispatch(onLoadingCart());
+    await new GetDishByDishId(cartRepositoryImpl)
+      .execute(dishId)
+      .then(({ cartItem }) => {
+        dispatch(
+          onLoadCartItem({
+            ...cartItem,
+          }),
+        );
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   return {
     //* Attributes
     totalPayment,
     totalQuantity,
     cart,
+    cartItem,
     isLoading,
 
     //* Methods
@@ -95,5 +114,6 @@ export const useCartStore = () => {
     startDeleteOneDish,
     startdeleteAllDishes,
     startLoadingDishesByUser,
+    startLoadingDishByDishId,
   };
 };

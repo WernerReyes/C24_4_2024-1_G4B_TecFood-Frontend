@@ -1,11 +1,10 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { InputSearch } from "@/presentation/components";
-import { HeaderSeachLayout } from "../../layout";
+import { HeaderSeachLayout } from "../../../layout";
 import { useDishStore } from "@/presentation/hooks";
 import { DishModel } from "@/model";
-import { RecommendationSearch } from "./Recommendation-search";
+import { RecommendationSearch, HistorySearch } from "../";
 import { getStorage } from "@/presentation/utilities";
-import { HistorySearch } from "./History-search";
 
 type Props = {
   visible: boolean;
@@ -19,7 +18,9 @@ export const HeaderSeach = ({ visible, setVisible }: Props) => {
     startFilterDishes,
     filters,
   } = useDishStore();
-  const [historySearch, setHistorySearch] = useState<string[]>([]);
+  const [historySearch, setHistorySearch] = useState<
+    { id: number; name: string }[]
+  >([]);
   const [recommendations, setRecommendations] = useState<DishModel[]>([]);
   const [search, setSearch] = useState<string>("");
   const [enterPressed, setEnterPressed] = useState<boolean>(false);
@@ -53,6 +54,7 @@ export const HeaderSeach = ({ visible, setVisible }: Props) => {
     });
     setHistorySearch(getStorage("historySearch") || []);
     setEnterPressed(false);
+    setVisible(false);
   }, [enterPressed]);
 
   return (
@@ -76,6 +78,7 @@ export const HeaderSeach = ({ visible, setVisible }: Props) => {
         <HistorySearch
           histories={historySearch}
           setHistorySearch={setHistorySearch}
+          setEnterPressed={setEnterPressed}
         />
       )}
     </HeaderSeachLayout>

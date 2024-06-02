@@ -32,8 +32,8 @@ export const dishSlice = createSlice({
       return { ...state, dishesToSearch: action.payload };
     },
 
-    onLoadingDish: (state) => {
-      return { ...state, isLoading: true };
+    onLoadDish(state, action: PayloadAction<DishState>) {
+      return { ...state, dish: action.payload, isLoading: false };
     },
 
     onSetDishFilters: (state, action: PayloadAction<DishFilters>) => {
@@ -42,12 +42,17 @@ export const dishSlice = createSlice({
         filters: action.payload,
       };
     },
+
+    onLoadingDish: (state) => {
+      return { ...state, isLoading: true };
+    },
   },
 });
 
 export const {
   onLoadingDish,
   onLoadDishes,
+  onLoadDish,
   onSetDishFilters,
   onLoadDishesToSearch,
 } = dishSlice.actions;

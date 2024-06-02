@@ -5,12 +5,14 @@ import {
   DeleteOneDishResponse,
   deleteAllDishesResponse,
   GetDishesByUserResponse,
+  GetDishByDishIdResponse,
 } from "@/domain/entities";
 import {
   AddOneDishModel,
   DeleteOneDishModel,
   DeleteAllDishesModel,
   GetDishesByUserModel,
+  GetDishByDishIdModel,
 } from "@/model";
 
 interface ICartService {
@@ -18,6 +20,7 @@ interface ICartService {
   getDishesByUser(): Promise<GetDishesByUserModel>;
   deleteOneDish(dishId: number): Promise<DeleteOneDishModel>;
   deleteAllDishes(cartId: number): Promise<DeleteAllDishesModel>;
+  getDishByDishId(dishId: number): Promise<GetDishByDishIdModel>;
 }
 
 export class CartService implements ICartService {
@@ -68,6 +71,19 @@ export class CartService implements ICartService {
         "DELETE",
       );
       return data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getDishByDishId(dishId: number): Promise<GetDishByDishIdModel> {
+    console.log(dishId);
+    try {
+      const { data } = await httpRequest<GetDishByDishIdResponse>(
+        `${this.baseUrl}/dish/${dishId}`,
+        "GET",
+      );
+      return { ...data, cartItem: cartAdapter(data.cartItem) };
     } catch (error) {
       throw error;
     }

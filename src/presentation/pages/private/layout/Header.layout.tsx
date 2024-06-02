@@ -4,13 +4,13 @@ import { useTheme } from "@/presentation/hooks";
 
 type Props = {
   children?: ReactNode;
-  isDark?: boolean;
+  scrollId?: string;
 };
 
-export const HeaderLayout = ({ children }: Props) => {
+export const HeaderLayout = ({ children, scrollId }: Props) => {
   const { isDark } = useTheme();
   return (
-    <header className="dark:bg-dashboard-dark dark:border-slate-700  relative z-50 flex min-h-[80px] flex-col border-b bg-white font-[sans-serif] tracking-wided dark:text-white">
+    <header id={scrollId} className="dark:bg-dashboard-dark dark:border-slate-700  relative z-50 flex min-h-[80px] flex-col border-b bg-white font-[sans-serif] tracking-wided dark:text-white">
       <AlertOffers
         title="Get 50% off on your first order."
         subtitle="Available for April 18 - 25"

@@ -1,20 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { DishModel } from "@/model";
-import { HighlightedText } from "../../components";
-import { Link } from "@/presentation/components";
 import { useEffect, useState } from "react";
-import { fromStringToUrl, setStorage } from "@/presentation/utilities";
+import { setStorage } from "@/presentation/utilities";
 import { PrivateRoutes } from "@/presentation/routes";
-
+import { HighlightedText } from "../../../components/Highlighted-text";
 const {
   USER,
-  user: {  DETAIL_DISH },
+  user: { DISHES },
 } = PrivateRoutes;
-
 
 type Props = {
   recommendations: DishModel[];
-  historySearch: string[];
+  historySearch: { id: number; name: string }[];
   search: string;
   setEnterPressed: (enterPressed: boolean) => void;
 };
@@ -25,15 +23,20 @@ export const RecommendationSearch = ({
   historySearch,
   search,
 }: Props) => {
+  const navigate = useNavigate();
   const [hoverName, setHoverName] = useState(recommendations[0].name);
   const [lastEventWasKeyboard, setLastEventWasKeyboard] = useState(false);
 
   const handleSaveHistorySearch = (dish: DishModel) => {
-    if (!historySearch.includes(dish.name)) {
+    if (!historySearch.find((h) => h.name === dish.name)) {
       if (historySearch.length >= 7) historySearch.pop();
-      setStorage("historySearch", [dish.name, ...historySearch]);
-      setEnterPressed(true);
+      setStorage("historySearch", [
+        { id: dish.id, name: dish.name },
+        ...historySearch,
+      ]);
     }
+    setEnterPressed(true);
+    navigate(`${USER}/${DISHES}/${dish.id}`);
   };
 
   useEffect(() => {
@@ -53,9 +56,6 @@ export const RecommendationSearch = ({
         const dish = recommendations.find((dish) => dish.name === hoverName);
         if (dish) {
           handleSaveHistorySearch(dish);
-          window.location.href = `${USER}/${ DETAIL_DISH}/${fromStringToUrl(
-            dish.name,
-          )}`;
         }
       }
     };
@@ -89,7 +89,7 @@ export const RecommendationSearch = ({
             <li
               key={dish.id}
               className={clsx(
-                "group cursor-pointer border-b p-4 text-sm dark:border-slate-700 ",
+                "group flex cursor-pointer justify-between border-b p-4 text-sm dark:border-slate-700 ",
                 hoverName === dish.name &&
                   "rounded-md bg-primary text-white dark:text-black",
               )}
@@ -101,23 +101,17 @@ export const RecommendationSearch = ({
               onClick={() => handleSaveHistorySearch(dish)}
               onMouseMove={() => setLastEventWasKeyboard(false)}
             >
-              <Link
-                to={`${USER}/${ DETAIL_DISH}/${fromStringToUrl(dish.name)}`}
-                className="flex justify-between"
-                unstyled
-              >
-                <div className="flex items-center">
-                  <i className="pi pi-file me-2"></i>
-                  <HighlightedText
-                    text={dish.name}
-                    highlight={search}
-                    selected={hoverName}
-                  />
-                </div>
-                <div className="flex items-center">
-                  <i className="pi pi-arrow-left"></i>
-                </div>
-              </Link>
+              <div className="flex items-center">
+                <i className="pi pi-file me-2"></i>
+                <HighlightedText
+                  text={dish.name}
+                  highlight={search}
+                  selected={hoverName}
+                />
+              </div>
+              <div className="flex items-center">
+                <i className="pi pi-arrow-left"></i>
+              </div>
             </li>
           ))
         ) : (

@@ -1,27 +1,38 @@
-import { Link } from "@/presentation/components";
-import { PrivateRoutes } from "@/presentation/routes";
-import { fromStringToUrl, setStorage } from "@/presentation/utilities";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
+import clsx from "clsx";
+import { PrivateRoutes } from "@/presentation/routes";
+import { setStorage } from "@/presentation/utilities";
+import { useNavigate } from "react-router-dom";
 
 const {
   USER,
-  user: {  DETAIL_DISH },
+  user: { DISHES },
 } = PrivateRoutes;
 
 type Props = {
-  histories: string[];
-  setHistorySearch: (history: string[]) => void;
+  histories: { id: number; name: string }[];
+  setHistorySearch: (history: { id: number; name: string }[]) => void;
+  setEnterPressed: (value: boolean) => void;
 };
 
-export const HistorySearch = ({ histories, setHistorySearch }: Props) => {
-  const [hoverHistory, setHoverHistory] = useState(histories[0]);
+export const HistorySearch = ({
+  histories,
+  setEnterPressed,
+  setHistorySearch,
+}: Props) => {
+  const navigate = useNavigate();
+  const [hoverHistory, setHoverHistory] = useState(histories[0]?.name);
   const [lastEventWasKeyboard, setLastEventWasKeyboard] = useState(false);
 
-  const handleDelete = (name: string) => {
-    const newHistory = histories.filter((h) => h !== name);
+  const handleDelete = (id: number) => {
+    const newHistory = histories.filter((h) => h.id !== id);
     setHistorySearch(newHistory);
     setStorage("historySearch", newHistory);
+  };
+
+  const handleNavigate = (id: number) => {
+    navigate(`${USER}/${DISHES}/${id}`);
+    setEnterPressed(true);
   };
 
   useEffect(() => {
@@ -30,19 +41,19 @@ export const HistorySearch = ({ histories, setHistorySearch }: Props) => {
         e.preventDefault();
         setLastEventWasKeyboard(true);
         const index = histories.findIndex(
-          (history) => history === hoverHistory,
+          (history) => history.name === hoverHistory,
         );
         if (e.key === "ArrowDown" && index < histories.length - 1) {
-          setHoverHistory(histories[index + 1]);
+          setHoverHistory(histories[index + 1].name);
         } else if (e.key === "ArrowUp" && index > 0) {
-          setHoverHistory(histories[index - 1]);
+          setHoverHistory(histories[index - 1].name);
         }
       } else if (e.key === "Enter") {
-        const history = histories.find((history) => history === hoverHistory);
+        const history = histories.find(
+          (history) => history.name === hoverHistory,
+        );
         if (history) {
-          window.location.href = `${USER}/${ DETAIL_DISH}/${fromStringToUrl(
-            history,
-          )}`;
+          handleNavigate(history.id);
         }
       }
     };
@@ -72,34 +83,33 @@ export const HistorySearch = ({ histories, setHistorySearch }: Props) => {
         )}
       >
         {histories.length ? (
-          histories.map((name, key) => (
+          histories.map((history, key) => (
             <li
               key={key}
               className={clsx(
                 "group border-b p-4 text-sm dark:border-slate-700 ",
-                hoverHistory === name &&
+                hoverHistory === history.name &&
                   "rounded-md bg-primary text-white dark:text-black",
               )}
               onMouseEnter={() => {
                 if (!lastEventWasKeyboard) {
-                  setHoverHistory(name);
+                  setHoverHistory(history.name);
                 }
               }}
               onMouseMove={() => setLastEventWasKeyboard(false)}
             >
               <div className="flex justify-between">
-                <Link
-                  to={`${USER}/${ DETAIL_DISH}/${fromStringToUrl(name)}`}
-                  unstyled
-                  className="cursor-pointe w-full"
+                <div
+                  className="w-full cursor-pointer"
+                  onClick={() => handleNavigate(history.id)}
                 >
                   <i className="pi pi-history me-2"></i>
-                  <span>{name}</span>
-                </Link>
+                  <span>{history.name}</span>
+                </div>
                 <div className="flex items-center">
                   <i className="pi pi-star me-2"></i>
                   <i
-                    onClick={() => handleDelete(name)}
+                    onClick={() => handleDelete(history.id)}
                     className="pi pi-times ml-2"
                   ></i>
                 </div>

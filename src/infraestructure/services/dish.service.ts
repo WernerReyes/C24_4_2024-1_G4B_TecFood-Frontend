@@ -1,8 +1,13 @@
 import type {
+  GetDishByIdResponse,
   GetDishesResponse,
   GetDishesToSearchResponse,
 } from "@/domain/entities";
-import type { GetDishesModel, GetDishesToSearchModel } from "@/model";
+import type {
+  GetDishByIdModel,
+  GetDishesModel,
+  GetDishesToSearchModel,
+} from "@/model";
 import { GetDishesDto } from "@/domain/dtos";
 import { dishAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
@@ -15,6 +20,7 @@ import {
 interface IDishService {
   getAll(getDishesDto: GetDishesDto): Promise<GetDishesModel>;
   getAllToSearch(): Promise<GetDishesToSearchModel>;
+  getById(id: number): Promise<GetDishByIdModel>;
 }
 
 export class DishService implements IDishService {
@@ -56,6 +62,18 @@ export class DishService implements IDishService {
         "GET",
       );
       return { ...data, dishes: data.dishes.map(dishAdapter) };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getById(id: number): Promise<GetDishByIdModel> {
+    try {
+      const { data } = await httpRequest<GetDishByIdResponse>(
+        this.baseUrl + "/" + id,
+        "GET",
+      );
+      return { ...data, dish: dishAdapter(data.dish) };
     } catch (error) {
       throw error;
     }

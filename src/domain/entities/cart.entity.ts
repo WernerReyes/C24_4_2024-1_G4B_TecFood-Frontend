@@ -28,3 +28,9 @@ export interface DeleteOneDishResponse {
 }
 
 export interface deleteAllDishesResponse extends DeleteOneDishResponse {}
+
+
+export interface GetDishByDishIdResponse {
+  message: string;
+  cartItem: CartEntity;
+}

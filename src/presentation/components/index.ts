@@ -22,3 +22,5 @@ export * from "./Sidebar";
 export * from "./Skeleton";
 export * from "./Slider";
 export * from "./Tooltip";
+export * from "./Galleria";
+export * from "./Chip";

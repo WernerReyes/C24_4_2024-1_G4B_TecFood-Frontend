@@ -19,4 +19,9 @@ export class CartRepositoryImpl implements CartRepository {
   async deleteAllDishes(cartId: number) {
     return await this.CartService.deleteAllDishes(cartId);
   }
+
+  async getDishByDishId(dishId: number) {
+    return await this.CartService.getDishByDishId(dishId);
+  }
+
 }

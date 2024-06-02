@@ -1,10 +1,8 @@
 import type { ImageProps } from "primereact/image";
 import { Image as ImagePrimeReact } from "primereact/image";
 
-interface Props extends ImageProps {
-  handleLoaded?: () => void;
-}
+interface Props extends ImageProps {}
 
-export const Image = ({ handleLoaded, ...props }: Props) => {
-  return <ImagePrimeReact {...props} onLoad={handleLoaded} />;
+export const Image = ({ ...props }: Props) => {
+  return <ImagePrimeReact {...props} />;
 };

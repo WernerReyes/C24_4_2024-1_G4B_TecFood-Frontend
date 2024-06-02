@@ -1,11 +1,12 @@
-import { useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import clsx from "clsx";
+import { useLocation, useParams } from "react-router-dom";
 import { BreadCrumb as BreadCrumbPrimeReact } from "primereact/breadcrumb";
 import { RoleEnum } from "@/domain/entities";
 import { PrivateRoutes } from "../routes";
-import { fromUrlToString, routeRole } from "../utilities";
-import clsx from "clsx";
+import { routeRole } from "../utilities";
 import { Link } from "./Link";
+import { useDishStore } from "../hooks";
 
 interface Props {
   role: RoleEnum;
@@ -13,10 +14,13 @@ interface Props {
   unistyled?: boolean;
 }
 
-const DEFAULT_CLASSNAME = "dark:bg-skeleton-dark bg-skeleton rounded-none border-none";
+const DEFAULT_CLASSNAME =
+  "dark:bg-skeleton-dark bg-skeleton rounded-none border-none";
 
 export const BreadCrumb = ({ role, className, unistyled }: Props) => {
   const location = useLocation();
+  const { id } = useParams<{ id: string }>();
+  const { dish, startLoadingDishById } = useDishStore();
   const roleRoute = PrivateRoutes[routeRole(role)].toString();
 
   const home = {
@@ -38,36 +42,52 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
     ),
   };
 
+  useEffect(() => {
+    if (id) {
+      startLoadingDishById(parseInt(id));
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (id && dish) {
+      document.title = dish.name;
+    }
+  }, [dish]);
+
   const urlSegments = useMemo(() => {
-    const segments = location.pathname.split("/");
-    return filterSegments(segments, roleRoute);
-  }, [location.pathname, roleRoute]);
+    const originalSegments = location.pathname.split("/");
+    const segments = [...originalSegments]; // Copia de los segmentos originales
+    const index = segments.indexOf(id!);
+    if (index !== -1 && dish) {
+      segments[index] = dish.name;
+    }
+    return {
+      updated: filterSegments(segments, roleRoute),
+      original: originalSegments,
+    };
+  }, [location.pathname, roleRoute, dish]);
 
   const items = useMemo(() => {
-    return urlSegments.map((segment, index, array) => {
-      const url = `${roleRoute}/${array.slice(0, index + 1).join("/")}`;
-      // console.log(url, location.pathname);
+    return urlSegments.updated.map((segment, index) => {
+      const url = `${urlSegments.original.slice(0, index + 3).join("/")}`;
       return {
         label: segment[0].toUpperCase() + segment.slice(1),
-        template: () => {
-          return (
-            <Link
-              unstyled
-              to={url}
-              className={clsx(
-                location.pathname === url
-                  ? "text-primary"
-                  : "text-black dark:text-white",
-              )}
-            >
-              {segment[0].toUpperCase() + segment.slice(1)}
-            </Link>
-          );
-        },
-        className: "cursor-pointer",
+        template: () => (
+          <Link
+            unstyled
+            to={url}
+            className={clsx(
+              location.pathname === url
+                ? "text-primary"
+                : "text-black dark:text-white",
+            )}
+          >
+            {segment[0].toUpperCase() + segment.slice(1)}
+          </Link>
+        ),
       };
     });
-  }, [urlSegments, roleRoute]);
+  }, [urlSegments, roleRoute, location.pathname]);
 
   return (
     <BreadCrumbPrimeReact
@@ -82,6 +102,6 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
 const filterSegments = (segments: string[], roleRoute: string) => {
   return segments
     .filter((segment) => `/${segment}` !== roleRoute && segment !== "home")
-    .filter((segment) => segment !== "")
-    .map((segment) => fromUrlToString(segment));
+    .filter((segment) => segment !== "");
+  // .map((segment) => fromUrlToString(segment));
 };

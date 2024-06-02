@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Badge, Button, MenuItem } from "@/presentation/components";
 import { useCartStore } from "@/presentation/hooks";
-import { AvatarMenu, Sidebar } from "../../components";
-import { HeaderLayout } from "../../layout";
+import { AvatarMenu, Sidebar } from "../../../components";
+import { HeaderLayout } from "../../../layout";
 import { HeaderSeach } from "./Header-seach";
 import { PrivateRoutes } from "@/presentation/routes";
 
@@ -22,12 +22,16 @@ const { USER } = PrivateRoutes;
 const LINKS_SIDEBAR = [
   { label: "Home", url: USER + "/home" },
   { label: "Profile", url: USER + "/profile" },
-  { label: "Women", url: USER+ "/home2" },
+  { label: "Women", url: USER + "/home2" },
   { label: "Kids", url: USER + "/home3" },
   { label: "Accessories", url: USER + "/home4" },
 ];
 
-export const Header = () => {
+type Props = {
+  scrollId: string;
+};
+
+export const Header = ({ scrollId }: Props) => {
   const { totalQuantity } = useCartStore();
   const [collapseMenu, setCollapseMenu] = useState<string>("hidden");
   const [visible, setVisible] = useState(false);
@@ -36,7 +40,7 @@ export const Header = () => {
   const handleToggleClose = () => setCollapseMenu("hidden");
 
   return (
-    <HeaderLayout>
+    <HeaderLayout scrollId={scrollId}>
       <Sidebar
         collapseMenu={collapseMenu}
         handleToggleClose={handleToggleClose}

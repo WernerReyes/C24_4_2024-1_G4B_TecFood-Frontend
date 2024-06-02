@@ -3,6 +3,7 @@ import type {
   AddOneDishModel,
   DeleteOneDishModel,
   DeleteAllDishesModel,
+  GetDishByDishIdModel,
 } from "@/model";
 
 export interface CartRepository {
@@ -10,4 +11,5 @@ export interface CartRepository {
   getDishesByUser: () => Promise<GetDishesByUserModel>;
   deleteOneDish: (dishId: number) => Promise<DeleteOneDishModel>;
   deleteAllDishes: (cartId: number) => Promise<DeleteAllDishesModel>;
+  getDishByDishId: (dishId: number) => Promise<GetDishByDishIdModel>;
 }

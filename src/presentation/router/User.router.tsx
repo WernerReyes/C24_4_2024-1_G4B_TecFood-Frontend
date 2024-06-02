@@ -8,18 +8,19 @@ const ProfilePage = lazy(
   () => import("../pages/private/user/pages/Profile.page"),
 );
 
-const SearchDishesPage = lazy(
+const DetailDishPage = lazy(
   () => import("../pages/private/user/pages/Detail-dish.page"),
 );
 
-const { HOME,  DETAIL_DISH, PROFILE } = PrivateRoutes.user;
+const { HOME,  DISHES, PROFILE } = PrivateRoutes.user;
 
 export const UserRouter = () => {
   return (
     <RouterWithNotFound>
       <Route path="/" element={<Navigate to={HOME} />} />
       <Route path={HOME} element={<HomePage />} />
-      <Route path={`${ DETAIL_DISH}/:search`} element={<SearchDishesPage />} />
+      <Route path={DISHES} element={<h1>Dishes</h1>} />
+      <Route path={`${DISHES}/:id`} element={<DetailDishPage />} />
       <Route path={PROFILE} element={<ProfilePage />} />
     </RouterWithNotFound>
   );

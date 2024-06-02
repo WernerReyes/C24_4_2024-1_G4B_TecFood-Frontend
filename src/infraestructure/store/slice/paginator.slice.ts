@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type PaginatorSliceState = {
   currentPage: number;
-  limit: number | null;
+  limit: number;
   total: number;
   next: string | null;
   previous: string | null;
@@ -14,7 +14,7 @@ export const paginatorSlice = createSlice({
   name: "paginator",
   initialState: {
     currentPage: 1,
-    limit: null as number | null,
+    limit: 10,
     total: 1,
     next: null as string | null,
     previous: null as string | null,

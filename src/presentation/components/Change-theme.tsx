@@ -51,7 +51,7 @@ export const ChangeTheme = ({ to, offset, duration }: Props) => {
         className="z-20 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
       >
         <i
-          className={clsx("pi", currentTheme === "dark" ? "pi-moon" : "pi-sun")}
+          className={clsx("pi", currentTheme === "dark" ? "pi-sun" : "pi-moon")}
         ></i>
       </Button>
     </div>

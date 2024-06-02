@@ -12,4 +12,8 @@ export class DishRepositoryImpl implements DishRepository {
   async getAllToSearch() {
     return await this.dishService.getAllToSearch();
   }
+
+  async getById(id: number) {
+    return await this.dishService.getById(id);
+  }
 }

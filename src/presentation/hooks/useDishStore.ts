@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { GetDishes, GetDishesToSearch } from "@/domain/use-cases";
+import { GetDishById, GetDishes, GetDishesToSearch } from "@/domain/use-cases";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import { DishService } from "../../infraestructure/services";
 import {
@@ -9,6 +9,7 @@ import {
   onLoadingDish,
   onLoadDishesToSearch,
   onSetDishFilters,
+  onLoadDish,
 } from "@/infraestructure/store";
 import { GetDishesDto } from "@/domain/dtos";
 import { useMessage } from "./useMessage";
@@ -23,7 +24,7 @@ export const useDishStore = () => {
   const dispatch = useDispatch();
   const { startSetMessages } = useMessage();
   const { startChangePaginator } = usePaginatorStore();
-  const { dishes, dishesToSearch, isLoading, filters } = useSelector(
+  const { dishes, dishesToSearch, dish,  isLoading, filters } = useSelector(
     (state: AppState) => state.dish,
   );
 
@@ -66,6 +67,15 @@ export const useDishStore = () => {
       .catch(console.error);
   };
 
+  const startLoadingDishById = async (id: number) => {
+    dispatch(onLoadingDish());
+
+    await new GetDishById(dishRepositoryImpl)
+      .execute(id)
+      .then(({ dish }) => dispatch(onLoadDish(dish)))
+      .catch(console.error);
+  };
+
   const startFilterDishes = async (filters: DishFilters) => {
     dispatch(onLoadingDish());
     dispatch(onSetDishFilters(filters));
@@ -74,6 +84,7 @@ export const useDishStore = () => {
 
   return {
     //* Attributes
+    dish,
     dishes,
     dishesToSearch,
     isLoading,
@@ -82,6 +93,7 @@ export const useDishStore = () => {
     //* Methods
     startLoadingDishes,
     startFilterDishes,
+    startLoadingDishById,
     startLoadingDishesToSearch,
   };
 };

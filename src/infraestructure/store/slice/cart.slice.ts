@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type CartState } from "@/model";
+import { cartEmptyState, type CartState } from "@/model";
 
 type OnLoadCartType = {
   cart: CartState[];
@@ -9,6 +9,7 @@ type OnLoadCartType = {
 
 export type CartSliceState = {
   isLoading: boolean;
+  cartItem: CartState;
   cart: CartState[];
   totalQuantity: number;
   totalPayment: number;
@@ -18,6 +19,7 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState: {
     isLoading: true,
+    cartItem: cartEmptyState,
     cart: [] as CartState[],
     totalQuantity: 0,
     totalPayment: 0,
@@ -52,6 +54,10 @@ export const cartSlice = createSlice({
       return { ...state, cart, totalPayment, totalQuantity, isLoading: false };
     },
 
+    onLoadCartItem(state, action: PayloadAction<CartState>) {
+      return { ...state, cartItem: action.payload, isLoading: false };
+    },
+
     onLoadingCart: (state) => {
       return { ...state, isLoading: true };
     },
@@ -61,6 +67,7 @@ export const cartSlice = createSlice({
 export const {
   onLoadingCart,
   onLoadCart,
+  onLoadCartItem,
   onAddOneDish,
   onDeleteOneDish,
   ondeleteAllDishes,

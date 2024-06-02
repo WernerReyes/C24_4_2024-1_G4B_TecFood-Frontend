@@ -1,6 +1,7 @@
 import { getStorage } from "@/presentation/utilities";
 import { DishCategoryModel, dishCategoryEmptyState } from "./";
 
+
 export interface DishModel {
   id: number;
   name: string;
@@ -10,6 +11,9 @@ export interface DishModel {
   stock: number;
   category: DishCategoryModel;
 }
+
+
+
 
 export interface GetDishesModel {
   message: string;
@@ -24,6 +28,15 @@ export interface GetDishesModel {
 
 export interface GetDishesToSearchModel
   extends Pick<GetDishesModel, "message" | "dishes"> {}
+
+export interface GetDishByIdModel {
+  message: string;
+  dish: DishModel;
+}
+
+
+
+
 
 export interface DishState extends DishModel {}
 
