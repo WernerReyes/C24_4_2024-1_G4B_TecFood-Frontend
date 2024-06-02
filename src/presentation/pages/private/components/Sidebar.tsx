@@ -28,7 +28,7 @@ export const Sidebar = ({ collapseMenu, handleToggleClose, links }: Props) => {
           return (
             <li
               key={index}
-              className="px-3 dark:border-slate-700 max-lg:border-b max-lg:py-3"
+              className="dark:border-slate-700 max-lg:border-b max-lg:py-3"
             >
               <Link
                 to={link.url}
