@@ -33,11 +33,11 @@ type Props = {
 
 export const Header = ({ scrollId }: Props) => {
   const { totalQuantity } = useCartStore();
-  const [collapseMenu, setCollapseMenu] = useState<string>("hidden");
+  const [collapseMenu, setCollapseMenu] = useState<boolean>(false);
   const [visible, setVisible] = useState(false);
 
-  const handleToggleOpen = () => setCollapseMenu("");
-  const handleToggleClose = () => setCollapseMenu("hidden");
+  const handleToggleOpen = () => setCollapseMenu(!collapseMenu);
+  const handleToggleClose = () => setCollapseMenu(false);
 
   return (
     <HeaderLayout scrollId={scrollId}>

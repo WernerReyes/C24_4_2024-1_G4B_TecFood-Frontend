@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { TypeMessage } from "@/infraestructure/store";
 import {
-  Button,
   CardSkeleton,
   Image,
   Link,
@@ -11,6 +10,7 @@ import {
 import { useCartStore, useMessage } from "@/presentation/hooks";
 import { ButtonAddAndRemoveDish, AddAndRemoveDish } from "../";
 import { PrivateRoutes } from "@/presentation/routes";
+import { Heart } from "../../../components";
 
 
 const { USER, user: { DISHES } } = PrivateRoutes;
@@ -39,7 +39,6 @@ export const Card = ({
     startAddOneDish,
     totalQuantity,
   } = useCartStore();
-  const [heart, setHeart] = useState<string>("pi pi-heart");
   const [isAddToCart, setIsAddToCart] = useState<boolean>(false);
   const [quantityMemory, setQuantityMemory] = useState<number>(0);
   const [loaded, setLoaded] = useState(false);
@@ -95,18 +94,7 @@ export const Card = ({
               <Link unstyled to="/user" className="text-xl font-semibold">
                 {title}
               </Link>
-              <Button
-                onMouseEnter={() => setHeart("pi pi-heart-fill")}
-                onMouseLeave={() => setHeart("pi pi-heart")}
-                unstyled
-              >
-                <i
-                  className={clsx(
-                    heart,
-                    "relative z-10 cursor-pointer text-2xl transition-all hover:text-red-500",
-                  )}
-                ></i>
-              </Button>
+              <Heart />
             </div>
             <span className="mb-4 inline-flex items-center gap-2">
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary">

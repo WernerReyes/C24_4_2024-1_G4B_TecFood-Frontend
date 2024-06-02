@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import clsx from "clsx";
 import { useCartStore, useDishStore, useMessage } from "@/presentation/hooks";
 import { ButtonAddAndRemoveDish, AddAndRemoveDish, DetailDishSkeleton } from "../";
 import { TypeMessage } from "@/infraestructure/store";
 import { Chip, Image } from "@/presentation/components";
-import clsx from "clsx";
+import { Heart } from "../../../components";
 
 export const DetailDish = () => {
   const { startSetMessages } = useMessage();
@@ -71,9 +72,9 @@ export const DetailDish = () => {
             />
           </div>
 
-          <div className="mb-5 mt-auto flex">
+          <div className="mb-5 mt-auto flex items-center">
             <ButtonAddAndRemoveDish
-              className="me-4"
+            className="me-4"
               dishId={dish.id}
               isAddToCart={isAddToCart}
               setIsAddToCart={setIsAddToCart}
@@ -82,6 +83,7 @@ export const DetailDish = () => {
               handleAddToCart={handleAddToCart}
             />
             <AddAndRemoveDish
+              className="me-4"
               dishId={dish.id}
               isAddToCart={isAddToCart}
               handleAddToCart={handleAddToCart}
@@ -89,6 +91,7 @@ export const DetailDish = () => {
               setQuantityMemory={setQuantity}
               setIsAddToCart={setIsAddToCart}
             />
+            <Heart iconClassName="text-3xl" />
           </div>
           <p className="flex items-center text-sm text-slate-400">
             <i className="pi pi-box me-2 text-2xl text-primary"></i>

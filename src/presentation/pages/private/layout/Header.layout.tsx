@@ -10,7 +10,12 @@ type Props = {
 export const HeaderLayout = ({ children, scrollId }: Props) => {
   const { isDark } = useTheme();
   return (
-    <header id={scrollId} className="dark:bg-dashboard-dark dark:border-slate-700  relative z-50 flex min-h-[80px] flex-col border-b bg-white font-[sans-serif] tracking-wided dark:text-white">
+    <header
+      id={scrollId}
+      className="sticky left-0 right-0 top-0 z-50 flex min-h-[80px] transform  flex-col border-b  bg-white   font-[sans-serif] shadow-md backdrop-blur-md backdrop-filter transition-transform duration-500 dark:border-slate-700 dark:bg-dashboard-dark dark:text-white"
+    
+      // className="tracking-wided relative  z-50 flex min-h-[80px] flex-col border-b bg-white font-[sans-serif] dark:border-slate-700 dark:bg-dashboard-dark dark:text-white"
+    >
       <AlertOffers
         title="Get 50% off on your first order."
         subtitle="Available for April 18 - 25"
