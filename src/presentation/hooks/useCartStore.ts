@@ -59,7 +59,6 @@ export const useCartStore = () => {
     await new DeleteAllDishes(cartRepositoryImpl)
       .execute(cartId)
       .then(({ quantity }) => {
-        console.log(quantity);
         dispatch(ondeleteAllDishes(quantity));
       })
       .catch((error) => {

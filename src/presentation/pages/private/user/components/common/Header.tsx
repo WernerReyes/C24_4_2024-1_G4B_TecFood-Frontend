@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Badge, Button, MenuItem } from "@/presentation/components";
 import { useCartStore } from "@/presentation/hooks";
-import { AvatarMenu, Sidebar } from "../../../components";
+import { PrivateRoutes } from "@/presentation/routes";
+import { AvatarMenu, Sidebar, LinksToNavigate } from "../../../components";
 import { HeaderLayout } from "../../../layout";
 import { HeaderSeach } from "./Header-seach";
-import { PrivateRoutes } from "@/presentation/routes";
 
 const ITEMS: MenuItem[] = [
   {
@@ -21,6 +21,7 @@ const { USER } = PrivateRoutes;
 
 const LINKS_SIDEBAR = [
   { label: "Home", url: USER + "/home" },
+  { label: "Dishes", url: USER + "/dishes" },
   { label: "Profile", url: USER + "/profile" },
   { label: "Women", url: USER + "/home2" },
   { label: "Kids", url: USER + "/home3" },
@@ -46,6 +47,9 @@ export const Header = ({ scrollId }: Props) => {
         handleToggleClose={handleToggleClose}
         links={LINKS_SIDEBAR}
       />
+      <ul className="hidden items-center space-x-6 lg:flex">
+        <LinksToNavigate links={LINKS_SIDEBAR}  /> 
+      </ul>
 
       <div className="ml-auto flex  gap-y-4">
         <div className="flex items-center space-x-6">

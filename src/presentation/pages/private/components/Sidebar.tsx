@@ -1,7 +1,9 @@
-import clsx from "clsx";
-import { useMatch } from "react-router-dom";
-import { Image, Sidebar as SidebarComponent, Link } from "@/presentation/components";
+import {
+  Image,
+  Sidebar as SidebarComponent
+} from "@/presentation/components";
 import { useTheme } from "@/presentation/hooks";
+import { LinksToNavigate } from "./Links-to-navigate";
 
 type Props = {
   collapseMenu: boolean;
@@ -23,25 +25,10 @@ export const Sidebar = ({ collapseMenu, handleToggleClose, links }: Props) => {
           />
         </li>
 
-        {links.map((link, index) => {
-          const match = useMatch(link.url);
-          return (
-            <li
-              key={index}
-              className="dark:border-slate-700 max-lg:border-b max-lg:py-3"
-            >
-              <Link
-                to={link.url}
-                className={clsx(
-                  "block text-[15px] font-semibold hover:text-primary",
-                  match ? "text-primary" : "text-[#333] dark:text-white",
-                )}
-              >
-                {link.label}
-              </Link>
-            </li>
-          );
-        })}
+        <LinksToNavigate
+          links={links}
+          className="dark:border-slate-700 max-lg:border-b max-lg:py-4"
+        />
       </ul>
     </SidebarComponent>
   );
