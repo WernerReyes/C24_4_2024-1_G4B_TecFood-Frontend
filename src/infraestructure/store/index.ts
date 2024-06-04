@@ -8,5 +8,5 @@ export * from "./slice/dish.slice";
 export * from "./slice/dish-category.slice";
 export * from "./slice/message.slice";
 export * from "./slice/cart.slice";
-export * from "./slice/paginator.slice";
+
 

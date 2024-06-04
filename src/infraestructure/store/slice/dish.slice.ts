@@ -9,6 +9,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 export type DishSliceState = {
   isLoading: boolean;
   dish: DishState;
+  total: number;
   dishes: DishState[];
   dishesToSearch: DishState[];
   filters: DishFilters;
@@ -19,13 +20,22 @@ export const dishSlice = createSlice({
   initialState: {
     isLoading: true,
     dish: dishEmptyState,
+    total: 0,
     dishes: [] as DishState[],
     dishesToSearch: [] as DishState[],
     filters: dishFilterEmptyState,
   },
   reducers: {
-    onLoadDishes(state, action: PayloadAction<DishState[]>) {
-      return { ...state, dishes: action.payload, isLoading: false };
+    onLoadDishes(
+      state,
+      action: PayloadAction<{ total: number; dishes: DishState[] }>,
+    ) {
+      return {
+        ...state,
+        dishes: action.payload.dishes,
+        total: action.payload.total,
+        isLoading: false,
+      };
     },
 
     onLoadDishesToSearch(state, action: PayloadAction<DishState[]>) {

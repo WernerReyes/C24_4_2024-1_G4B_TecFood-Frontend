@@ -16,7 +16,6 @@ import { Heart } from "../../../components";
 const { USER, user: { DISHES } } = PrivateRoutes;
 
 type Props = {
-  className?: string;
   dishId: number;
   imgSrc: string;
   title: string;

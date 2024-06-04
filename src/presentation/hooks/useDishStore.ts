@@ -1,21 +1,20 @@
-import { useDispatch, useSelector } from "react-redux";
+import { GetDishesDto } from "@/domain/dtos";
 import { GetDishById, GetDishes, GetDishesToSearch } from "@/domain/use-cases";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
-import { DishService } from "../../infraestructure/services";
 import {
   AppState,
   TypeMessage,
-  onLoadDishes,
-  onLoadingDish,
-  onLoadDishesToSearch,
-  onSetDishFilters,
   onLoadDish,
+  onLoadDishes,
+  onLoadDishesToSearch,
+  onLoadingDish,
+  onSetDishFilters,
 } from "@/infraestructure/store";
-import { GetDishesDto } from "@/domain/dtos";
-import { useMessage } from "./useMessage";
-import { usePaginatorStore } from "./usePaginatorStore";
-import { getStorage, setStorage } from "../utilities";
 import { DishFilters, DishState } from "@/model";
+import { useDispatch, useSelector } from "react-redux";
+import { DishService } from "../../infraestructure/services";
+import { getStorage, setStorage } from "../utilities";
+import { useMessage } from "./useMessage";
 
 const dishService = new DishService();
 const dishRepositoryImpl = new DishRepositoryImpl(dishService);
@@ -23,10 +22,8 @@ const dishRepositoryImpl = new DishRepositoryImpl(dishService);
 export const useDishStore = () => {
   const dispatch = useDispatch();
   const { startSetMessages } = useMessage();
-  const { startChangePaginator } = usePaginatorStore();
-  const { dishes, dishesToSearch, dish,  isLoading, filters } = useSelector(
-    (state: AppState) => state.dish,
-  );
+  const { dishes, dishesToSearch, dish, total, isLoading, filters } =
+    useSelector((state: AppState) => state.dish);
 
   const startLoadingDishes = async (
     getDishesDto: [GetDishesDto?, string[]?],
@@ -37,14 +34,12 @@ export const useDishStore = () => {
     await new GetDishes(dishRepositoryImpl)
       .execute(validatedGetDishesDto!)
       .then((data) => {
-        dispatch(onLoadDishes(data.dishes));
-        startChangePaginator({
-          currentPage: data.currentPage,
-          limit: data.limit,
-          total: data.total,
-          next: data.next,
-          previous: data.previous,
-        });
+        dispatch(
+          onLoadDishes({
+            total: data.total,
+            dishes: data.dishes,
+          }),
+        );
       })
       .catch(console.error);
   };
@@ -86,6 +81,7 @@ export const useDishStore = () => {
     //* Attributes
     dish,
     dishes,
+    total,
     dishesToSearch,
     isLoading,
     filters,

@@ -1,24 +1,18 @@
-import clsx from "clsx";
 import { DishModel } from "@/model";
-import { Button, Image, Paginator } from "@/presentation/components";
+import { Image } from "@/presentation/components";
 import {
   useCartStore,
   useDishStore,
-  usePaginatorStore,
-  useWindowSize,
+  useWindowSize
 } from "@/presentation/hooks";
+import clsx from "clsx";
+import { DishesLayout } from "../../layout";
 import { Card } from "../common/Card";
 
 const ROW_PER_PAGE = [5, 10, 15];
 
-type Props = {
-  // visible: boolean;
-  setVisible: (visible: boolean) => void;
-};
-
-export const Dishes = ({ setVisible }: Props) => {
+export const Dishes = () => {
   const { dishes } = useDishStore();
-  const {  total } = usePaginatorStore();
   const { isExtraLargeDesktop } = useWindowSize();
   const { cart } = useCartStore();
 
@@ -28,17 +22,10 @@ export const Dishes = ({ setVisible }: Props) => {
   };
 
   return (
-    <>
-      <div className="m-0 mb-5 flex items-center justify-between  p-0">
-        <Button
-          className="md:hidden"
-          icon={<Image src="/svg/filter.svg" alt="filter" />}
-          iconPos="left"
-          label="Filter"
-          onClick={() => setVisible(true)}
-        />
-        <p className="text-lg">{total} dishes found</p>
-      </div>
+    <DishesLayout
+      rowPerPage={ROW_PER_PAGE}
+      paginator={dishes.length > 0}
+    >
       <section
         className={clsx(
           "grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3",
@@ -73,10 +60,7 @@ export const Dishes = ({ setVisible }: Props) => {
           </div>
         )}
       </section>
-      <Paginator
-        rowsPerPage={ROW_PER_PAGE}
-        className="mt-auto flex justify-end bg-transparent"
-      />
-    </>
+    </DishesLayout
+    >
   );
 };

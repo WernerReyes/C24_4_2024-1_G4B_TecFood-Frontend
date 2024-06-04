@@ -7,5 +7,5 @@ export * from "./useDishStore";
 export * from "./useDishCategoryStore";
 export * from "./useMessage";
 export * from "./useCartStore";
-export * from "./usePaginatorStore";
+export * from "./usePaginator";
 
