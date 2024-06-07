@@ -1,4 +1,4 @@
-import type { CartRepository } from "@/domain/interfaces";
+import type { CartDishRepository } from "@/domain/interfaces";
 import type { GetDishesByUserModel } from "@/model";
 
 interface GetDishesByUserUseCase {

@@ -6,7 +6,7 @@ import type {
   GetDishByDishIdModel,
 } from "@/model";
 
-export interface CartRepository {
+export interface CartDishRepository {
   addOneDish: (dishId: number) => Promise<AddOneDishModel>;
   getDishesByUser: () => Promise<GetDishesByUserModel>;
   deleteOneDish: (dishId: number) => Promise<DeleteOneDishModel>;

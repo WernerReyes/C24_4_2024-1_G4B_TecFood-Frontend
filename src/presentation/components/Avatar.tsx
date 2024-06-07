@@ -5,7 +5,15 @@ import { AvatarGroup as AvatarGroupPrimeReact } from "primereact/avatargroup";
 interface Props extends AvatarProps {}
 
 export const Avatar = (props: Props) => {
-  return <AvatarPrimeReact {...props} />;
+  return (
+    <AvatarPrimeReact
+      {...props}
+      pt={{
+        ...props.pt,
+        image: { className: "h-full w-full" },
+      }}
+    />
+  );
 };
 
 export const AvatarGroup = ({ children }: Props) => {

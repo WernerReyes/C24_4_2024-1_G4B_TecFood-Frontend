@@ -15,7 +15,7 @@ import {
   GetDishByDishIdModel,
 } from "@/model";
 
-interface ICartService {
+interface ICartDishService {
   addOneDish(dishId: number): Promise<AddOneDishModel>;
   getDishesByUser(): Promise<GetDishesByUserModel>;
   deleteOneDish(dishId: number): Promise<DeleteOneDishModel>;
@@ -23,8 +23,8 @@ interface ICartService {
   getDishByDishId(dishId: number): Promise<GetDishByDishIdModel>;
 }
 
-export class CartService implements ICartService {
-  private baseUrl = "/cart";
+export class CartDishService implements ICartDishService {
+  private baseUrl = "/cart-dish";
 
   public async addOneDish(dishId: number): Promise<AddOneDishModel> {
     try {

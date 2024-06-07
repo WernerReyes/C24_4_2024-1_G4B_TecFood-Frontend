@@ -2,7 +2,7 @@ import { DishModel, DishState, dishEmptyState } from "./dish.model";
 import { UserModel, UserState, userEmptyState } from "./user.model";
 
 // <------------------ ADAPTER ------------------>
-export interface CartModel {
+export interface CartDishModel {
   id: number;
   quantity: number;
   dish: DishModel;
@@ -12,11 +12,11 @@ export interface CartModel {
 // <------------------ RESPONSE ------------------>
 export interface AddOneDishModel {
   message: string;
-  cartItem: CartModel;
+  cartItem: CartDishModel;
 }
 export interface GetDishesByUserModel {
   message: string;
-  cart: CartModel[];
+  cart: CartDishModel[];
   totalQuantity: number;
   totalPayment: number;
 }
@@ -30,7 +30,7 @@ export interface DeleteAllDishesModel extends DeleteOneDishModel {}
 
 export interface GetDishByDishIdModel {
   message: string;
-  cartItem: CartModel;
+  cartItem: CartDishModel;
 }
 
 // <------------------ STATE ------------------>

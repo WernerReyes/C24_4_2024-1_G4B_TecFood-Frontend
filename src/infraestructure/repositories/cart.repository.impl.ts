@@ -1,27 +1,27 @@
-import type { CartRepository } from "@/domain/interfaces";
-import { CartService } from "../services";
+import type { CartDishRepository } from "@/domain/interfaces";
+import { CartDishService } from "../services";
 
-export class CartRepositoryImpl implements CartRepository {
-  constructor(private readonly CartService: CartService) {}
+export class CartDishRepositoryImpl implements CartDishRepository {
+  constructor(private readonly CartDishService: CartDishService) {}
 
   async addOneDish(dishId: number) {
-    return await this.CartService.addOneDish(dishId);
+    return await this.CartDishService.addOneDish(dishId);
   }
 
   async getDishesByUser() {
-    return await this.CartService.getDishesByUser();
+    return await this.CartDishService.getDishesByUser();
   }
 
   async deleteOneDish(dishId: number) {
-    return await this.CartService.deleteOneDish(dishId);
+    return await this.CartDishService.deleteOneDish(dishId);
   }
 
   async deleteAllDishes(cartId: number) {
-    return await this.CartService.deleteAllDishes(cartId);
+    return await this.CartDishService.deleteAllDishes(cartId);
   }
 
   async getDishByDishId(dishId: number) {
-    return await this.CartService.getDishByDishId(dishId);
+    return await this.CartDishService.getDishByDishId(dishId);
   }
 
 }

@@ -2,7 +2,7 @@ import { DishEntity } from "./dish.entity";
 import { UserEntity } from "./user.entity";
 
 // <------------------ ENTITY ( Model BackEnd ) ------------------>
-export interface CartEntity {
+export interface CartDishEntity {
   idCart: number;
   quantity: number;
   dish: DishEntity;
@@ -12,12 +12,12 @@ export interface CartEntity {
 // <------------------ RESPONSE ------------------>
 export interface AddOneDishResponse {
   message: string;
-  cartItem: CartEntity;
+  cartItem: CartDishEntity;
 }
 
 export interface GetDishesByUserResponse {
   message: string;
-  cart: CartEntity[];
+  cart: CartDishEntity[];
   totalQuantity: number;
   totalPayment: number;
 }
@@ -32,5 +32,5 @@ export interface deleteAllDishesResponse extends DeleteOneDishResponse {}
 
 export interface GetDishByDishIdResponse {
   message: string;
-  cartItem: CartEntity;
+  cartItem: CartDishEntity;
 }

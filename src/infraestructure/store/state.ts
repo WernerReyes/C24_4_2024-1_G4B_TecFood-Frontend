@@ -1,5 +1,5 @@
 import type { AuthSliceState } from "./slice/auth.slice";
-import type { CartSliceState } from "./slice/cart.slice";
+import type { CartDishSliceState } from "./slice/cart-dish.slice";
 import type { DishOfferSliceState } from "./slice/dis-offer.slice";
 import type { DishCategorySliceState } from "./slice/dish-category.slice";
 import type { DishSliceState } from "./slice/dish.slice";
@@ -15,5 +15,5 @@ export interface AppState {
   auth: AuthSliceState;
   dish: DishSliceState;
   dishCategory: DishCategorySliceState;
-  cart: CartSliceState;
+  cartDish: CartDishSliceState;
 }

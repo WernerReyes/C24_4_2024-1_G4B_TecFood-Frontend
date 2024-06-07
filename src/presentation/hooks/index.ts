@@ -6,6 +6,6 @@ export * from "./useAuthStore";
 export * from "./useDishStore";
 export * from "./useDishCategoryStore";
 export * from "./useMessage";
-export * from "./useCartStore";
+export * from "./useCartDishStore";
 export * from "./usePaginator";
 

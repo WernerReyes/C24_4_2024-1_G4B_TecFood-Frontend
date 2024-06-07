@@ -13,9 +13,10 @@ export const AvatarMenu = ({ items }: Props) => {
     <>
       <Avatar
         image={user.img}
+        imageAlt="avatar"
         label={user.name[0].toUpperCase()}
         shape="circle"
-        className="bg-primary text-white"
+        className="bg-primary  text-white"
         onClick={(event) => menuLeft.current?.toggle(event)}
         aria-haspopup
       />
