@@ -23,10 +23,16 @@ export interface LoginUserModel {
   message: string;
 }
 
-export interface UpdateUserModel
-  extends Omit<UserModel, "createdAt" | "updatedAt" | "email"> {}
+export interface UpdateUserModel {
+  message: string;
+}
+export interface UploadProfileModel {
+  message: string;
+  profileUrl: string;
+}
 
-export interface UserState extends Omit<UserModel, "createdAt" | "updatedAt"> {}
+
+export interface UserState extends UserModel {}
 
 export const userEmptyState: UserState = {
   id: 0,
@@ -37,4 +43,6 @@ export const userEmptyState: UserState = {
   dni: "",
   img: "",
   role: "" as RoleEnum,
+  createdAt: "" as any as Date,
+  updatedAt: "" as any as Date,
 };

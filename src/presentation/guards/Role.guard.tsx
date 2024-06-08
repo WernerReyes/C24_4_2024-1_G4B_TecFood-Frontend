@@ -8,6 +8,10 @@ interface Props {
 }
 
 export const RoleGuard = ({ roles }: Props) => {
-  const { user } = useAuthStore();
-  return roles.includes(user.role) ? <Outlet /> : <Navigate to={PublicRoutes.HOME} />;
+  const { authenticatedUser } = useAuthStore();
+  return roles.includes(authenticatedUser.role) ? (
+    <Outlet />
+  ) : (
+    <Navigate to={PublicRoutes.HOME} />
+  );
 };

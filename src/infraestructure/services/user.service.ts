@@ -1,23 +1,25 @@
 import { userAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import { UserEntity } from "@/domain/entities";
-import { UpdateUserModel, UserModel } from "@/model";
+import { UpdateUserDto, UploadFileDto } from "@/domain/dtos";
+import { UpdateUserResponse, UserEntity } from "@/domain/entities";
+import { UpdateUserModel, UploadProfileModel, UserModel } from "@/model";
 
 export interface IUserService {
-  update(updateUserModel: UpdateUserModel): Promise<UserModel>;
+  update(updateUserDto: UpdateUserDto): Promise<UpdateUserModel>;
   getAll(): Promise<UserModel[]>;
+  uploadProfile(uploadProfileDto: UploadFileDto): Promise<UploadProfileModel>;
 }
 
 export class UserService implements IUserService {
   private baseURL = "/user";
-  public async update(updateUserModel: UpdateUserModel): Promise<UserModel> {
+  public async update(updateUserDto: UpdateUserDto): Promise<UpdateUserModel> {
     try {
-      const { data } = await httpRequest<UserEntity>(
-        `${this.baseURL}/${updateUserModel.id}`,
+      const { data } = await httpRequest<UpdateUserResponse>(
+        `${this.baseURL}/update`,
         "PUT",
-        updateUserModel,
+        updateUserDto,
       );
-      return userAdapter(data);
+      return data;
     } catch (error) {
       throw error;
     }
@@ -27,6 +29,21 @@ export class UserService implements IUserService {
     try {
       const { data } = await httpRequest<UserEntity[]>(this.baseURL, "GET");
       return data.map(userAdapter);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async uploadProfile({
+    file,
+  }: UploadFileDto): Promise<UploadProfileModel> {
+    try {
+      const { data } = await httpRequest<UploadProfileModel>(
+        `${this.baseURL}/upload-profile`,
+        "POST",
+        file,
+      );
+      return data;
     } catch (error) {
       throw error;
     }

@@ -1,14 +1,15 @@
+import { UpdateUserDto } from "@/domain/dtos";
 import { UserRepository } from "@/domain/interfaces";
-import { UpdateUserModel, UserModel } from "@/model";
+import { UpdateUserModel } from "@/model";
 
 interface UpdateUserUseCase {
-  execute(user: UpdateUserModel): Promise<UserModel>;
+  execute(updateUserDto: UpdateUserDto): Promise<UpdateUserModel>;
 }
 
 export class UpdateUser implements UpdateUserUseCase {
   constructor(private readonly repository: UserRepository) {}
 
-  async execute(user: UpdateUserModel): Promise<UserModel> {
-    return await this.repository.update(user);
+  async execute(updateUserDto: UpdateUserDto): Promise<UpdateUserModel> {
+    return await this.repository.update(updateUserDto);
   }
 }

@@ -9,13 +9,13 @@ interface Props {
 const PrivateValidationFragment = <Outlet />;
 
 export const AuthGuard = ({ privateValidation }: Props) => {
-  const { isAuthenticate, user } =  useAuthStore();
+  const { isAuthenticate, authenticatedUser } =  useAuthStore();
 
   return isAuthenticate ? (
     privateValidation ? (
       PrivateValidationFragment
     ) : (
-      <Navigate replace to={PrivateRoutes[routeRole(user.role)] as string} />
+      <Navigate replace to={PrivateRoutes[routeRole(authenticatedUser.role)] as string} />
     )
   ) : (
     <Navigate replace to={PublicRoutes.LOGIN} />

@@ -9,14 +9,14 @@ export enum AuthStatus {
 
 export type AuthSliceState = {
   status: AuthStatus;
-  user: UserState;
+  authenticatedUser: UserState;
 };
 
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
     status: AuthStatus.CHECKING,
-    user: userEmptyState,
+    authenticatedUser: userEmptyState,
   },
   reducers: {
     onCheking: (state) => {
@@ -24,13 +24,13 @@ export const authSlice = createSlice({
     },
 
     onLogin: (state, { payload }: PayloadAction<UserState>) => {
-      return { ...state, user: payload, status: AuthStatus.AUTHENTICATE };
+      return { ...state, authenticatedUser: payload, status: AuthStatus.AUTHENTICATE };
     },
 
     onLogout: (state) => {
       return {
         ...state,
-        user: userEmptyState,
+        authenticatedUser: userEmptyState,
         status: AuthStatus.NOT_AUTHENTICATE,
       };
     },

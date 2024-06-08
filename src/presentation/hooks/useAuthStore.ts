@@ -27,7 +27,7 @@ const authRepositoryImpl = new AuthRepositoryImpl(authService);
 
 export const useAuthStore = () => {
   const { startSetMessages } = useMessage();
-  const { user, status } = useSelector((state: AppState) => state.auth);
+  const { status, authenticatedUser } = useSelector((state: AppState) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -100,7 +100,7 @@ export const useAuthStore = () => {
 
   return {
     //* Attributes
-    user,
+    authenticatedUser,
     isAuthenticate: status === AuthStatus.AUTHENTICATE,
     isLoading: status === AuthStatus.CHECKING,
     status,

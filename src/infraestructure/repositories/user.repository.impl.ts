@@ -1,6 +1,7 @@
 import { UserRepository } from "@/domain/interfaces";
-import { UpdateUserModel, UserModel } from "@/model";
+import { UpdateUserModel, UploadProfileModel, UserModel } from "@/model";
 import { UserService } from "../services";
+import { UpdateUserDto, UploadFileDto } from "@/domain/dtos";
 
 export class UserRepositoryImpl implements UserRepository {
   constructor(private readonly userService: UserService) {}
@@ -9,7 +10,11 @@ export class UserRepositoryImpl implements UserRepository {
     return await this.userService.getAll();
   }
 
-  async update(updateUserModel: UpdateUserModel): Promise<UpdateUserModel> {
-    return await this.userService.update(updateUserModel);
+  async update(updateUserDto: UpdateUserDto): Promise<UpdateUserModel> {
+    return await this.userService.update(updateUserDto);
+  }
+
+  async uploadProfile(uploadProfileDto: UploadFileDto): Promise<UploadProfileModel> {
+    return await this.userService.uploadProfile(uploadProfileDto);
   }
 }

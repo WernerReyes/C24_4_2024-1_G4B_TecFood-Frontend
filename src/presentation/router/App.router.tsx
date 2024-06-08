@@ -25,7 +25,7 @@ const AdminPages = lazy(() => import("./Admin.router"));
 export const AppRouter = () => {
   const { isDark } = useTheme();
   const { isMobile } = useWindowSize();
-  const { startRevalidateToken, isLoading, user } = useAuthStore();
+  const { startRevalidateToken, isLoading, authenticatedUser } = useAuthStore();
   const { messages, type, startClearMessages } = useMessage();
 
   
@@ -58,7 +58,7 @@ export const AppRouter = () => {
         <Route
           path="/"
           element={
-            <Navigate to={PrivateRoutes[routeRole(user.role)] as string} />
+            <Navigate to={PrivateRoutes[routeRole(authenticatedUser.role)] as string} />
           }
         />
         <Route path={PublicRoutes.HOME} element={<HomePage />} />

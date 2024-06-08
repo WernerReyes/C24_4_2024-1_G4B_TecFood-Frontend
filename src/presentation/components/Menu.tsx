@@ -1,12 +1,12 @@
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { Menu as MenuPrimeReact, MenuProps} from "primereact/menu";
-import { MenuItem as MenuItemPrimeReact } from "primereact/menuitem";
+import { Menu as MenuPrimeReact, type MenuProps} from "primereact/menu";
+import { type MenuItem as MenuItemPrimeReact } from "primereact/menuitem";
 
 interface Props extends MenuProps {}
 
 export interface MenuItem extends MenuItemPrimeReact {}
 
-export interface MenuRef {
+export type MenuRef = {
   toggle(event: React.SyntheticEvent): void;
   show(event: React.SyntheticEvent): void;
   hide(event: React.SyntheticEvent): void;

@@ -7,10 +7,9 @@ export class PaginationDto {
     public readonly limit: number = 10,
   ) {}
 
-  public static create(object: { [key: string]: any }): [PaginationDto?, string[]?] {
-    const { page, limit } = object;
+  public static create(data: PaginationDto): [PaginationDto?, string[]?] {
     try {
-      const validatedData = paginationValidation.parse({ page, limit });
+      const validatedData = paginationValidation.parse(data);
       return [validatedData, undefined];
     } catch (error) {
       if (error instanceof ZodError)

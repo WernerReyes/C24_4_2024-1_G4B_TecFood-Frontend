@@ -10,13 +10,20 @@ export type UserSliceState = {
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    isLoading: true,
+    isLoading: false,
     user: userEmptyState,
     users: [] as UserState[],
   },
   reducers: {
     onLoadUser: (state, action: PayloadAction<UserState>) => {
       return { ...state, user: action.payload, isLoading: false };
+    },
+
+    onLoadProfile: (state, action: PayloadAction<string>) => {
+      return { ...state, user: {
+        ...state.user,
+        img: action.payload
+      }, isLoading: false };
     },
 
     onUpdateUser: (state, action: PayloadAction<UserState>) => {
@@ -39,6 +46,7 @@ export const userSlice = createSlice({
 
 export const {
   onUpdateUser,
+  onLoadProfile,
   deleteUser,
   onLoadUsers,
   onLoadingUsers,

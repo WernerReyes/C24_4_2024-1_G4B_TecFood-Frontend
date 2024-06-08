@@ -3,7 +3,7 @@ import { PaginationDto } from "../common";
 import { ZodError } from "zod";
 
 export class GetDishesDto extends PaginationDto {
-  constructor(
+  private constructor(
     public readonly page: number,
     public readonly limit: number,
     public readonly idCategory: { idCategory: number }[] | null,

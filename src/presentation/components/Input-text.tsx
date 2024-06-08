@@ -36,7 +36,7 @@ export const InputText = forwardRef<HTMLInputElement, Props>(
             className,
           )}
         />
-        {smallDescription && !error && <small>{smallDescription}</small>}
+        {smallDescription && error && <small className="text-red-400">{smallDescription}</small>}
       </div>
     );
   },

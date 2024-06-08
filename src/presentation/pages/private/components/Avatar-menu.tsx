@@ -1,6 +1,6 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Avatar, Menu, MenuItem, MenuRef } from "@/presentation/components";
-import { useAuthStore } from "@/presentation/hooks";
+import { useAuthStore, useUserStore } from "@/presentation/hooks";
 
 type Props = {
   items: MenuItem[];
@@ -8,15 +8,26 @@ type Props = {
 
 export const AvatarMenu = ({ items }: Props) => {
   const menuLeft = useRef<MenuRef>(null);
-  const { user, startLogout } = useAuthStore();
+  const { authenticatedUser, startLogout } = useAuthStore();
+  const { user } = useUserStore();
+  const [currentProfile, setCurrentProfile] = useState<string>("");
+
+  useEffect(() => {
+    if (user.img) setCurrentProfile(user.img);
+  }, [user.img]);
+
+  useEffect(() => {
+    if (authenticatedUser.img) setCurrentProfile(authenticatedUser.img);
+  }, [authenticatedUser.img]);
+
   return (
     <>
       <Avatar
-        image={user.img}
+        image={currentProfile}
         imageAlt="avatar"
-        label={user.name[0].toUpperCase()}
+        label={authenticatedUser.name[0].toUpperCase()}
         shape="circle"
-        className="bg-primary  text-white"
+        className="bg-primary border-2 border-primary text-white"
         onClick={(event) => menuLeft.current?.toggle(event)}
         aria-haspopup
       />

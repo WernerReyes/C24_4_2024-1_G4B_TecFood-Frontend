@@ -40,7 +40,7 @@ export const GoogleAuth = () => {
 
 const CustomGoogleLogin = () => {
   const navigate = useNavigate();
-  const { startGoogleLoginUser, user } = useAuthStore();
+  const { startGoogleLoginUser, authenticatedUser } = useAuthStore();
   const [isLoginGoogle, setIsLoadinGoogle] = useState(false);
 
   const handleGoogleLogin = () => {
@@ -63,7 +63,7 @@ const CustomGoogleLogin = () => {
         role: RoleEnum.ROLE_USER,
       });
       startGoogleLoginUser(loginGoogleUserDto).then(() => {
-        navigate(PrivateRoutes[routeRole(user.role)] as string)
+        navigate(PrivateRoutes[routeRole(authenticatedUser.role)] as string)
       });
     },
     onError: (error) => console.log("Login Failed:", error),
