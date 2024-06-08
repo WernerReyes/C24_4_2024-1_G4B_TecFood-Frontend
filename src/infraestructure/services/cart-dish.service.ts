@@ -6,6 +6,7 @@ import {
   deleteAllDishesResponse,
   GetDishesByUserResponse,
   GetDishByDishIdResponse,
+  GetTotalDishesByUserResponse,
 } from "@/domain/entities";
 import {
   AddOneDishModel,
@@ -13,6 +14,7 @@ import {
   DeleteAllDishesModel,
   GetDishesByUserModel,
   GetDishByDishIdModel,
+  GetTotalDishesByUserModel,
 } from "@/model";
 
 interface ICartDishService {
@@ -21,6 +23,7 @@ interface ICartDishService {
   deleteOneDish(dishId: number): Promise<DeleteOneDishModel>;
   deleteAllDishes(cartId: number): Promise<DeleteAllDishesModel>;
   getDishByDishId(dishId: number): Promise<GetDishByDishIdModel>;
+  getTotalDishesByUser(): Promise<GetTotalDishesByUserModel>;
 }
 
 export class CartDishService implements ICartDishService {
@@ -84,6 +87,18 @@ export class CartDishService implements ICartDishService {
         "GET",
       );
       return { ...data, cartItem: cartAdapter(data.cartItem) };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getTotalDishesByUser(): Promise<GetTotalDishesByUserModel> {
+    try {
+      const { data } = await httpRequest<GetTotalDishesByUserResponse>(
+        `${this.baseUrl}/total`,
+        "GET",
+      );
+      return data;
     } catch (error) {
       throw error;
     }

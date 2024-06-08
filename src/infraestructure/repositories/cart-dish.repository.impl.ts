@@ -24,4 +24,7 @@ export class CartDishRepositoryImpl implements CartDishRepository {
     return await this.CartDishService.getDishByDishId(dishId);
   }
 
+  async getTotalDishesByUser() {
+    return await this.CartDishService.getTotalDishesByUser();
+  }
 }

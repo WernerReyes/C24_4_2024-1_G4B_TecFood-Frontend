@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { RoleEnum } from "@/domain/entities";
 import { BreadCrumb, Sidebar } from "@/presentation/components";
-import { useWindowSize } from "@/presentation/hooks";
+import { useCartStore, useWindowSize } from "@/presentation/hooks";
 import { ThemeLayout } from "@/presentation/layout";
 import { FilterSection, Header } from "../components";
 
@@ -20,12 +20,17 @@ export const UserLayout = ({
   setVisibleSidebar,
 }: Props) => {
   const { isDesktop } = useWindowSize();
+  const { startLoadingTotalDishesByUser } = useCartStore();
 
   useEffect(() => {
     if (isDesktop && visibleSidebar) {
         setVisibleSidebar!(false);
     }
   }, [isDesktop]);
+
+  useEffect(() => {
+    startLoadingTotalDishesByUser();
+  }, []);
 
   return (
     <ThemeLayout to={SCROLL_ID} colorTheme="dark:bg-dashboard-dark bg-white dark:text-white">

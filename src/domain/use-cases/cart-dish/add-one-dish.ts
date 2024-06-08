@@ -6,7 +6,7 @@ interface AddOneDishUseCase {
 }
 
 export class AddOneDish implements AddOneDishUseCase {
-  constructor(private readonly repository: CartRepository) {}
+  constructor(private readonly repository: CartDishRepository) {}
 
   async execute(dishId: number): Promise<AddOneDishModel> {
     return await this.repository.addOneDish(dishId);

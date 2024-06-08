@@ -6,10 +6,13 @@ import { AvatarMenu, Sidebar, LinksToNavigate } from "../../../components";
 import { HeaderLayout } from "../../../layout";
 import { HeaderSeach } from "./Header-seach";
 
+const { USER, user: { HOME, DISHES, PROFILE } } = PrivateRoutes;
+
 const ITEMS: MenuItem[] = [
   {
     label: "Settings",
     icon: "pi pi-cog",
+    url: USER + "/" + PROFILE,
   },
   {
     label: "Logout",
@@ -17,12 +20,9 @@ const ITEMS: MenuItem[] = [
   },
 ];
 
-const { USER } = PrivateRoutes;
-
 const LINKS_SIDEBAR = [
-  { label: "Home", url: USER + "/home" },
-  { label: "Dishes", url: USER + "/dishes" },
-  { label: "Profile", url: USER + "/profile" },
+  { label: "Home", url: USER + "/" + HOME },
+  { label: "Dishes", url: USER + "/" + DISHES },
   { label: "Women", url: USER + "/home2" },
   { label: "Kids", url: USER + "/home3" },
   { label: "Accessories", url: USER + "/home4" },

@@ -34,3 +34,8 @@ export interface GetDishByDishIdResponse {
   message: string;
   cartItem: CartDishEntity;
 }
+
+export interface GetTotalDishesByUserResponse {
+  message: string;
+  totalQuantity: number;
+}

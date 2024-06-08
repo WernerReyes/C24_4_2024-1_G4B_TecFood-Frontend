@@ -33,6 +33,11 @@ export interface GetDishByDishIdModel {
   cartItem: CartDishModel;
 }
 
+export interface GetTotalDishesByUserModel {
+  message: string;
+  totalQuantity: number;
+}
+
 // <------------------ STATE ------------------>
 
 export interface CartState {

@@ -1,22 +1,24 @@
-import { useDispatch, useSelector } from "react-redux";
+import {
+  AddOneDish,
+  DeleteAllDishes,
+  DeleteOneDish,
+  GetDishByDishId,
+  GetDishesByUser,
+  GetTotalDishesByUser,
+} from "@/domain/use-cases";
 import { CartDishRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
   TypeMessage,
   onAddOneDish,
   onDeleteOneDish,
-  ondeleteAllDishes,
   onLoadCartDish,
-  onLoadingCartDish,
   onLoadCartDishItem,
+  onLoadTotalDishesByUser,
+  onLoadingCartDish,
+  ondeleteAllDishes,
 } from "@/infraestructure/store";
-import {
-  AddOneDish,
-  DeleteOneDish,
-  GetDishesByUser,
-  DeleteAllDishes,
-  GetDishByDishId,
-} from "@/domain/use-cases";
+import { useDispatch, useSelector } from "react-redux";
 import { CartDishService } from "../../infraestructure/services";
 import { useMessage } from "./useMessage";
 
@@ -27,9 +29,8 @@ export const useCartStore = () => {
   const dispatch = useDispatch();
   const { startSetMessages } = useMessage();
 
-  const { isLoading, cart, cartItem, totalQuantity, totalPayment } = useSelector(
-    (state: AppState) => state.cartDish,
-  );
+  const { isLoading, cart, cartItem, totalQuantity, totalPayment } =
+    useSelector((state: AppState) => state.cartDish);
 
   const startAddOneDish = async (dishId: number) => {
     dispatch(onLoadingCartDish());
@@ -74,7 +75,6 @@ export const useCartStore = () => {
         dispatch(
           onLoadCartDish({
             cart: data.cart,
-            totalQuantity: data.totalQuantity,
             totalPayment: data.totalPayment,
           }),
         );
@@ -100,6 +100,18 @@ export const useCartStore = () => {
       });
   };
 
+  const startLoadingTotalDishesByUser = async () => {
+    dispatch(onLoadingCartDish());
+    await new GetTotalDishesByUser(cartDishRepositoryImpl)
+      .execute()
+      .then(({ totalQuantity }) =>
+        dispatch(onLoadTotalDishesByUser(totalQuantity)),
+      )
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   return {
     //* Attributes
     totalPayment,
@@ -113,6 +125,7 @@ export const useCartStore = () => {
     startDeleteOneDish,
     startdeleteAllDishes,
     startLoadingDishesByUser,
+    startLoadingTotalDishesByUser,
     startLoadingDishByDishId,
   };
 };

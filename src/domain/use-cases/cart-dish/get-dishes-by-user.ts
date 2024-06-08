@@ -6,7 +6,7 @@ interface GetDishesByUserUseCase {
 }
 
 export class GetDishesByUser implements GetDishesByUserUseCase {
-  constructor(private readonly repository: CartRepository) {}
+  constructor(private readonly repository: CartDishRepository) {}
 
   async execute(): Promise<GetDishesByUserModel> {
     return await this.repository.getDishesByUser();

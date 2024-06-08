@@ -6,7 +6,7 @@ interface DeleteOneDishUseCase {
 }
 
 export class DeleteOneDish implements DeleteOneDishUseCase {
-  constructor(private readonly repository: CartRepository) {}
+  constructor(private readonly repository: CartDishRepository) {}
 
   async execute(dishId: number): Promise<DeleteOneDishModel> {
     return await this.repository.deleteOneDish(dishId);

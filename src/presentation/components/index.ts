@@ -24,4 +24,4 @@ export * from "./Slider";
 export * from "./Tooltip";
 export * from "./Galleria";
 export * from "./Chip";
-export * from "./FileUpload";
+export * from "./File-upload";

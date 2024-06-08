@@ -6,7 +6,7 @@ interface GetDishByDishIdUseCase {
 }
 
 export class GetDishByDishId implements GetDishByDishIdUseCase {
-  constructor(private readonly repository: CartRepository) {}
+  constructor(private readonly repository: CartDishRepository) {}
 
   async execute(dishId: number): Promise<GetDishByDishIdModel> {
     return await this.repository.getDishByDishId(dishId);
