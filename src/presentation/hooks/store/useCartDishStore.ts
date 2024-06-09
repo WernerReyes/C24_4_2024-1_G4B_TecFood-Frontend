@@ -19,8 +19,8 @@ import {
   ondeleteAllDishes,
 } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
-import { CartDishService } from "../../infraestructure/services";
-import { useMessage } from "./useMessage";
+import { CartDishService } from "../../../infraestructure/services";
+import { useMessage } from "../";
 
 const cartDishService = new CartDishService();
 const cartDishRepositoryImpl = new CartDishRepositoryImpl(cartDishService);

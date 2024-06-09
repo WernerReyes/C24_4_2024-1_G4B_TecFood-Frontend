@@ -19,7 +19,7 @@ import {
   onLogout,
 } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
-import { useMessage } from "./useMessage";
+import { useMessage } from "../useMessage";
 import { AuthService } from "@/infraestructure/services";
 
 const authService = new AuthService();

@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
 import clsx from "clsx";
-import { CardSkeleton, Image, Link, Tooltip } from "@/presentation/components";
-import { Heart } from "../../../components";
-import { AddAndRemoveDish, ButtonAddAndRemoveDish } from "../";
 import { DishState } from "@/model";
-import { useCartStore, useMessage } from "@/presentation/hooks";
-import { TypeMessage } from "@/infraestructure/store";
+import { CardSkeleton, Image, Link, Tooltip } from "@/presentation/components";
+import { useCart } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
+import { AddAndRemoveDish, ButtonAddAndRemoveDish } from "../";
+import { Heart } from "../../../components";
 
 const {
   USER,
@@ -19,33 +17,15 @@ type Props = {
 };
 
 export const CardList = ({ dish, quantity }: Props) => {
-  const { startSetMessages } = useMessage();
-  const { startAddOneDish, totalQuantity } = useCartStore();
-  const [isAddToCart, setIsAddToCart] = useState<boolean>(false);
-  const [quantityMemory, setQuantityMemory] = useState<number>(0);
-  const [loaded, setLoaded] = useState(false);
-
-  const handleAddToCart = () => {
-    if (quantityMemory > 5 || totalQuantity > 5)
-      return startSetMessages(
-        ["You can't add more than 5 items"],
-        TypeMessage.ERROR,
-      );
-
-    startAddOneDish(dish.id).then(() => {
-      setQuantityMemory(quantityMemory + 1);
-      setIsAddToCart(true);
-    });
-  };
-
-  const handleLoaded = () => setLoaded(true);
-
-  useEffect(() => {
-    if (quantity > 0) {
-      setIsAddToCart(true);
-      setQuantityMemory(quantity);
-    }
-  }, [quantity]);
+  const {
+    isAddToCart,
+    quantityMemory,
+    handleAddToCart,
+    loaded,
+    handleLoaded,
+    handleRemoveToCart,
+    handleResetCart,
+  } = useCart(dish.id, quantity, "card");
 
   return (
     <>
@@ -85,20 +65,16 @@ export const CardList = ({ dish, quantity }: Props) => {
                 </p>
                 <div className="mb-6 flex  flex-wrap items-center gap-4 md:flex-nowrap">
                   <ButtonAddAndRemoveDish
-                    dishId={dish.id}
                     isAddToCart={isAddToCart}
-                    setIsAddToCart={setIsAddToCart}
+                    handleResetCart={handleResetCart}
                     quantityMemory={quantityMemory}
-                    setQuantityMemory={setQuantityMemory}
                     handleAddToCart={handleAddToCart}
                   />
                   <AddAndRemoveDish
-                    dishId={dish.id}
                     isAddToCart={isAddToCart}
-                    setIsAddToCart={setIsAddToCart}
                     handleAddToCart={handleAddToCart}
                     quantityMemory={quantityMemory}
-                    setQuantityMemory={setQuantityMemory}
+                    handleRemoveToCart={handleRemoveToCart}
                   />
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { useTheme } from "../hooks";
+import { useThemeStore } from "../hooks";
 import { Button, Link } from "./";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const ChangeTheme = ({ to, offset, duration }: Props) => {
-  const { currentTheme, startChangingTheme, startLoadTheme } = useTheme();
+  const { currentTheme, startChangingTheme, startLoadTheme } = useThemeStore();
   const [isHovered, setIsHovered] = useState(false);
 
   const handleChangeTheme = () => startChangingTheme(currentTheme);

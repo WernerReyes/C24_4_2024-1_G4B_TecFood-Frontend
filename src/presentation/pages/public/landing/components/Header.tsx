@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import { Image, Link, AlertOffers } from "@/presentation/components";
-import { useTheme, useWindowSize } from "@/presentation/hooks";
+import { useThemeStore, useWindowSize } from "@/presentation/hooks";
 import { responsiveDesign } from "@/presentation/utilities";
 import { PublicRoutes } from "@/presentation/routes";
 
@@ -10,7 +10,7 @@ const { lg: SCREEN_WIDTH_LG, sm: SCREEN_WIDTH_SM } = responsiveDesign;
 const DURATION = 700;
 
 export const Header = () => {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeStore();
   const { width } = useWindowSize();
   const [hiddenNavbar, setHiddenNavbar] = useState(true);
   const [activeLink, setActiveLink] = useState("home");

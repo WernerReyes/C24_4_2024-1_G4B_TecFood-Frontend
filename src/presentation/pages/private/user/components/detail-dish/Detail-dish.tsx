@@ -1,33 +1,27 @@
-import { useEffect, useState } from "react";
-import clsx from "clsx";
-import { useCartStore, useDishStore, useMessage } from "@/presentation/hooks";
-import { ButtonAddAndRemoveDish, AddAndRemoveDish, DetailDishSkeleton } from "../";
-import { TypeMessage } from "@/infraestructure/store";
 import { Chip, Image } from "@/presentation/components";
+import { useCart, useCartStore, useDishStore } from "@/presentation/hooks";
+import clsx from "clsx";
+import { useEffect, useState } from "react";
+import {
+  AddAndRemoveDish,
+  ButtonAddAndRemoveDish,
+  DetailDishSkeleton,
+} from "../";
 import { Heart } from "../../../components";
 
 export const DetailDish = () => {
-  const { startSetMessages } = useMessage();
-  const { cart, totalQuantity, startAddOneDish } = useCartStore();
+  const { cart } = useCartStore();
   const { dish } = useDishStore();
-  const [isAddToCart, setIsAddToCart] = useState<boolean>(false);
-  const [loaded, setLoaded] = useState(false);
   const [quantity, setQuantity] = useState<number>(0);
-
-  const handleAddToCart = () => {
-    if (quantity > 5 || totalQuantity > 5)
-      return startSetMessages(
-        ["You can't add more than 5 items"],
-        TypeMessage.ERROR,
-      );
-
-    startAddOneDish(dish.id).then(() => {
-      setQuantity(quantity + 1);
-      setIsAddToCart(true);
-    });
-  };
-
-  const handleLoaded = () => setLoaded(true);
+  const {
+    handleAddToCart,
+    handleRemoveToCart,
+    setIsAddToCart,
+    isAddToCart,
+    loaded,
+    handleLoaded,
+    handleResetCart,
+  } = useCart(dish.id, quantity, "card");
 
   useEffect(() => {
     const item = cart.find((item) => item.dish.id === dish.id);
@@ -43,9 +37,12 @@ export const DetailDish = () => {
   return (
     <>
       {!loaded && <DetailDishSkeleton />}
-      <section className={clsx("grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10", 
-        loaded ? "visible" : "hidden"
-      )}>
+      <section
+        className={clsx(
+          "grid grid-cols-1 lg:grid-cols-2 lg:gap-x-10",
+          loaded ? "visible" : "hidden",
+        )}
+      >
         <div className="group mb-5 h-full lg:mb-0">
           <Image
             src={dish.img}
@@ -74,22 +71,18 @@ export const DetailDish = () => {
 
           <div className="mb-5 mt-auto flex items-center">
             <ButtonAddAndRemoveDish
-            className="me-4"
-              dishId={dish.id}
+              className="me-4"
               isAddToCart={isAddToCart}
-              setIsAddToCart={setIsAddToCart}
               quantityMemory={quantity}
-              setQuantityMemory={setQuantity}
+              handleResetCart={handleResetCart}
               handleAddToCart={handleAddToCart}
             />
             <AddAndRemoveDish
               className="me-4"
-              dishId={dish.id}
               isAddToCart={isAddToCart}
               handleAddToCart={handleAddToCart}
               quantityMemory={quantity}
-              setQuantityMemory={setQuantity}
-              setIsAddToCart={setIsAddToCart}
+              handleRemoveToCart={handleRemoveToCart}
             />
             <Heart iconClassName="text-3xl" />
           </div>

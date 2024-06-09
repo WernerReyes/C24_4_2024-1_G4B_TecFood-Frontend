@@ -5,14 +5,14 @@ import { LoginUserDto } from "@/domain/dtos";
 import { TypeMessage } from "@/infraestructure/store";
 import { loginUserValidation } from "@/infraestructure/validations";
 import { Button, InputPassword, InputText } from "@/presentation/components";
-import { useAuthStore, useMessage, useTheme } from "@/presentation/hooks";
+import { useAuthStore, useMessage, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
 import { fromObjectToArray } from "@/presentation/utilities";
 import { useNavigate } from "react-router-dom";
 import { AuthLayout } from "../../layout";
 
 export const LoginPage = () => {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeStore();
   const { isLoading, startLoginUser } = useAuthStore();
   const { startSetMessages } = useMessage();
   const navigate = useNavigate();

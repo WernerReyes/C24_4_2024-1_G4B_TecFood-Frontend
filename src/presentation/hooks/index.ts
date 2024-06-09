@@ -1,11 +1,15 @@
-export * from "./useUserStore";
-export * from "./useTheme";
-export * from "./useDishOffer";
-export * from "./useWindowSize";
-export * from "./useAuthStore";
-export * from "./useDishStore";
-export * from "./useDishCategoryStore";
-export * from "./useMessage";
-export * from "./useCartDishStore";
-export * from "./usePaginator";
+// <-- Store hook import goes here -->
+export * from "./store/useAuthStore";
+export * from "./store/useCartDishStore";
+export * from "./store/useDishCategoryStore";
+export * from "./store/useDishStore";
+export * from "./store/useDishStore";
+export * from "./store/useThemeStore";
+export * from "./store/useUserStore";
 
+
+export * from "./useCart";
+export * from "./useDishOffer";
+export * from "./useMessage";
+export * from "./usePaginator";
+export * from "./useWindowSize";

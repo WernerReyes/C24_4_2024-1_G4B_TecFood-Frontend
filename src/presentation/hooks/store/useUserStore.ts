@@ -9,7 +9,7 @@ import {
   onLoadingUsers,
 } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
-import { useMessage } from "./useMessage";
+import { useMessage } from "../";
 
 const userService = new UserService();
 const userRepositoryImpl = new UserRepositoryImpl(userService);

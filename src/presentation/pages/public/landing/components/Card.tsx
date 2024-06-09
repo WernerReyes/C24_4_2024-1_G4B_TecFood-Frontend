@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useTheme } from "@/presentation/hooks";
+import { useThemeStore } from "@/presentation/hooks";
 import {
   Button,
   Image,
@@ -32,7 +32,7 @@ export const Card = ({
   price,
   priceOffer,
 }: Props) => {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeStore();
   const ratingFormat = formatNumber(rating);
 
   return (

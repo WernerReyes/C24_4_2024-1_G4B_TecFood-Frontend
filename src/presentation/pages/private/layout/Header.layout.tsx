@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { AlertOffers, Image } from "@/presentation/components";
-import { useTheme } from "@/presentation/hooks";
+import { useThemeStore } from "@/presentation/hooks";
 
 type Props = {
   children?: ReactNode;
@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const HeaderLayout = ({ children, scrollId }: Props) => {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeStore();
   return (
     <header
       id={scrollId}

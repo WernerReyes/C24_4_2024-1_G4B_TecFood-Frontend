@@ -1,68 +1,34 @@
-import { useEffect, useState } from "react";
 import clsx from "clsx";
-import { TypeMessage } from "@/infraestructure/store";
-import {
-  CardSkeleton,
-  Image,
-  Link,
-  Tooltip,
-} from "@/presentation/components";
-import { useCartStore, useMessage } from "@/presentation/hooks";
-import { ButtonAddAndRemoveDish, AddAndRemoveDish } from "../";
+import { CardSkeleton, Image, Link, Tooltip } from "@/presentation/components";
+import { useCart } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
+import { AddAndRemoveDish, ButtonAddAndRemoveDish } from "../";
 import { Heart } from "../../../components";
+import { DishState } from "@/model";
 
-
-const { USER, user: { DISHES } } = PrivateRoutes;
+const {
+  USER,
+  user: { DISHES },
+} = PrivateRoutes;
 
 type Props = {
-  dishId: number;
-  imgSrc: string;
-  title: string;
-  price: number;
-  stock: number;
+  dish: DishState;
   quantity: number;
 };
 
-
 export const Card = ({
-  dishId,
-  imgSrc,
-  title,
-  price,
-  stock,
+  dish,
   quantity,
 }: Props) => {
-  const { startSetMessages } = useMessage();
   const {
-    startAddOneDish,
-    totalQuantity,
-  } = useCartStore();
-  const [isAddToCart, setIsAddToCart] = useState<boolean>(false);
-  const [quantityMemory, setQuantityMemory] = useState<number>(0);
-  const [loaded, setLoaded] = useState(false);
-
-  const handleAddToCart = () => {
-    if (quantityMemory > 5 || totalQuantity > 5)
-      return startSetMessages(
-        ["You can't add more than 5 items"],
-        TypeMessage.ERROR,
-      );
-
-    startAddOneDish(dishId).then(() => {
-      setQuantityMemory(quantityMemory + 1);
-      setIsAddToCart(true);
-    });
-  };
-
-  const handleLoaded = () => setLoaded(true);
-
-  useEffect(() => {
-    if (quantity > 0) {
-      setIsAddToCart(true);
-      setQuantityMemory(quantity);
-    }
-  }, [quantity]);
+    isAddToCart,
+    quantityMemory,
+    handleAddToCart,
+    handleRemoveToCart,
+    handleResetCart,
+    loaded,
+    handleLoaded,
+  } = useCart(dish.id, quantity, "card");
 
   return (
     <>
@@ -76,22 +42,22 @@ export const Card = ({
         <div className="group relative divide-y overflow-hidden rounded-lg">
           <div className="mx-auto mb-4">
             <Tooltip target=".img-dish" mouseTrack mouseTrackTop={10} />
-            <Link unstyled to={`${USER}/${DISHES}/${dishId}`}>
-            <Image
-              className="img-dish"
-              unstyled
-              src={imgSrc}
-              alt={title}
-              onLoad={handleLoaded}
-              imageClassName="rounded-lg w-full h-52 object-cover transition-all group-hover:scale-105"
-              data-pr-tooltip={`Stock: ${stock}`}
-            />
+            <Link unstyled to={`${USER}/${DISHES}/${dish.id}`}>
+              <Image
+                className="img-dish"
+                unstyled
+                src={dish.img}
+                alt={dish.name}
+                onLoad={handleLoaded}
+                imageClassName="rounded-lg w-full h-52 object-cover transition-all group-hover:scale-105"
+                data-pr-tooltip={`Stock: ${dish.stock}`}
+              />
             </Link>
           </div>
           <div className="pt-2 dark:border-slate-700">
             <div className="mb-4 flex items-center justify-between">
-              <Link unstyled to="/user" className="text-xl font-semibold">
-                {title}
+              <Link unstyled to={`${USER}/${DISHES}/${dish.id}`} className="text-xl font-semibold">
+                {dish.name}
               </Link>
               <Heart />
             </div>
@@ -103,24 +69,20 @@ export const Card = ({
             </span>
             <div className="mb-4 flex items-end justify-between">
               <h4 className="text-default-900 text-2xl font-semibold leading-9">
-                S/.{price}
+                S/.{dish.price}
               </h4>
               <AddAndRemoveDish
-                dishId={dishId}
                 isAddToCart={isAddToCart}
                 handleAddToCart={handleAddToCart}
                 quantityMemory={quantityMemory}
-                setQuantityMemory={setQuantityMemory}
-                setIsAddToCart={setIsAddToCart}
+                handleRemoveToCart={handleRemoveToCart}
               />
             </div>
             <ButtonAddAndRemoveDish
-              dishId={dishId}
               isAddToCart={isAddToCart}
-              setIsAddToCart={setIsAddToCart}
               quantityMemory={quantityMemory}
-              setQuantityMemory={setQuantityMemory}
               handleAddToCart={handleAddToCart}
+              handleResetCart={handleResetCart}
             />
           </div>
         </div>

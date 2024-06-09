@@ -12,9 +12,9 @@ import {
 } from "@/infraestructure/store";
 import { DishFilters, DishState } from "@/model";
 import { useDispatch, useSelector } from "react-redux";
-import { DishService } from "../../infraestructure/services";
-import { getStorage, setStorage } from "../utilities";
-import { useMessage } from "./useMessage";
+import { DishService } from "../../../infraestructure/services";
+import { getStorage, setStorage } from "../../utilities";
+import { useMessage } from "../";
 
 const dishService = new DishService();
 const dishRepositoryImpl = new DishRepositoryImpl(dishService);

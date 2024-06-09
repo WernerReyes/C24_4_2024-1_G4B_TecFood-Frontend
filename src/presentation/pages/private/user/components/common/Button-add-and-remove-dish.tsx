@@ -3,34 +3,22 @@ import { useCartStore } from "@/presentation/hooks";
 import clsx from "clsx";
 
 type Props = {
-  dishId: number;
   isAddToCart: boolean;
-  setIsAddToCart: (value: boolean) => void;
   quantityMemory: number;
-  setQuantityMemory: (value: number) => void;
   handleAddToCart: () => void;
+  handleResetCart: () => void;
   className?: string;
 };
 
 export const ButtonAddAndRemoveDish = ({
-  dishId,
   isAddToCart,
-  setIsAddToCart,
   quantityMemory,
-  setQuantityMemory,
+  handleResetCart,
   handleAddToCart,
   className,
 }: Props) => {
-  const { startdeleteAllDishes, totalQuantity } =
-    useCartStore();
-  
-  const handleResetCart = () => {
-    startdeleteAllDishes(dishId).then(() => {
-      setQuantityMemory(0);
-      setIsAddToCart(false);
-    });
-  };
-  
+  const { totalQuantity } = useCartStore();
+
   return (
     <section className={className}>
       <Button

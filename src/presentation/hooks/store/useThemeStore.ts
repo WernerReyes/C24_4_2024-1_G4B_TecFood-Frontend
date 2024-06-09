@@ -1,6 +1,6 @@
 import { AppState, changeTheme } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
-import { setStorage } from "../utilities";
+import { setStorage } from "../../utilities";
 
 const localStorageTheme = (theme: string) => {
   if (theme === "light") {
@@ -13,7 +13,7 @@ const localStorageTheme = (theme: string) => {
   document.querySelector("#theme-link")?.setAttribute("href", `/themes/lara-${theme}-cyan/theme.css`);
 };
 
-export const useTheme = () => {
+export const useThemeStore = () => {
   const dispatch = useDispatch();
 
   const { currentTheme } = useSelector((state: AppState) => state.themes);

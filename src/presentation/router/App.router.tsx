@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import { ProgressSpinner } from "../components";
 import { AuthGuard, RoleGuard } from "../guards";
-import { useAuthStore, useTheme, useWindowSize } from "../hooks";
+import { useAuthStore, useThemeStore, useWindowSize } from "../hooks";
 import { useMessage } from "../hooks/useMessage";
 import { PrivateRoutes, PublicRoutes } from "../routes";
 import {
@@ -23,7 +23,7 @@ const UserPages = lazy(() => import("./User.router"));
 const AdminPages = lazy(() => import("./Admin.router"));
 
 export const AppRouter = () => {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeStore();
   const { isMobile } = useWindowSize();
   const { startRevalidateToken, isLoading, authenticatedUser } = useAuthStore();
   const { messages, type, startClearMessages } = useMessage();

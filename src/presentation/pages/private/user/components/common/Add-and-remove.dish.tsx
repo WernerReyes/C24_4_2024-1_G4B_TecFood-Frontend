@@ -6,12 +6,10 @@ const DEFAULT_CLASS_NAME =
   "relative z-10 items-center justify-between rounded-full border border-slate-300 p-1 dark:border-slate-700";
 
 type Props = {
-  dishId: number;
   isAddToCart: boolean;
   handleAddToCart: () => void;
   quantityMemory: number;
-  setQuantityMemory: (value: number) => void;
-  setIsAddToCart: (value: boolean) => void;
+  handleRemoveToCart: () => void;
   className?: string;
   unstyled?: boolean;
 };
@@ -20,23 +18,11 @@ export const AddAndRemoveDish = ({
   isAddToCart,
   handleAddToCart,
   quantityMemory,
-  setQuantityMemory,
-  setIsAddToCart,
-  dishId,
+  handleRemoveToCart,
   className,
   unstyled,
 }: Props) => {
-  const { startDeleteOneDish, totalQuantity, isLoading } = useCartStore();
-
-  const handleRemoveToCart = () => {
-    startDeleteOneDish(dishId).then(() => {
-      setQuantityMemory(quantityMemory - 1);
-    });
-
-    if (quantityMemory === 1) {
-      setIsAddToCart(false);
-    }
-  };
+  const { totalQuantity, isLoading } = useCartStore();
 
   return (
     <section

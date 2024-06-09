@@ -59,7 +59,6 @@ export const cartSlice = createSlice({
     },
 
     onLoadTotalDishesByUser(state, action: PayloadAction<number>) {
-      console.log("action.payload", action.payload);
       return { ...state, totalQuantity: action.payload, isLoading: false };
     },
 

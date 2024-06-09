@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ProgressSpinner as ProgressSpinnerPrimerReact } from "primereact/progressspinner";
 import type { ProgressSpinnerProps } from "primereact/progressspinner";
-import { useTheme } from "../hooks";
+import { useThemeStore } from "../hooks";
 
 interface Props extends ProgressSpinnerProps {
   containerClassName?: string;
@@ -15,7 +15,7 @@ export const ProgressSpinner = ({
   lightColor,
   ...props
 }: Props) => {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeStore();
   return (
     <div
       className={clsx(

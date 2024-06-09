@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Badge, Button, MenuItem } from "@/presentation/components";
+import { Badge, Button, Link, MenuItem } from "@/presentation/components";
 import { useCartStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import { AvatarMenu, Sidebar, LinksToNavigate } from "../../../components";
 import { HeaderLayout } from "../../../layout";
 import { HeaderSeach } from "./Header-seach";
 
-const { USER, user: { HOME, DISHES, PROFILE } } = PrivateRoutes;
+const {
+  USER,
+  user: { HOME, DISHES, PROFILE, CART },
+} = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [
   {
@@ -48,7 +51,7 @@ export const Header = ({ scrollId }: Props) => {
         links={LINKS_SIDEBAR}
       />
       <ul className="hidden items-center space-x-6 lg:flex">
-        <LinksToNavigate links={LINKS_SIDEBAR}  /> 
+        <LinksToNavigate links={LINKS_SIDEBAR} />
       </ul>
 
       <div className="ml-auto flex  gap-y-4">
@@ -60,13 +63,18 @@ export const Header = ({ scrollId }: Props) => {
           <i className="pi pi-heart-fill p-overlay-badge text-2xl text-red-600">
             <Badge value="0" className="bg-primary text-white" size="normal" />
           </i>
-          <i className="pi pi-shopping-cart p-overlay-badge text-2xl text-black dark:text-white">
+          <Link
+            unstyled
+            className="pi pi-shopping-cart p-overlay-badge text-2xl text-black dark:text-white"
+            to={USER + "/" + CART}
+          >
             <Badge
               value={totalQuantity}
               className="bg-primary text-white"
               size="normal"
             />
-          </i>
+          </Link>
+
           <AvatarMenu items={ITEMS} />
           <Button unstyled onClick={handleToggleOpen} className="lg:hidden">
             <i className="pi pi-bars text-2xl text-black dark:text-white"></i>

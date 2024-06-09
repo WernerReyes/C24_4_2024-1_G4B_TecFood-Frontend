@@ -7,6 +7,7 @@ export type IPrivateRoutes = {
     HOME: string;
     DISHES: string;
     PROFILE: string;
+    CART: string;
   };
   ADMIN: string;
   admin: {
@@ -23,6 +24,7 @@ export const PrivateRoutes: IPrivateRoutes = {
     HOME: "home",
     DISHES: "dishes",
     PROFILE: "profile",
+    CART: "cart",
   },
 
   // <-- ADMIN ROUTES -->

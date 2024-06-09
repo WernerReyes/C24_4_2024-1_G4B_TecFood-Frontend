@@ -46,11 +46,7 @@ export const Dishes = () => {
           dishes.map((dish) => (
             <Card
               key={dish.id}
-              dishId={dish.id}
-              imgSrc={dish.img}
-              title={dish.name}
-              price={dish.price}
-              stock={dish.stock}
+              dish={dish}
               quantity={handleLoadCartQuantity(dish)}
             />
           ))

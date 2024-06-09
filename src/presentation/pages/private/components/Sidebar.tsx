@@ -2,7 +2,7 @@ import {
   Image,
   Sidebar as SidebarComponent
 } from "@/presentation/components";
-import { useTheme } from "@/presentation/hooks";
+import { useThemeStore } from "@/presentation/hooks";
 import { LinksToNavigate } from "./Links-to-navigate";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const Sidebar = ({ collapseMenu, handleToggleClose, links }: Props) => {
-  const { isDark } = useTheme();
+  const { isDark } = useThemeStore();
 
   return (
     <SidebarComponent visible={collapseMenu} onHide={handleToggleClose}>
