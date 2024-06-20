@@ -8,6 +8,7 @@ type Props = {
   handleAddToCart: () => void;
   handleResetCart: () => void;
   className?: string;
+  stock: number;
 };
 
 export const ButtonAddAndRemoveDish = ({
@@ -16,6 +17,7 @@ export const ButtonAddAndRemoveDish = ({
   handleResetCart,
   handleAddToCart,
   className,
+  stock,
 }: Props) => {
   const { totalQuantity } = useCartStore();
 
@@ -24,7 +26,7 @@ export const ButtonAddAndRemoveDish = ({
       <Button
         unstyled
         onClick={handleAddToCart}
-        disabled={quantityMemory >= 5 || totalQuantity >= 5}
+        disabled={quantityMemory >= 5 || totalQuantity >= 5 || stock === 0}
         className={clsx(
           isAddToCart ? "hidden" : "inline-flex",
           "relative z-10 !w-full items-center  justify-center rounded-lg bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-primary-dark disabled:bg-primary-lighter disabled:dark:cursor-not-allowed lg:w-auto",

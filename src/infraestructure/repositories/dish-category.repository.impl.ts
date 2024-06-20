@@ -1,4 +1,4 @@
-import type { DishCategoryRepository } from "@/domain/interfaces";
+import type { DishCategoryRepository } from "@/domain/repositories";
 import { DishCategoryService } from "../services";
 
 export class DishCategoryRepositoryImpl implements DishCategoryRepository {

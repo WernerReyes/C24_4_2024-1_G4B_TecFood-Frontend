@@ -1,4 +1,4 @@
-import type { AuthRepository } from "@/domain/interfaces";
+import type { AuthRepository } from "@/domain/repositories";
 import type { LoginUserModel } from "@/model";
 import { LoginGoogleUserDto } from "../../dtos/auth";
 

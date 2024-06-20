@@ -15,7 +15,10 @@ export const DishesList = () => {
   };
 
   return (
-    <DishesLayout rowPerPage={ROW_PER_PAGE} paginator={dishes.length > 0}>
+    <DishesLayout
+      rowPerPage={ROW_PER_PAGE}
+      paginators={dishes.length > 0 ? [true, true] : [false, false]}
+    >
       <section className="grid grid-cols-1 gap-5">
         {dishes.length ? (
           dishes.map((dish) => (

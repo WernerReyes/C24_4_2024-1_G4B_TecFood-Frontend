@@ -6,6 +6,8 @@ export * from "./store/useDishStore";
 export * from "./store/useDishStore";
 export * from "./store/useThemeStore";
 export * from "./store/useUserStore";
+export * from "./store/useOrderDishStore";
+export * from "./store/useOrderDishItemStore"
 
 
 export * from "./useCart";

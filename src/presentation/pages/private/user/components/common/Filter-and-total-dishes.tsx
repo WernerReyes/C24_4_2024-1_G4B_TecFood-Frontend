@@ -8,7 +8,7 @@ type Props = {
 export const FilterAndTotalDishes = ({ setVisbleSidebar }: Props) => {
   const { total } = useDishStore();
   return (
-    <section className="m-0 mb-5 flex items-center justify-between  p-0">
+    <section className="m-0 mb-5 flex items-center justify-between p-0">
       <Button
         className="lg:hidden"
         icon={<Image src="/svg/filter.svg" alt="filter" />}

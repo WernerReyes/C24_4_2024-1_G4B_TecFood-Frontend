@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { DishModel } from "@/model";
 import { Image } from "@/presentation/components";
 import {
@@ -5,7 +6,6 @@ import {
   useDishStore,
   useWindowSize
 } from "@/presentation/hooks";
-import clsx from "clsx";
 import { DishesLayout } from "../../layout";
 import { Card } from "../common/Card";
 
@@ -24,7 +24,7 @@ export const Dishes = () => {
   return (
     <DishesLayout
       rowPerPage={ROW_PER_PAGE}
-      paginator={dishes.length > 0}
+      paginators={dishes.length > 0 ? [false, true] : [false, false]}
     >
       <section
         className={clsx(

@@ -8,7 +8,8 @@ import { userSlice } from "./slice/user.slice";
 import { AppState } from "./state";
 import { messageSlice } from "./slice/message.slice";
 import { cartSlice } from "./slice/cart-dish.slice";
-
+import { orderDishSlice } from "./slice/order-dish.slice";
+import { orderDishItemSlice } from "./slice/order-dish-item.slice";
 
 export const store = configureStore<AppState>({
   reducer: {
@@ -20,6 +21,8 @@ export const store = configureStore<AppState>({
     dish: dishSlice.reducer,
     dishCategory: dishCategorySlice.reducer,
     cartDish: cartSlice.reducer,
+    orderDish: orderDishSlice.reducer,
+    orderDishItem: orderDishItemSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

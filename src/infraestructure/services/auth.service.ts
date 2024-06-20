@@ -8,7 +8,7 @@ import {
 } from "@/domain/dtos";
 import { userAdapter } from "@/config/adapters";
 
-type LoginUserResponse = {
+export type LoginUserResponse = {
   user: UserEntity;
   token: string;
   message: string;

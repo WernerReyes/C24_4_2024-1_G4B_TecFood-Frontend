@@ -25,3 +25,11 @@ export * from "./Tooltip";
 export * from "./Galleria";
 export * from "./Chip";
 export * from "./File-upload";
+export * from './Data-table';
+export * from './Column';
+export * from './Confirm-popup';
+export * from './Timeline';
+export * from './Tag';
+export * from './Overlay-panel';
+export * from './Select-button';
+

@@ -1,4 +1,4 @@
-import type { AuthRepository } from "@/domain/interfaces";
+import type { AuthRepository } from "@/domain/repositories";
 import type { CreateUserModel } from "@/model";
 import { RegisterUserDto } from "../../dtos/auth";
 

@@ -1,3 +1,4 @@
+import { useDispatch, useSelector } from "react-redux";
 import {
   AddOneDish,
   DeleteAllDishes,
@@ -16,9 +17,9 @@ import {
   onLoadCartDishItem,
   onLoadTotalDishesByUser,
   onLoadingCartDish,
-  ondeleteAllDishes,
+  onDeleteAllDishes,
+  onResetCartDish,
 } from "@/infraestructure/store";
-import { useDispatch, useSelector } from "react-redux";
 import { CartDishService } from "../../../infraestructure/services";
 import { useMessage } from "../";
 
@@ -60,7 +61,7 @@ export const useCartStore = () => {
     await new DeleteAllDishes(cartDishRepositoryImpl)
       .execute(cartId)
       .then(({ quantity }) => {
-        dispatch(ondeleteAllDishes(quantity));
+        dispatch(onDeleteAllDishes(quantity));
       })
       .catch((error) => {
         throw error;
@@ -112,6 +113,8 @@ export const useCartStore = () => {
       });
   };
 
+  const startResetCartDish = () => dispatch(onResetCartDish());
+
   return {
     //* Attributes
     totalPayment,
@@ -127,5 +130,6 @@ export const useCartStore = () => {
     startLoadingDishesByUser,
     startLoadingTotalDishesByUser,
     startLoadingDishByDishId,
+    startResetCartDish,
   };
 };

@@ -1,4 +1,4 @@
-import type { DishRepository } from "@/domain/interfaces";
+import type { DishRepository } from "@/domain/repositories";
 import type { GetDishByIdModel } from "@/model";
 
 interface GetDishByIdUseCase {

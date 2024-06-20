@@ -12,6 +12,7 @@ type Props = {
   handleRemoveToCart: () => void;
   className?: string;
   unstyled?: boolean;
+  stock: number;
 };
 
 export const AddAndRemoveDish = ({
@@ -21,6 +22,7 @@ export const AddAndRemoveDish = ({
   handleRemoveToCart,
   className,
   unstyled,
+  stock,
 }: Props) => {
   const { totalQuantity, isLoading } = useCartStore();
 
@@ -35,6 +37,7 @@ export const AddAndRemoveDish = ({
       <Button
         onClick={handleRemoveToCart}
         unstyled
+        disabled={quantityMemory <= 0 || isLoading}
         className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-slate-300 text-sm dark:bg-slate-700"
       >
         <i
@@ -47,7 +50,7 @@ export const AddAndRemoveDish = ({
       <p className="min-w-[45px] text-center"> {quantityMemory} </p>
       <Button
         onClick={handleAddToCart}
-        disabled={quantityMemory >= 5 || totalQuantity >= 5 || isLoading}
+        disabled={quantityMemory >= 5 || totalQuantity >= 5 || isLoading || stock === 0}
         unstyled
         className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-slate-300 text-sm disabled:cursor-not-allowed disabled:bg-slate-300 dark:bg-slate-700 disabled:dark:bg-slate-400"
       >

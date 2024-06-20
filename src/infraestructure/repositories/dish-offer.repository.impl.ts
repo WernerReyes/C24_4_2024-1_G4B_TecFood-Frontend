@@ -1,4 +1,4 @@
-import { DishOfferRepository } from "@/domain/interfaces";
+import { DishOfferRepository } from "@/domain/repositories";
 import { getAllDishOffers } from "../services";
 
 export const dishOfferRepositoryImpl: DishOfferRepository = {

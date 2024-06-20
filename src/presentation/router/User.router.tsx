@@ -18,7 +18,11 @@ const DetailDishPage = lazy(
 
 const CartPage = lazy(() => import("../pages/private/user/pages/Cart.page"));
 
-const { HOME, DISHES, PROFILE, CART } = PrivateRoutes.user;
+const OrderHistoryPage = lazy(
+  () => import("../pages/private/user/pages/Order-history.page"),
+);
+
+const { HOME, DISHES, PROFILE, CART, ORDER_HISTORY } = PrivateRoutes.user;
 
 export const UserRouter = () => {
   return (
@@ -28,6 +32,7 @@ export const UserRouter = () => {
       <Route path={DISHES} element={<DishesPage />} />
       <Route path={`${DISHES}/:id`} element={<DetailDishPage />} />
       <Route path={CART} element={<CartPage />} />
+      <Route path={ORDER_HISTORY} element={<OrderHistoryPage />} />
       <Route path={PROFILE} element={<ProfilePage />} />
     </RouterWithNotFound>
   );

@@ -8,14 +8,19 @@ import { HeaderSeach } from "./Header-seach";
 
 const {
   USER,
-  user: { HOME, DISHES, PROFILE, CART },
+  user: { HOME, DISHES, PROFILE, CART, ORDER_HISTORY },
 } = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [
   {
-    label: "Settings",
-    icon: "pi pi-cog",
+    label: "Profile",
+    icon: "pi pi-user",
     url: USER + "/" + PROFILE,
+  },
+  {
+    label: "Order History",
+    icon: "pi pi-history",
+    url: USER + "/" + ORDER_HISTORY,
   },
   {
     label: "Logout",

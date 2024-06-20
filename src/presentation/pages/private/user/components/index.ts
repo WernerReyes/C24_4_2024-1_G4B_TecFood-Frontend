@@ -22,3 +22,10 @@ export * from "./detail-dish/More-options";
 // <-- DISHES PAGE COMPONENTS -->
 export * from "./dishes/Dishes-list";
 export * from "./dishes/Card-list";
+
+// <-- CART PAGE COMPONENTS -->
+export * from "./cart/Shopping-cart";
+export * from "./cart/Order-summary";
+
+// <-- ORDER HISTORY PAGE COMPONENTS -->
+export * from "./order-history/Card-history";

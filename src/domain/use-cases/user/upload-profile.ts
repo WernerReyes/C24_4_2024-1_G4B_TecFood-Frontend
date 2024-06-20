@@ -1,5 +1,5 @@
 import { UploadProfileDto } from "@/domain/dtos/user";
-import { UserRepository } from "@/domain/interfaces";
+import { UserRepository } from "@/domain/repositories";
 import { UploadProfileModel } from "@/model";
 
 interface UploadProfileUseCase {

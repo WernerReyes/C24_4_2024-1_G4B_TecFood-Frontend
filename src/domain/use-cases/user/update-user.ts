@@ -1,5 +1,5 @@
 import { UpdateUserDto } from "@/domain/dtos";
-import { UserRepository } from "@/domain/interfaces";
+import { UserRepository } from "@/domain/repositories";
 import { UpdateUserModel } from "@/model";
 
 interface UpdateUserUseCase {

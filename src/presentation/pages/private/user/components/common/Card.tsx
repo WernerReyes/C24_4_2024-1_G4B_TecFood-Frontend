@@ -16,10 +16,7 @@ type Props = {
   quantity: number;
 };
 
-export const Card = ({
-  dish,
-  quantity,
-}: Props) => {
+export const Card = ({ dish, quantity }: Props) => {
   const {
     isAddToCart,
     quantityMemory,
@@ -50,13 +47,19 @@ export const Card = ({
                 alt={dish.name}
                 onLoad={handleLoaded}
                 imageClassName="rounded-lg w-full h-52 object-cover transition-all group-hover:scale-105"
-                data-pr-tooltip={`Stock: ${dish.stock}`}
+                data-pr-tooltip={
+                  dish.stock === 0 ? "No stock" : `Stock: ${dish.stock}`
+                }
               />
             </Link>
           </div>
           <div className="pt-2 dark:border-slate-700">
             <div className="mb-4 flex items-center justify-between">
-              <Link unstyled to={`${USER}/${DISHES}/${dish.id}`} className="text-xl font-semibold">
+              <Link
+                unstyled
+                to={`${USER}/${DISHES}/${dish.id}`}
+                className="text-xl font-semibold"
+              >
                 {dish.name}
               </Link>
               <Heart />
@@ -76,6 +79,7 @@ export const Card = ({
                 handleAddToCart={handleAddToCart}
                 quantityMemory={quantityMemory}
                 handleRemoveToCart={handleRemoveToCart}
+                stock={dish.stock}
               />
             </div>
             <ButtonAddAndRemoveDish
@@ -83,6 +87,7 @@ export const Card = ({
               quantityMemory={quantityMemory}
               handleAddToCart={handleAddToCart}
               handleResetCart={handleResetCart}
+              stock={dish.stock}
             />
           </div>
         </div>

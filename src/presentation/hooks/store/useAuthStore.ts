@@ -86,7 +86,7 @@ export const useAuthStore = () => {
 
     await new RevalidateToken(authRepositoryImpl)
       .execute()
-      .then(({ user }) => dispatch(onLogin(user)))
+      .then(({ user }) => {dispatch(onLogin(user))})
       .catch((error) => {
         dispatch(onLogout());
         console.error(error);

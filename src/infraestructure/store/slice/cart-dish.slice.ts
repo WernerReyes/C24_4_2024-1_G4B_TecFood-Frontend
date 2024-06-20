@@ -3,7 +3,6 @@ import { cartEmptyState, type CartState } from "@/model";
 
 type onLoadCartDishType = {
   cart: CartState[];
-  // totalQuantity: number;
   totalPayment: number;
 };
 
@@ -41,7 +40,7 @@ export const cartSlice = createSlice({
       };
     },
 
-    ondeleteAllDishes(state, action: PayloadAction<number>) {
+    onDeleteAllDishes(state, action: PayloadAction<number>) {
       return {
         ...state,
         isLoading: false,
@@ -62,6 +61,10 @@ export const cartSlice = createSlice({
       return { ...state, totalQuantity: action.payload, isLoading: false };
     },
 
+    onResetCartDish: (state) => {
+      return { ...state, cart: [], totalPayment: 0, totalQuantity: 0 };
+    },
+
     onLoadingCartDish: (state) => {
       return { ...state, isLoading: true };
     },
@@ -75,5 +78,6 @@ export const {
   onAddOneDish,
   onDeleteOneDish,
   onLoadTotalDishesByUser,
-  ondeleteAllDishes,
+  onDeleteAllDishes,
+  onResetCartDish,
 } = cartSlice.actions;

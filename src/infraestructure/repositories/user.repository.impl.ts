@@ -1,4 +1,4 @@
-import { UserRepository } from "@/domain/interfaces";
+import { UserRepository } from "@/domain/repositories";
 import { UpdateUserModel, UploadProfileModel, UserModel } from "@/model";
 import { UserService } from "../services";
 import { UpdateUserDto, UploadFileDto } from "@/domain/dtos";

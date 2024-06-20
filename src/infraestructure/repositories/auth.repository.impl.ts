@@ -1,5 +1,5 @@
 import { RegisterUserDto } from "@/domain/dtos";
-import { AuthRepository } from "@/domain/interfaces";
+import { AuthRepository } from "@/domain/repositories";
 import { AuthService } from "@/infraestructure/services";
 import { LoginGoogleUserDto, LoginUserDto } from "../../domain/dtos/auth";
 

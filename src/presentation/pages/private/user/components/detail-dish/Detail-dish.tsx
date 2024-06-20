@@ -76,6 +76,7 @@ export const DetailDish = () => {
               quantityMemory={quantity}
               handleResetCart={handleResetCart}
               handleAddToCart={handleAddToCart}
+              stock={dish.stock}
             />
             <AddAndRemoveDish
               className="me-4"
@@ -83,12 +84,25 @@ export const DetailDish = () => {
               handleAddToCart={handleAddToCart}
               quantityMemory={quantity}
               handleRemoveToCart={handleRemoveToCart}
+              stock={dish.stock}
             />
             <Heart iconClassName="text-3xl" />
           </div>
           <p className="flex items-center text-sm text-slate-400">
-            <i className="pi pi-box me-2 text-2xl text-primary"></i>
-            <b className="me-2 text-primary">{dish.stock}</b> dishes available
+            <i
+              className={clsx(
+                "pi pi-box me-2 text-2xl",
+                dish.stock === 0 ? "text-red-500" : "text-primary",
+              )}
+            ></i>
+            {dish.stock === 0 ? (
+              <b className="me-2 text-red-500">Out of stock</b>
+            ) : (
+              <>
+                <b className="me-2 text-primary">{dish.stock}</b>
+                dishes available
+              </>
+            )}
           </p>
         </div>
       </section>

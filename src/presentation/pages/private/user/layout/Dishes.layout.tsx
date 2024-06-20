@@ -1,15 +1,15 @@
+import { useEffect } from "react";
 import { GetDishesDto } from "@/domain/dtos";
 import { Paginator } from "@/presentation/components";
 import { useCartStore, useDishStore, usePaginator } from "@/presentation/hooks";
-import { useEffect } from "react";
 
 type Props = {
   children: React.ReactNode;
   rowPerPage: number[];
-  paginator?: boolean;
+  paginators?: [boolean, boolean];
 };
 
-export const DishesLayout = ({ rowPerPage, children, paginator }: Props) => {
+export const DishesLayout = ({ rowPerPage, children, paginators }: Props) => {
   const { handlePageChange, currentPage, limit, first } = usePaginator(
     rowPerPage[0],
   );
@@ -33,15 +33,25 @@ export const DishesLayout = ({ rowPerPage, children, paginator }: Props) => {
 
   return (
     <>
-      {children}
-      {paginator && (
+      {paginators && paginators[0] && (
         <Paginator
           first={first}
           rows={limit}
           totalRecords={total}
           onPageChange={handlePageChange}
           rowsPerPage={rowPerPage}
-          className="mt-auto flex justify-end bg-transparent"
+          className="mt-auto flex mb-4 justify-end bg-transparent"
+        />
+      )}
+      {children}
+      {paginators && paginators[1] && (
+        <Paginator
+          first={first}
+          rows={limit}
+          totalRecords={total}
+          onPageChange={handlePageChange}
+          rowsPerPage={rowPerPage}
+          className="flex mt-5 lg:mt-auto justify-end bg-transparent"
         />
       )}
     </>

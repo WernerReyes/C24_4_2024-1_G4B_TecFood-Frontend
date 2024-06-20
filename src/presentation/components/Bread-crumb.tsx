@@ -4,7 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { BreadCrumb as BreadCrumbPrimeReact } from "primereact/breadcrumb";
 import { RoleEnum } from "@/domain/entities";
 import { PrivateRoutes } from "../routes";
-import { routeRole } from "../utilities";
+import { fromUrlToString, routeRole } from "../utilities";
 import { Link } from "./Link";
 import { useDishStore } from "../hooks";
 
@@ -102,6 +102,6 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
 const filterSegments = (segments: string[], roleRoute: string) => {
   return segments
     .filter((segment) => `/${segment}` !== roleRoute && segment !== "home")
-    .filter((segment) => segment !== "");
-  // .map((segment) => fromUrlToString(segment));
+    .filter((segment) => segment !== "")
+    .map((segment) => fromUrlToString(segment));
 };

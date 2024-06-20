@@ -40,5 +40,6 @@ export const useWindowSize = () => {
     isDesktop,
     isLargeDesktop,
     isExtraLargeDesktop,
+    ...responsiveDesign,
   };
 };
