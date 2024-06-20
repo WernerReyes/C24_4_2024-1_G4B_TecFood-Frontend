@@ -10,6 +10,6 @@ export const getStorage = <T>(key: string): T | null => {
     return value as T;
   }
 };
-export const removeStorage = (key: string) => {
-  localStorage.removeItem(key);
-};
+export const removeStorage = (key: string) => localStorage.removeItem(key);
+
+export const clearStorage = () => localStorage.clear();
