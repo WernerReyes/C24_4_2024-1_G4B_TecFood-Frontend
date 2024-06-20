@@ -8,12 +8,17 @@ interface IDishCategoryService {
 }
 
 export class DishCategoryService implements IDishCategoryService {
-  private baseUrl = "/dish-category";
+  private prefix: string;
+
+  constructor() {
+    this.prefix = "/dish-category";
+  }
+
 
   public async getAll(): Promise<GetDishCategoriesModel> {
     try {
       const { data } = await httpRequest<GetDishCategoriesResponse>(
-        this.baseUrl,
+        this.prefix,
         "GET",
       );
       

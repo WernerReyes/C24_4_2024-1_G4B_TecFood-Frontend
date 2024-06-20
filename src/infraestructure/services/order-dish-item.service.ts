@@ -10,13 +10,18 @@ interface IOrderDishItemService {
 }
 
 export class OrderDishItemService implements IOrderDishItemService {
-  private baseUrl = "/order-dish-item";
+  private prefix: string;
+
+  constructor() {
+    this.prefix = "/order-dish-item";
+  }
+
   public async getOrderDishItemByOrder(
     orderDishId: number,
   ): Promise<GetOrderDishItemByOrderModel> {
     try {
       const { data } = await httpRequest<GetOrderDishItemByOrderResponse>(
-        this.baseUrl + "/order/" + orderDishId,
+        this.prefix + "/order/" + orderDishId,
         "GET",
       );
       return {

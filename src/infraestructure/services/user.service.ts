@@ -11,11 +11,16 @@ export interface IUserService {
 }
 
 export class UserService implements IUserService {
-  private baseURL = "/user";
+  private prefix: string;
+
+  constructor() {
+    this.prefix = "/user";
+  }
+
   public async update(updateUserDto: UpdateUserDto): Promise<UpdateUserModel> {
     try {
       const { data } = await httpRequest<UpdateUserResponse>(
-        `${this.baseURL}/update`,
+        `${this.prefix}/update`,
         "PUT",
         updateUserDto,
       );
@@ -27,7 +32,7 @@ export class UserService implements IUserService {
 
   public async getAll(): Promise<UserModel[]> {
     try {
-      const { data } = await httpRequest<UserEntity[]>(this.baseURL, "GET");
+      const { data } = await httpRequest<UserEntity[]>(this.prefix, "GET");
       return data.map(userAdapter);
     } catch (error) {
       throw error;
@@ -39,7 +44,7 @@ export class UserService implements IUserService {
   }: UploadFileDto): Promise<UploadProfileModel> {
     try {
       const { data } = await httpRequest<UploadProfileModel>(
-        `${this.baseURL}/upload-profile`,
+        `${this.prefix}/upload-profile`,
         "POST",
         file,
       );

@@ -27,12 +27,16 @@ interface ICartDishService {
 }
 
 export class CartDishService implements ICartDishService {
-  private baseUrl = "/cart-dish";
+  private prefix: string;
+
+  constructor() {
+    this.prefix = "/cart";
+  }
 
   public async addOneDish(dishId: number): Promise<AddOneDishModel> {
     try {
       const { data } = await httpRequest<AddOneDishResponse>(
-        this.baseUrl,
+        this.prefix,
         "POST",
         { dishId },
       );
@@ -45,7 +49,7 @@ export class CartDishService implements ICartDishService {
   public async getDishesByUser(): Promise<GetDishesByUserModel> {
     try {
       const { data } = await httpRequest<GetDishesByUserResponse>(
-        `${this.baseUrl}/user`,
+        `${this.prefix}/user`,
         "GET",
       );
 
@@ -58,7 +62,7 @@ export class CartDishService implements ICartDishService {
   public async deleteOneDish(dishId: number): Promise<DeleteOneDishModel> {
     try {
       const { data } = await httpRequest<DeleteOneDishResponse>(
-        `${this.baseUrl}/${dishId}`,
+        `${this.prefix}/${dishId}`,
         "DELETE",
       );
       return data;
@@ -70,7 +74,7 @@ export class CartDishService implements ICartDishService {
   public async deleteAllDishes(dishId: number): Promise<DeleteAllDishesModel> {
     try {
       const { data } = await httpRequest<deleteAllDishesResponse>(
-        `${this.baseUrl}/all/${dishId}`,
+        `${this.prefix}/all/${dishId}`,
         "DELETE",
       );
       return data;
@@ -83,7 +87,7 @@ export class CartDishService implements ICartDishService {
     console.log(dishId);
     try {
       const { data } = await httpRequest<GetDishByDishIdResponse>(
-        `${this.baseUrl}/dish/${dishId}`,
+        `${this.prefix}/dish/${dishId}`,
         "GET",
       );
       return { ...data, cartItem: cartAdapter(data.cartItem) };
@@ -95,7 +99,7 @@ export class CartDishService implements ICartDishService {
   public async getTotalDishesByUser(): Promise<GetTotalDishesByUserModel> {
     try {
       const { data } = await httpRequest<GetTotalDishesByUserResponse>(
-        `${this.baseUrl}/total`,
+        `${this.prefix}/total`,
         "GET",
       );
       return data;

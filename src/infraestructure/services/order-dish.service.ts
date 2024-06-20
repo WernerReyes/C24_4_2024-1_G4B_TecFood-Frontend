@@ -31,12 +31,17 @@ interface IOrderDishService {
 }
 
 export class OrderDishService implements IOrderDishService {
-  private baseUrl = "/order-dish";
+  private prefix: string;
+
+  constructor() {
+    this.prefix = "/order-dish";
+  }
+
 
   public async createOrderDish(): Promise<CreateOrderDishModel> {
     try {
       const { data } = await httpRequest<CreateOrderDishResponse>(
-        this.baseUrl,
+        this.prefix,
         "POST",
       );
       return { ...data, orderDish: orderDishAdapter(data.orderDish) };
@@ -51,7 +56,7 @@ export class OrderDishService implements IOrderDishService {
   }: UpdateOrderDishStatusDto): Promise<UpdateOrderDishStatusModel> {
     try {
       const { data } = await httpRequest<UpdateOrderDishStatusResponse>(
-        `${this.baseUrl}/${orderDishId}/status`,
+        `${this.prefix}/${orderDishId}/status`,
         "PUT",
         { status },
       );
@@ -76,7 +81,7 @@ export class OrderDishService implements IOrderDishService {
       console.log(requestParams);
 
       const { data } = await httpRequest<GetOrderDishesByUserResponse>(
-        `${this.baseUrl}/user${requestParams}`,
+        `${this.prefix}/user${requestParams}`,
         "GET",
       );
       return {

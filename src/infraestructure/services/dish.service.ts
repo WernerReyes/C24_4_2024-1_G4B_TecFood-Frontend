@@ -24,7 +24,12 @@ interface IDishService {
 }
 
 export class DishService implements IDishService {
-  private baseUrl = "/dish";
+  private prefix: string;
+
+  constructor() {
+    this.prefix = "/dish";
+  }
+
 
   public async getAll({
     priceRange,
@@ -46,7 +51,7 @@ export class DishService implements IDishService {
       ]);
 
       const { data } = await httpRequest<GetDishesResponse>(
-        this.baseUrl + requestParams,
+        this.prefix + requestParams,
         "GET",
       );
       return { ...data, dishes: data.dishes.map(dishAdapter) };
@@ -58,7 +63,7 @@ export class DishService implements IDishService {
   public async getAllToSearch(): Promise<GetDishesToSearchModel> {
     try {
       const { data } = await httpRequest<GetDishesToSearchResponse>(
-        this.baseUrl + "/search",
+        this.prefix + "/search",
         "GET",
       );
       return { ...data, dishes: data.dishes.map(dishAdapter) };
@@ -70,7 +75,7 @@ export class DishService implements IDishService {
   public async getById(id: number): Promise<GetDishByIdModel> {
     try {
       const { data } = await httpRequest<GetDishByIdResponse>(
-        this.baseUrl + "/" + id,
+        this.prefix + "/" + id,
         "GET",
       );
       return { ...data, dish: dishAdapter(data.dish) };

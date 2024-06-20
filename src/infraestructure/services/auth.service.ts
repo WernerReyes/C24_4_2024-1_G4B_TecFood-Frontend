@@ -26,14 +26,18 @@ interface IAuthService {
 }
 
 export class AuthService implements IAuthService {
-  private baseUrl = "/auth";
+  private prefix: string;
+
+  constructor() {
+    this.prefix = "/auth";
+  }
 
   public async loginGoogle(
     loginGoogleUserDto: LoginGoogleUserDto,
   ): Promise<LoginUserModel> {
     try {
       const { data } = await httpRequest<LoginUserResponse>(
-        this.baseUrl + "/login-google",
+        this.prefix + "/login-google",
         "POST",
         loginGoogleUserDto,
       );
@@ -46,7 +50,7 @@ export class AuthService implements IAuthService {
   public async login(loginUserDto: LoginUserDto): Promise<LoginUserModel> {
     try {
       const { data } = await httpRequest<LoginUserResponse>(
-        this.baseUrl + "/login",
+        this.prefix + "/login",
         "POST",
         loginUserDto,
       );
@@ -61,7 +65,7 @@ export class AuthService implements IAuthService {
   ): Promise<CreateUserModel> {
     try {
       const { data } = await httpRequest<RegisterUserResponse>(
-        this.baseUrl + "/register",
+        this.prefix + "/register",
         "POST",
         registerUserDto,
       );
@@ -74,7 +78,7 @@ export class AuthService implements IAuthService {
   public async revalidateToken(): Promise<LoginUserModel> {
     try {
       const { data } = await httpRequest<LoginUserResponse>(
-        this.baseUrl + "/revalidate-token",
+        this.prefix + "/revalidate-token",
         "GET",
       );
       return { ...data, user: userAdapter(data.user) };
