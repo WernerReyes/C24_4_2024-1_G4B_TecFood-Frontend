@@ -30,7 +30,7 @@ export class CartDishService implements ICartDishService {
   private prefix: string;
 
   constructor() {
-    this.prefix = "/cart";
+    this.prefix = "/cart-dish";
   }
 
   public async addOneDish(dishId: number): Promise<AddOneDishModel> {
@@ -52,9 +52,10 @@ export class CartDishService implements ICartDishService {
         `${this.prefix}/user`,
         "GET",
       );
-
+      
       return { ...data, cart: data.cart.map(cartAdapter) };
     } catch (error) {
+      console.log("error", error);
       throw error;
     }
   }

@@ -1,11 +1,11 @@
+import axios, { AxiosInstance } from "axios";
+import daysjs from "dayjs";
 import type { LoginUserResponse } from "@/infraestructure/services";
 import {
   errorMessage,
   getEnvs,
   getStorage
 } from "@/presentation/utilities";
-import axios, { AxiosInstance } from "axios";
-import daysjs from "dayjs";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 
 const { VITE_API_URL } = getEnvs();
