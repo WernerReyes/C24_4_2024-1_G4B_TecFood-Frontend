@@ -8,4 +8,5 @@ export class UploadProfileDto extends UploadFileDto {
   public static create(data: UploadProfileDto): [UploadProfileDto?, string[]?] {
     return UploadFileDto.create(data);
   }
+
 }

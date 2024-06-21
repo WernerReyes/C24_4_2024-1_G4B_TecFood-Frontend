@@ -1,5 +1,4 @@
-import { paginationValidation } from "@/infraestructure/validations";
-import { ZodError } from "zod";
+import { ZodError, z } from "zod";
 
 export class PaginationDto {
   protected constructor(
@@ -9,7 +8,7 @@ export class PaginationDto {
 
   public static create(data: PaginationDto): [PaginationDto?, string[]?] {
     try {
-      const validatedData = paginationValidation.parse(data);
+      const validatedData = this.validations.parse(data);
       return [validatedData, undefined];
     } catch (error) {
       if (error instanceof ZodError)
@@ -17,4 +16,12 @@ export class PaginationDto {
       throw error;
     }
   }
+
+  protected static get validations() {
+    return z.object({
+      page: z.number().int().positive().default(1),
+      limit: z.number().int().positive().default(10),
+    });
+  }
+
 }

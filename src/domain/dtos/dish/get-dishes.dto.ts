@@ -1,6 +1,5 @@
-import { getDishesValidation } from "@/infraestructure/validations";
+import { ZodError, z } from "zod";
 import { PaginationDto } from "../common";
-import { ZodError } from "zod";
 
 export class GetDishesDto extends PaginationDto {
   private constructor(
@@ -15,12 +14,40 @@ export class GetDishesDto extends PaginationDto {
 
   public static create(data: GetDishesDto): [GetDishesDto?, string[]?] {
     try {
-      const validatedData = getDishesValidation.parse(data);
+      const validatedData = this.validations.parse(data);
       return [validatedData, undefined];
     } catch (error) {
       if (error instanceof ZodError)
         return [undefined, error.issues.map((issue) => issue.message)];
       throw error;
     }
+  }
+
+  protected static get validations() {
+    return z.object({
+      ...PaginationDto.validations.shape,
+      idCategory: z
+        .array(
+          z.object({
+            idCategory: z.number().refine((n) => n >= 0, {
+              message: "idCategory must be a number greater than or equal to 0",
+            }),
+          }),
+        )
+        .nullable()
+        .default(null),
+      priceRange: z
+        .object({
+          min: z.number().refine((n) => n >= 0, {
+            message: "min must be a number greater than or equal to 0",
+          }),
+          max: z.number().refine((n) => n >= 0, {
+            message: "max must be a number greater than or equal to 0",
+          }),
+        })
+        .nullable()
+        .default(null),
+      search: z.nullable(z.string()).default(null),
+    });
   }
 }

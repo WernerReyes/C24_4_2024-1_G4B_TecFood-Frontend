@@ -1,15 +1,15 @@
 import { ZodError, z } from "zod";
-import { OrderDishStatusEnum } from "@/domain/entities";
+import { PaymentMethodEnum } from "@/domain/entities";
 
-export class UpdateOrderDishStatusDto {
+export class ProcessPaymentDto {
   private constructor(
     public readonly orderDishId: number,
-    public readonly status: OrderDishStatusEnum,
+    public readonly paymentMethod: PaymentMethodEnum,
   ) {}
 
   public static create(
-    data: UpdateOrderDishStatusDto,
-  ): [UpdateOrderDishStatusDto?, string[]?] {
+    data: ProcessPaymentDto,
+  ): [ProcessPaymentDto?, string[]?] {
     try {
       const validatedData = this.validations.parse(data);
       return [validatedData, undefined];
@@ -35,16 +35,15 @@ export class UpdateOrderDishStatusDto {
         .refine((n) => n > 0, {
           message: "orderDishId must be greater than 0",
         }),
-      status: z
-        .nativeEnum(OrderDishStatusEnum)
+      paymentMethod: z
+        .nativeEnum(PaymentMethodEnum)
         .refine(
           (s) =>
-            Object.values(OrderDishStatusEnum).includes(
-              s as OrderDishStatusEnum,
-            ),
+            Object.values(PaymentMethodEnum).includes(s as PaymentMethodEnum),
           {
             message:
-              "status must be one of the following values: pending, accepted, rejected",
+              "status must be one of the following values: " +
+              Object.values(PaymentMethodEnum).join(", "),
           },
         ),
     });
