@@ -24,7 +24,7 @@ export class RegisterUserDto {
     }
   }
 
-  private static get validations() {
+  public static get validations() {
     const { EMAIL, PASSWORD, DNI, PHONE } = regularExpressions;
     return z.object({
       firstName: z

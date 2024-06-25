@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useThemeStore } from "@/presentation/hooks";
+import { useAuthStore, useThemeStore } from "@/presentation/hooks";
 import {
   Button,
   Image,
@@ -8,6 +8,9 @@ import {
   Card as CardComponent,
 } from "@/presentation/components";
 import { formatNumber } from "@/presentation/utilities";
+import type { DishState } from "@/model";
+import { useNavigate } from "react-router-dom";
+import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
 
 const bgCardDark =
   "linear-gradient(to bottom, #322e2e, #3e3535, #493d3d, #564444, #624c4c)";
@@ -15,31 +18,47 @@ const bgCardDark =
 const bgCardLight =
   "linear-gradient(to bottom, #ecfaff, #e4f8ff, #dcf5ff, #d3f3ff, #cbf0ff)";
 
-type Props = {
+interface Props extends DishState {
   priceOffer?: number;
-  image: string;
-  title: string;
-  description: string;
+  // image: string;
+  // title: string;
+  // description: string;
   rating: number;
-  price: number;
-};
+  // price: number;
+}
+
+const {
+  user: { DISHES },
+  USER,
+} = PrivateRoutes;
 
 export const Card = ({
-  title,
+  name,
+  id,
   description,
   rating,
-  image,
+  // image,
+  img,
   price,
   priceOffer,
 }: Props) => {
   const { isDark } = useThemeStore();
+  const { isAuthenticate } = useAuthStore();
+  const navigate = useNavigate();
   const ratingFormat = formatNumber(rating);
+
+ 
+  const hangleNavigateToDetail = () => {
+    if (!isAuthenticate) return navigate(USER);
+
+    navigate(`${USER}/${DISHES}/${id}`);
+  };
 
   return (
     <div className="mb-20 mt-40">
       <CardComponent
-        footer={footer}
-        header={header(image, price, priceOffer)}
+        footer={() => footer(hangleNavigateToDetail)}
+        header={header(img, price, priceOffer)}
         className="md:w-25rem h-[22rem] w-full md:h-96"
         style={{
           backgroundImage: clsx(isDark ? bgCardDark : bgCardLight),
@@ -102,7 +121,7 @@ export const Card = ({
         </div>
         <div className="mt-5 text-center">
           <h3 className="text-xl font-bold leading-none text-primary">
-            {title}
+            {name}
           </h3>
           <p
             className={clsx(
@@ -156,7 +175,7 @@ const header = (image: string, prince: number, priceOffer?: number) => (
         className={clsx(
           priceOffer
             ? "text-xs text-black/25 line-through dark:text-black/25"
-            : "text-white text-sm dark:text-black",
+            : "text-sm text-white dark:text-black",
         )}
       >
         S/.{prince}
@@ -165,9 +184,10 @@ const header = (image: string, prince: number, priceOffer?: number) => (
   </div>
 );
 
-const footer = (
+const footer = (hangleNavigateToDetail: () => void) => (
   <div className="relative">
     <Button
+      onClick={hangleNavigateToDetail}
       label="Order Now"
       className={clsx(
         "absolute bottom-0 w-64 text-white dark:text-black",

@@ -11,7 +11,6 @@ import {
 import { OrderDishRepositoryImpl } from "@/infraestructure/repositories";
 import { OrderDishService } from "@/infraestructure/services";
 import {
-  TypeMessage,
   onCreateOrderDish,
   onLoadOrderDishes,
   onLoadingOrderDish,
@@ -29,11 +28,10 @@ const orderDishRepositoryImpl = new OrderDishRepositoryImpl(orderDishService);
 
 export const useOrderDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages } = useMessage();
+  const { startSetMessages, typeError, typeSuccess } = useMessage();
 
-  const { orderDish, orderDishes, filters, status, isLoading, total } = useSelector(
-    (state: AppState) => state.orderDish,
-  );
+  const { orderDish, orderDishes, filters, status, isLoading, total } =
+    useSelector((state: AppState) => state.orderDish);
 
   const startCreateOrderDish = async () => {
     dispatch(onLoadingOrderDish());
@@ -41,7 +39,7 @@ export const useOrderDishStore = () => {
       .execute()
       .then(({ message, orderDish }) => {
         dispatch(onCreateOrderDish(orderDish));
-        startSetMessages([message], TypeMessage.SUCCESS);
+        startSetMessages([message], typeSuccess);
       })
       .catch((error) => {
         throw error;
@@ -53,14 +51,14 @@ export const useOrderDishStore = () => {
     message: string,
   ) => {
     const [orderDishStatus, errors] = updateOrderDishStatusDto;
-    if (errors) return startSetMessages(errors, TypeMessage.ERROR);
+    if (errors) return startSetMessages(errors, typeError);
 
     dispatch(onLoadingOrderDish());
     await new UpdateOrderDishStatus(orderDishRepositoryImpl)
       .execute(orderDishStatus!)
       .then(({ status }) => {
         dispatch(onUpdateOrderDishStatus(status));
-        startSetMessages([message], TypeMessage.SUCCESS);
+        startSetMessages([message], typeSuccess);
       })
       .catch(console.error);
   };
@@ -69,7 +67,7 @@ export const useOrderDishStore = () => {
     getOrderDishesByUserDto: [GetOrderDishesByUserDto?, string[]?],
   ) => {
     const [getOrderDishesByUserDtoValidated, errors] = getOrderDishesByUserDto;
-    if (errors) return startSetMessages(errors, TypeMessage.ERROR);
+    if (errors) return startSetMessages(errors, typeError);
 
     dispatch(onLoadingOrderDish());
     await new GetOrderDishesByUser(orderDishRepositoryImpl)

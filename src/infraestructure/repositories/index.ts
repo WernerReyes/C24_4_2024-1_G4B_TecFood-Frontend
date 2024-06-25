@@ -6,3 +6,5 @@ export * from "./dish-category.repository.impl";
 export * from "./cart-dish.repository.impl";
 export * from "./order-dish.repository.impl";
 export * from "./order-dish-item.repository.impl";
+export * from "./payment.repository.impl";
+export * from "./paypal.repository.impl";

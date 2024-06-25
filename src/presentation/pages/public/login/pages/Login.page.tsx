@@ -2,8 +2,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { LoginUserDto } from "@/domain/dtos";
-import { TypeMessage } from "@/infraestructure/store";
-import { loginUserValidation } from "@/infraestructure/validations";
 import { Button, InputPassword, InputText } from "@/presentation/components";
 import { useAuthStore, useMessage, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
@@ -14,7 +12,7 @@ import { AuthLayout } from "../../layout";
 export const LoginPage = () => {
   const { isDark } = useThemeStore();
   const { isLoading, startLoginUser } = useAuthStore();
-  const { startSetMessages } = useMessage();
+  const { startSetMessages, typeError } = useMessage();
   const navigate = useNavigate();
 
   const {
@@ -22,18 +20,19 @@ export const LoginPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginUserDto>({
-    resolver: zodResolver(loginUserValidation),
+    resolver: zodResolver(LoginUserDto.validations),
   });
 
   const handleLogin: SubmitHandler<LoginUserDto> = async (data) => {
-    await startLoginUser(data);
-    navigate(PrivateRoutes.USER);
+    await startLoginUser(data).then(() => {
+      navigate(PrivateRoutes.USER);
+    });
   };
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
       const messages = fromObjectToArray(errors).map((error) => error.message);
-      startSetMessages(messages as string[], TypeMessage.ERROR);
+      startSetMessages(messages as string[], typeError);
     }
   }, [errors]);
 

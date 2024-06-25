@@ -4,7 +4,6 @@ import { UserRepositoryImpl } from "@/infraestructure/repositories";
 import { UserService } from "@/infraestructure/services";
 import {
   AppState,
-  TypeMessage,
   onLoadProfile,
   onLoadingUsers,
 } from "@/infraestructure/store";
@@ -16,7 +15,7 @@ const userRepositoryImpl = new UserRepositoryImpl(userService);
 
 export const useUserStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages } = useMessage();
+  const { startSetMessages, typeError, typeSuccess } = useMessage();
 
   const { user, users, isLoading } = useSelector(
     (state: AppState) => state.user,
@@ -37,7 +36,7 @@ export const useUserStore = () => {
     await new UpdateUser(userRepositoryImpl)
       .execute(updateUserDto)
       .then(({ message }) => {
-        startSetMessages([message], TypeMessage.SUCCESS);
+        startSetMessages([message], typeSuccess);
       })
       .catch((error) => error);
   };
@@ -46,14 +45,14 @@ export const useUserStore = () => {
     uploadProfileDto: [UploadProfileDto?, string[]?],
   ) => {
     const [uploadProfileDtoValidated, errors] = uploadProfileDto;
-    if (errors) return startSetMessages(errors, TypeMessage.ERROR);
+    if (errors) return startSetMessages(errors, typeError);
     dispatch(onLoadingUsers());
 
     await new UploadProfile(userRepositoryImpl)
       .execute(uploadProfileDtoValidated!)
       .then(({ profileUrl, message }) => {
         dispatch(onLoadProfile(profileUrl));
-        startSetMessages([message], TypeMessage.SUCCESS);
+        startSetMessages([message], typeSuccess);
       })
       .catch((error) => error);
   };

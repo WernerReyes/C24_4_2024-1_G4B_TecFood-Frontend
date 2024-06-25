@@ -13,7 +13,6 @@ import { AuthRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
   AuthStatus,
-  TypeMessage,
   onCheking,
   onLogin,
   onLogout,
@@ -27,8 +26,10 @@ const authService = new AuthService();
 const authRepositoryImpl = new AuthRepositoryImpl(authService);
 
 export const useAuthStore = () => {
-  const { startSetMessages } = useMessage();
-  const { status, authenticatedUser } = useSelector((state: AppState) => state.auth);
+  const { startSetMessages, typeError, typeSuccess } = useMessage();
+  const { status, authenticatedUser } = useSelector(
+    (state: AppState) => state.auth,
+  );
 
   const dispatch = useDispatch();
 
@@ -38,7 +39,7 @@ export const useAuthStore = () => {
     loginGoogleUserDto: [LoginGoogleUserDto?, string[]?],
   ) => {
     const [validatedData, errors] = loginGoogleUserDto;
-    if (errors) return startSetMessages(errors, TypeMessage.ERROR);
+    if (errors) return startSetMessages(errors, typeError);
     dispatch(onCheking());
 
     await new LoginGoogleUser(authRepositoryImpl)
@@ -64,7 +65,7 @@ export const useAuthStore = () => {
       })
       .catch((error) => {
         dispatch(onLogout());
-        console.error(error);
+        throw error;
       });
   };
 
@@ -73,21 +74,23 @@ export const useAuthStore = () => {
 
     await new RegisterUser(authRepositoryImpl)
       .execute(registerUserDto)
-      .then(({ message }) => startSetMessages([message], TypeMessage.SUCCESS))
+      .then(({ message }) => startSetMessages([message], typeSuccess))
       .catch((error) => {
         dispatch(onLogout());
         console.error(error);
       });
   };
 
-  const startRevalidateToken = async() => {
+  const startRevalidateToken = async () => {
     dispatch(onCheking());
     const token = localStorage.getItem("token");
     if (!token || token?.length < 5) return dispatch(onLogout());
 
     await new RevalidateToken(authRepositoryImpl)
       .execute()
-      .then(({ user }) => {dispatch(onLogin(user))})
+      .then(({ user }) => {
+        dispatch(onLogin(user));
+      })
       .catch((error) => {
         dispatch(onLogout());
         console.error(error);

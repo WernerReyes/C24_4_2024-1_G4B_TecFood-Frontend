@@ -4,3 +4,4 @@ export * from "./dish.adapter";
 export * from "./cart.adapter";
 export * from "./order-dish.adapter";
 export * from "./order-dish-item.adapter";
+export * from "./payment.adapter";

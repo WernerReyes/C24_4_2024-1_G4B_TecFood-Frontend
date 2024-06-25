@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useCartStore, useMessage } from "./";
-import { TypeMessage } from "@/infraestructure/store";
 
 type To = "card" | "table";
 
 export const useCart = (dishId: number, quantity: number, to: To) => {
-  const { startSetMessages } = useMessage();
+  const { startSetMessages, typeError } = useMessage();
   const {
     startAddOneDish,
     totalQuantity,
@@ -25,10 +24,7 @@ export const useCart = (dishId: number, quantity: number, to: To) => {
 
   const handleAddToCart = () => {
     if (quantityMemory > 5 || totalQuantity > 5)
-      return startSetMessages(
-        ["You can't add more than 5 items"],
-        TypeMessage.ERROR,
-      );
+      return startSetMessages(["You can't add more than 5 items"], typeError);
 
     startAddOneDish(dishId).then(() => {
       setQuantityMemory(quantityMemory + 1);

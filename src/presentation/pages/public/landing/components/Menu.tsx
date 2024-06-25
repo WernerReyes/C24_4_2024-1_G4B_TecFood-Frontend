@@ -118,12 +118,14 @@ export const Menu = ({ marginContainer }: Props) => {
           {dishes.map((dish) => (
             <SwiperSlide key={dish.id}>
               <Card
+                {...dish}
+                
                 key={dish.id}
-                title={dish.name}
-                description={dish.description}
+                // title={dish.name}
+                // description={dish.description}
                 rating={5}
-                price={dish.price}
-                image={dish.img}
+                // price={dish.price}
+                // image={dish.img}
               />
             </SwiperSlide>
           ))}
@@ -141,11 +143,14 @@ export const Menu = ({ marginContainer }: Props) => {
           {dishes.map((dish) => (
             <Card
               key={dish.id}
-              title={dish.name}
-              description={dish.description}
+              {...dish}
               rating={5}
-              price={dish.price}
-              image={dish.img}
+              // key={dish.id}
+              // title={dish.name}
+              // description={dish.description}
+              // rating={5}
+              // price={dish.price}
+              // image={dish.img}
             />
           ))}
         </div>

@@ -1,9 +1,8 @@
-import { UpdateUserDto } from "@/domain/dtos";
-import { updateUserValidation } from "@/infraestructure/validations";
-import { Button, InputText } from "@/presentation/components";
-import { useAuthStore, useUserStore } from "@/presentation/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { UpdateUserDto } from "@/domain/dtos";
+import { Button, InputText } from "@/presentation/components";
+import { useAuthStore, useUserStore } from "@/presentation/hooks";
 
 export const ProfileForm = () => {
   const { authenticatedUser } = useAuthStore();
@@ -14,7 +13,7 @@ export const ProfileForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateUserDto>({
-    resolver: zodResolver(updateUserValidation),
+    resolver: zodResolver(UpdateUserDto.validations),
   });
 
   const handleUpdateUser: SubmitHandler<UpdateUserDto> = async (data) => {
@@ -68,7 +67,7 @@ export const ProfileForm = () => {
         <Controller
           name="phoneNumber"
           control={control}
-          defaultValue={authenticatedUser.phone || ''}
+          defaultValue={authenticatedUser.phone || ""}
           render={({ field }) => (
             <InputText
               {...field}
@@ -85,7 +84,7 @@ export const ProfileForm = () => {
         <Controller
           name="dni"
           control={control}
-          defaultValue={authenticatedUser.dni || ''}
+          defaultValue={authenticatedUser.dni || ""}
           render={({ field }) => (
             <InputText
               {...field}

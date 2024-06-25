@@ -6,3 +6,4 @@ export * from "./cart-dish.entity";
 export * from "./order-dish.entity";
 export * from "./order-dish-item.entity";
 export * from "./payment.entity";
+export * from "./paypal.entity";

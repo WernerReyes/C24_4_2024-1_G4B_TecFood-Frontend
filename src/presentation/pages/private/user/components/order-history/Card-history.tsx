@@ -6,15 +6,25 @@ import {
   Column,
   DataTable,
   Image,
+  Link,
   OverlayPanel,
   OverlayPanelRef,
   Tag,
 } from "@/presentation/components";
-import { useOrderDishItemStore, useOrderDishStore } from "@/presentation/hooks";
+import {
+  useOrderDishItemStore,
+  useOrderDishStore,
+} from "@/presentation/hooks";
 import { OrderDishItemState, OrderDishState } from "@/model";
 import { convertDateToShortString } from "@/presentation/utilities";
 import { OrderDishStatusEnum } from "@/domain/entities";
 import { UpdateOrderDishStatusDto } from "@/domain/dtos";
+import { PrivateRoutes } from "@/presentation/routes";
+
+const {
+  USER,
+  user: { PAYMENT },
+} = PrivateRoutes;
 
 interface Props extends OrderDishState {
   icon: string;
@@ -58,7 +68,7 @@ export const CardHistory = ({
     <Card
       className={clsx(
         status === OrderDishStatusEnum.CANCELLED
-          ? "cursor-not-allowed opacity-50 bg-gray-200 dark:bg-gray-800"
+          ? "cursor-not-allowed bg-gray-200 opacity-50 dark:bg-gray-800"
           : "",
         "my-3 rounded-lg p-5 shadow-lg md:my-0",
       )}
@@ -90,13 +100,21 @@ export const CardHistory = ({
               onClick={handleCancelOrder}
             ></Button>
           )}
+          {status === OrderDishStatusEnum.PROCESSED && (
+            <Link
+            unstyled
+            type="router"
+              to={`${USER}/${PAYMENT}/${id}`}
+              label="Pay"
+              className="rounded-md bg-primary font-bold text-white dark:text-black px-8 py-2"
+            ></Link>
+          )}
         </div>
       }
     >
       <p className="mb-4 flex items-center justify-center gap-x-3 text-4xl font-extrabold">
         <i className={clsx(color, "pi pi-wallet text-4xl  font-extrabold")}></i>
         <strong className={clsx(color, "text-4xl font-extrabold")}>
-          {" "}
           S/.{total}
         </strong>
       </p>

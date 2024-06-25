@@ -18,7 +18,7 @@ export class LoginUserDto {
     }
   }
 
-  private static get validations() {
+  public static get validations() {
     const { EMAIL, PASSWORD } = regularExpressions;
     return z.object({
       email: z.string().refine((value) => EMAIL.test(value), {

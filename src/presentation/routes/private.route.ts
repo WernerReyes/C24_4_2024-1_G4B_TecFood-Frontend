@@ -9,6 +9,7 @@ export type IPrivateRoutes = {
     PROFILE: string;
     CART: string;
     ORDER_HISTORY: string;
+    PAYMENT: string;
   };
   ADMIN: string;
   admin: {
@@ -27,6 +28,7 @@ export const PrivateRoutes: IPrivateRoutes = {
     PROFILE: "profile",
     CART: "cart",
     ORDER_HISTORY: "order-history",
+    PAYMENT: "payment",
   },
 
   // <-- ADMIN ROUTES -->

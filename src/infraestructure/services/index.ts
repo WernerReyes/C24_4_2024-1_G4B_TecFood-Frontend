@@ -6,3 +6,5 @@ export * from "./dish-category.service";
 export * from "./cart-dish.service"
 export * from "./order-dish.service";
 export * from "./order-dish-item.service";
+export * from "./payment.service";
+export * from "./paypal.service";

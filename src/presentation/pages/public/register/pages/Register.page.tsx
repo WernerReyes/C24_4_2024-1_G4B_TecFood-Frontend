@@ -2,18 +2,16 @@ import { useEffect } from "react";
 import clsx from "clsx";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TypeMessage } from "@/infraestructure/store";
 import { Button, InputPassword, InputText } from "@/presentation/components";
 import { useAuthStore, useMessage, useThemeStore } from "@/presentation/hooks";
 import { PublicRoutes } from "@/presentation/routes";
 import { AuthLayout } from "../../layout";
 import { fromObjectToArray } from "@/presentation/utilities";
-import { registerUserValidation } from "@/infraestructure/validations";
 import { RegisterUserDto } from "@/domain/dtos";
 
 export const RegisterPage = () => {
   const { isDark } = useThemeStore();
-  const { startSetMessages } = useMessage();
+  const { startSetMessages, typeError } = useMessage();
   const { startRegisteringUser, isLoading } = useAuthStore();
 
   const {
@@ -21,7 +19,7 @@ export const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterUserDto>({
-    resolver: zodResolver(registerUserValidation),
+    resolver: zodResolver(RegisterUserDto.validations),
   });
 
   const handleRegister: SubmitHandler<RegisterUserDto> = (data) => {
@@ -31,7 +29,7 @@ export const RegisterPage = () => {
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
       const messages = fromObjectToArray(errors).map((error) => error.message);
-      startSetMessages(messages as string[], TypeMessage.ERROR);
+      startSetMessages(messages as string[], typeError);
     }
   }, [errors]);
 

@@ -10,5 +10,6 @@ export * from "./slice/message.slice";
 export * from "./slice/cart-dish.slice";
 export * from "./slice/order-dish.slice";
 export * from "./slice/order-dish-item.slice";
+export * from "./slice/payment.slice";
 
 

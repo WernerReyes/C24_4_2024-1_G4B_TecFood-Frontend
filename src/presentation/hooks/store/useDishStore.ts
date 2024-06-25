@@ -3,7 +3,6 @@ import { GetDishById, GetDishes, GetDishesToSearch } from "@/domain/use-cases";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
-  TypeMessage,
   onLoadDish,
   onLoadDishes,
   onLoadDishesToSearch,
@@ -21,7 +20,7 @@ const dishRepositoryImpl = new DishRepositoryImpl(dishService);
 
 export const useDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages } = useMessage();
+  const { startSetMessages, typeError } = useMessage();
   const { dishes, dishesToSearch, dish, total, isLoading, filters } =
     useSelector((state: AppState) => state.dish);
 
@@ -29,7 +28,7 @@ export const useDishStore = () => {
     getDishesDto: [GetDishesDto?, string[]?],
   ) => {
     const [validatedGetDishesDto, errors] = getDishesDto;
-    if (errors) return startSetMessages(errors, TypeMessage.ERROR);
+    if (errors) return startSetMessages(errors, typeError);
     dispatch(onLoadingDish());
     await new GetDishes(dishRepositoryImpl)
       .execute(validatedGetDishesDto!)

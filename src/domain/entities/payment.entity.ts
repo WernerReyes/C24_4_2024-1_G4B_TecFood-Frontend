@@ -3,11 +3,12 @@ import type { OrderDishEntity } from "./order-dish.entity";
 export enum PaymentMethodEnum {
   CREDIT_CARD = "CREADIT_CARD",
   DEBIT_CARD = "DEBIT_CARD",
-  CASH = "CASH",
+  PAYPAL = "PAYPAL",
 }
 
 export enum PaymentStatusEnum {
   PENDING = "PENDING",
+  FAILED = "FAILED",
   COMPLETED = "COMPLETED",
 }
 
@@ -17,4 +18,9 @@ export interface PaymentEntity {
   paymentMethod: PaymentMethodEnum;
   status: PaymentStatusEnum;
   orderDish: OrderDishEntity;
+}
+
+export interface ProcessPaymentResponse {
+  message: string;
+  payment: PaymentEntity;
 }

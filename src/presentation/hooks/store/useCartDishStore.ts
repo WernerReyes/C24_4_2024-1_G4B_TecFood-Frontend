@@ -10,7 +10,6 @@ import {
 import { CartDishRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
-  TypeMessage,
   onAddOneDish,
   onDeleteOneDish,
   onLoadCartDish,
@@ -28,7 +27,7 @@ const cartDishRepositoryImpl = new CartDishRepositoryImpl(cartDishService);
 
 export const useCartStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages } = useMessage();
+  const { startSetMessages, typeSuccess } = useMessage();
 
   const { isLoading, cart, cartItem, totalQuantity, totalPayment } =
     useSelector((state: AppState) => state.cartDish);
@@ -39,7 +38,7 @@ export const useCartStore = () => {
       .execute(dishId)
       .then(({ message }) => {
         dispatch(onAddOneDish());
-        startSetMessages([message], TypeMessage.SUCCESS);
+        startSetMessages([message], typeSuccess);
       })
       .catch((error) => {
         throw error;

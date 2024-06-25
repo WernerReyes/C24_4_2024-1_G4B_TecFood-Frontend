@@ -18,6 +18,10 @@ export const useMessage = () => {
     //* Attributes
     messages,
     type,
+    typeError: TypeMessage.ERROR,
+    typeSuccess: TypeMessage.SUCCESS,
+    typeWarning: TypeMessage.WARNING,
+    typeInfo: TypeMessage.INFO,
 
     //* Methods
     startSetMessages,

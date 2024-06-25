@@ -6,7 +6,7 @@ import { RoleEnum } from "@/domain/entities";
 import { PrivateRoutes } from "../routes";
 import { fromUrlToString, routeRole } from "../utilities";
 import { Link } from "./Link";
-import { useDishStore } from "../hooks";
+import { useDishStore, useOrderDishItemStore } from "../hooks";
 
 interface Props {
   role: RoleEnum;
@@ -20,7 +20,9 @@ const DEFAULT_CLASSNAME =
 export const BreadCrumb = ({ role, className, unistyled }: Props) => {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
+  const { orderDishId } = useParams<{ orderDishId: string }>();
   const { dish, startLoadingDishById } = useDishStore();
+  // const { startLoadingOrderDishItemsByOrder } = useOrderDishItemStore();
   const roleRoute = PrivateRoutes[routeRole(role)].toString();
 
   const home = {
@@ -54,6 +56,12 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
     }
   }, [dish]);
 
+  // useEffect(() => {
+  //   if (orderDishId) {
+  //     startLoadingOrderDishItemsByOrder(parseInt(orderDishId));
+  //   }
+  // }, [orderDishId]);
+
   const urlSegments = useMemo(() => {
     const originalSegments = location.pathname.split("/");
     const segments = [...originalSegments]; // Copia de los segmentos originales
@@ -61,6 +69,10 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
     if (index !== -1 && dish) {
       segments[index] = dish.name;
     }
+    if (orderDishId) {
+      segments[segments.length - 1] = "Order " + orderDishId;
+    }
+
     return {
       updated: filterSegments(segments, roleRoute),
       original: originalSegments,

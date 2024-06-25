@@ -19,7 +19,7 @@ export class UpdateUserDto {
     }
   }
 
-  private static get validations() {
+  public static get validations() {
     const { DNI, PHONE } = regularExpressions;
     return z.object({
       firstName: z
