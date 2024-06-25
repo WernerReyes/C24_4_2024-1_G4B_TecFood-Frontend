@@ -20,7 +20,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useMessage } from "../useMessage";
 import { AuthService } from "@/infraestructure/services";
-import { clearStorage } from "@/presentation/utilities";
+import { clearStorage, removeStorage } from "@/presentation/utilities";
 
 const authService = new AuthService();
 const authRepositoryImpl = new AuthRepositoryImpl(authService);
@@ -99,7 +99,10 @@ export const useAuthStore = () => {
 
   const startLogout = () => {
     dispatch(onLogout());
-    clearStorage();
+    removeStorage("token");
+    removeStorage("orderDishFilters");
+    removeStorage("dishFilters");
+    removeStorage("dishToSearch");
   };
 
   return {
