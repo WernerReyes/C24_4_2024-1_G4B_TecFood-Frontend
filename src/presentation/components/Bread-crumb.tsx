@@ -6,9 +6,10 @@ import { RoleEnum } from "@/domain/entities";
 import { PrivateRoutes } from "../routes";
 import { fromUrlToString, routeRole } from "../utilities";
 import { Link } from "./Link";
-import { useDishStore, useOrderDishItemStore } from "../hooks";
+import { useDishStore } from "../hooks";
 
 interface Props {
+  scrollId: string;
   role: RoleEnum;
   className?: string;
   unistyled?: boolean;
@@ -17,7 +18,7 @@ interface Props {
 const DEFAULT_CLASSNAME =
   "dark:bg-skeleton-dark bg-skeleton rounded-none border-none";
 
-export const BreadCrumb = ({ role, className, unistyled }: Props) => {
+export const BreadCrumb = ({ role, scrollId, className, unistyled }: Props) => {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
   const { orderDishId } = useParams<{ orderDishId: string }>();
@@ -103,6 +104,7 @@ export const BreadCrumb = ({ role, className, unistyled }: Props) => {
 
   return (
     <BreadCrumbPrimeReact
+      id={scrollId}
       home={home}
       model={items}
       unstyled={unistyled}

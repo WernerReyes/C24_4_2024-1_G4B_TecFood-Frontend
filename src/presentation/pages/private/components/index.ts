@@ -5,3 +5,7 @@ export * from "./Heart";
 export * from "./Links-to-navigate";
 export * from "./Upload-profile";
 export * from './Profile-form';
+export * from './Chat-bot';
+export * from './Chat-bot-response';
+export * from './Header-chat-bot';
+export * from './Footer-chat-bot';

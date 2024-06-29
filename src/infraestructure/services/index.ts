@@ -8,3 +8,4 @@ export * from "./order-dish.service";
 export * from "./order-dish-item.service";
 export * from "./payment.service";
 export * from "./paypal.service";
+export * from './open-ia.service';

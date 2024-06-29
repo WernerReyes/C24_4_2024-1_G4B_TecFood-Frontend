@@ -36,11 +36,7 @@ const LINKS_SIDEBAR = [
   { label: "Accessories", url: USER + "/home4" },
 ];
 
-type Props = {
-  scrollId: string;
-};
-
-export const Header = ({ scrollId }: Props) => {
+export const Header = () => {
   const { totalQuantity } = useCartStore();
   const [collapseMenu, setCollapseMenu] = useState<boolean>(false);
   const [visible, setVisible] = useState(false);
@@ -49,7 +45,7 @@ export const Header = ({ scrollId }: Props) => {
   const handleToggleClose = () => setCollapseMenu(false);
 
   return (
-    <HeaderLayout scrollId={scrollId}>
+    <HeaderLayout>
       <Sidebar
         collapseMenu={collapseMenu}
         handleToggleClose={handleToggleClose}

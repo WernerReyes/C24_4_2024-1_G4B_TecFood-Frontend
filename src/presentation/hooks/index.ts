@@ -9,6 +9,7 @@ export * from "./store/useUserStore";
 export * from "./store/useOrderDishStore";
 export * from "./store/useOrderDishItemStore"
 export * from "./store/usePaymentStore";
+export * from "./store/useOpenAIStore";
 
 
 export * from "./useCart";

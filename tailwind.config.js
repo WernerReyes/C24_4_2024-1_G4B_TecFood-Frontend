@@ -38,10 +38,26 @@ export default {
         'float': {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-5%)' },
+        },
+
+        'bounce': {
+          '0%, 80%, 100%': {
+            transform: 'translateY(0)',
+            animationTimingFunction: 'cubic-bezier(0.8,0,1,1)'
+          },
+
+          '40%': {
+            transform: 'translateY(-10px)',
+            animationTimingFunction: 'cubic-bezier(0,0,0.2,1)'
+          }
         }
       },
       animation: {
         'float': 'float 3s ease-in-out infinite',
+        'bounce1': 'bounce 1.4s infinite ease-in-out both',
+        'bounce2': 'bounce 1.4s infinite ease-in-out both -0.16s',
+        'bounce3': 'bounce 1.4s infinite ease-in-out both -0.32s',
+  
       },
       dropShadow: {
         'primary': '0 5px 105px #00B1F7',

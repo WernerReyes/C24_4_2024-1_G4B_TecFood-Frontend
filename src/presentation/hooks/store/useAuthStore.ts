@@ -20,13 +20,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useMessage } from "../useMessage";
 import { AuthService } from "@/infraestructure/services";
-import { clearStorage, removeStorage } from "@/presentation/utilities";
+import { removeStorage } from "@/presentation/utilities";
+import { useOpenAIStore } from "./useOpenAIStore";
 
 const authService = new AuthService();
 const authRepositoryImpl = new AuthRepositoryImpl(authService);
 
 export const useAuthStore = () => {
   const { startSetMessages, typeError, typeSuccess } = useMessage();
+  const { startResetChatMessages } = useOpenAIStore();
   const { status, authenticatedUser } = useSelector(
     (state: AppState) => state.auth,
   );
@@ -103,6 +105,9 @@ export const useAuthStore = () => {
     removeStorage("orderDishFilters");
     removeStorage("dishFilters");
     removeStorage("dishToSearch");
+    removeStorage("historySearch");
+    removeStorage("dishToSearch");
+    startResetChatMessages();
   };
 
   return {

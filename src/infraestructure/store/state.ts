@@ -4,6 +4,7 @@ import type { DishOfferSliceState } from "./slice/dis-offer.slice";
 import type { DishCategorySliceState } from "./slice/dish-category.slice";
 import type { DishSliceState } from "./slice/dish.slice";
 import type { MessageSliceState } from "./slice/message.slice";
+import type { OpenIASliceState } from "./slice/open-ia.slice";
 import type { OrderDishItemSliceState } from "./slice/order-dish-item.slice";
 import type { OrderDishSliceState } from "./slice/order-dish.slice";
 import type { PaymentSliceState } from "./slice/payment.slice";
@@ -22,4 +23,5 @@ export interface AppState {
   orderDish: OrderDishSliceState;
   orderDishItem: OrderDishItemSliceState;
   payment: PaymentSliceState;
+  openIA: OpenIASliceState;
 }

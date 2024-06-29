@@ -11,6 +11,7 @@ import { cartSlice } from "./slice/cart-dish.slice";
 import { orderDishSlice } from "./slice/order-dish.slice";
 import { orderDishItemSlice } from "./slice/order-dish-item.slice";
 import { paymentSlice } from "./slice/payment.slice";
+import { openIASlice } from "./slice/open-ia.slice";
 
 export const store = configureStore<AppState>({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore<AppState>({
     orderDish: orderDishSlice.reducer,
     orderDishItem: orderDishItemSlice.reducer,
     payment: paymentSlice.reducer,
+    openIA: openIASlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -7,3 +7,4 @@ export * from "./order-dish.model";
 export * from "./order-dish-item.model";
 export * from "./payment.model";
 export * from "./paypal.model";
+export * from "./open-ia.model";

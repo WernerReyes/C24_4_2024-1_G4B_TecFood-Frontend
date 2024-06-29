@@ -8,3 +8,4 @@ export * from "./order-dish.repository.impl";
 export * from "./order-dish-item.repository.impl";
 export * from "./payment.repository.impl";
 export * from "./paypal.repository.impl";
+export * from "./open-ai.repository.impl";

@@ -7,9 +7,10 @@ type Props = {
   to: string;
   offset: number;
   duration: number;
+  className?: string;
 };
 
-export const ChangeTheme = ({ to, offset, duration }: Props) => {
+export const ChangeTheme = ({ to, offset, duration, className="" }: Props) => {
   const { currentTheme, startChangingTheme, startLoadTheme } = useThemeStore();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -21,7 +22,10 @@ export const ChangeTheme = ({ to, offset, duration }: Props) => {
 
   return (
     <div
-      className="absolute bottom-10 end-5 z-10 flex flex-col items-center rounded-full bg-primary/25 lg:bottom-5"
+      className={clsx(
+        className,
+        "absolute bottom-10 end-5 z-10 flex flex-col items-center rounded-full bg-primary/25 lg:bottom-5",
+      )}
       style={{ position: "fixed" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -29,7 +33,7 @@ export const ChangeTheme = ({ to, offset, duration }: Props) => {
       {isHovered && (
         <Button
           unstyled
-          className="z-10 flex h-8 w-8 items-center justify-center transition-all duration-500"
+          className="flex h-8 w-8 items-center justify-center transition-all duration-500"
         >
           <Link
             activeClass="active"
@@ -48,7 +52,7 @@ export const ChangeTheme = ({ to, offset, duration }: Props) => {
       <Button
         unstyled
         onClick={handleChangeTheme}
-        className="z-20 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white"
       >
         <i
           className={clsx("pi", currentTheme === "dark" ? "pi-sun" : "pi-moon")}

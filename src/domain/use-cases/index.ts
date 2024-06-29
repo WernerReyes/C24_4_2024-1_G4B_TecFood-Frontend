@@ -8,4 +8,5 @@ export * from "./order-dish";
 export * from "./order-dish-item";
 export * from "./payment";
 export * from "./paypal";
+export * from "./open-ia";
 
