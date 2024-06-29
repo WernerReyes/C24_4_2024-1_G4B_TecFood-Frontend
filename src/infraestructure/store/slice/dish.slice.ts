@@ -12,6 +12,7 @@ export type DishSliceState = {
   total: number;
   dishes: DishState[];
   dishesToSearch: DishState[];
+  dishesWithoutSelectedDish: DishState[];
   filters: DishFilters;
 };
 
@@ -23,6 +24,7 @@ export const dishSlice = createSlice({
     total: 0,
     dishes: [] as DishState[],
     dishesToSearch: [] as DishState[],
+    dishesWithoutSelectedDish: [] as DishState[],
     filters: dishFilterEmptyState,
   },
   reducers: {
@@ -39,7 +41,15 @@ export const dishSlice = createSlice({
     },
 
     onLoadDishesToSearch(state, action: PayloadAction<DishState[]>) {
-      return { ...state, dishesToSearch: action.payload };
+      return { ...state, dishesToSearch: action.payload, isLoading: false };
+    },
+
+    onLoadDishesWithoutSelectedDish(state, action: PayloadAction<DishState[]>) {
+      return {
+        ...state,
+        dishesWithoutSelectedDish: action.payload,
+        isLoading: false,
+      };
     },
 
     onLoadDish(state, action: PayloadAction<DishState>) {
@@ -65,4 +75,5 @@ export const {
   onLoadDish,
   onSetDishFilters,
   onLoadDishesToSearch,
+  onLoadDishesWithoutSelectedDish,
 } = dishSlice.actions;

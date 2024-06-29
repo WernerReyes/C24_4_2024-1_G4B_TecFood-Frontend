@@ -24,6 +24,9 @@ export interface GetDishesResponse {
 export interface GetDishesToSearchResponse
   extends Pick<GetDishesResponse, "message" | "dishes"> {}
 
+export interface GetDishesWithoutSelectedDishResponse
+  extends GetDishesToSearchResponse {}
+
 export interface GetDishByIdResponse {
   message: string;
   dish: DishEntity;

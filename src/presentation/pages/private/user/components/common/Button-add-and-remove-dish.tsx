@@ -26,7 +26,7 @@ export const ButtonAddAndRemoveDish = ({
       <Button
         unstyled
         onClick={handleAddToCart}
-        disabled={quantityMemory >= 5 || totalQuantity >= 5 || stock === 0}
+        disabled={quantityMemory >= 5 || totalQuantity >= 5 || stock === 0 || quantityMemory >= stock}
         className={clsx(
           isAddToCart ? "hidden" : "inline-flex",
           "relative z-10 !w-full items-center  justify-center rounded-lg bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-primary-dark disabled:bg-primary-lighter disabled:dark:cursor-not-allowed lg:w-auto",

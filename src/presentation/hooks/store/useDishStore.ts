@@ -1,11 +1,17 @@
-import { GetDishesDto } from "@/domain/dtos";
-import { GetDishById, GetDishes, GetDishesToSearch } from "@/domain/use-cases";
+import { GetDishesDto, GetDishesWithoutSelectedDishDto } from "@/domain/dtos";
+import {
+  GetDishById,
+  GetDishes,
+  GetDishesToSearch,
+  GetDishesWithoutSelectedDish,
+} from "@/domain/use-cases";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
   onLoadDish,
   onLoadDishes,
   onLoadDishesToSearch,
+  onLoadDishesWithoutSelectedDish,
   onLoadingDish,
   onSetDishFilters,
 } from "@/infraestructure/store";
@@ -21,7 +27,7 @@ const dishRepositoryImpl = new DishRepositoryImpl(dishService);
 export const useDishStore = () => {
   const dispatch = useDispatch();
   const { startSetMessages, typeError } = useMessage();
-  const { dishes, dishesToSearch, dish, total, isLoading, filters } =
+  const { dishes, dishesToSearch, dishesWithoutSelectedDish, dish, total, isLoading, filters } =
     useSelector((state: AppState) => state.dish);
 
   const startLoadingDishes = async (
@@ -61,6 +67,22 @@ export const useDishStore = () => {
       .catch(console.error);
   };
 
+  const startLoadingDishesWithoutSelectedDish = async (
+    dto: [GetDishesWithoutSelectedDishDto?, string[]?],
+  ) => {
+    dispatch(onLoadingDish());
+    const [validatedDto, errors] = dto;
+    if (errors) return startSetMessages(errors, typeError);
+    await new GetDishesWithoutSelectedDish(dishRepositoryImpl)
+      .execute(validatedDto!)
+      .then((data) => {
+        dispatch(onLoadDishesWithoutSelectedDish(data.dishes));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   const startLoadingDishById = async (id: number) => {
     dispatch(onLoadingDish());
 
@@ -82,6 +104,7 @@ export const useDishStore = () => {
     dishes,
     total,
     dishesToSearch,
+    dishesWithoutSelectedDish,
     isLoading,
     filters,
 
@@ -90,5 +113,6 @@ export const useDishStore = () => {
     startFilterDishes,
     startLoadingDishById,
     startLoadingDishesToSearch,
+    startLoadingDishesWithoutSelectedDish,
   };
 };

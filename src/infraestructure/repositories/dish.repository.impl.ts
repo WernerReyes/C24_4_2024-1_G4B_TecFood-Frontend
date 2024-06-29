@@ -1,5 +1,8 @@
 import type { DishRepository } from "@/domain/repositories";
-import type { GetDishesDto } from "@/domain/dtos";
+import type {
+  GetDishesDto,
+  GetDishesWithoutSelectedDishDto,
+} from "@/domain/dtos";
 import { DishService } from "../services";
 
 export class DishRepositoryImpl implements DishRepository {
@@ -11,6 +14,14 @@ export class DishRepositoryImpl implements DishRepository {
 
   async getAllToSearch() {
     return await this.dishService.getAllToSearch();
+  }
+
+  async getAllWithoutSelectedDish(
+    getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
+  ) {
+    return await this.dishService.getAllWithoutSelectedDish(
+      getDishesWithoutSelectedDishDto,
+    );
   }
 
   async getById(id: number) {
