@@ -17,7 +17,6 @@ export const ProfileForm = () => {
   });
 
   const handleUpdateUser: SubmitHandler<UpdateUserDto> = async (data) => {
-    // console.log(data);
     await startUpdatingUser(data);
   };
 

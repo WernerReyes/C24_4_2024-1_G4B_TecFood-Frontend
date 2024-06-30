@@ -19,7 +19,7 @@ import {
   onDeleteAllDishes,
   onResetCartDish,
 } from "@/infraestructure/store";
-import { CartDishService } from "../../../infraestructure/services";
+import { CartDishService } from "@/infraestructure/services";
 import { useMessage } from "../";
 
 const cartDishService = new CartDishService();

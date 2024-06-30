@@ -6,8 +6,6 @@ import { JwtPayload, jwtDecode } from "jwt-decode";
 
 const { VITE_API_URL } = getEnvs();
 
-let token = getStorage<string>("token") ? getStorage<string>("token") : null;
-
 const axiosInstanceForTokenRenewal = axios.create({
   baseURL: VITE_API_URL,
 });
@@ -15,8 +13,7 @@ const axiosInstanceForTokenRenewal = axios.create({
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
   axiosInstance.interceptors.request.use(async (req) => {
-    if (!token)
-      token = getStorage<string>("token") ? getStorage<string>("token") : null;
+    let token = getStorage<string>("token") ? getStorage<string>("token") : null;
 
     if (token) {
       const user = jwtDecode<JwtPayload>(token);

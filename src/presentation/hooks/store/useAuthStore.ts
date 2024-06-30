@@ -20,8 +20,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useMessage } from "../useMessage";
 import { AuthService } from "@/infraestructure/services";
-import { removeStorage } from "@/presentation/utilities";
+import { removeStorage, setStorage } from "@/presentation/utilities";
 import { useOpenAIStore } from "./useOpenAIStore";
+import { useCartStore } from "./useCartDishStore";
 
 const authService = new AuthService();
 const authRepositoryImpl = new AuthRepositoryImpl(authService);
@@ -29,6 +30,7 @@ const authRepositoryImpl = new AuthRepositoryImpl(authService);
 export const useAuthStore = () => {
   const { startSetMessages, typeError, typeSuccess } = useMessage();
   const { startResetChatMessages } = useOpenAIStore();
+  const { startResetCartDish } = useCartStore();
   const { status, authenticatedUser } = useSelector(
     (state: AppState) => state.auth,
   );
@@ -48,7 +50,7 @@ export const useAuthStore = () => {
       .execute(validatedData!)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
-        localStorage.setItem("token", token);
+        setStorage("token", token);
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -63,7 +65,7 @@ export const useAuthStore = () => {
       .execute(loginUserDto)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
-        localStorage.setItem("token", token);
+        setStorage("token", token);
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -104,10 +106,11 @@ export const useAuthStore = () => {
     removeStorage("token");
     removeStorage("orderDishFilters");
     removeStorage("dishFilters");
-    removeStorage("dishToSearch");
+    removeStorage("dishesToSearch");
     removeStorage("historySearch");
     removeStorage("dishToSearch");
     startResetChatMessages();
+    startResetCartDish();
   };
 
   return {

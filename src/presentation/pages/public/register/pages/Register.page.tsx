@@ -133,6 +133,7 @@ export const RegisterPage = () => {
             defaultValue=""
             render={({ field }) => (
               <InputText
+
                 {...field}
                 label="Telefono (Optional)"
                 placeholder="Ingresa telefono"

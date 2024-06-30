@@ -62,7 +62,13 @@ export const cartSlice = createSlice({
     },
 
     onResetCartDish: (state) => {
-      return { ...state, cart: [], totalPayment: 0, totalQuantity: 0 };
+      return {
+        ...state,
+        cart: [],
+        cartItem: cartEmptyState,
+        totalPayment: 0,
+        totalQuantity: 0,
+      };
     },
 
     onLoadingCartDish: (state) => {
