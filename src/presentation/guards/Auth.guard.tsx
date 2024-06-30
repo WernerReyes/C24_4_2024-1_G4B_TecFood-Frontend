@@ -18,7 +18,7 @@ export const AuthGuard = ({ privateValidation }: Props) => {
       <Navigate replace to={PrivateRoutes[routeRole(authenticatedUser.role)] as string} />
     )
   ) : (
-    <Navigate replace to={PublicRoutes.LOGIN} />
+    <Navigate replace to={PublicRoutes.HOME} />
   );
 };
 
