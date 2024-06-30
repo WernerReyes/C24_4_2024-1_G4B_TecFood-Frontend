@@ -1,9 +1,10 @@
 import { httpRequest } from "@/config/api";
-import { CreatePaymentResponse } from "@/domain/entities";
-import type { CreatePaymentModel } from "@/model";
+import { CompletePaymentResponse, CreatePaymentResponse } from "@/domain/entities";
+import type { CompletePaymentModel, CreatePaymentModel } from "@/model";
 
 export interface IPaypalService {
   createPayment(orderDishId: number): Promise<CreatePaymentModel>;
+  completePayment(orderId: string): Promise<CompletePaymentModel>;
 }
 
 export class PaypalService implements IPaypalService {
@@ -27,4 +28,22 @@ export class PaypalService implements IPaypalService {
       throw error;
     }
   }
+
+  public async completePayment(orderId: string): Promise<CompletePaymentModel> {
+    try {
+      const { data } = await httpRequest<CompletePaymentResponse>(
+        `${this.prefix}/capture`,
+        "POST",
+        { orderId },
+      );
+
+      return {
+        ...data,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
 }

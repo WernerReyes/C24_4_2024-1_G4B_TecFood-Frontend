@@ -7,4 +7,8 @@ export class PaypalRepositoryImpl implements PaypalRepository {
   async createPayment(orderDishId: number) {
     return this.service.createPayment(orderDishId);
   }
+
+  async completePayment(orderId: string) {
+    return this.service.completePayment(orderId);
+  }
 }

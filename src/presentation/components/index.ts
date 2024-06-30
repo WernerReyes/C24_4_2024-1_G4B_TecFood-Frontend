@@ -37,4 +37,5 @@ export * from "./Sidebar";
 export * from "./Skeleton";
 export * from "./Slider";
 export * from "./Tooltip";
+export * from "./Dowload-file";
 

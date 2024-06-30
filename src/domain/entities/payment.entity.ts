@@ -1,8 +1,7 @@
 import type { OrderDishEntity } from "./order-dish.entity";
 
 export enum PaymentMethodEnum {
-  CREDIT_CARD = "CREADIT_CARD",
-  DEBIT_CARD = "DEBIT_CARD",
+  CARD = "CARD",
   PAYPAL = "PAYPAL",
 }
 

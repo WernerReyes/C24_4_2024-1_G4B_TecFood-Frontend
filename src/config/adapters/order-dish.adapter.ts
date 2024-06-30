@@ -10,6 +10,7 @@ export const orderDishAdapter = (
     date: orderDishEntity.orderDate,
     status: orderDishEntity.status,
     total: orderDishEntity.total,
+    invoiceReportUrl: orderDishEntity.invoiceReportUrl,
     user: userAdapter(orderDishEntity.user),
   };
 };

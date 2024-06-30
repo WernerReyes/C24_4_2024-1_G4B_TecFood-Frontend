@@ -10,6 +10,7 @@ import {
 import {
   useOrderDishStore,
   usePaginator,
+  usePaymentStore,
   useWindowSize,
 } from "@/presentation/hooks";
 import { CardHistory } from "../components";
@@ -70,6 +71,7 @@ const OrderHistoryPage = () => {
     startFilterOrderDish,
     total,
   } = useOrderDishStore();
+  const { payment } = usePaymentStore();
   const [orderDishesWithColorAndIcon, setOrderDishesWithColorAndIcon] =
     useState<TimelineEvent[]>([]);
   const [currentStatus, setCurrentStatus] = useState<
@@ -83,10 +85,9 @@ const OrderHistoryPage = () => {
       status: currentStatus,
     });
     startLoadingOrderDishesByUser(getOrderDishesByUserDto);
-  }, [filters.status, status, currentStatus, currentPage, limit]);
+  }, [filters.status, status, currentStatus, currentPage, limit, payment]);
 
   useEffect(() => {
-    console.log(orderDishes);
     setOrderDishesWithColorAndIcon(colorAndIconByStatus(orderDishes));
     startResetStatus();
   }, [orderDishes]);
@@ -101,7 +102,7 @@ const OrderHistoryPage = () => {
       <section className="xl:mx-30 mt-10 md:mx-10 lg:mx-20">
         <SelectButton
           value={currentStatus.map((item) => item.status)}
-          className="mb-5 mx-5 flex items-center justify-center"
+          className="mx-5 mb-5 flex items-center justify-center"
           onChange={(e: SelectButtonChangeEvent) =>
             setCurrentStatus(
               e.value.map((item: OrderDishStatusEnum) => ({ status: item })),
@@ -126,7 +127,7 @@ const OrderHistoryPage = () => {
         {orderDishes.length ? (
           <Timeline
             value={orderDishesWithColorAndIcon}
-            className="xl:mx-30 mt-10 md:mx-10 lg:mx-20"
+            className="xl:mx-30 md:mx-10 lg:mx-20"
             align={width > SCREEN_MD ? "alternate" : "left"}
             marker={(item) => <CustomizedMarker item={item} />}
             content={(item) => <CardHistory {...item} />}

@@ -7,11 +7,13 @@ import type {
 import type {
   CreateOrderDishResponse,
   GetOrderDishesByUserResponse,
+  OrderDishEntity,
   UpdateOrderDishStatusResponse,
 } from "@/domain/entities";
 import type {
   CreateOrderDishModel,
   GetOrderDishesByUserModel,
+  OrderDishModel,
   UpdateOrderDishStatusModel,
 } from "@/model";
 import {
@@ -28,6 +30,7 @@ interface IOrderDishService {
   getOrderDishesByUser(
     getOrderDishesByUserDto: GetOrderDishesByUserDto,
   ): Promise<GetOrderDishesByUserModel>;
+  getOrderDishById(orderDishId: number): Promise<OrderDishModel>;
 }
 
 export class OrderDishService implements IOrderDishService {
@@ -36,7 +39,6 @@ export class OrderDishService implements IOrderDishService {
   constructor() {
     this.prefix = "/order-dish";
   }
-
 
   public async createOrderDish(): Promise<CreateOrderDishModel> {
     try {
@@ -78,18 +80,29 @@ export class OrderDishService implements IOrderDishService {
         requestParamCategory,
       ]);
 
-      console.log(requestParams);
-
       const { data } = await httpRequest<GetOrderDishesByUserResponse>(
         `${this.prefix}/user${requestParams}`,
         "GET",
       );
+
       return {
         ...data,
         orderDishes: data.orderDishes.map((orderDish) =>
           orderDishAdapter(orderDish),
         ),
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getOrderDishById(orderDishId: number): Promise<OrderDishModel> {
+    try {
+      const { data } = await httpRequest<OrderDishEntity>(
+        `${this.prefix}/${orderDishId}`,
+        "GET",
+      );
+      return orderDishAdapter(data);
     } catch (error) {
       throw error;
     }

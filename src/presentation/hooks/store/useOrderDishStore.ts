@@ -5,6 +5,7 @@ import {
 } from "@/domain/dtos";
 import {
   CreateOrderDish,
+  GetOrderDishById,
   GetOrderDishesByUser,
   UpdateOrderDishStatus,
 } from "@/domain/use-cases";
@@ -78,6 +79,18 @@ export const useOrderDishStore = () => {
       .catch(console.error);
   };
 
+
+  const startGetOrderDishById = async (orderDishId: number) => {
+    dispatch(onLoadingOrderDish());
+    await new GetOrderDishById(orderDishRepositoryImpl)
+      .execute(orderDishId)
+      .then((orderDish) => {
+        dispatch(onCreateOrderDish(orderDish));
+      })
+      .catch(console.error);
+  }
+
+
   const startFilterOrderDish = async (filters: OrderDishFilter) => {
     dispatch(onLoadingOrderDish());
     dispatch(onSetOrderDishFilters(filters));
@@ -102,5 +115,6 @@ export const useOrderDishStore = () => {
     startCreateOrderDish,
     startResetStatus,
     startFilterOrderDish,
+    startGetOrderDishById,
   };
 };

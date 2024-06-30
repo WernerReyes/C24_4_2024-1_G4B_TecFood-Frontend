@@ -72,7 +72,7 @@ export const ChatBot = ({ to, offset = 50, duration = 1000 }: Props) => {
       <Panel
         className={clsx(
           showChatBot ? "block" : "hidden",
-          "fixed bottom-4 right-4 z-[99] h-96 w-80 rounded-lg border-2 border-primary bg-white shadow-lg dark:bg-slate-800",
+          "fixed bottom-4 right-4 z-[100] h-96 w-80 rounded-lg border-2 border-primary bg-white shadow-lg dark:bg-slate-800",
         )}
         headerTemplate={(options) => (
           <HeaderChatBot {...options} setShowChatBot={setShowChatBot} />

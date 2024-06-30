@@ -29,3 +29,7 @@ export * from "./cart/Order-summary";
 
 // <-- ORDER HISTORY PAGE COMPONENTS -->
 export * from "./order-history/Card-history";
+
+// <-- PAYMENT PAGE COMPONENTS -->
+export * from "./payment/Paypal-payment";
+export * from "./payment/Order-dish-items";

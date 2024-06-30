@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { type CartState } from "@/model";
 import { Button, ConfirmPopup, confirmPopup } from "@/presentation/components";
 import { useOrderDishStore } from "@/presentation/hooks";
+import { OrderSummaryLayout } from "../../layout";
 
 type Props = {
   cart: CartState[];
@@ -20,9 +21,9 @@ export const OrderSummary = ({ cart, startResetCartDish }: Props) => {
     await startCreateOrderDish().then(() => {
       startResetCartDish();
     });
-  }
+  };
 
-  const hanflerConfirmOrder = async (e: MouseEvent<HTMLButtonElement>) => {
+  const handleConfirmOrder = async (e: MouseEvent<HTMLButtonElement>) => {
     confirmPopup({
       isDefault: true,
       target: e.currentTarget,
@@ -31,34 +32,24 @@ export const OrderSummary = ({ cart, startResetCartDish }: Props) => {
   };
 
   return (
-    <div className="rounded-lg border-2 bg-transparent dark:border-slate-700">
-      <div className="p-6">
-        <h6 className="text-xl font-bold">Order Summary</h6>
-        <div className="mt-4">
-          <div className="my-2 flex justify-between">
-            <p>Subtotal</p>
-            <p>S/.{handleCalculateTotal}</p>
-          </div>
-          <div className="my-2 flex justify-between border-t py-2 dark:border-slate-700">
-            <p>Total</p>
-            <p>S/.{handleCalculateTotal}</p>
-          </div>
-          <div className="mt-4">
-            <ConfirmPopup />
-            <Button
-              unstyled
-              onClick={hanflerConfirmOrder}
-              className={clsx(
-                cart.length === 0 && "cursor-not-allowed",
-                "w-full rounded-md bg-primary py-2 text-white disabled:bg-primary-lighter",
-              )}
-              disabled={cart.length === 0}
-            >
-              Make Order
-            </Button>
-          </div>
-        </div>
+    <OrderSummaryLayout
+      total={Number(handleCalculateTotal)}
+      subTotal={Number(handleCalculateTotal)}
+    >
+      <div className="mt-4">
+        <ConfirmPopup />
+        <Button
+          unstyled
+          onClick={handleConfirmOrder}
+          className={clsx(
+            cart.length === 0 && "cursor-not-allowed",
+            "w-full rounded-md bg-primary py-2 text-white disabled:bg-primary-lighter",
+          )}
+          disabled={cart.length === 0}
+        >
+          Make Order
+        </Button>
       </div>
-    </div>
+    </OrderSummaryLayout>
   );
 };

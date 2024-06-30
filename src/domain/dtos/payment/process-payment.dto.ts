@@ -36,7 +36,11 @@ export class ProcessPaymentDto {
           message: "orderDishId must be greater than 0",
         }),
       paymentMethod: z
-        .nativeEnum(PaymentMethodEnum)
+        .nativeEnum(PaymentMethodEnum, {
+          message:
+            "paymentMethod must be one of the following values: " +
+            Object.values(PaymentMethodEnum).join(", "),
+        })
         .refine(
           (s) =>
             Object.values(PaymentMethodEnum).includes(s as PaymentMethodEnum),

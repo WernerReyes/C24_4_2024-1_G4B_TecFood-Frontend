@@ -1,30 +1,20 @@
-import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import { OrderDishStatusEnum } from "@/domain/entities";
+import { OrderDishItemState, OrderDishState } from "@/model";
 import {
-  Button,
   Card,
   Column,
   DataTable,
   Image,
-  Link,
   OverlayPanel,
   OverlayPanelRef,
-  Tag,
+  Tag
 } from "@/presentation/components";
-import {
-  useOrderDishItemStore,
-  useOrderDishStore,
-} from "@/presentation/hooks";
-import { OrderDishItemState, OrderDishState } from "@/model";
+import { useOrderDishItemStore } from "@/presentation/hooks";
 import { convertDateToShortString } from "@/presentation/utilities";
-import { OrderDishStatusEnum } from "@/domain/entities";
-import { UpdateOrderDishStatusDto } from "@/domain/dtos";
-import { PrivateRoutes } from "@/presentation/routes";
+import { useEffect, useRef, useState } from "react";
+import { FooterCardHistory } from "./Footer-card-history";
 
-const {
-  USER,
-  user: { PAYMENT },
-} = PrivateRoutes;
 
 interface Props extends OrderDishState {
   icon: string;
@@ -36,26 +26,21 @@ export const CardHistory = ({
   background,
   status,
   id,
+  invoiceReportUrl,
   date,
   total,
+  icon,
   color,
+  ...props
 }: Props) => {
   const ref = useRef<OverlayPanelRef>(null);
-  const { startUpdateOrderDishStatus } = useOrderDishStore();
   const { startLoadingOrderDishItemsByOrder, orderDishItems } =
     useOrderDishItemStore();
   const [orderDishId, setOrderDishId] = useState<number>(0);
 
-  const handleCancelOrder = () => {
-    const updateOrderDishStatusDto = UpdateOrderDishStatusDto.create({
-      orderDishId: id,
-      status: OrderDishStatusEnum.CANCELLED,
-    });
-
-    startUpdateOrderDishStatus(
-      updateOrderDishStatusDto,
-      "Order canceled successfully",
-    );
+  const handleShowDetails = (e: React.SyntheticEvent) => {
+    ref.current?.toggle(e);
+    setOrderDishId(id);
   };
 
   useEffect(() => {
@@ -84,32 +69,15 @@ export const CardHistory = ({
         </small>
       }
       footer={
-        <div className="flex items-center justify-center gap-x-4">
-          <Button
-            onClick={(e) => {
-              ref.current?.toggle(e);
-              setOrderDishId(id);
-            }}
-            label="Details"
-            className="rounded-md text-white dark:text-black sm:w-24  lg:w-40 xl:w-48"
-          ></Button>
-          {status === OrderDishStatusEnum.PENDING && (
-            <Button
-              label="Cancel"
-              className="rounded-md text-white dark:text-black sm:w-24 lg:w-40 xl:w-48"
-              onClick={handleCancelOrder}
-            ></Button>
-          )}
-          {status === OrderDishStatusEnum.PROCESSED && (
-            <Link
-            unstyled
-            type="router"
-              to={`${USER}/${PAYMENT}/${id}`}
-              label="Pay"
-              className="rounded-md bg-primary font-bold text-white dark:text-black px-8 py-2"
-            ></Link>
-          )}
-        </div>
+        <FooterCardHistory
+          handleShowDetails={handleShowDetails}
+          status={status}
+          id={id}
+          {...props}
+          date={date}
+          total={total}
+          invoiceReportUrl={invoiceReportUrl}
+        />
       }
     >
       <p className="mb-4 flex items-center justify-center gap-x-3 text-4xl font-extrabold">
