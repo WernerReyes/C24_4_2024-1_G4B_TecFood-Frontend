@@ -6,7 +6,6 @@ import {
   Header,
   Main,
   Menu,
-  SpecialOffers,
 } from "../components";
 import { useWindowSize  } from "@/presentation/hooks";
 import { responsiveDesign } from "@/presentation/utilities";
@@ -27,7 +26,7 @@ export const HomePage = () => {
     >
       <Header />
       <Main marginContainer={marginContainer} />
-      <SpecialOffers marginContainer={marginContainer} />
+      {/* <SpecialOffers marginContainer={marginContainer} /> */}
       <span className="mb-5 mt-0 flex justify-end">
         <Image src="/landing/rosemary.png" width="100" />
       </span>

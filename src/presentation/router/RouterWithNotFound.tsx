@@ -9,7 +9,7 @@ export const RouterWithNotFound = ({ children }: Props) => {
   return (
     <Routes>
       {children}
-      <Route path="*" element={<BreadCrumb role={RoleEnum.ROLE_USER} />} />
+      <Route path="*" element={<BreadCrumb role={RoleEnum.ROLE_USER} scrollId="" />} />
     </Routes>
   );
 };

@@ -1,7 +1,7 @@
-import type { GetDishCategories } from "@/model";
+import type { GetDishCategoriesModel } from "@/model";
 
 export interface DishCategoryRepository {
-  getAll: () => Promise<GetDishCategories>;
+  getAll: () => Promise<GetDishCategoriesModel>;
   //   create: (dishOffer: CreateDishOffer) => Promise<DishOffer>;
   //   update: (dishOffer: UpdateDishOffer) => Promise<DishOffer>;
   //   delete: (id: string) => Promise<void>;

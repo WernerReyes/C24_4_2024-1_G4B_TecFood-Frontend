@@ -19,7 +19,7 @@ export interface PaymentState extends PaymentModel {}
 export const paymentEmptyState: PaymentState = {
   id: 0,
   amount: 0,
-  paymentMethod: PaymentMethodEnum.CREDIT_CARD,
+  paymentMethod: PaymentMethodEnum.CARD,
   status: PaymentStatusEnum.PENDING,
   orderDish: orderDishEmptyState,
 };

@@ -10,7 +10,7 @@ import {
 import { formatNumber } from "@/presentation/utilities";
 import type { DishState } from "@/model";
 import { useNavigate } from "react-router-dom";
-import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
+import { PrivateRoutes } from "@/presentation/routes";
 
 const bgCardDark =
   "linear-gradient(to bottom, #322e2e, #3e3535, #493d3d, #564444, #624c4c)";

@@ -92,6 +92,7 @@ const QuantityTemplate = ({ cartItem }: { cartItem: CartState }) => {
       handleAddToCart={handleAddToCart}
       quantityMemory={quantityMemory}
       handleRemoveToCart={handleRemoveToCart}
+      stock={cartItem.dish.stock}
     />
   );
 };

@@ -31,9 +31,6 @@ const ITEMS: MenuItem[] = [
 const LINKS_SIDEBAR = [
   { label: "Home", url: USER + "/" + HOME },
   { label: "Dishes", url: USER + "/" + DISHES },
-  { label: "Women", url: USER + "/home2" },
-  { label: "Kids", url: USER + "/home3" },
-  { label: "Accessories", url: USER + "/home4" },
 ];
 
 export const Header = () => {

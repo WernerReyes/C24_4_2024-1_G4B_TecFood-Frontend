@@ -2,9 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./presentation/App.tsx";
 
-
 // PrimeReact
-// import "./index.css"; 
+// import "./index.css";
 // import 'primereact/resources/themes/lara-dark-cyan/theme.css';
 // import 'primereact/resources/themes/lara-light-cyan/theme.css';
 import "primeicons/primeicons.css";
@@ -16,7 +15,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <App />
-  /* </React.StrictMode>, */
+  </React.StrictMode>,
 );

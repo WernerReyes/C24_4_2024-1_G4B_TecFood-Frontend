@@ -69,12 +69,14 @@ export const CardList = ({ dish, quantity }: Props) => {
                     handleResetCart={handleResetCart}
                     quantityMemory={quantityMemory}
                     handleAddToCart={handleAddToCart}
+                    stock={dish.stock}
                   />
                   <AddAndRemoveDish
                     isAddToCart={isAddToCart}
                     handleAddToCart={handleAddToCart}
                     quantityMemory={quantityMemory}
                     handleRemoveToCart={handleRemoveToCart}
+                    stock={dish.stock}
                   />
                 </div>
               </div>
