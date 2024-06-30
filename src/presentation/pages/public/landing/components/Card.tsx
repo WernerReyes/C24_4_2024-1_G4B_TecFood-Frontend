@@ -20,11 +20,7 @@ const bgCardLight =
 
 interface Props extends DishState {
   priceOffer?: number;
-  // image: string;
-  // title: string;
-  // description: string;
   rating: number;
-  // price: number;
 }
 
 const {
