@@ -44,7 +44,7 @@ const itemTemplate = (item: OrderDishItemState) => {
                     <span>{item.dish.category.name}</span>
                 </div>
             </div>
-            <span className="font-bold text-900">${item.price}</span>
+            <span className="font-bold text-900">S/.{item.price}</span>
         </div>
     );
 };
