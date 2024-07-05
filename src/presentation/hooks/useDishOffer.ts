@@ -5,7 +5,6 @@ import {
   onLoadingDishOffers,
 } from "@/infraestructure/store";
 import { dishOfferRepositoryImpl } from "@/infraestructure/repositories";
-import { getDishOffers } from "@/domain/use-cases";
 
 export const useDishOffer = () => {
   const dispatch = useDispatch();
@@ -17,8 +16,8 @@ export const useDishOffer = () => {
   const startLoadingDishOffers = () => {
     dispatch(onLoadingDishOffers());
 
-    getDishOffers(dishOfferRepositoryImpl)
-      .execute()
+    dishOfferRepositoryImpl
+      .getAll()
       .then((dishOffers) => dispatch(onLoadDishOffers(dishOffers)))
       .catch((error) => error);
   };

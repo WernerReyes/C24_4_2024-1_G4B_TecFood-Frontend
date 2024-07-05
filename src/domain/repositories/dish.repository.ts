@@ -1,19 +1,19 @@
 import type {
-  GetDishByIdModel,
-  GetDishesModel,
-  GetDishesToSearchModel,
-  GetDishesWithoutSelectedDishModel,
+  DishModel,
+  GetDishByIdResponse,
+  GetDishesResponse,
+  GetDishesToSearchResponse,
+  GetDishesWithoutSelectedDishResponse,
 } from "@/model";
 import type { GetDishesDto, GetDishesWithoutSelectedDishDto } from "../dtos";
 
-export interface DishRepository {
-  getAll: (getDishesDto: GetDishesDto) => Promise<GetDishesModel>;
-  getAllToSearch: () => Promise<GetDishesToSearchModel>;
-  getAllWithoutSelectedDish(
+export abstract class DishRepository {
+  abstract getAll(
+    getDishesDto: GetDishesDto,
+  ): Promise<GetDishesResponse<DishModel>>;
+  abstract getAllToSearch(): Promise<GetDishesToSearchResponse<DishModel>>;
+  abstract getAllWithoutSelectedDish(
     getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
-  ): Promise<GetDishesWithoutSelectedDishModel>;
-  getById: (id: number) => Promise<GetDishByIdModel>;
-  //   create: (dishOffer: CreateDishOffer) => Promise<DishOffer>;
-  //   update: (dishOffer: UpdateDishOffer) => Promise<DishOffer>;
-  //   delete: (id: string) => Promise<void>;
+  ): Promise<GetDishesWithoutSelectedDishResponse<DishModel>>;
+  abstract getById(id: number): Promise<GetDishByIdResponse<DishModel>>;
 }

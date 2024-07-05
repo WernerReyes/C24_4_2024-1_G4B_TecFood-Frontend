@@ -1,3 +1,3 @@
 export * from './Header.layout';
-export * from './Header-seach.layout';
+export * from './HeaderSearch.layout';
 

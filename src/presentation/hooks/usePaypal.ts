@@ -1,4 +1,3 @@
-import { CompletePayment, CreatePayment } from "@/domain/use-cases";
 import { PaypalRepositoryImpl } from "@/infraestructure/repositories";
 import { PaypalService } from "@/infraestructure/services";
 
@@ -8,9 +7,7 @@ const paypalRepositoryImpl = new PaypalRepositoryImpl(paypalService);
 export const usePaypal = () => {
   const startCreatePaymentByPaypal = async (orderDishId: number) => {
     try {
-      const payment = await new CreatePayment(paypalRepositoryImpl).execute(
-        orderDishId,
-      );
+      const payment = await paypalRepositoryImpl.createPayment(orderDishId);
       return payment;
     } catch (error) {
       throw error;
@@ -19,9 +16,7 @@ export const usePaypal = () => {
 
   const startCompletePaymentByPaypal = async (orderId: string) => {
     try {
-      const payment = await new CompletePayment(paypalRepositoryImpl).execute(
-        orderId,
-      );
+      const payment = await paypalRepositoryImpl.completePayment(orderId);
       return payment;
     } catch (error) {
       throw error;

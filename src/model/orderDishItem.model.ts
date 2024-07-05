@@ -1,5 +1,5 @@
-import { DishModel, dishEmptyState } from "./dish.model";
-import { OrderDishModel, orderDishEmptyState } from "./order-dish.model";
+import { type DishModel, dishEmptyState } from "./dish.model";
+import { type OrderDishModel, orderDishEmptyState } from "./orderDish.model";
 
 export interface OrderDishItemModel {
   id: number;
@@ -7,11 +7,6 @@ export interface OrderDishItemModel {
   price: number;
   orderDish: OrderDishModel;
   dish: DishModel;
-}
-
-export interface GetOrderDishItemByOrderModel {
-  message: string;
-  orderDishItem: OrderDishItemModel[];
 }
 
 export interface OrderDishItemState extends OrderDishItemModel {}

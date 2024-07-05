@@ -1,10 +1,10 @@
-import type { GetDishCategoriesResponse } from "@/domain/entities";
-import type { GetDishCategoriesModel } from "@/model";
+import type { DishCategoryEntity } from "@/domain/entities";
+import type { DishCategoryModel, GetDishCategoriesResponse } from "@/model";
 import { dishCategoryAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
 
 interface IDishCategoryService {
-  getAll(): Promise<GetDishCategoriesModel>;
+  getAll(): Promise<GetDishCategoriesResponse<DishCategoryModel>>;
 }
 
 export class DishCategoryService implements IDishCategoryService {
@@ -14,14 +14,12 @@ export class DishCategoryService implements IDishCategoryService {
     this.prefix = "/dish-category";
   }
 
-
-  public async getAll(): Promise<GetDishCategoriesModel> {
+  public async getAll(): Promise<GetDishCategoriesResponse<DishCategoryModel>> {
     try {
-      const { data } = await httpRequest<GetDishCategoriesResponse>(
-        this.prefix,
-        "GET",
-      );
-      
+      const { data } = await httpRequest<
+        GetDishCategoriesResponse<DishCategoryEntity>
+      >(this.prefix, "GET");
+
       return {
         ...data,
         dishCategories: data.dishCategories.map(dishCategoryAdapter),

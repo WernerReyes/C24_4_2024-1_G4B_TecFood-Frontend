@@ -11,28 +11,6 @@ export interface DishModel {
   category: DishCategoryModel;
 }
 
-export interface GetDishesModel {
-  message: string;
-  dishes: DishModel[];
-  currentPage: number;
-  totalPages: number;
-  limit: number;
-  total: number;
-  next: string | null;
-  previous: string | null;
-}
-
-export interface GetDishesToSearchModel
-  extends Pick<GetDishesModel, "message" | "dishes"> {}
-
-export interface GetDishesWithoutSelectedDishModel
-  extends GetDishesToSearchModel {}
-
-export interface GetDishByIdModel {
-  message: string;
-  dish: DishModel;
-}
-
 export interface DishState extends DishModel {}
 
 export type DishFilters = {

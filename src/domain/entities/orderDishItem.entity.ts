@@ -7,8 +7,3 @@ export interface OrderDishItemEntity {
     orderDish: OrderDishEntity;
     dish: DishEntity;
 }
-
-export interface GetOrderDishItemByOrderResponse {
-    message: string;
-    orderDishItem: OrderDishItemEntity[];
-}

@@ -13,25 +13,6 @@ export interface UserModel {
   updatedAt: Date;
 }
 
-export interface CreateUserModel {
-  message: string;
-}
-
-export interface LoginUserModel {
-  user: UserModel;
-  token: string;
-  message: string;
-}
-
-export interface UpdateUserModel {
-  message: string;
-}
-export interface UploadProfileModel {
-  message: string;
-  profileUrl: string;
-}
-
-
 export interface UserState extends UserModel {}
 
 export const userEmptyState: UserState = {

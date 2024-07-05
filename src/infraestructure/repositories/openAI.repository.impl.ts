@@ -1,16 +1,15 @@
+import type { ChatDto } from "@/domain/dtos";
 import type { OpenAIRepository } from "@/domain/repositories";
 import type { OpenAIService } from "../services";
-import type { ChatDto } from "@/domain/dtos";
-import type { ChatModel } from "@/model";
 
 export class OpenAIRepositoryImpl implements OpenAIRepository {
   constructor(private readonly service: OpenAIService) {}
 
-  public async chat(chatDto: ChatDto): Promise<ChatModel> {
+  public async chat(chatDto: ChatDto) {
     return this.service.chat(chatDto);
   }
 
-  public async greetUser(): Promise<ChatModel> {
+  public async greetUser() {
     return this.service.greetUser();
   }
 }

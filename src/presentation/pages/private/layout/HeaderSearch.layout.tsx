@@ -11,7 +11,7 @@ const BREAK_POINTS = {
   "641px": "100vw",
 };
 
-export const HeaderSeachLayout = ({ visible, setVisible, children }: Props) => {
+export const HeaderSearchLayout = ({ visible, setVisible, children }: Props) => {
   return (
     <Dialog
       maximizable

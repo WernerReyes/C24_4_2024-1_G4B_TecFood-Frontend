@@ -16,11 +16,3 @@ export interface UserEntity {
   updatedAt: Date;
 }
 
-export interface UpdateUserResponse {
-  message: string;
-}
-
-export interface UploadProfileResponse {
-  message: string;
-  profileUrl: string;
-}

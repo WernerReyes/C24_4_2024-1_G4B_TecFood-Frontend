@@ -1,20 +1,19 @@
-import { UserRepository } from "@/domain/repositories";
-import { UpdateUserModel, UploadProfileModel, UserModel } from "@/model";
-import { UserService } from "../services";
-import { UpdateUserDto, UploadFileDto } from "@/domain/dtos";
+import type { UpdateUserDto, UploadFileDto } from "@/domain/dtos";
+import type { UserRepository } from "@/domain/repositories";
+import type { UserService } from "../services";
 
 export class UserRepositoryImpl implements UserRepository {
   constructor(private readonly userService: UserService) {}
 
-  async getAll(): Promise<UserModel[]> {
+  async getAll() {
     return await this.userService.getAll();
   }
 
-  async update(updateUserDto: UpdateUserDto): Promise<UpdateUserModel> {
+  async update(updateUserDto: UpdateUserDto) {
     return await this.userService.update(updateUserDto);
   }
 
-  async uploadProfile(uploadProfileDto: UploadFileDto): Promise<UploadProfileModel> {
+  async uploadProfile(uploadProfileDto: UploadFileDto) {
     return await this.userService.uploadProfile(uploadProfileDto);
   }
 }

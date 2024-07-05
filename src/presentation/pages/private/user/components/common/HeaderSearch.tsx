@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { InputSearch } from "@/presentation/components";
-import { HeaderSeachLayout } from "../../../layout";
+import { HeaderSearchLayout } from "../../../layout";
 import { useDishStore } from "@/presentation/hooks";
 import { DishModel } from "@/model";
 import { RecommendationSearch, HistorySearch } from "../";
@@ -11,7 +11,7 @@ type Props = {
   setVisible: (visible: boolean) => void;
 };
 
-export const HeaderSeach = ({ visible, setVisible }: Props) => {
+export const HeaderSearch = ({ visible, setVisible }: Props) => {
   const {
     dishesToSearch,
     startLoadingDishesToSearch,
@@ -58,7 +58,7 @@ export const HeaderSeach = ({ visible, setVisible }: Props) => {
   }, [enterPressed]);
 
   return (
-    <HeaderSeachLayout visible={visible} setVisible={setVisible}>
+    <HeaderSearchLayout visible={visible} setVisible={setVisible}>
       <InputSearch
         iconPosition="left"
         iconClassName="cursor-auto"
@@ -81,7 +81,7 @@ export const HeaderSeach = ({ visible, setVisible }: Props) => {
           setEnterPressed={setEnterPressed}
         />
       )}
-    </HeaderSeachLayout>
+    </HeaderSearchLayout>
   );
 };
 

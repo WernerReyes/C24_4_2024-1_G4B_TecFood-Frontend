@@ -1,5 +1,5 @@
 import { PaymentMethodEnum, PaymentStatusEnum } from "@/domain/entities";
-import { orderDishEmptyState, type OrderDishModel } from "./order-dish.model";
+import { orderDishEmptyState, type OrderDishModel } from "./orderDish.model";
 
 export interface PaymentModel {
   id: number;
@@ -7,11 +7,6 @@ export interface PaymentModel {
   paymentMethod: PaymentMethodEnum;
   status: PaymentStatusEnum;
   orderDish: OrderDishModel;
-}
-
-export interface ProcessPaymentModel {
-  message: string;
-  payment: PaymentModel;
 }
 
 export interface PaymentState extends PaymentModel {}

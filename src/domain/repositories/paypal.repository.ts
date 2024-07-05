@@ -1,6 +1,6 @@
-import type { CompletePaymentModel, CreatePaymentModel } from "@/model";
+import type { CompletePaymentResponse, CreatePaymentResponse } from "@/model";
 
-export interface PaypalRepository {
-  createPayment(orderDishId: number): Promise<CreatePaymentModel>;
-  completePayment(orderId: string): Promise<CompletePaymentModel>;
+export abstract class PaypalRepository {
+  abstract createPayment(orderDishId: number): Promise<CreatePaymentResponse>;
+  abstract completePayment(orderId: string): Promise<CompletePaymentResponse>;
 }

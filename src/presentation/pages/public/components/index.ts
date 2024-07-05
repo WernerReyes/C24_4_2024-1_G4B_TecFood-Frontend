@@ -1,1 +1,1 @@
-export * from './Google-auth';
+export * from './GoogleAuth';

@@ -2,10 +2,10 @@ export * from "./user.service";
 export * from "./dish-offer.service";
 export * from "./auth.service";
 export * from "./dish.service";
-export * from "./dish-category.service";
-export * from "./cart-dish.service"
-export * from "./order-dish.service";
-export * from "./order-dish-item.service";
+export * from "./dishCategory.service";
+export * from "./cartDish.service"
+export * from "./orderDish.service";
+export * from "./orderDishItem.service";
 export * from "./payment.service";
 export * from "./paypal.service";
-export * from './open-ia.service';
+export * from './openAI.service';

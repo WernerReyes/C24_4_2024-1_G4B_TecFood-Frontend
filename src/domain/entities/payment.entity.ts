@@ -1,4 +1,4 @@
-import type { OrderDishEntity } from "./order-dish.entity";
+import type { OrderDishEntity } from "./orderDish.entity";
 
 export enum PaymentMethodEnum {
   CARD = "CARD",
@@ -17,9 +17,4 @@ export interface PaymentEntity {
   paymentMethod: PaymentMethodEnum;
   status: PaymentStatusEnum;
   orderDish: OrderDishEntity;
-}
-
-export interface ProcessPaymentResponse {
-  message: string;
-  payment: PaymentEntity;
 }

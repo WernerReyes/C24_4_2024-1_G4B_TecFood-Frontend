@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import type { InputTextProps } from "primereact/inputtext";
-import { InputText } from "./Input-text";
+import { InputText } from "./InputText";
 
 interface Props extends InputTextProps {
   iconPosition?: "left" | "right";
@@ -23,7 +23,11 @@ export const InputSearch = ({
   return (
     <>
       <IconField iconPosition={iconPosition}>
-        <InputIcon className={clsx("pi pi-search cursor-pointer", iconClassName)}> </InputIcon>
+        <InputIcon
+          className={clsx("pi pi-search cursor-pointer", iconClassName)}
+        >
+          {" "}
+        </InputIcon>
         <InputText
           placeholder={placeholder}
           type={type}

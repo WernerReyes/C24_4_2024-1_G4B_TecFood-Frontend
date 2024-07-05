@@ -1,7 +1,10 @@
-import type { GetOrderDishItemByOrderModel } from "@/model";
+import type {
+  GetOrderDishItemByOrderResponse,
+  OrderDishItemModel,
+} from "@/model";
 
-export interface OrderDishItemRepository {
-  getOrderDishItemByOrder(
+export abstract class OrderDishItemRepository {
+  abstract getOrderDishItemByOrder(
     orderId: number,
-  ): Promise<GetOrderDishItemByOrderModel>;
+  ): Promise<GetOrderDishItemByOrderResponse<OrderDishItemModel>>;
 }

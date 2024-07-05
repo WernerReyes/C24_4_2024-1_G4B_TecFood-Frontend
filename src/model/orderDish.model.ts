@@ -1,5 +1,5 @@
 import { OrderDishStatusEnum } from "@/domain/entities";
-import { UserModel, userEmptyState } from "./user.model";
+import { type UserModel, userEmptyState } from "./user.model";
 import { getStorage } from "@/presentation/utilities";
 
 export interface OrderDishModel {
@@ -11,27 +11,6 @@ export interface OrderDishModel {
   user: UserModel;
 }
 
-export interface CreateOrderDishModel {
-  message: string;
-  orderDish: OrderDishModel;
-}
-
-export interface GetOrderDishesByUserModel {
-  message: string;
-  orderDishes: OrderDishModel[];
-  status: OrderDishStatusEnum[];
-  currentPage: number;
-  total: number;
-  limit: number;
-  next: string;
-  previous: string;
-}
-
-export interface UpdateOrderDishStatusModel {
-  message: string;
-  status: OrderDishStatusEnum;
-}
-
 export interface OrderDishState extends OrderDishModel {}
 
 export type OrderDishFilter = {
@@ -39,7 +18,7 @@ export type OrderDishFilter = {
 };
 
 export const orderDishEmptyState: OrderDishState = {
-  id: 0,
+  id: 0, 
   date: "" as any as Date,
   status: OrderDishStatusEnum.PENDING,
   total: 0,

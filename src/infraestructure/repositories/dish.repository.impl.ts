@@ -3,7 +3,7 @@ import type {
   GetDishesDto,
   GetDishesWithoutSelectedDishDto,
 } from "@/domain/dtos";
-import { DishService } from "../services";
+import type { DishService } from "../services";
 
 export class DishRepositoryImpl implements DishRepository {
   constructor(private readonly dishService: DishService) {}

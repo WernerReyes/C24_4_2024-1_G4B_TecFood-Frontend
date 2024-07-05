@@ -1,5 +1,5 @@
 import type { PaypalRepository } from "@/domain/repositories";
-import { PaypalService } from "../services";
+import type { PaypalService } from "../services";
 
 export class PaypalRepositoryImpl implements PaypalRepository {
   constructor(private readonly service: PaypalService) {}

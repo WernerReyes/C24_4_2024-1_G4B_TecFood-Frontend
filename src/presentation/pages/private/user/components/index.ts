@@ -1,35 +1,35 @@
 // <-- COMMON COMPONENTS -->
 export * from "./common/Card";
-export * from "./common/Filter-section";
-export * from "./common/Dish-categories";
-export * from "./common/Price-range";
-export * from "./common/Header-seach";
-export * from './common/Recommendation-search';
-export * from './common/History-search';
-export * from './common/Button-add-and-remove-dish';
-export * from './common/Add-and-remove.dish';
+export * from "./common/FilterSection";
+export * from "./common/DishCategories";
+export * from "./common/PriceRange";
+export * from "./common/HeaderSearch";
+export * from "./common/RecommendationSearch";
+export * from "./common/HistorySearch";
+export * from "./common/ButtonAddAndRemoveDish";
+export * from "./common/AddAndRemove.dish";
 export * from "./common/Header";
-export * from "./common/Filter-and-total-dishes";
+export * from "./common/FilterAndTotalDishes";
 
 // <-- HOME PAGE COMPONENTS -->
 export * from "./home/Dishes";
 
 // <-- DETAIL DISH PAGE COMPONENTS -->
-export * from "./detail-dish/Detail-dish";
-export * from "./detail-dish/Detail-dish-skeleton";
-export * from "./detail-dish/More-options";
+export * from "./detailDish/DetailDish";
+export * from "./detailDish/DetailDishSkeleton";
+export * from "./detailDish/MoreOptions";
 
 // <-- DISHES PAGE COMPONENTS -->
-export * from "./dishes/Dishes-list";
-export * from "./dishes/Card-list";
+export * from "./dishes/DishesList";
+export * from "./dishes/CardList";
 
 // <-- CART PAGE COMPONENTS -->
-export * from "./cart/Shopping-cart";
-export * from "./cart/Order-summary";
+export * from "./cart/ShoppingCart";
+export * from "./cart/OrderSummary";
 
 // <-- ORDER HISTORY PAGE COMPONENTS -->
-export * from "./order-history/Card-history";
+export * from "./orderHistory/CardHistory";
 
 // <-- PAYMENT PAGE COMPONENTS -->
-export * from "./payment/Paypal-payment";
-export * from "./payment/Order-dish-items";
+export * from "./payment/PaypalPayment";
+export * from "./payment/OrderDishItems";

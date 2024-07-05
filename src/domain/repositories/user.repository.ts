@@ -1,10 +1,16 @@
-import { UpdateUserModel, UploadProfileModel, UserModel } from "@/model";
-import { UpdateUserDto, UploadProfileDto } from "../dtos/user";
+import type {
+  UpdateUserResponse,
+  UploadProfileResponse,
+  UserModel,
+} from "@/model";
+import type { UpdateUserDto, UploadProfileDto } from "../dtos/user";
 
-export interface UserRepository {
-  getAll: () => Promise<UserModel[]>;
-  update: (updateUserDto: UpdateUserDto) => Promise<UpdateUserModel>;
-  uploadProfile: (
-    uploadProfileDto: UploadProfileDto
-  ) => Promise<UploadProfileModel>;
+export abstract class UserRepository {
+  abstract getAll: () => Promise<UserModel[]>;
+  abstract update: (
+    updateUserDto: UpdateUserDto,
+  ) => Promise<UpdateUserResponse>;
+  abstract uploadProfile: (
+    uploadProfileDto: UploadProfileDto,
+  ) => Promise<UploadProfileResponse>;
 }

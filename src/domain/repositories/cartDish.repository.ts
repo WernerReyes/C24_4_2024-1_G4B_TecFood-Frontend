@@ -1,17 +1,21 @@
 import type {
-  GetDishesByUserModel,
-  AddOneDishModel,
-  DeleteOneDishModel,
-  DeleteAllDishesModel,
-  GetDishByDishIdModel,
-  GetTotalDishesByUserModel,
+  AddOneDishResponse,
+  DeleteOneDishResponse,
+  DeleteAllDishesResponse,
+  GetDishesByUserResponse,
+  GetDishByDishIdResponse,
+  GetTotalDishesByUserResponse,
+  CartDishModel,
 } from "@/model";
-
-export interface CartDishRepository {
-  addOneDish: (dishId: number) => Promise<AddOneDishModel>;
-  getDishesByUser: () => Promise<GetDishesByUserModel>;
-  deleteOneDish: (dishId: number) => Promise<DeleteOneDishModel>;
-  deleteAllDishes: (cartId: number) => Promise<DeleteAllDishesModel>;
-  getDishByDishId: (dishId: number) => Promise<GetDishByDishIdModel>;
-  getTotalDishesByUser: () => Promise<GetTotalDishesByUserModel>;
+export abstract class CartDishRepository {
+  abstract addOneDish(
+    dishId: number,
+  ): Promise<AddOneDishResponse<CartDishModel>>;
+  abstract getDishesByUser(): Promise<GetDishesByUserResponse<CartDishModel>>;
+  abstract deleteOneDish(dishId: number): Promise<DeleteOneDishResponse>;
+  abstract deleteAllDishes(cartId: number): Promise<DeleteAllDishesResponse>;
+  abstract getDishByDishId(
+    dishId: number,
+  ): Promise<GetDishByDishIdResponse<CartDishModel>>;
+  abstract getTotalDishesByUser(): Promise<GetTotalDishesByUserResponse>;
 }

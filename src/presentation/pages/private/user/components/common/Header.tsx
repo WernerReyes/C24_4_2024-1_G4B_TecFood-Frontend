@@ -2,9 +2,13 @@ import { useState } from "react";
 import { Badge, Button, Link, MenuItem } from "@/presentation/components";
 import { useCartStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
-import { AvatarMenu, Sidebar, LinksToNavigate } from "../../../components";
+import {
+  AvatarMenu,
+  SidebarPrivate,
+  LinksToNavigate,
+} from "../../../components";
 import { HeaderLayout } from "../../../layout";
-import { HeaderSeach } from "./Header-seach";
+import { HeaderSearch } from "./HeaderSearch";
 
 const {
   USER,
@@ -43,7 +47,7 @@ export const Header = () => {
 
   return (
     <HeaderLayout>
-      <Sidebar
+      <SidebarPrivate
         collapseMenu={collapseMenu}
         handleToggleClose={handleToggleClose}
         links={LINKS_SIDEBAR}
@@ -79,7 +83,7 @@ export const Header = () => {
           </Button>
         </div>
       </div>
-      <HeaderSeach visible={visible} setVisible={setVisible} />
+      <HeaderSearch visible={visible} setVisible={setVisible} />
     </HeaderLayout>
   );
 };

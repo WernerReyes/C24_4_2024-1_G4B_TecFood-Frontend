@@ -6,7 +6,7 @@ import {
   AddAndRemoveDish,
   ButtonAddAndRemoveDish,
   DetailDishSkeleton,
-} from "../";
+} from "..";
 import { Heart } from "../../../components";
 
 export const DetailDish = () => {

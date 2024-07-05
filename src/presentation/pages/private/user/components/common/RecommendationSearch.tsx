@@ -4,7 +4,7 @@ import { DishModel } from "@/model";
 import { useEffect, useState } from "react";
 import { StorageKeys, setStorage } from "@/presentation/utilities";
 import { PrivateRoutes } from "@/presentation/routes";
-import { HighlightedText } from "../../../components/Highlighted-text";
+import { HighlightedText } from "@/presentation/pages/private/components";
 
 const { HISTORY_SEARCH } = StorageKeys;
 

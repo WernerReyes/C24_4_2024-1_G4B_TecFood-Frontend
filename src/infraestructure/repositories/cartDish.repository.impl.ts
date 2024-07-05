@@ -1,5 +1,5 @@
 import type { CartDishRepository } from "@/domain/repositories";
-import { CartDishService } from "../services";
+import type { CartDishService } from "../services";
 
 export class CartDishRepositoryImpl implements CartDishRepository {
   constructor(private readonly CartDishService: CartDishService) {}

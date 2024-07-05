@@ -48,7 +48,7 @@ export const useAuthStore = () => {
     dispatch(onCheking());
 
     authRepositoryImpl
-      .loginGoogleUser(validatedData!)
+      .loginGoogle(validatedData!)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
         setStorage(TOKEN, token);
@@ -63,7 +63,7 @@ export const useAuthStore = () => {
     dispatch(onCheking());
 
     authRepositoryImpl
-      .loginUser(loginUserDto)
+      .login(loginUserDto)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
         setStorage(TOKEN, token);
@@ -78,7 +78,7 @@ export const useAuthStore = () => {
     dispatch(onCheking());
 
     authRepositoryImpl
-      .registerUser(registerUserDto)
+      .register(registerUserDto)
       .then(({ message }) => startSetMessages([message], typeSuccess))
       .catch((error) => {
         dispatch(onLogout());

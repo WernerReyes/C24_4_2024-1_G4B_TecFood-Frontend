@@ -1,21 +1,21 @@
 import type {
-  CreateOrderDishModel,
-  GetOrderDishesByUserModel,
+  CreateOrderDishResponse,
+  GetOrderDishesByUserResponse,
   OrderDishModel,
-  UpdateOrderDishStatusModel,
+  UpdateOrderDishStatusResponse,
 } from "@/model";
 import type {
   GetOrderDishesByUserDto,
   UpdateOrderDishStatusDto,
 } from "../dtos";
 
-export interface OrderDishRepository {
-  createOrderDish(): Promise<CreateOrderDishModel>;
-  updateOrderDishStatus(
+export abstract class OrderDishRepository {
+  abstract createOrderDish(): Promise<CreateOrderDishResponse<OrderDishModel>>;
+  abstract updateOrderDishStatus(
     updateOrderDishStatusDto: UpdateOrderDishStatusDto,
-  ): Promise<UpdateOrderDishStatusModel>;
-  getOrderDishesByUser(
+  ): Promise<UpdateOrderDishStatusResponse>;
+  abstract getOrderDishesByUser(
     getOrderDishesByUserDto: GetOrderDishesByUserDto,
-  ): Promise<GetOrderDishesByUserModel>;
-  getOrderDishById(orderDishId: number): Promise<OrderDishModel>;
+  ): Promise<GetOrderDishesByUserResponse<OrderDishModel>>;
+  abstract getOrderDishById(orderDishId: number): Promise<OrderDishModel>;
 }

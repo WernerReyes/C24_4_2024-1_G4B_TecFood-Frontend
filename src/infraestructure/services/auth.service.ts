@@ -1,5 +1,11 @@
 import type { UserEntity } from "@/domain/entities";
-import type { CreateUserModel, LoginUserModel } from "@/model";
+import type {
+  LoginGoogleResponse,
+  LoginResponse,
+  RegisterResponse,
+  RevalidateTokenResponse,
+  UserModel,
+} from "@/model";
 import { httpRequest } from "@/config/api";
 import {
   RegisterUserDto,
@@ -8,21 +14,13 @@ import {
 } from "@/domain/dtos";
 import { userAdapter } from "@/config/adapters";
 
-export type LoginUserResponse = {
-  user: UserEntity;
-  token: string;
-  message: string;
-};
-
-type RegisterUserResponse = {
-  message: string;
-};
-
 interface IAuthService {
-  loginGoogle(loginGoogleUserDto: LoginGoogleUserDto): Promise<LoginUserModel>;
-  login(loginUserDto: LoginUserDto): Promise<LoginUserModel>;
-  register(registerUserDto: RegisterUserDto): Promise<CreateUserModel>;
-  revalidateToken(): Promise<LoginUserModel>;
+  loginGoogle(
+    loginGoogleUserDto: LoginGoogleUserDto,
+  ): Promise<LoginGoogleResponse<UserModel>>;
+  login(loginUserDto: LoginUserDto): Promise<LoginResponse<UserModel>>;
+  register(registerUserDto: RegisterUserDto): Promise<RegisterResponse>;
+  revalidateToken(): Promise<RevalidateTokenResponse<UserModel>>;
 }
 
 export class AuthService implements IAuthService {
@@ -34,22 +32,25 @@ export class AuthService implements IAuthService {
 
   public async loginGoogle(
     loginGoogleUserDto: LoginGoogleUserDto,
-  ): Promise<LoginUserModel> {
+  ): Promise<LoginGoogleResponse<UserModel>> {
     try {
-      const { data } = await httpRequest<LoginUserResponse>(
+      const { data } = await httpRequest<LoginGoogleResponse<UserEntity>>(
         this.prefix + "/login-google",
         "POST",
         loginGoogleUserDto,
       );
+
       return { ...data, user: userAdapter(data.user) };
     } catch (error) {
       throw error;
     }
   }
 
-  public async login(loginUserDto: LoginUserDto): Promise<LoginUserModel> {
+  public async login(
+    loginUserDto: LoginUserDto,
+  ): Promise<LoginResponse<UserModel>> {
     try {
-      const { data } = await httpRequest<LoginUserResponse>(
+      const { data } = await httpRequest<LoginResponse<UserEntity>>(
         this.prefix + "/login",
         "POST",
         loginUserDto,
@@ -62,9 +63,9 @@ export class AuthService implements IAuthService {
 
   public async register(
     registerUserDto: RegisterUserDto,
-  ): Promise<CreateUserModel> {
+  ): Promise<RegisterResponse> {
     try {
-      const { data } = await httpRequest<RegisterUserResponse>(
+      const { data } = await httpRequest<RegisterResponse>(
         this.prefix + "/register",
         "POST",
         registerUserDto,
@@ -75,9 +76,9 @@ export class AuthService implements IAuthService {
     }
   }
 
-  public async revalidateToken(): Promise<LoginUserModel> {
+  public async revalidateToken(): Promise<RevalidateTokenResponse<UserModel>> {
     try {
-      const { data } = await httpRequest<LoginUserResponse>(
+      const { data } = await httpRequest<RevalidateTokenResponse<UserEntity>>(
         this.prefix + "/revalidate-token",
         "GET",
       );

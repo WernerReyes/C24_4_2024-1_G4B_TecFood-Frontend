@@ -1,14 +1,10 @@
-import {
-  GetDishesWithoutSelectedDishResponse,
-  type GetDishByIdResponse,
-  type GetDishesResponse,
-  type GetDishesToSearchResponse,
-} from "@/domain/entities";
+import type { DishEntity } from "@/domain/entities";
 import type {
-  GetDishByIdModel,
-  GetDishesModel,
-  GetDishesToSearchModel,
-  GetDishesWithoutSelectedDishModel,
+  DishModel,
+  GetDishByIdResponse,
+  GetDishesResponse,
+  GetDishesToSearchResponse,
+  GetDishesWithoutSelectedDishResponse,
 } from "@/model";
 import type {
   GetDishesDto,
@@ -23,12 +19,12 @@ import {
 } from "@/presentation/utilities";
 
 interface IDishService {
-  getAll(getDishesDto: GetDishesDto): Promise<GetDishesModel>;
-  getAllToSearch(): Promise<GetDishesToSearchModel>;
+  getAll(getDishesDto: GetDishesDto): Promise<GetDishesResponse<DishModel>>;
+  getAllToSearch(): Promise<GetDishesToSearchResponse<DishModel>>;
   getAllWithoutSelectedDish(
     getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
-  ): Promise<GetDishesWithoutSelectedDishModel>;
-  getById(id: number): Promise<GetDishByIdModel>;
+  ): Promise<GetDishesWithoutSelectedDishResponse<DishModel>>;
+  getById(id: number): Promise<GetDishByIdResponse<DishModel>>;
 }
 
 export class DishService implements IDishService {
@@ -42,7 +38,7 @@ export class DishService implements IDishService {
     priceRange,
     idCategory,
     ...rest
-  }: GetDishesDto): Promise<GetDishesModel> {
+  }: GetDishesDto): Promise<GetDishesResponse<DishModel>> {
     try {
       const requestParam = convertToRequestParam(rest);
       const requestParamPriceRange = convertToRequestParam(priceRange!);
@@ -57,7 +53,7 @@ export class DishService implements IDishService {
         requestParamCategory,
       ]);
 
-      const { data } = await httpRequest<GetDishesResponse>(
+      const { data } = await httpRequest<GetDishesResponse<DishEntity>>(
         this.prefix + requestParams,
         "GET",
       );
@@ -67,9 +63,9 @@ export class DishService implements IDishService {
     }
   }
 
-  public async getAllToSearch(): Promise<GetDishesToSearchModel> {
+  public async getAllToSearch(): Promise<GetDishesToSearchResponse<DishModel>> {
     try {
-      const { data } = await httpRequest<GetDishesToSearchResponse>(
+      const { data } = await httpRequest<GetDishesToSearchResponse<DishEntity>>(
         this.prefix + "/search",
         "GET",
       );
@@ -82,22 +78,23 @@ export class DishService implements IDishService {
   public async getAllWithoutSelectedDish({
     idDish,
     limit,
-  }: GetDishesWithoutSelectedDishDto): Promise<GetDishesWithoutSelectedDishModel> {
+  }: GetDishesWithoutSelectedDishDto): Promise<
+    GetDishesWithoutSelectedDishResponse<DishModel>
+  > {
     try {
       const requestParam = convertToRequestParam({ limit });
-      const { data } = await httpRequest<GetDishesWithoutSelectedDishResponse>(
-        this.prefix + "/without/" + idDish + "?" + requestParam,
-        "GET",
-      );
+      const { data } = await httpRequest<
+        GetDishesWithoutSelectedDishResponse<DishEntity>
+      >(this.prefix + "/without/" + idDish + "?" + requestParam, "GET");
       return { ...data, dishes: data.dishes.map(dishAdapter) };
     } catch (error) {
       throw error;
     }
   }
 
-  public async getById(id: number): Promise<GetDishByIdModel> {
+  public async getById(id: number): Promise<GetDishByIdResponse<DishModel>> {
     try {
-      const { data } = await httpRequest<GetDishByIdResponse>(
+      const { data } = await httpRequest<GetDishByIdResponse<DishEntity>>(
         this.prefix + "/" + id,
         "GET",
       );

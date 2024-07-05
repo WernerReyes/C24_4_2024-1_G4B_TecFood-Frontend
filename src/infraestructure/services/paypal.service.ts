@@ -1,10 +1,9 @@
 import { httpRequest } from "@/config/api";
-import { CompletePaymentResponse, CreatePaymentResponse } from "@/domain/entities";
-import type { CompletePaymentModel, CreatePaymentModel } from "@/model";
+import type { CompletePaymentResponse, CreatePaymentResponse } from "@/model";
 
 export interface IPaypalService {
-  createPayment(orderDishId: number): Promise<CreatePaymentModel>;
-  completePayment(orderId: string): Promise<CompletePaymentModel>;
+  createPayment(orderDishId: number): Promise<CreatePaymentResponse>;
+  completePayment(orderId: string): Promise<CompletePaymentResponse>;
 }
 
 export class PaypalService implements IPaypalService {
@@ -13,7 +12,9 @@ export class PaypalService implements IPaypalService {
     this.prefix = "/paypal";
   }
 
-  public async createPayment(orderDishId: number): Promise<CreatePaymentModel> {
+  public async createPayment(
+    orderDishId: number,
+  ): Promise<CreatePaymentResponse> {
     try {
       const { data } = await httpRequest<CreatePaymentResponse>(
         `${this.prefix}/create-payment`,
@@ -29,7 +30,9 @@ export class PaypalService implements IPaypalService {
     }
   }
 
-  public async completePayment(orderId: string): Promise<CompletePaymentModel> {
+  public async completePayment(
+    orderId: string,
+  ): Promise<CompletePaymentResponse> {
     try {
       const { data } = await httpRequest<CompletePaymentResponse>(
         `${this.prefix}/capture`,
@@ -44,6 +47,4 @@ export class PaypalService implements IPaypalService {
       throw error;
     }
   }
-
-
 }

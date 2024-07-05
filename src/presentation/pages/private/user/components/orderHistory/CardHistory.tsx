@@ -13,7 +13,7 @@ import {
 import { useOrderDishItemStore } from "@/presentation/hooks";
 import { convertDateToShortString } from "@/presentation/utilities";
 import { useEffect, useRef, useState } from "react";
-import { FooterCardHistory } from "./Footer-card-history";
+import { FooterCardHistory } from "./FooterCardHistory";
 
 
 interface Props extends OrderDishState {

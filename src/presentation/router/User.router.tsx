@@ -19,7 +19,7 @@ const DetailDishPage = lazy(
 const CartPage = lazy(() => import("../pages/private/user/pages/Cart.page"));
 
 const OrderHistoryPage = lazy(
-  () => import("../pages/private/user/pages/Order-history.page"),
+  () => import("../pages/private/user/pages/OrderHistory.page"),
 );
 
 const PaymentPage = lazy(
