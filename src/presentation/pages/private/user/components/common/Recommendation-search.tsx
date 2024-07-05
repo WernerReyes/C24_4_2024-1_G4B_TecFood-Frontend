@@ -2,9 +2,12 @@ import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import { DishModel } from "@/model";
 import { useEffect, useState } from "react";
-import { setStorage } from "@/presentation/utilities";
+import { StorageKeys, setStorage } from "@/presentation/utilities";
 import { PrivateRoutes } from "@/presentation/routes";
 import { HighlightedText } from "../../../components/Highlighted-text";
+
+const { HISTORY_SEARCH } = StorageKeys;
+
 const {
   USER,
   user: { DISHES },
@@ -30,7 +33,7 @@ export const RecommendationSearch = ({
   const handleSaveHistorySearch = (dish: DishModel) => {
     if (!historySearch.find((h) => h.name === dish.name)) {
       if (historySearch.length >= 7) historySearch.pop();
-      setStorage("historySearch", [
+      setStorage(HISTORY_SEARCH, [
         { id: dish.id, name: dish.name },
         ...historySearch,
       ]);

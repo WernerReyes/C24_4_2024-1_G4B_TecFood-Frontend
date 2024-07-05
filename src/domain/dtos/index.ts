@@ -2,6 +2,6 @@ export * from './auth'
 export * from './dish'
 export * from './common'
 export * from './user';
-export * from './order-dish';
+export * from './orderDish';
 export * from './payment';
-export * from './open-ai';
+export * from './openAI';

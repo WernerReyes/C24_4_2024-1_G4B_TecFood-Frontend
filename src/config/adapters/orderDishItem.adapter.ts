@@ -1,6 +1,6 @@
 import type { OrderDishItemEntity } from "@/domain/entities";
 import type { OrderDishItemModel } from "@/model";
-import { orderDishAdapter, dishAdapter } from "./";
+import { orderDishAdapter, dishAdapter } from ".";
 
 export const orderDishItemAdapter = (
   orderDishItemEntity: OrderDishItemEntity,

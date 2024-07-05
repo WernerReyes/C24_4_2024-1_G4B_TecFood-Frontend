@@ -1,4 +1,3 @@
-import { GetOrderDishItemByOrderUser } from "@/domain/use-cases";
 import { OrderDishItemRepositoryImpl } from "@/infraestructure/repositories";
 import { OrderDishItemService } from "@/infraestructure/services";
 import { onLoadOrderDishItems, type AppState } from "@/infraestructure/store";
@@ -16,14 +15,13 @@ export const useOrderDishItemStore = () => {
   );
 
   const startLoadingOrderDishItemsByOrder = async (orderDishId: number) => {
-    await new GetOrderDishItemByOrderUser(orderDishItemRepositoryImpl)
-      .execute(orderDishId)
+    orderDishItemRepositoryImpl
+      .getOrderDishItemByOrder(orderDishId)
       .then(({ orderDishItem }) =>
         dispatch(onLoadOrderDishItems(orderDishItem)),
       )
       .catch(console.error);
   };
-
 
   return {
     //* Attributes

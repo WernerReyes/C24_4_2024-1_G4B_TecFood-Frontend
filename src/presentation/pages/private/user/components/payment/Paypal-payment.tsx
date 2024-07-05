@@ -1,6 +1,6 @@
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { PaymentMethodEnum } from "@/domain/entities";
-import { useMessage, usePaypal } from "@/presentation/hooks";
+import { useMessageStore, usePaypal } from "@/presentation/hooks";
 import { getEnvs } from "@/presentation/utilities";
 import { PrivateRoutes } from "@/presentation/routes";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +19,7 @@ type Props = {
 
 export const PaypalPayment = ({ orderDishId, handleProcessPayment }: Props) => {
   const navigate = useNavigate();
-  const { startSetMessages, typeSuccess, typeError } = useMessage();
+  const { startSetMessages, typeSuccess, typeError } = useMessageStore();
   const { startCreatePaymentByPaypal, startCompletePaymentByPaypal } =
     usePaypal();
 

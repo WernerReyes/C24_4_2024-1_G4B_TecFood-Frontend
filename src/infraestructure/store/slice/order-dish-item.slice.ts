@@ -21,8 +21,15 @@ export const orderDishItemSlice = createSlice({
     onLoadingOrderDishItem(state) {
       return { ...state, isLoading: true };
     },
+
+    onResetOrderDishItem(state) {
+      return { ...state, orderDishItem: orderDishItemEmptyState };
+    },
   },
 });
 
-export const { onLoadOrderDishItems, onLoadingOrderDishItem } =
-  orderDishItemSlice.actions;
+export const {
+  onLoadOrderDishItems,
+  onLoadingOrderDishItem,
+  onResetOrderDishItem,
+} = orderDishItemSlice.actions;

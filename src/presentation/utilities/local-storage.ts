@@ -1,3 +1,15 @@
+export const StorageKeys = {
+  TOKEN: "token",
+  ORDER_DISH_FILTERS: "orderDishFilters",
+  DISH_FILTERS: "dishFilters",
+  DISHES_TO_SEARCH: "dishesToSearch",
+  HISTORY_SEARCH: "historySearch",
+  DISH_TO_SEARCH: "dishToSearch",
+  ORDER_DISH: "orderDish",
+  CHAT_MESSAGES: "chatMessages",
+  THEME: "theme",
+};
+
 export const setStorage = <T>(key: string, value: T) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
@@ -12,4 +24,8 @@ export const getStorage = <T>(key: string): T | null => {
 };
 export const removeStorage = (key: string) => localStorage.removeItem(key);
 
-export const clearStorage = () => localStorage.clear();
+export const clearStorage = () => {
+  Object.values(StorageKeys)
+    .filter((key) => key !== StorageKeys.THEME)
+    .forEach((key) => removeStorage(key));
+};

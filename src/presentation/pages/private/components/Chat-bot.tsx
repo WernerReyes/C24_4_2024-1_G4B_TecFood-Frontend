@@ -21,8 +21,12 @@ type Props = {
 
 export const ChatBot = ({ to, offset = 50, duration = 1000 }: Props) => {
   const lastMessageRef = useRef<HTMLDivElement>(null);
-  const { startGetGreetUser, startSendingMenssage, chatMessages } =
-    useOpenAIStore();
+  const {
+    startGetGreetUser,
+    isAvailableChat,
+    startSendingMenssage,
+    chatMessages,
+  } = useOpenAIStore();
   const [writeMessage, setWriteMessage] = useState<string>("");
   const [showChatBot, setShowChatBot] = useState(false);
   const [addedMessage, setAddedMessage] = useState<boolean>(false);
@@ -35,6 +39,8 @@ export const ChatBot = ({ to, offset = 50, duration = 1000 }: Props) => {
   };
 
   const handleSendMessage = async () => {
+    if (!isAvailableChat) return;
+
     setAddedMessage(true);
     const chatDto = ChatDto.create({
       messages: [
@@ -83,6 +89,7 @@ export const ChatBot = ({ to, offset = 50, duration = 1000 }: Props) => {
             setWriteMessage={setWriteMessage}
             handleSendMessage={handleSendMessage}
             writeMessage={writeMessage}
+            isAvailableChat={isAvailableChat}
           />
         )}
         toggleable

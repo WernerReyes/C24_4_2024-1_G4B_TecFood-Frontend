@@ -1,6 +1,6 @@
 import type { PaymentEntity } from "@/domain/entities";
 import type { PaymentModel } from "@/model";
-import { orderDishAdapter } from "./order-dish.adapter";
+import { orderDishAdapter } from "./orderDish.adapter";
 
 export const paymentAdapter = (paymentEntity: PaymentEntity): PaymentModel => {
   return {

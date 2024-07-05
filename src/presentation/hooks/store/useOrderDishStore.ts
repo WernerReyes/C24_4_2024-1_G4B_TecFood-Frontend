@@ -1,14 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
+import type {
   GetOrderDishesByUserDto,
   UpdateOrderDishStatusDto,
 } from "@/domain/dtos";
-import {
-  CreateOrderDish,
-  GetOrderDishById,
-  GetOrderDishesByUser,
-  UpdateOrderDishStatus,
-} from "@/domain/use-cases";
 import { OrderDishRepositoryImpl } from "@/infraestructure/repositories";
 import { OrderDishService } from "@/infraestructure/services";
 import {
@@ -19,25 +13,27 @@ import {
   onUpdateOrderDishStatus,
   type AppState,
 } from "@/infraestructure/store";
-import { useMessage } from "../useMessage";
+import { useMessageStore } from "./useMessageStore";
 import { OrderDishStatusEnum } from "@/domain/entities";
-import { setStorage } from "@/presentation/utilities";
+import { StorageKeys, setStorage } from "@/presentation/utilities";
 import type { OrderDishFilter } from "@/model";
+
+const { ORDER_DISH_FILTERS } = StorageKeys;
 
 const orderDishService = new OrderDishService();
 const orderDishRepositoryImpl = new OrderDishRepositoryImpl(orderDishService);
 
 export const useOrderDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError, typeSuccess } = useMessage();
+  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
 
   const { orderDish, orderDishes, filters, status, isLoading, total } =
     useSelector((state: AppState) => state.orderDish);
 
   const startCreateOrderDish = async () => {
     dispatch(onLoadingOrderDish());
-    await new CreateOrderDish(orderDishRepositoryImpl)
-      .execute()
+    orderDishRepositoryImpl
+      .createOrderDish()
       .then(({ message, orderDish }) => {
         dispatch(onCreateOrderDish(orderDish));
         startSetMessages([message], typeSuccess);
@@ -51,50 +47,50 @@ export const useOrderDishStore = () => {
     updateOrderDishStatusDto: [UpdateOrderDishStatusDto?, string[]?],
     message: string,
   ) => {
+    dispatch(onLoadingOrderDish());
     const [orderDishStatus, errors] = updateOrderDishStatusDto;
     if (errors) return startSetMessages(errors, typeError);
-
-    dispatch(onLoadingOrderDish());
-    await new UpdateOrderDishStatus(orderDishRepositoryImpl)
-      .execute(orderDishStatus!)
+    orderDishRepositoryImpl
+      .updateOrderDishStatus(orderDishStatus!)
       .then(({ status }) => {
         dispatch(onUpdateOrderDishStatus(status));
         startSetMessages([message], typeSuccess);
       })
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startLoadingOrderDishesByUser = async (
     getOrderDishesByUserDto: [GetOrderDishesByUserDto?, string[]?],
   ) => {
+    dispatch(onLoadingOrderDish());
     const [getOrderDishesByUserDtoValidated, errors] = getOrderDishesByUserDto;
     if (errors) return startSetMessages(errors, typeError);
-
-    dispatch(onLoadingOrderDish());
-    await new GetOrderDishesByUser(orderDishRepositoryImpl)
-      .execute(getOrderDishesByUserDtoValidated!)
+    orderDishRepositoryImpl
+      .getOrderDishesByUser(getOrderDishesByUserDtoValidated!)
       .then(({ orderDishes, total }) => {
         dispatch(onLoadOrderDishes({ orderDishes, total }));
       })
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
-
 
   const startGetOrderDishById = async (orderDishId: number) => {
     dispatch(onLoadingOrderDish());
-    await new GetOrderDishById(orderDishRepositoryImpl)
-      .execute(orderDishId)
+    orderDishRepositoryImpl
+      .getOrderDishById(orderDishId)
       .then((orderDish) => {
         dispatch(onCreateOrderDish(orderDish));
       })
       .catch(console.error);
-  }
-
+  };
 
   const startFilterOrderDish = async (filters: OrderDishFilter) => {
     dispatch(onLoadingOrderDish());
     dispatch(onSetOrderDishFilters(filters));
-    setStorage("orderDishFilters", filters);
+    setStorage(ORDER_DISH_FILTERS, filters);
   };
 
   const startResetStatus = () =>

@@ -1,4 +1,4 @@
-import type { DishEntity, OrderDishEntity } from "./";
+import type { DishEntity, OrderDishEntity } from ".";
 
 export interface OrderDishItemEntity {
     id: number;

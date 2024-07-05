@@ -1,7 +1,7 @@
 import { AppState, TypeMessage, setMessages } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
 
-export const useMessage = () => {
+export const useMessageStore = () => {
   const dispatch = useDispatch();
 
   const { messages, type } = useSelector((state: AppState) => state.message);

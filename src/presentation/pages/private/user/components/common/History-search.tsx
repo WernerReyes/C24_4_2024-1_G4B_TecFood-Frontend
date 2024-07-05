@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { PrivateRoutes } from "@/presentation/routes";
-import { setStorage } from "@/presentation/utilities";
+import { StorageKeys, setStorage } from "@/presentation/utilities";
 import { useNavigate } from "react-router-dom";
+
+
+const { HISTORY_SEARCH } = StorageKeys;
 
 const {
   USER,
@@ -27,7 +30,7 @@ export const HistorySearch = ({
   const handleDelete = (id: number) => {
     const newHistory = histories.filter((h) => h.id !== id);
     setHistorySearch(newHistory);
-    setStorage("historySearch", newHistory);
+    setStorage(HISTORY_SEARCH, newHistory);
   };
 
   const handleNavigate = (id: number) => {

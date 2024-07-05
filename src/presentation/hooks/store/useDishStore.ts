@@ -1,10 +1,8 @@
-import { GetDishesDto, GetDishesWithoutSelectedDishDto } from "@/domain/dtos";
-import {
-  GetDishById,
-  GetDishes,
-  GetDishesToSearch,
-  GetDishesWithoutSelectedDish,
-} from "@/domain/use-cases";
+import { useDispatch, useSelector } from "react-redux";
+import type {
+  GetDishesDto,
+  GetDishesWithoutSelectedDishDto,
+} from "@/domain/dtos";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
@@ -16,19 +14,27 @@ import {
   onSetDishFilters,
 } from "@/infraestructure/store";
 import { DishFilters, DishState } from "@/model";
-import { useDispatch, useSelector } from "react-redux";
 import { DishService } from "@/infraestructure/services";
-import { getStorage, setStorage } from "../../utilities";
-import { useMessage } from "../";
+import { StorageKeys, getStorage, setStorage } from "../../utilities";
+import { useMessageStore } from "../";
+
+const { DISHES_TO_SEARCH, DISH_FILTERS } = StorageKeys;
 
 const dishService = new DishService();
 const dishRepositoryImpl = new DishRepositoryImpl(dishService);
 
 export const useDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError } = useMessage();
-  const { dishes, dishesToSearch, dishesWithoutSelectedDish, dish, total, isLoading, filters } =
-    useSelector((state: AppState) => state.dish);
+  const { startSetMessages, typeError } = useMessageStore();
+  const {
+    dishes,
+    dishesToSearch,
+    dishesWithoutSelectedDish,
+    dish,
+    total,
+    isLoading,
+    filters,
+  } = useSelector((state: AppState) => state.dish);
 
   const startLoadingDishes = async (
     getDishesDto: [GetDishesDto?, string[]?],
@@ -36,8 +42,8 @@ export const useDishStore = () => {
     const [validatedGetDishesDto, errors] = getDishesDto;
     if (errors) return startSetMessages(errors, typeError);
     dispatch(onLoadingDish());
-    await new GetDishes(dishRepositoryImpl)
-      .execute(validatedGetDishesDto!)
+    dishRepositoryImpl
+      .getAll(validatedGetDishesDto!)
       .then((data) => {
         dispatch(
           onLoadDishes({
@@ -52,17 +58,16 @@ export const useDishStore = () => {
   const startLoadingDishesToSearch = async () => {
     dispatch(onLoadingDish());
 
-    if (getStorage("dishesToSearch")) {
+    if (getStorage(DISHES_TO_SEARCH)) {
       return dispatch(
-        onLoadDishesToSearch(getStorage<DishState[]>("dishesToSearch")!),
+        onLoadDishesToSearch(getStorage<DishState[]>(DISHES_TO_SEARCH)!),
       );
     }
-
-    await new GetDishesToSearch(dishRepositoryImpl)
-      .execute()
+    dishRepositoryImpl
+      .getAllToSearch()
       .then((data) => {
         dispatch(onLoadDishesToSearch(data.dishes));
-        setStorage("dishesToSearch", data.dishes);
+        setStorage(DISHES_TO_SEARCH, data.dishes);
       })
       .catch(console.error);
   };
@@ -73,8 +78,8 @@ export const useDishStore = () => {
     dispatch(onLoadingDish());
     const [validatedDto, errors] = dto;
     if (errors) return startSetMessages(errors, typeError);
-    await new GetDishesWithoutSelectedDish(dishRepositoryImpl)
-      .execute(validatedDto!)
+    dishRepositoryImpl
+      .getAllWithoutSelectedDish(validatedDto!)
       .then((data) => {
         dispatch(onLoadDishesWithoutSelectedDish(data.dishes));
       })
@@ -85,9 +90,8 @@ export const useDishStore = () => {
 
   const startLoadingDishById = async (id: number) => {
     dispatch(onLoadingDish());
-
-    await new GetDishById(dishRepositoryImpl)
-      .execute(id)
+    dishRepositoryImpl
+      .getById(id)
       .then(({ dish }) => dispatch(onLoadDish(dish)))
       .catch(console.error);
   };
@@ -95,7 +99,7 @@ export const useDishStore = () => {
   const startFilterDishes = async (filters: DishFilters) => {
     dispatch(onLoadingDish());
     dispatch(onSetDishFilters(filters));
-    setStorage("dishFilters", filters);
+    setStorage(DISH_FILTERS, filters);
   };
 
   return {

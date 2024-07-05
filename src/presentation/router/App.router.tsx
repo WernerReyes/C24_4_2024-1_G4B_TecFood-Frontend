@@ -1,16 +1,17 @@
-import { RoleEnum } from "@/domain/entities";
 import { lazy, useEffect } from "react";
 import { BrowserRouter, Navigate, Route } from "react-router-dom";
 import { Toaster } from "sonner";
+import { RoleEnum } from "@/domain/entities";
 import { ProgressSpinner } from "../components";
 import { AuthGuard, RoleGuard } from "../guards";
-import { useAuthStore, useThemeStore, useWindowSize } from "../hooks";
-import { useMessage } from "../hooks/useMessage";
-import { PrivateRoutes, PublicRoutes } from "../routes";
 import {
-  routeRole,
-  showMessage
-} from "../utilities";
+  useAuthStore,
+  useThemeStore,
+  useWindowSize,
+  useMessageStore,
+} from "../hooks";
+import { PrivateRoutes, PublicRoutes } from "../routes";
+import { routeRole, showMessage } from "../utilities";
 import { RouterWithNotFound } from "./RouterWithNotFound";
 
 const HomePage = lazy(() => import("../pages/public/landing/pages/Home.page"));
@@ -26,9 +27,8 @@ export const AppRouter = () => {
   const { isDark } = useThemeStore();
   const { isMobile } = useWindowSize();
   const { startRevalidateToken, isLoading, authenticatedUser } = useAuthStore();
-  const { messages, type, startClearMessages } = useMessage();
+  const { messages, type, startClearMessages } = useMessageStore();
 
-  
   useEffect(() => {
     startRevalidateToken();
   }, []);
@@ -41,7 +41,6 @@ export const AppRouter = () => {
 
   if (isLoading) return <ProgressSpinner />;
 
- 
   return (
     <BrowserRouter>
       <Toaster
@@ -58,7 +57,9 @@ export const AppRouter = () => {
         <Route
           path="/"
           element={
-            <Navigate to={PrivateRoutes[routeRole(authenticatedUser.role)] as string} />
+            <Navigate
+              to={PrivateRoutes[routeRole(authenticatedUser.role)] as string}
+            />
           }
         />
         <Route path={PublicRoutes.HOME} element={<HomePage />} />
@@ -91,6 +92,5 @@ export const AppRouter = () => {
         )}
       </RouterWithNotFound>
     </BrowserRouter>
-   
   );
 };

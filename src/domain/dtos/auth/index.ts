@@ -1,3 +1,3 @@
-export * from './register-user.dto';
-export * from './login-user.dto';
-export * from './login-google-user.dto';
+export * from './registerUser.dto';
+export * from './loginUser.dto';
+export * from './loginGoogleUser.dto';

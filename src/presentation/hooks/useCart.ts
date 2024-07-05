@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { useCartStore, useMessage } from "./";
+import { useCartStore, useMessageStore } from "./";
 
 type To = "card" | "table";
 
 export const useCart = (dishId: number, quantity: number, to: To) => {
-  const { startSetMessages, typeError } = useMessage();
+  const { startSetMessages, typeError } = useMessageStore();
   const {
     startAddOneDish,
     totalQuantity,

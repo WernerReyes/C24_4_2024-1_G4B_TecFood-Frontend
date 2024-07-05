@@ -1,5 +1,5 @@
-import { UpdateUserDto, UploadProfileDto } from "@/domain/dtos/user";
-import { UpdateUser, UploadProfile } from "@/domain/use-cases";
+import { useDispatch, useSelector } from "react-redux";
+import type { UpdateUserDto, UploadProfileDto } from "@/domain/dtos";
 import { UserRepositoryImpl } from "@/infraestructure/repositories";
 import { UserService } from "@/infraestructure/services";
 import {
@@ -7,15 +7,14 @@ import {
   onLoadProfile,
   onLoadingUsers,
 } from "@/infraestructure/store";
-import { useDispatch, useSelector } from "react-redux";
-import { useMessage } from "../";
+import { useMessageStore } from "./useMessageStore";
 
 const userService = new UserService();
 const userRepositoryImpl = new UserRepositoryImpl(userService);
 
 export const useUserStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError, typeSuccess } = useMessage();
+  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
 
   const { user, users, isLoading } = useSelector(
     (state: AppState) => state.user,
@@ -32,29 +31,31 @@ export const useUserStore = () => {
 
   const startUpdatingUser = async (updateUserDto: UpdateUserDto) => {
     dispatch(onLoadingUsers());
-
-    await new UpdateUser(userRepositoryImpl)
-      .execute(updateUserDto)
+    userRepositoryImpl
+      .update(updateUserDto)
       .then(({ message }) => {
         startSetMessages([message], typeSuccess);
       })
-      .catch((error) => error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startUploadingProfile = async (
     uploadProfileDto: [UploadProfileDto?, string[]?],
   ) => {
+    dispatch(onLoadingUsers());
     const [uploadProfileDtoValidated, errors] = uploadProfileDto;
     if (errors) return startSetMessages(errors, typeError);
-    dispatch(onLoadingUsers());
-
-    await new UploadProfile(userRepositoryImpl)
-      .execute(uploadProfileDtoValidated!)
+    userRepositoryImpl
+      .uploadProfile(uploadProfileDtoValidated!)
       .then(({ profileUrl, message }) => {
         dispatch(onLoadProfile(profileUrl));
         startSetMessages([message], typeSuccess);
       })
-      .catch((error) => error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   return {

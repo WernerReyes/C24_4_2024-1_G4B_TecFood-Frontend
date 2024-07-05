@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import { GetDishCategories } from "@/domain/use-cases";
 import { DishCategoryRepositoryImpl } from "@/infraestructure/repositories";
 import { DishCategoryService } from "@/infraestructure/services";
 import {
@@ -22,8 +21,9 @@ export const useDishCategoryStore = () => {
 
   const startLoadingDishCategories = async () => {
     dispatch(onLoadingDishCategory());
-    await new GetDishCategories(dishCategoryRepositoryImpl)
-      .execute()
+
+    dishCategoryRepositoryImpl
+      .getAll()
       .then(({ dishCategories }) =>
         dispatch(onLoadDishCategories(dishCategories)),
       )

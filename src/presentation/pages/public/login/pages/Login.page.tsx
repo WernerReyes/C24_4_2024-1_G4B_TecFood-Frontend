@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { LoginUserDto } from "@/domain/dtos";
 import { Button, InputPassword, InputText } from "@/presentation/components";
-import { useAuthStore, useMessage, useThemeStore } from "@/presentation/hooks";
+import { useAuthStore, useMessageStore, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
 import { fromObjectToArray } from "@/presentation/utilities";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import { AuthLayout } from "../../layout";
 export const LoginPage = () => {
   const { isDark } = useThemeStore();
   const { isLoading, startLoginUser } = useAuthStore();
-  const { startSetMessages, typeError } = useMessage();
+  const { startSetMessages, typeError } = useMessageStore();
   const navigate = useNavigate();
 
   const {

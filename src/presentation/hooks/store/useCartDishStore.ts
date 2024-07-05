@@ -1,12 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  AddOneDish,
-  DeleteAllDishes,
-  DeleteOneDish,
-  GetDishByDishId,
-  GetDishesByUser,
-  GetTotalDishesByUser,
-} from "@/domain/use-cases";
 import { CartDishRepositoryImpl } from "@/infraestructure/repositories";
 import {
   AppState,
@@ -20,22 +12,22 @@ import {
   onResetCartDish,
 } from "@/infraestructure/store";
 import { CartDishService } from "@/infraestructure/services";
-import { useMessage } from "../";
+import { useMessageStore } from "../";
 
 const cartDishService = new CartDishService();
 const cartDishRepositoryImpl = new CartDishRepositoryImpl(cartDishService);
 
 export const useCartStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeSuccess } = useMessage();
+  const { startSetMessages, typeSuccess } = useMessageStore();
 
   const { isLoading, cart, cartItem, totalQuantity, totalPayment } =
     useSelector((state: AppState) => state.cartDish);
 
   const startAddOneDish = async (dishId: number) => {
     dispatch(onLoadingCartDish());
-    await new AddOneDish(cartDishRepositoryImpl)
-      .execute(dishId)
+    cartDishRepositoryImpl
+      .addOneDish(dishId)
       .then(({ message }) => {
         dispatch(onAddOneDish());
         startSetMessages([message], typeSuccess);
@@ -47,8 +39,8 @@ export const useCartStore = () => {
 
   const startDeleteOneDish = async (dishId: number) => {
     dispatch(onLoadingCartDish());
-    await new DeleteOneDish(cartDishRepositoryImpl)
-      .execute(dishId)
+    cartDishRepositoryImpl
+      .getDishByDishId(dishId)
       .then(() => dispatch(onDeleteOneDish()))
       .catch((error) => {
         throw error;
@@ -57,8 +49,8 @@ export const useCartStore = () => {
 
   const startdeleteAllDishes = async (cartId: number) => {
     dispatch(onLoadingCartDish());
-    await new DeleteAllDishes(cartDishRepositoryImpl)
-      .execute(cartId)
+    cartDishRepositoryImpl
+      .deleteAllDishes(cartId)
       .then(({ quantity }) => {
         dispatch(onDeleteAllDishes(quantity));
       })
@@ -69,8 +61,8 @@ export const useCartStore = () => {
 
   const startLoadingDishesByUser = async () => {
     dispatch(onLoadingCartDish());
-    await new GetDishesByUser(cartDishRepositoryImpl)
-      .execute()
+    cartDishRepositoryImpl
+      .getDishesByUser()
       .then((data) => {
         dispatch(
           onLoadCartDish({
@@ -86,8 +78,9 @@ export const useCartStore = () => {
 
   const startLoadingDishByDishId = async (dishId: number) => {
     dispatch(onLoadingCartDish());
-    await new GetDishByDishId(cartDishRepositoryImpl)
-      .execute(dishId)
+    cartDishRepositoryImpl
+      .getDishByDishId(dishId)
+
       .then(({ cartItem }) => {
         dispatch(
           onLoadCartDishItem({
@@ -102,8 +95,8 @@ export const useCartStore = () => {
 
   const startLoadingTotalDishesByUser = async () => {
     dispatch(onLoadingCartDish());
-    await new GetTotalDishesByUser(cartDishRepositoryImpl)
-      .execute()
+    cartDishRepositoryImpl
+      .getTotalDishesByUser()
       .then(({ totalQuantity }) =>
         dispatch(onLoadTotalDishesByUser(totalQuantity)),
       )

@@ -20,10 +20,14 @@ export const userSlice = createSlice({
     },
 
     onLoadProfile: (state, action: PayloadAction<string>) => {
-      return { ...state, user: {
-        ...state.user,
-        img: action.payload
-      }, isLoading: false };
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          img: action.payload,
+        },
+        isLoading: false,
+      };
     },
 
     onUpdateUser: (state, action: PayloadAction<UserState>) => {
@@ -36,6 +40,10 @@ export const userSlice = createSlice({
 
     onLoadUsers: (state, action: PayloadAction<UserState[]>) => {
       return { ...state, users: action.payload, isLoading: false };
+    },
+
+    onResetUser: (state) => {
+      return { ...state, user: userEmptyState, users: [] };
     },
 
     onLoadingUsers: (state) => {

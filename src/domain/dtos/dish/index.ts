@@ -1,2 +1,2 @@
-export * from './get-dishes.dto';
-export * from './get-dishes-without-selected-dish.dto';
+export * from './getDishes.dto';
+export * from './getDishesWithoutSelectedDish.dto';

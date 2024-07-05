@@ -1,15 +1,16 @@
+import clsx from "clsx";
 import {
   IconField,
   InputIcon,
   InputText,
   type PanelFooterTemplateOptions,
 } from "@/presentation/components";
-import clsx from "clsx";
 
 interface PanelFooter extends PanelFooterTemplateOptions {
   setWriteMessage: (writeMessage: string) => void;
   writeMessage: string;
   handleSendMessage: () => void;
+  isAvailableChat: boolean;
 }
 
 export const FooterChatBot = ({
@@ -17,6 +18,7 @@ export const FooterChatBot = ({
   handleSendMessage,
   writeMessage,
   setWriteMessage,
+  isAvailableChat
 }: PanelFooter) => {
   return (
     <div
@@ -25,14 +27,20 @@ export const FooterChatBot = ({
         "flex flex-wrap items-center justify-between gap-3 border-t-2 px-0 dark:border-slate-700",
       )}
     >
-      <IconField className="w-full" iconPosition="right">
+      <IconField
+        disabled={!isAvailableChat}
+        className="w-full"
+        iconPosition="right"
+      >
         <InputIcon
-          className="pi pi-send cursor-pointer"
+          className={clsx("pi pi-send disabled:bg-red-500", 
+          isAvailableChat ? "cursor-pointer" : "cursor-not-allowed"
+          )}
           onClick={handleSendMessage}
-        >
-          {" "}
-        </InputIcon>
+          disabled={true}
+        />
         <InputText
+          disabled={!isAvailableChat}
           className="bg-trasparent max-w-72 border-none text-xs shadow-none dark:bg-transparent"
           v-model="value1"
           value={writeMessage}

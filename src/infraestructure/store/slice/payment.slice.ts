@@ -23,6 +23,13 @@ export const paymentSlice = createSlice({
       };
     },
 
+    onResetPayment: (state) => {
+      return {
+        ...state,
+        payment: paymentEmptyState,
+      };
+    },
+
     onLoadingPayment: (state) => {
       return {
         ...state,
@@ -32,4 +39,5 @@ export const paymentSlice = createSlice({
   },
 });
 
-export const { onLoadingPayment, onProcessPayment } = paymentSlice.actions;
+export const { onLoadingPayment, onProcessPayment, onResetPayment } =
+  paymentSlice.actions;

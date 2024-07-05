@@ -1,5 +1,5 @@
-import { ChatDto } from "@/domain/dtos";
-import { Chat, GreetUser } from "@/domain/use-cases";
+import { useDispatch, useSelector } from "react-redux";
+import type { ChatDto } from "@/domain/dtos";
 import { OpenAIRepositoryImpl } from "@/infraestructure/repositories";
 import { OpenAIService } from "@/infraestructure/services";
 import {
@@ -7,19 +7,19 @@ import {
   onLoadChatMessages,
   onLoadingopenIA,
   onResetChatMessages,
+  onSetAvailableChat,
   type AppState,
 } from "@/infraestructure/store";
 import { getStorage } from "@/presentation/utilities";
-import { useDispatch, useSelector } from "react-redux";
-import { useMessage } from "../useMessage";
+import { useMessageStore } from "./useMessageStore";
 
 const openAIService = new OpenAIService();
 const openAIRepositoryImpl = new OpenAIRepositoryImpl(openAIService);
 
 export const useOpenAIStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError } = useMessage();
-  const { chatMessages, isLoading } = useSelector(
+  const { startSetMessages, typeError } = useMessageStore();
+  const { chatMessages, isLoading, isAvailableChat } = useSelector(
     (state: AppState) => state.openIA,
   );
 
@@ -28,10 +28,10 @@ export const useOpenAIStore = () => {
 
     if (getStorage("chatMessages"))
       return dispatch(onLoadChatMessages(getStorage("chatMessages")!));
-
-    await new GreetUser(openAIRepositoryImpl)
-      .execute()
-      .then(({ choices }) => {
+    openAIRepositoryImpl
+      .greetUser()
+      .then(({ choices, id }) => {
+        if (id !== "Error") dispatch(onSetAvailableChat());
         dispatch(onAddChatMessage(choices[0].message));
       })
       .catch((error) => {
@@ -40,6 +40,7 @@ export const useOpenAIStore = () => {
   };
 
   const startSendingMenssage = async (chatDto: [ChatDto?, string[]?]) => {
+    dispatch(onLoadingopenIA());
     const [validatedData, errors] = chatDto;
     if (errors) return startSetMessages(errors, typeError);
     dispatch(
@@ -47,12 +48,10 @@ export const useOpenAIStore = () => {
         validatedData?.messages[validatedData.messages.length - 1]!,
       ),
     );
-
-    dispatch(onLoadingopenIA());
-
-    await new Chat(openAIRepositoryImpl)
-      .execute(validatedData!)
-      .then(({ choices }) => {
+    openAIRepositoryImpl
+      .chat(validatedData!)
+      .then(({ choices, id }) => {
+        if (id !== "Error") dispatch(onSetAvailableChat());
         dispatch(onAddChatMessage(choices[0].message));
       })
       .catch((error) => {
@@ -69,6 +68,7 @@ export const useOpenAIStore = () => {
     //* Atributes
     chatMessages,
     isLoading,
+    isAvailableChat,
 
     //* Functions
     startGetGreetUser,

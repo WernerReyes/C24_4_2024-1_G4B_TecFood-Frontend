@@ -1,1 +1,1 @@
-export * from './process-payment.dto';
+export * from './processPayment.dto';

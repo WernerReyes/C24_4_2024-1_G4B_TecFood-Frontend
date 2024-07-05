@@ -1,6 +1,7 @@
 export enum OpenAIRoleEnum {
   USER = "user",
   ASSISTANT = "assistant",
+  SYSTEM = "system",
 }
 
 export interface ChatResponse {

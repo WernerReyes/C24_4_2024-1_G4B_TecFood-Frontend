@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, InputPassword, InputText } from "@/presentation/components";
-import { useAuthStore, useMessage, useThemeStore } from "@/presentation/hooks";
+import { useAuthStore, useMessageStore, useThemeStore } from "@/presentation/hooks";
 import { PublicRoutes } from "@/presentation/routes";
 import { AuthLayout } from "../../layout";
 import { fromObjectToArray } from "@/presentation/utilities";
@@ -11,7 +11,7 @@ import { RegisterUserDto } from "@/domain/dtos";
 
 export const RegisterPage = () => {
   const { isDark } = useThemeStore();
-  const { startSetMessages, typeError } = useMessage();
+  const { startSetMessages, typeError } = useMessageStore();
   const { startRegisteringUser, isLoading } = useAuthStore();
 
   const {
