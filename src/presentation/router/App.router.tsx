@@ -68,9 +68,13 @@ export const AppRouter = () => {
 
         {!isLoading && (
           <Route element={<AuthGuard privateValidation />}>
+
+            //* Routes for user
             <Route element={<RoleGuard roles={[RoleEnum.ROLE_USER]} />}>
               <Route path={`${PrivateRoutes.USER}/*`} element={<UserPages />} />
             </Route>
+
+            //* Routes for admin
             <Route element={<RoleGuard roles={[RoleEnum.ROLE_ADMIN]} />}>
               <Route
                 path={`${PrivateRoutes.ADMIN}/*`}

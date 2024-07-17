@@ -11,3 +11,4 @@ export * from "./responsiveDesign";
 export * from "./routesRoles";
 export * from "./sonnerManager";
 export * from "./userGoogleInfo";
+export * from "./randomValues";

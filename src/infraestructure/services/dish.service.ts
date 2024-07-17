@@ -1,5 +1,6 @@
 import type { DishEntity } from "@/domain/entities";
 import type {
+  CreateDishResponse,
   DishModel,
   GetDishByIdResponse,
   GetDishesResponse,
@@ -7,8 +8,10 @@ import type {
   GetDishesWithoutSelectedDishResponse,
 } from "@/model";
 import type {
+  CreateDishDto,
   GetDishesDto,
   GetDishesWithoutSelectedDishDto,
+  UploadImageDto,
 } from "@/domain/dtos";
 import { dishAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
@@ -19,6 +22,10 @@ import {
 } from "@/presentation/utilities";
 
 interface IDishService {
+  create(
+    createDishDto: CreateDishDto,
+    uploadDishImages: UploadImageDto,
+  ): Promise<CreateDishResponse<DishModel>>;
   getAll(getDishesDto: GetDishesDto): Promise<GetDishesResponse<DishModel>>;
   getAllToSearch(): Promise<GetDishesToSearchResponse<DishModel>>;
   getAllWithoutSelectedDish(
@@ -32,6 +39,30 @@ export class DishService implements IDishService {
 
   constructor() {
     this.prefix = "/dish";
+  }
+
+  public async create(
+    createDishDto: CreateDishDto,
+    uploadDishImages: UploadImageDto,
+  ): Promise<CreateDishResponse<DishModel>> {
+    try {
+      const formData = new FormData();
+      createDishDto.toFormData.forEach((value, key) =>
+        formData.append(key, value),
+      );
+      uploadDishImages.toFormData.forEach((value, key) =>
+        formData.append(key, value),
+      );
+
+      const { data } = await httpRequest<CreateDishResponse<DishEntity>>(
+        this.prefix,
+        "POST",
+        formData,
+      );
+      return { ...data, dish: dishAdapter(data.dish) };
+    } catch (error) {
+      throw error;
+    }
   }
 
   public async getAll({

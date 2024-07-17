@@ -9,3 +9,7 @@ export * from "./HighlightedText";
 export * from "./LinksToNavigate";
 export * from "./SidebarPrivate";
 export * from "./UploadProfile";
+export * from "./HeaderSearch";
+export * from "./RecommendationSearch";
+export * from "./HistorySearch";
+export * from './Profile';

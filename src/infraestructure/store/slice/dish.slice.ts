@@ -2,35 +2,35 @@ import {
   DishFilters,
   dishEmptyState,
   dishFilterEmptyState,
-  type DishState,
+  type DishModel,
 } from "@/model";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type DishSliceState = {
   isLoading: boolean;
-  dish: DishState;
+  dish: DishModel;
   total: number;
-  dishes: DishState[];
-  dishesToSearch: DishState[];
-  dishesWithoutSelectedDish: DishState[];
+  dishes: DishModel[];
+  dishesToSearch: DishModel[];
+  dishesWithoutSelectedDish: DishModel[];
   filters: DishFilters;
 };
 
 export const dishSlice = createSlice({
   name: "dish",
   initialState: {
-    isLoading: true,
+    isLoading: false,
     dish: dishEmptyState,
     total: 0,
-    dishes: [] as DishState[],
-    dishesToSearch: [] as DishState[],
-    dishesWithoutSelectedDish: [] as DishState[],
+    dishes: [] as DishModel[],
+    dishesToSearch: [] as DishModel[],
+    dishesWithoutSelectedDish: [] as DishModel[],
     filters: dishFilterEmptyState,
   },
   reducers: {
     onLoadDishes(
       state,
-      action: PayloadAction<{ total: number; dishes: DishState[] }>,
+      action: PayloadAction<{ total: number; dishes: DishModel[] }>,
     ) {
       return {
         ...state,
@@ -40,11 +40,11 @@ export const dishSlice = createSlice({
       };
     },
 
-    onLoadDishesToSearch(state, action: PayloadAction<DishState[]>) {
+    onLoadDishesToSearch(state, action: PayloadAction<DishModel[]>) {
       return { ...state, dishesToSearch: action.payload, isLoading: false };
     },
 
-    onLoadDishesWithoutSelectedDish(state, action: PayloadAction<DishState[]>) {
+    onLoadDishesWithoutSelectedDish(state, action: PayloadAction<DishModel[]>) {
       return {
         ...state,
         dishesWithoutSelectedDish: action.payload,
@@ -52,7 +52,7 @@ export const dishSlice = createSlice({
       };
     },
 
-    onLoadDish(state, action: PayloadAction<DishState>) {
+    onLoadDish(state, action: PayloadAction<DishModel>) {
       return { ...state, dish: action.payload, isLoading: false };
     },
 
@@ -60,6 +60,7 @@ export const dishSlice = createSlice({
       return {
         ...state,
         filters: action.payload,
+        isLoading: false,
       };
     },
 

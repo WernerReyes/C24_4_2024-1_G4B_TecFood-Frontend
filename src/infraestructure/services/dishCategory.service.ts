@@ -19,7 +19,6 @@ export class DishCategoryService implements IDishCategoryService {
       const { data } = await httpRequest<
         GetDishCategoriesResponse<DishCategoryEntity>
       >(this.prefix, "GET");
-
       return {
         ...data,
         dishCategories: data.dishCategories.map(dishCategoryAdapter),

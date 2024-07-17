@@ -47,7 +47,7 @@ export const InputPassword = forwardRef<HTMLInputElement, Props>(
             className={clsx(
               !unstyled && defaultClassName,
               error &&
-                "border-red-500 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-400",
+                "border-red-400 focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-400",
               inputClassName,
             )}
             ref={ref}
@@ -62,7 +62,7 @@ export const InputPassword = forwardRef<HTMLInputElement, Props>(
             <i className={clsx("pi", eye)}></i>
           </button>
         </div>
-        {smallDescription && !error && <small>{smallDescription}</small>}
+        {smallDescription && !error && <small className="text-red-400">{smallDescription}</small>}
       </div>
     );
   },

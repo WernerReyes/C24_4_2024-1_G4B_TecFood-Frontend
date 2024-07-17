@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { DishState } from "@/model";
+import { DishModel } from "@/model";
 import { CardSkeleton, Image, Link, Tooltip } from "@/presentation/components";
 import { useCart } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
@@ -12,7 +12,7 @@ const {
 } = PrivateRoutes;
 
 type Props = {
-  dish: DishState;
+  dish: DishModel;
   quantity: number;
 };
 

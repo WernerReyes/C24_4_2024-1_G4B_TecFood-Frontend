@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { InputSearch } from "@/presentation/components";
-import { HeaderSearchLayout } from "../../../layout";
+import { HeaderSearchLayout } from "../layout";
 import { useDishStore } from "@/presentation/hooks";
-import { DishModel } from "@/model";
-import { RecommendationSearch, HistorySearch } from "../";
+import type {  DishModel } from "@/model";
+import { RecommendationSearch, HistorySearch } from "./";
 import { getStorage } from "@/presentation/utilities";
 
 type Props = {

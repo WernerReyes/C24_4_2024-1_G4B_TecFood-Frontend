@@ -7,8 +7,11 @@ import {
   AvatarGroup,
   Card as CardComponent,
 } from "@/presentation/components";
-import { formatNumber } from "@/presentation/utilities";
-import type { DishState } from "@/model";
+import {
+  formatNumber,
+  getRandomValueFromArray,
+} from "@/presentation/utilities";
+import type { DishImageState, DishModel } from "@/model";
 import { useNavigate } from "react-router-dom";
 import { PrivateRoutes } from "@/presentation/routes";
 
@@ -18,7 +21,7 @@ const bgCardDark =
 const bgCardLight =
   "linear-gradient(to bottom, #ecfaff, #e4f8ff, #dcf5ff, #d3f3ff, #cbf0ff)";
 
-interface Props extends DishState {
+interface Props extends DishModel {
   priceOffer?: number;
   rating: number;
 }
@@ -33,8 +36,7 @@ export const Card = ({
   id,
   description,
   rating,
-  // image,
-  img,
+  images,
   price,
   priceOffer,
 }: Props) => {
@@ -43,7 +45,6 @@ export const Card = ({
   const navigate = useNavigate();
   const ratingFormat = formatNumber(rating);
 
- 
   const hangleNavigateToDetail = () => {
     if (!isAuthenticate) return navigate(USER);
 
@@ -54,7 +55,7 @@ export const Card = ({
     <div className="mb-20 mt-40">
       <CardComponent
         footer={() => footer(hangleNavigateToDetail)}
-        header={header(img, price, priceOffer)}
+        header={header(images, price, priceOffer)}
         className="md:w-25rem h-[22rem] w-full md:h-96"
         style={{
           backgroundImage: clsx(isDark ? bgCardDark : bgCardLight),
@@ -134,7 +135,11 @@ export const Card = ({
   );
 };
 
-const header = (image: string, prince: number, priceOffer?: number) => (
+const header = (
+  images: DishImageState[],
+  prince: number,
+  priceOffer?: number,
+) => (
   <div
     className={clsx(
       "bg-trasparent relative bottom-32 mx-auto h-60 w-60 rounded-full border-t-8 border-primary-lighter p-2  dark:border-[#bf7c44]",
@@ -144,7 +149,7 @@ const header = (image: string, prince: number, priceOffer?: number) => (
   >
     <Image
       alt="Card"
-      src={image}
+      src={getRandomValueFromArray(images).url}
       className="w-full text-black dark:text-white"
       preview
       pt={{

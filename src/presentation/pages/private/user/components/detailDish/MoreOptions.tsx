@@ -1,5 +1,5 @@
 import { GetDishesWithoutSelectedDishDto } from "@/domain/dtos";
-import { DishState } from "@/model";
+import { DishModel } from "@/model";
 import { useCartStore, useDishStore } from "@/presentation/hooks";
 import { breakPointsSwiper } from "@/presentation/utilities";
 import { useEffect } from "react";
@@ -24,7 +24,7 @@ export const MoreOptions = () => {
   } = useDishStore();
  
 
-  const handleLoadCartQuantity = (dish: DishState): number => {
+  const handleLoadCartQuantity = (dish: DishModel): number => {
     const cartItem = cart.find((cartItem) => cartItem.dish.id === dish.id);
     return cartItem?.quantity || 0;
   };

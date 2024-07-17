@@ -11,13 +11,13 @@ export interface OrderDishModel {
   user: UserModel;
 }
 
-export interface OrderDishState extends OrderDishModel {}
+export interface OrderDishModel extends OrderDishModel {}
 
 export type OrderDishFilter = {
   status: { status: OrderDishStatusEnum }[];
 };
 
-export const orderDishEmptyState: OrderDishState = {
+export const orderDishEmptyState: OrderDishModel = {
   id: 0, 
   date: "" as any as Date,
   status: OrderDishStatusEnum.PENDING,

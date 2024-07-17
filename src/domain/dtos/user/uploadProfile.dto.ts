@@ -1,6 +1,6 @@
-import { UploadFileDto } from "../common";
+import { UploadImageDto} from "../common";
 
-export class UploadProfileDto extends UploadFileDto {
+export class UploadProfileDto extends UploadImageDto{
   protected constructor(public readonly file: FormData) {
     super(file);
   }

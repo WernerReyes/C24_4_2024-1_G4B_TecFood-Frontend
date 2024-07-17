@@ -1,12 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { LoginUserDto } from "@/domain/dtos";
 import { Button, InputPassword, InputText } from "@/presentation/components";
 import { useAuthStore, useMessageStore, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
-import { fromObjectToArray } from "@/presentation/utilities";
-import { useNavigate } from "react-router-dom";
+import { fromObjectToArray, routeRole } from "@/presentation/utilities";
 import { AuthLayout } from "../../layout";
 
 export const LoginPage = () => {
@@ -24,8 +24,8 @@ export const LoginPage = () => {
   });
 
   const handleLogin: SubmitHandler<LoginUserDto> = async (data) => {
-    await startLoginUser(data).then(() => {
-      navigate(PrivateRoutes.USER);
+    await startLoginUser(data).then((role) => {
+      navigate(PrivateRoutes[routeRole(role)] as string)
     });
   };
 
@@ -60,7 +60,7 @@ export const LoginPage = () => {
               label="Correo Electrónico"
               placeholder="Ingresa tu email"
               error={!!errors[field.name]?.message}
-              className="border-2 border-primary bg-transparent py-3 text-sm"
+              className="border-2 border-primary bg-transparent py-3 text-sm "
             />
           )}
         />
@@ -74,7 +74,7 @@ export const LoginPage = () => {
               label="Contraseña"
               placeholder="Ingresa tu contraseña"
               error={!!errors[field.name]?.message}
-              inputClassName="border-2 border-primary text-sm py-3 bg-transparent"
+              inputClassName="border-2 border-primary text-sm py-3 bg-transparent "
             />
           )}
         />

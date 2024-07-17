@@ -4,7 +4,7 @@ import { useCart } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import { AddAndRemoveDish, ButtonAddAndRemoveDish } from "../";
 import { Heart } from "../../../components";
-import { DishState } from "@/model";
+import { DishModel } from "@/model";
 
 const {
   USER,
@@ -12,7 +12,7 @@ const {
 } = PrivateRoutes;
 
 type Props = {
-  dish: DishState;
+  dish: DishModel;
   quantity: number;
 };
 

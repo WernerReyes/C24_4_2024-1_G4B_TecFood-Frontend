@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
-import { DishModel } from "@/model";
+import type { DishModel } from "@/model";
 import { useEffect, useState } from "react";
 import { StorageKeys, setStorage } from "@/presentation/utilities";
 import { PrivateRoutes } from "@/presentation/routes";

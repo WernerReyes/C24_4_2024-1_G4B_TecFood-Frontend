@@ -9,34 +9,31 @@ interface Props extends InputTextProps {
   error?: boolean;
 }
 
-const defaultClassName = "border border-gray-300 w-full rounded-lg p-2";
+const DEFAULT_CLASS_NAME = "border border-gray-300 w-full rounded-lg p-2";
 
 export const InputText = forwardRef<HTMLInputElement, Props>(
-  (
-    {
-      label,
-      smallDescription,
-      unstyled,
-      className,
-      error,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ label, smallDescription, unstyled, className, error, ...props }, ref) => {
     return (
       <div className="flex flex-col justify-center">
-        {label && <label htmlFor="username">{label}</label>}
+        {label && (
+          <label htmlFor={props.name} className="mb-1">
+            {label}
+          </label>
+        )}
         <InputTextPrimeReact
           {...props}
           ref={ref}
+          unstyled={unstyled}
           className={clsx(
-            !unstyled && defaultClassName,
-            error &&
-              "border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-400",
-            className,
+            !unstyled && DEFAULT_CLASS_NAME,
+            error
+              ? "border-2 border-red-400 focus:border-red-400 focus:ring-1 focus:ring-red-400"
+              : className,
           )}
         />
-        {smallDescription && error && <small className="text-red-400">{smallDescription}</small>}
+        {smallDescription && error && (
+          <small className="text-red-400">{smallDescription}</small>
+        )}
       </div>
     );
   },

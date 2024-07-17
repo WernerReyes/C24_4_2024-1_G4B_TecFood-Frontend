@@ -12,7 +12,7 @@ export enum PaymentStatusEnum {
 }
 
 export interface PaymentEntity {
-  paymentId: number;
+  id: number;
   amount: number;
   paymentMethod: PaymentMethodEnum;
   status: PaymentStatusEnum;

@@ -23,9 +23,8 @@ export const BreadCrumb = ({ role, scrollId, className, unistyled }: Props) => {
   const { id } = useParams<{ id: string }>();
   const { orderDishId } = useParams<{ orderDishId: string }>();
   const { dish, startLoadingDishById } = useDishStore();
-  // const { startLoadingOrderDishItemsByOrder } = useOrderDishItemStore();
   const roleRoute = PrivateRoutes[routeRole(role)].toString();
-
+  
   const home = {
     template: () => (
       <Link
@@ -56,12 +55,6 @@ export const BreadCrumb = ({ role, scrollId, className, unistyled }: Props) => {
       document.title = dish.name;
     }
   }, [dish]);
-
-  // useEffect(() => {
-  //   if (orderDishId) {
-  //     startLoadingOrderDishItemsByOrder(parseInt(orderDishId));
-  //   }
-  // }, [orderDishId]);
 
   const urlSegments = useMemo(() => {
     const originalSegments = location.pathname.split("/");

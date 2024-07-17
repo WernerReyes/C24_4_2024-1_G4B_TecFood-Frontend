@@ -5,6 +5,7 @@ import type {
   RegisterUserDto,
 } from "@/domain/dtos";
 import { AuthRepositoryImpl } from "@/infraestructure/repositories";
+import { AuthService } from "@/infraestructure/services";
 import {
   AppState,
   AuthStatus,
@@ -17,13 +18,12 @@ import {
   onResetOrderDishItem,
   onResetPayment,
 } from "@/infraestructure/store";
-import { useMessageStore } from "./useMessageStore";
-import { AuthService } from "@/infraestructure/services";
 import {
   StorageKeys,
   clearStorage,
   setStorage,
 } from "@/presentation/utilities";
+import { useMessageStore } from "./useMessageStore";
 
 const { TOKEN } = StorageKeys;
 
@@ -47,11 +47,12 @@ export const useAuthStore = () => {
     if (errors) return startSetMessages(errors, typeError);
     dispatch(onCheking());
 
-    authRepositoryImpl
+    return await authRepositoryImpl
       .loginGoogle(validatedData!)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
         setStorage(TOKEN, token);
+        return user.role
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -62,11 +63,12 @@ export const useAuthStore = () => {
   const startLoginUser = async (loginUserDto: LoginUserDto) => {
     dispatch(onCheking());
 
-    authRepositoryImpl
+    return await authRepositoryImpl
       .login(loginUserDto)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
         setStorage(TOKEN, token);
+        return user.role
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -77,7 +79,7 @@ export const useAuthStore = () => {
   const startRegisteringUser = async (registerUserDto: RegisterUserDto) => {
     dispatch(onCheking());
 
-    authRepositoryImpl
+    await authRepositoryImpl
       .register(registerUserDto)
       .then(({ message }) => startSetMessages([message], typeSuccess))
       .catch((error) => {
@@ -91,7 +93,7 @@ export const useAuthStore = () => {
     const token = localStorage.getItem(TOKEN);
     if (!token || token?.length < 5) return dispatch(onLogout());
 
-    authRepositoryImpl
+    await authRepositoryImpl
       .revalidateToken()
       .then(({ user }) => {
         dispatch(onLogin(user));

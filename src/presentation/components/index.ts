@@ -28,6 +28,7 @@ export * from "./FileUpload";
 export * from "./Galleria";
 export * from "./Image";
 export * from "./InputPassword";
+export * from './InputNumber';
 export * from "./InputSearch";
 export * from "./InputText";
 export * from "./Link";
@@ -38,4 +39,9 @@ export * from "./Sidebar";
 export * from "./Skeleton";
 export * from "./Slider";
 export * from "./Tooltip";
+export * from "./Menubar";
+export * from "./PanelMenu";
+export * from './MultiSelect';
+export * from './InputTextarea';
+
 

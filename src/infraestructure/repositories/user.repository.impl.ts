@@ -1,4 +1,4 @@
-import type { UpdateUserDto, UploadFileDto } from "@/domain/dtos";
+import type { UpdateUserDto, UploadImageDto} from "@/domain/dtos";
 import type { UserRepository } from "@/domain/repositories";
 import type { UserService } from "../services";
 

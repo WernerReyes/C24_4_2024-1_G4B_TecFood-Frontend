@@ -15,11 +15,11 @@ export const UploadProfile = () => {
   const { authenticatedUser } = useAuthStore();
   const { startUploadingProfile, user } = useUserStore();
   const [currentProfile, setCurrentProfile] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState(false);
   const fileUploadRef = useRef<FileUploadRef>(null);
 
   const handleSelect = async (e: FileUploadSelectEvent) => {
-    setIsLoading(true);
+    setIsUploading(true);
     const file = new FormData();
     file.append("file", e.files[0]);
 
@@ -29,8 +29,7 @@ export const UploadProfile = () => {
 
     await startUploadingProfile(uploadProfileDto);
     if (fileUploadRef.current) fileUploadRef.current.clear();
-
-    setIsLoading(false);
+    setIsUploading(false);
   };
 
   useEffect(() => {
@@ -43,32 +42,24 @@ export const UploadProfile = () => {
 
   return (
     <FileUpload
-      chooseLabel={isLoading ? "Uploading...":"Upload Profile"}
+      chooseLabel={isUploading ? "Uploading..." : "Upload Profile"}
       ref={fileUploadRef}
       chooseOptions={{
         className: clsx(
           "z-10 p-2 absolute mt-36 button-0",
-          isLoading
+          isUploading
             ? "bg-primary/80 text-black/80"
             : "bg-primary/0 text-black/0 hover:text-black/80 hover:bg-primary/80",
         ),
-        icon: clsx("pi", isLoading ? "pi-spin pi-spinner" : "pi-fw pi-image"),
+        icon: clsx("pi", isUploading ? "pi-spin pi-spinner" : "pi-fw pi-image"),
       }}
       accept="image/*"
-      pt={{
-        content: { className: "bg-transparent" },
-        buttonbar: { className: "p-0 flex justify-center" },
-        uploadButton: { root: { className: "hidden" } },
-        cancelButton: { root: { className: "hidden" } },
-        progressbar: { root: { className: "hidden" } },
-        thumbnail: { className: "h-64 w-64 rounded-full" },
-        file: { className: "flex flex-col" },
-        details: { className: "hidden" },
-        removeButton: { root: { className: "hidden" } },
-      }}
       maxFileSize={MAX_FILE_SIZE}
-      disabled={isLoading}
+      disabled={isUploading}
       onSelect={handleSelect}
+      pt={{
+        cancelButton: { root: { className: "hidden" } },
+      }}
       emptyTemplate={<EmptyTemplate currentProfile={currentProfile} />}
     />
   );

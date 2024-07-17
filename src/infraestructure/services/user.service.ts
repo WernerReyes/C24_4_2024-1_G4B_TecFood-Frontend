@@ -1,6 +1,6 @@
 import { userAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import type { UpdateUserDto, UploadFileDto } from "@/domain/dtos";
+import type { UpdateUserDto, UploadImageDto} from "@/domain/dtos";
 import type { UserEntity } from "@/domain/entities";
 import type {
   UpdateUserResponse,

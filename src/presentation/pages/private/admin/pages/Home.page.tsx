@@ -1,6 +1,10 @@
-export const HomePage = () => {
+import { AdminLayout } from "../layout";
+
+const HomePage = () => {
   return (
-    <div>Home.page by admin</div>
-  )
-}
+    <AdminLayout>
+      <div>Home</div>
+    </AdminLayout>
+  );
+};
 export default HomePage;

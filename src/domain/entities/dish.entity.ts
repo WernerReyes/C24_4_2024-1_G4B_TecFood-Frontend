@@ -1,11 +1,13 @@
-import type { DishCategoryEntity } from "./";
+import type { DishCategoryEntity, DishImageEntity } from "./";
 
 export interface DishEntity {
-  idDish: number;
+  id: number;
   name: string;
   description: string;
   price: number;
-  imgUrl: string;
+  images: DishImageEntity[];
   stock: number;
-  category: DishCategoryEntity;
+  createdAt: Date;
+  updatedAt: Date;
+  categories: DishCategoryEntity[];
 }

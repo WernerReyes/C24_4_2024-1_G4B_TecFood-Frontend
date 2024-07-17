@@ -1,12 +1,12 @@
-import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
-import { useNavigate } from "react-router-dom";
 import { LoginGoogleUserDto } from "@/domain/dtos";
 import { RoleEnum } from "@/domain/entities";
 import { Button, Image } from "@/presentation/components";
 import { useAuthStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import { getEnvs, routeRole, userGoogleInfo } from "@/presentation/utilities";
+import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const { VITE_GOOGLE_CLIENT_ID } = getEnvs();
 
@@ -40,7 +40,7 @@ export const GoogleAuth = () => {
 
 const CustomGoogleLogin = () => {
   const navigate = useNavigate();
-  const { startGoogleLoginUser, authenticatedUser } = useAuthStore();
+  const { startGoogleLoginUser } = useAuthStore();
   const [isLoginGoogle, setIsLoadinGoogle] = useState(false);
 
   const handleGoogleLogin = () => {
@@ -62,13 +62,14 @@ const CustomGoogleLogin = () => {
         isEmailVerified: userInfo.email_verified,
         role: RoleEnum.ROLE_USER,
       });
-      startGoogleLoginUser(loginGoogleUserDto).then(() => {
-        navigate(PrivateRoutes[routeRole(authenticatedUser.role)] as string)
+      startGoogleLoginUser(loginGoogleUserDto).then((role) => {
+        navigate(PrivateRoutes[routeRole(role!)] as string)
       });
     },
     onError: (error) => console.log("Login Failed:", error),
     onNonOAuthError: () => setIsLoadinGoogle(false),
   });
+
 
   return (
     <Button

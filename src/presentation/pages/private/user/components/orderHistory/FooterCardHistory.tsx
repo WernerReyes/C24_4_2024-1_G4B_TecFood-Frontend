@@ -1,6 +1,6 @@
 import { UpdateOrderDishStatusDto } from "@/domain/dtos";
 import { OrderDishStatusEnum } from "@/domain/entities";
-import type { OrderDishState } from "@/model";
+import type { OrderDishModel } from "@/model";
 import {
     Button,
     DowloadFile,
@@ -14,7 +14,7 @@ const {
   user: { PAYMENT },
 } = PrivateRoutes;
 
-interface Props extends OrderDishState {
+interface Props extends OrderDishModel {
   handleShowDetails: (e: React.SyntheticEvent) => void;
 }
 

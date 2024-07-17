@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
-import type { OrderDishState } from "@/model";
+import type { OrderDishModel } from "@/model";
 import {
   Paginator,
   SelectButton,
@@ -41,7 +41,7 @@ const ICON_STATUS = {
 
 const ROW_PER_PAGE = [10, 20, 30];
 
-interface TimelineEvent extends OrderDishState {
+interface TimelineEvent extends OrderDishModel {
   icon: string;
   color: string;
   background: string;
@@ -158,7 +158,7 @@ const OrderHistoryPage = () => {
 
 export default OrderHistoryPage;
 
-const colorAndIconByStatus = (orderDish: OrderDishState[]): TimelineEvent[] => {
+const colorAndIconByStatus = (orderDish: OrderDishModel[]): TimelineEvent[] => {
   return orderDish.map((item) => ({
     ...item,
     color: COLOR_STATUS[item.status],

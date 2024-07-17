@@ -1,34 +1,43 @@
-import {
-  Image,
-  Sidebar
-} from "@/presentation/components";
-import { LinksToNavigate } from "./";
-import { useThemeStore } from "@/presentation/hooks";
+import { Image, Sidebar } from "@/presentation/components";
+import { useThemeStore, useWindowSize } from "@/presentation/hooks";
+import { useEffect } from "react";
 
 type Props = {
   collapseMenu: boolean;
   handleToggleClose: () => void;
-  links: { label: string; url: string }[];
+  children?: React.ReactNode;
 };
 
-export const SidebarPrivate = ({ collapseMenu, handleToggleClose, links }: Props) => {
+export const SidebarPrivate = ({
+  collapseMenu,
+  handleToggleClose,
+  children,
+}: Props) => {
   const { isDark } = useThemeStore();
+  const { width, lg } = useWindowSize();
+
+  useEffect(() => {
+    if (width > lg) {
+      handleToggleClose();
+    }
+  }, [width]);
 
   return (
-    <Sidebar visible={collapseMenu} onHide={handleToggleClose}>
+    <Sidebar
+      visible={collapseMenu}
+      closeOnEscape={true}
+      className=" dark:bg-skeleton-darker"
+      onHide={handleToggleClose}
+    >
       <ul>
-        <li className="mb-6 hidden max-lg:block">
+        <li className="flexjustify-center mb-6">
           <Image
             src={isDark ? "/logo-dark.svg" : "/logo.svg"}
             alt="logo"
-            width="96"
+            imageClassName="w-32 mx-auto"
           />
         </li>
-
-        <LinksToNavigate
-          links={links}
-          className="dark:border-slate-700 max-lg:border-b max-lg:py-4"
-        />
+        {children}
       </ul>
     </Sidebar>
   );

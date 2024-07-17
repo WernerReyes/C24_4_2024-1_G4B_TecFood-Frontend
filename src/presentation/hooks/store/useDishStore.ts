@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import type {
+  CreateDishDto,
   GetDishesDto,
   GetDishesWithoutSelectedDishDto,
+  UploadImageDto,
 } from "@/domain/dtos";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import {
@@ -13,7 +15,7 @@ import {
   onLoadingDish,
   onSetDishFilters,
 } from "@/infraestructure/store";
-import { DishFilters, DishState } from "@/model";
+import type { DishFilters, DishModel } from "@/model";
 import { DishService } from "@/infraestructure/services";
 import { StorageKeys, getStorage, setStorage } from "../../utilities";
 import { useMessageStore } from "../";
@@ -25,7 +27,7 @@ const dishRepositoryImpl = new DishRepositoryImpl(dishService);
 
 export const useDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError } = useMessageStore();
+  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
   const {
     dishes,
     dishesToSearch,
@@ -35,6 +37,28 @@ export const useDishStore = () => {
     isLoading,
     filters,
   } = useSelector((state: AppState) => state.dish);
+
+  const startCreateDish = async (
+    createDishDto: CreateDishDto,
+    uploadImageDto: [UploadImageDto?, string[]?],
+  ) => {
+    const [uploadImageDtoValidated, errors] = uploadImageDto;
+    if (errors) {
+      startSetMessages(errors, typeError);
+      throw new Error("Error uploading image");
+    }
+
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .create(createDishDto, uploadImageDtoValidated!)
+      .then(({ dish, message }) => {
+        dispatch(onLoadDish(dish));
+        startSetMessages([message], typeSuccess);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
 
   const startLoadingDishes = async (
     getDishesDto: [GetDishesDto?, string[]?],
@@ -60,7 +84,7 @@ export const useDishStore = () => {
 
     if (getStorage(DISHES_TO_SEARCH)) {
       return dispatch(
-        onLoadDishesToSearch(getStorage<DishState[]>(DISHES_TO_SEARCH)!),
+        onLoadDishesToSearch(getStorage<DishModel[]>(DISHES_TO_SEARCH)!),
       );
     }
     dishRepositoryImpl
@@ -113,6 +137,7 @@ export const useDishStore = () => {
     filters,
 
     //* Methods
+    startCreateDish,
     startLoadingDishes,
     startFilterDishes,
     startLoadingDishById,

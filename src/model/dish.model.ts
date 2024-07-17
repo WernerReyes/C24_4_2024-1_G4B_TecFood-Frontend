@@ -1,17 +1,18 @@
 import { getStorage } from "@/presentation/utilities";
-import { DishCategoryModel, dishCategoryEmptyState } from "./";
+import type { DishCategoryModel, DishImageModel } from "./";
 
 export interface DishModel {
   id: number;
   name: string;
   description: string;
   price: number;
-  img: string;
+  images: DishImageModel[];
   stock: number;
-  category: DishCategoryModel;
+  createdAt: Date;
+  updatedAt: Date;
+  categories: DishCategoryModel[];
 }
 
-export interface DishState extends DishModel {}
 
 export type DishFilters = {
   idCategory: { idCategory: number }[] | null;
@@ -19,14 +20,16 @@ export type DishFilters = {
   search: string;
 };
 
-export const dishEmptyState: DishState = {
+export const dishEmptyState: DishModel = {
   id: 0,
   name: "",
   description: "",
   price: 0,
-  img: "",
+  images: [],
   stock: 0,
-  category: dishCategoryEmptyState,
+  categories: [],
+  createdAt: "" as any as Date,
+  updatedAt: "" as any as Date,
 };
 
 export const dishFilterEmptyState: DishFilters = getStorage("dishFilters") || {

@@ -26,7 +26,7 @@ export const FilterSection = () => {
         className="mt-4"
         header={
           <Image
-            src={dishes[0].img}
+            src={dishes[0].images[0].url}
             alt="dish-offer"
             className="h-full w-full object-cover"
           />
@@ -35,8 +35,8 @@ export const FilterSection = () => {
           <>
             <Button icon="pi pi-arrow-right" label="Order now"   />
             <div className="flex justify-between mt-5">
-              <p className="text-xs font-bold">{dishes[0].category.name}</p>
-              <p className="text-xs font-bold">Stock: {dishes[0].stock}</p>
+              <p className="text-xs font-bold">{dishes[0].categories[0].name}</p>
+              <p className="text-xs font-bold">Stock: {dishes[0].description}</p>
             </div>
           </>
         }

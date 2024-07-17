@@ -1,4 +1,4 @@
-import { DishModel, DishState, dishEmptyState } from "./dish.model";
+import { DishModel, DishModel, dishEmptyState } from "./dish.model";
 import { UserModel, UserState, userEmptyState } from "./user.model";
 
 
@@ -12,7 +12,7 @@ export interface CartDishModel {
 export interface CartState {
   id: number;
   quantity: number;
-  dish: DishState;
+  dish: DishModel;
   user: UserState;
 }
 

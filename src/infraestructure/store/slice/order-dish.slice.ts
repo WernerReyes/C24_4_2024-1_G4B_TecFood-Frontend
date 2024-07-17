@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {
-  type OrderDishState,
+  type OrderDishModel,
   type OrderDishFilter,
   orderDishEmptyState,
   orderDishFilterEmptyState,
@@ -9,11 +9,11 @@ import { OrderDishStatusEnum } from "@/domain/entities";
 
 export type OrderDishSliceState = {
   isLoading: boolean;
-  orderDish: OrderDishState;
+  orderDish: OrderDishModel;
   status: OrderDishStatusEnum;
   total: number;
   filters: OrderDishFilter;
-  orderDishes: OrderDishState[];
+  orderDishes: OrderDishModel[];
 };
 
 export const orderDishSlice = createSlice({
@@ -24,10 +24,10 @@ export const orderDishSlice = createSlice({
     orderDish: orderDishEmptyState,
     filters: orderDishFilterEmptyState,
     total: 0,
-    orderDishes: [] as OrderDishState[],
+    orderDishes: [] as OrderDishModel[],
   },
   reducers: {
-    onCreateOrderDish(state, action: PayloadAction<OrderDishState>) {
+    onCreateOrderDish(state, action: PayloadAction<OrderDishModel>) {
       return { ...state, orderDish: action.payload, isLoading: false };
     },
 
@@ -37,7 +37,7 @@ export const orderDishSlice = createSlice({
 
     onLoadOrderDishes(
       state,
-      action: PayloadAction<{ orderDishes: OrderDishState[]; total: number }>,
+      action: PayloadAction<{ orderDishes: OrderDishModel[]; total: number }>,
     ) {
       return {
         ...state,

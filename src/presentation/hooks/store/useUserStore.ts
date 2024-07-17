@@ -31,7 +31,8 @@ export const useUserStore = () => {
 
   const startUpdatingUser = async (updateUserDto: UpdateUserDto) => {
     dispatch(onLoadingUsers());
-    userRepositoryImpl
+    
+    await userRepositoryImpl
       .update(updateUserDto)
       .then(({ message }) => {
         startSetMessages([message], typeSuccess);
@@ -47,13 +48,15 @@ export const useUserStore = () => {
     dispatch(onLoadingUsers());
     const [uploadProfileDtoValidated, errors] = uploadProfileDto;
     if (errors) return startSetMessages(errors, typeError);
-    userRepositoryImpl
+    
+    await userRepositoryImpl
       .uploadProfile(uploadProfileDtoValidated!)
       .then(({ profileUrl, message }) => {
         dispatch(onLoadProfile(profileUrl));
         startSetMessages([message], typeSuccess);
       })
       .catch((error) => {
+        dispatch(onLoadProfile(""));
         throw error;
       });
   };

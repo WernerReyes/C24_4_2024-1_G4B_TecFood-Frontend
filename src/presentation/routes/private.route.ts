@@ -15,8 +15,9 @@ export type IPrivateRoutes = {
   admin: {
     HOME: string;
     PROFILE: string;
+    ADD_DISH: string;
+    DISHES_LIST: string;
   };
-  PROFILE: string;
 };
 
 export const PrivateRoutes: IPrivateRoutes = {
@@ -36,8 +37,7 @@ export const PrivateRoutes: IPrivateRoutes = {
   admin: {
     HOME: "home",
     PROFILE: "profile",
+    ADD_DISH: "add-dish",
+    DISHES_LIST: "dishes-list",
   },
-
-  // <-- COMMON ROUTES -->
-  PROFILE: "profile",
 };

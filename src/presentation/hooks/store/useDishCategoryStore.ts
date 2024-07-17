@@ -27,7 +27,9 @@ export const useDishCategoryStore = () => {
       .then(({ dishCategories }) =>
         dispatch(onLoadDishCategories(dishCategories)),
       )
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   return {

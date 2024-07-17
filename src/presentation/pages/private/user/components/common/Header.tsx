@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Badge, Button, Link, MenuItem } from "@/presentation/components";
-import { useCartStore } from "@/presentation/hooks";
+import { Badge, Button, Image, Link, MenuItem } from "@/presentation/components";
+import { useCartStore, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import {
   AvatarMenu,
   SidebarPrivate,
   LinksToNavigate,
+  HeaderSearch,
 } from "../../../components";
 import { HeaderLayout } from "../../../layout";
-import { HeaderSearch } from "./HeaderSearch";
+
 
 const {
   USER,
@@ -38,6 +39,7 @@ const LINKS_SIDEBAR = [
 ];
 
 export const Header = () => {
+  const { isDark } = useThemeStore();
   const { totalQuantity } = useCartStore();
   const [collapseMenu, setCollapseMenu] = useState<boolean>(false);
   const [visible, setVisible] = useState(false);
@@ -47,11 +49,18 @@ export const Header = () => {
 
   return (
     <HeaderLayout>
+      <Image
+          src={isDark ? "/logo-dark.svg" : "/logo.svg"}
+          alt="logo"
+          width="80"
+        />
       <SidebarPrivate
         collapseMenu={collapseMenu}
         handleToggleClose={handleToggleClose}
-        links={LINKS_SIDEBAR}
-      />
+      >
+        <LinksToNavigate links={LINKS_SIDEBAR} />
+      </SidebarPrivate>
+
       <ul className="hidden items-center space-x-6 lg:flex">
         <LinksToNavigate links={LINKS_SIDEBAR} />
       </ul>

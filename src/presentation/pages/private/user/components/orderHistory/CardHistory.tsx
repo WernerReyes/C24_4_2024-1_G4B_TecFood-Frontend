@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { OrderDishStatusEnum } from "@/domain/entities";
-import { OrderDishItemState, OrderDishState } from "@/model";
+import { OrderDishItemState, OrderDishModel } from "@/model";
 import {
   Card,
   Column,
@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { FooterCardHistory } from "./FooterCardHistory";
 
 
-interface Props extends OrderDishState {
+interface Props extends OrderDishModel {
   icon: string;
   color: string;
   background: string;
