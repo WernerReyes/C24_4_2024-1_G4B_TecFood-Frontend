@@ -5,7 +5,7 @@ import { userAdapter } from "./user.adapter";
 
 export const cartAdapter = (cart: CartDishEntity): CartDishModel => {
   return {
-    id: cart.idCart,
+    id: cart.id,
     quantity: cart.quantity,
     dish: dishAdapter(cart.dish),
     user: userAdapter(cart.user),

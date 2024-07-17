@@ -3,12 +3,14 @@ import type { DishModel } from "@/model";
 import { dishCategoryAdapter } from "./";
 export const dishAdapter = (dishEntity: DishEntity): DishModel => {
   return {
-    id: dishEntity.idDish,
+    id: dishEntity.id,
     name: dishEntity.name,
     price: dishEntity.price,
-    img: dishEntity.imgUrl,
+    images: dishEntity.images,
     stock: dishEntity.stock,
-    category: dishCategoryAdapter(dishEntity.category),
     description: dishEntity.description,
+    createdAt: dishEntity.createdAt,
+    updatedAt: dishEntity.updatedAt,
+    categories: dishEntity.categories.map(dishCategoryAdapter),
   };
 };

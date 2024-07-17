@@ -4,7 +4,7 @@ import { orderDishAdapter } from "./orderDish.adapter";
 
 export const paymentAdapter = (paymentEntity: PaymentEntity): PaymentModel => {
   return {
-    id: paymentEntity.paymentId,
+    id: paymentEntity.id,
     amount: paymentEntity.amount,
     paymentMethod: paymentEntity.paymentMethod,
     status: paymentEntity.status,

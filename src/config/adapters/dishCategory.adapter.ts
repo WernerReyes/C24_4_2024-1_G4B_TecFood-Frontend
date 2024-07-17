@@ -5,7 +5,9 @@ export const dishCategoryAdapter = (
   dishCategotyEntity: DishCategoryEntity,
 ): DishCategoryModel => {
   return {
-    id: dishCategotyEntity.idDishCategory,
+    id: dishCategotyEntity.id,
     name: dishCategotyEntity.name,
+    createdAt: new Date(dishCategotyEntity.createdAt),
+    updatedAt: new Date(dishCategotyEntity.updatedAt),
   };
 };
