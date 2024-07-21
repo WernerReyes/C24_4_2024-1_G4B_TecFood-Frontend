@@ -19,9 +19,7 @@ export class OrderDishItemService implements IOrderDishItemService {
     this.prefix = "/order-dish-item";
   }
 
-  public async getOrderDishItemByOrder(
-    orderDishId: number,
-  ): Promise<GetOrderDishItemByOrderResponse<OrderDishItemModel>> {
+  public async getOrderDishItemByOrder(orderDishId: number) {
     try {
       const { data } = await httpRequest<
         GetOrderDishItemByOrderResponse<OrderDishItemEntity>

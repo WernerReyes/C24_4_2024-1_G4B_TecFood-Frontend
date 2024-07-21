@@ -4,7 +4,7 @@ import { PrivateRoutes } from "@/presentation/routes";
 
 const {
   ADMIN,
-  admin: { ADD_DISH },
+  admin: { ADD_DISH, LIST_DISHES },
 } = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [
@@ -36,7 +36,7 @@ const ITEMS: MenuItem[] = [
       },
       {
         label: "List Dishes",
-        url: "/admin/home",
+        url: ADMIN + "/" + LIST_DISHES,
       },
     ],
   },
@@ -60,6 +60,7 @@ export const SidebarContent = () => {
 const colorRoute = (url: string) => {
   const path = window.location.pathname;
   return clsx({
-    "bg-primary/20 dark:bg-primary/20 hover:bg-primary/40 border-none": path === url,
+    "bg-primary/20 dark:bg-primary/20 hover:bg-primary/40 border-none":
+      path === url,
   });
 };

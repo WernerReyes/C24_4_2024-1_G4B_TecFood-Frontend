@@ -35,9 +35,7 @@ export class OrderDishService implements IOrderDishService {
     this.prefix = "/order-dish";
   }
 
-  public async createOrderDish(): Promise<
-    CreateOrderDishResponse<OrderDishModel>
-  > {
+  public async createOrderDish() {
     try {
       const { data } = await httpRequest<
         CreateOrderDishResponse<OrderDishEntity>
@@ -51,7 +49,7 @@ export class OrderDishService implements IOrderDishService {
   public async updateOrderDishStatus({
     orderDishId,
     status,
-  }: UpdateOrderDishStatusDto): Promise<UpdateOrderDishStatusResponse> {
+  }: UpdateOrderDishStatusDto) {
     try {
       const { data } = await httpRequest<UpdateOrderDishStatusResponse>(
         `${this.prefix}/${orderDishId}/status`,
@@ -67,9 +65,7 @@ export class OrderDishService implements IOrderDishService {
   public async getOrderDishesByUser({
     status,
     ...rest
-  }: GetOrderDishesByUserDto): Promise<
-    GetOrderDishesByUserResponse<OrderDishModel>
-  > {
+  }: GetOrderDishesByUserDto) {
     try {
       const requestParam = convertToRequestParam(rest);
       const requestParamCategory = convertArrayToRequestParam(status, "status");
@@ -93,7 +89,7 @@ export class OrderDishService implements IOrderDishService {
     }
   }
 
-  public async getOrderDishById(orderDishId: number): Promise<OrderDishModel> {
+  public async getOrderDishById(orderDishId: number) {
     try {
       const { data } = await httpRequest<OrderDishEntity>(
         `${this.prefix}/${orderDishId}`,

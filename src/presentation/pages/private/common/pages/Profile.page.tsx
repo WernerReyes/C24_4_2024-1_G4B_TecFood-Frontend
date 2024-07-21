@@ -1,6 +1,6 @@
-import { ProfileForm, UploadProfile } from "./";
+import { ProfileForm, UploadProfile } from "../../components";
 
-export const Profile = () => {
+const ProfilePage = () => {
   return (
     <section className="mx-10 my-10 grid grid-cols-1 rounded-lg border-2 p-4 dark:border-skeleton-dark md:mx-20 lg:grid-cols-7">
       <div className="col-span-5 lg:col-span-3 xl:col-span-2">
@@ -13,3 +13,5 @@ export const Profile = () => {
     </section>
   );
 };
+
+export default ProfilePage;

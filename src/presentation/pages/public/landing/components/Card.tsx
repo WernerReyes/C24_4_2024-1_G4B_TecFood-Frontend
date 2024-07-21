@@ -11,7 +11,7 @@ import {
   formatNumber,
   getRandomValueFromArray,
 } from "@/presentation/utilities";
-import type { DishImageState, DishModel } from "@/model";
+import type { DishImageModel, DishModel } from "@/model";
 import { useNavigate } from "react-router-dom";
 import { PrivateRoutes } from "@/presentation/routes";
 
@@ -136,7 +136,7 @@ export const Card = ({
 };
 
 const header = (
-  images: DishImageState[],
+  images: DishImageModel[],
   prince: number,
   priceOffer?: number,
 ) => (

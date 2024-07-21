@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Badge, Button, Image, Link, MenuItem } from "@/presentation/components";
+import {
+  Badge,
+  Button,
+  Image,
+  Link,
+  MenuItem,
+} from "@/presentation/components";
 import { useCartStore, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import {
@@ -10,10 +16,10 @@ import {
 } from "../../../components";
 import { HeaderLayout } from "../../../layout";
 
-
 const {
   USER,
-  user: { HOME, DISHES, PROFILE, CART, ORDER_HISTORY },
+  common: { PROFILE },
+  user: { HOME, DISHES, CART, ORDER_HISTORY },
 } = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [
@@ -50,10 +56,10 @@ export const Header = () => {
   return (
     <HeaderLayout>
       <Image
-          src={isDark ? "/logo-dark.svg" : "/logo.svg"}
-          alt="logo"
-          width="80"
-        />
+        src={isDark ? "/logo-dark.svg" : "/logo.svg"}
+        alt="logo"
+        width="80"
+      />
       <SidebarPrivate
         collapseMenu={collapseMenu}
         handleToggleClose={handleToggleClose}

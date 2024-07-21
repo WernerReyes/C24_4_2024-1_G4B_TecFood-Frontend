@@ -1,28 +1,30 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { cartEmptyState, type CartState } from "@/model";
+import { CartDishModel, cartEmptyState } from "@/model";
 
 type onLoadCartDishType = {
-  cart: CartState[];
+  cart: CartDishModel[];
   totalPayment: number;
 };
 
 export type CartDishSliceState = {
   isLoading: boolean;
-  cartItem: CartState;
-  cart: CartState[];
+  cartItem: CartDishModel;
+  cart: CartDishModel[];
   totalQuantity: number;
   totalPayment: number;
 };
 
+const initialState: CartDishSliceState = {
+  isLoading: false,
+  cartItem: cartEmptyState,
+  cart: [],
+  totalQuantity: 0,
+  totalPayment: 0,
+};
+
 export const cartSlice = createSlice({
   name: "cart",
-  initialState: {
-    isLoading: true,
-    cartItem: cartEmptyState,
-    cart: [] as CartState[],
-    totalQuantity: 0,
-    totalPayment: 0,
-  },
+  initialState,
   reducers: {
     onAddOneDish(state) {
       return {
@@ -53,7 +55,7 @@ export const cartSlice = createSlice({
       return { ...state, cart, totalPayment, isLoading: false };
     },
 
-    onLoadCartDishItem(state, action: PayloadAction<CartState>) {
+    onLoadCartDishItem(state, action: PayloadAction<CartDishModel>) {
       return { ...state, cartItem: action.payload, isLoading: false };
     },
 
@@ -61,14 +63,8 @@ export const cartSlice = createSlice({
       return { ...state, totalQuantity: action.payload, isLoading: false };
     },
 
-    onResetCartDish: (state) => {
-      return {
-        ...state,
-        cart: [],
-        cartItem: cartEmptyState,
-        totalPayment: 0,
-        totalQuantity: 0,
-      };
+    onResetCartDish: () => {
+      return { ...initialState };
     },
 
     onLoadingCartDish: (state) => {

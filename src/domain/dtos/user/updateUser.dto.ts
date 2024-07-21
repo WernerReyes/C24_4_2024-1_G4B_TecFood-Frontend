@@ -1,5 +1,7 @@
-import { ZodError, z } from "zod";
-import { regularExpressions } from "@/presentation/utilities";
+import { dtoValidator, regularExpressions } from "@/presentation/utilities";
+import { z } from "zod";
+
+const { DNI, PHONE } = regularExpressions;
 export class UpdateUserDto {
   private constructor(
     public readonly firstName: string,
@@ -8,19 +10,11 @@ export class UpdateUserDto {
     public readonly dni?: string,
   ) {}
 
-  public static create(data: UpdateUserDto): [UpdateUserDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(data);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  public validate() {
+    dtoValidator(this, UpdateUserDto.schema);
   }
 
-  public static get validations() {
-    const { DNI, PHONE } = regularExpressions;
+  public static get schema() {
     return z.object({
       firstName: z
         .string()

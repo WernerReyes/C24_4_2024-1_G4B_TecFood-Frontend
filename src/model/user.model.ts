@@ -13,9 +13,7 @@ export interface UserModel {
   updatedAt: Date;
 }
 
-export interface UserState extends UserModel {}
-
-export const userEmptyState: UserState = {
+export const userEmptyState: UserModel = {
   id: 0,
   name: "",
   lastname: "",

@@ -1,6 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-import DOMPurify from "dompurify";
-import clsx from "clsx";
 import { ChatDto } from "@/domain/dtos";
 import { OpenAIRoleEnum } from "@/domain/entities";
 import {
@@ -11,6 +8,9 @@ import {
   SpinnerMessage,
 } from "@/presentation/components";
 import { useOpenAIStore } from "@/presentation/hooks";
+import clsx from "clsx";
+import DOMPurify from "dompurify";
+import { useEffect, useRef, useState } from "react";
 import { ChatBotResponse, FooterChatBot, HeaderChatBot } from "./";
 
 type Props = {
@@ -42,12 +42,12 @@ export const ChatBot = ({ to, offset = 50, duration = 1000 }: Props) => {
     if (!isAvailableChat) return;
 
     setAddedMessage(true);
-    const chatDto = ChatDto.create({
-      messages: [
+    const chatDto = new ChatDto(
+      [
         ...chatMessages,
         { role: OpenAIRoleEnum.USER, content: writeMessage },
       ],
-    });
+    );
     startSendingMenssage(chatDto).then(() => {
       setAddedMessage(false);
     });

@@ -11,16 +11,14 @@ import {
   type AppState,
 } from "@/infraestructure/store";
 import { getStorage } from "@/presentation/utilities";
-import { useMessageStore } from "./useMessageStore";
 
 const openAIService = new OpenAIService();
 const openAIRepositoryImpl = new OpenAIRepositoryImpl(openAIService);
 
 export const useOpenAIStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError } = useMessageStore();
   const { chatMessages, isLoading, isAvailableChat } = useSelector(
-    (state: AppState) => state.openIA,
+    (state: AppState) => state.openAI,
   );
 
   const startGetGreetUser = async () => {
@@ -39,17 +37,13 @@ export const useOpenAIStore = () => {
       });
   };
 
-  const startSendingMenssage = async (chatDto: [ChatDto?, string[]?]) => {
+  const startSendingMenssage = async (chatDto: ChatDto) => {
+    chatDto.validate();
+
     dispatch(onLoadingopenIA());
-    const [validatedData, errors] = chatDto;
-    if (errors) return startSetMessages(errors, typeError);
-    dispatch(
-      onAddChatMessage(
-        validatedData?.messages[validatedData.messages.length - 1]!,
-      ),
-    );
+    dispatch(onAddChatMessage(chatDto.messages[chatDto.messages.length - 1]));
     openAIRepositoryImpl
-      .chat(validatedData!)
+      .chat(chatDto)
       .then(({ choices, id }) => {
         if (id !== "Error") dispatch(onSetAvailableChat());
         dispatch(onAddChatMessage(choices[0].message));

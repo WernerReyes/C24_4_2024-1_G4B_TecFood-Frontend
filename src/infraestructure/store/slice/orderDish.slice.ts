@@ -16,16 +16,18 @@ export type OrderDishSliceState = {
   orderDishes: OrderDishModel[];
 };
 
+const initialState: OrderDishSliceState = {
+  isLoading: false,
+  orderDish: orderDishEmptyState,
+  status: OrderDishStatusEnum.PENDING,
+  filters: orderDishFilterEmptyState,
+  total: 0,
+  orderDishes: [],
+};
+
 export const orderDishSlice = createSlice({
   name: "orderDish",
-  initialState: {
-    isLoading: false, // TODO: Change to true
-    status: OrderDishStatusEnum.PENDING,
-    orderDish: orderDishEmptyState,
-    filters: orderDishFilterEmptyState,
-    total: 0,
-    orderDishes: [] as OrderDishModel[],
-  },
+  initialState,
   reducers: {
     onCreateOrderDish(state, action: PayloadAction<OrderDishModel>) {
       return { ...state, orderDish: action.payload, isLoading: false };
@@ -54,14 +56,8 @@ export const orderDishSlice = createSlice({
       };
     },
 
-    onResetOrderDish(state) {
-      return {
-        ...state,
-        orderDish: orderDishEmptyState,
-        filters: orderDishFilterEmptyState,
-        total: 0,
-        orderDishes: [],
-      };
+    onResetOrderDish() {
+      return { ...initialState };
     },
 
     onLoadingOrderDish(state) {

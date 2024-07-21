@@ -14,7 +14,7 @@ export class OpenAIService implements IOpenAIService {
     this.prefix = "/openai";
   }
 
-  public async chat(chatDto: ChatDto): Promise<ChatResponse<ChoiceFrontend>> {
+  public async chat(chatDto: ChatDto) {
     try {
       const { data } = await httpRequest<ChatResponse<ChoiceBackend>>(
         `${this.prefix}/chat`,
@@ -28,7 +28,7 @@ export class OpenAIService implements IOpenAIService {
     }
   }
 
-  public async greetUser(): Promise<ChatResponse<ChoiceFrontend>> {
+  public async greetUser() {
     try {
       const { data } = await httpRequest<ChatResponse<ChoiceBackend>>(
         `${this.prefix}/greet`,

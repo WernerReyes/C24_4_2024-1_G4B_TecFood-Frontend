@@ -7,19 +7,15 @@ import type {
   UserModel,
 } from "@/model";
 import { httpRequest } from "@/config/api";
-import {
-  RegisterUserDto,
-  LoginGoogleUserDto,
-  LoginUserDto,
-} from "@/domain/dtos";
+import { RegisterDto, LoginGoogleDto, LoginDto } from "@/domain/dtos";
 import { userAdapter } from "@/config/adapters";
 
 interface IAuthService {
   loginGoogle(
-    loginGoogleUserDto: LoginGoogleUserDto,
+    loginGoogleDto: LoginGoogleDto,
   ): Promise<LoginGoogleResponse<UserModel>>;
-  login(loginUserDto: LoginUserDto): Promise<LoginResponse<UserModel>>;
-  register(registerUserDto: RegisterUserDto): Promise<RegisterResponse>;
+  login(loginDto: LoginDto): Promise<LoginResponse<UserModel>>;
+  register(registerDto: RegisterDto): Promise<RegisterResponse>;
   revalidateToken(): Promise<RevalidateTokenResponse<UserModel>>;
 }
 
@@ -30,14 +26,12 @@ export class AuthService implements IAuthService {
     this.prefix = "/auth";
   }
 
-  public async loginGoogle(
-    loginGoogleUserDto: LoginGoogleUserDto,
-  ): Promise<LoginGoogleResponse<UserModel>> {
+  public async loginGoogle(loginGoogleDto: LoginGoogleDto) {
     try {
       const { data } = await httpRequest<LoginGoogleResponse<UserEntity>>(
         this.prefix + "/login-google",
         "POST",
-        loginGoogleUserDto,
+        loginGoogleDto,
       );
 
       return { ...data, user: userAdapter(data.user) };
@@ -46,14 +40,12 @@ export class AuthService implements IAuthService {
     }
   }
 
-  public async login(
-    loginUserDto: LoginUserDto,
-  ): Promise<LoginResponse<UserModel>> {
+  public async login(loginDto: LoginDto) {
     try {
       const { data } = await httpRequest<LoginResponse<UserEntity>>(
         this.prefix + "/login",
         "POST",
-        loginUserDto,
+        loginDto,
       );
       return { ...data, user: userAdapter(data.user) };
     } catch (error) {
@@ -61,14 +53,12 @@ export class AuthService implements IAuthService {
     }
   }
 
-  public async register(
-    registerUserDto: RegisterUserDto,
-  ): Promise<RegisterResponse> {
+  public async register(registerDto: RegisterDto) {
     try {
       const { data } = await httpRequest<RegisterResponse>(
         this.prefix + "/register",
         "POST",
-        registerUserDto,
+        registerDto,
       );
       return data;
     } catch (error) {
@@ -76,7 +66,7 @@ export class AuthService implements IAuthService {
     }
   }
 
-  public async revalidateToken(): Promise<RevalidateTokenResponse<UserModel>> {
+  public async revalidateToken() {
     try {
       const { data } = await httpRequest<RevalidateTokenResponse<UserEntity>>(
         this.prefix + "/revalidate-token",

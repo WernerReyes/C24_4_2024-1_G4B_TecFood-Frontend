@@ -18,7 +18,7 @@ const localStorageTheme = (theme: string) => {
 export const useThemeStore = () => {
   const dispatch = useDispatch();
 
-  const { currentTheme } = useSelector((state: AppState) => state.themes);
+  const { currentTheme } = useSelector((state: AppState) => state.theme);
 
   const startChangingTheme = (theme: string) => {
     const newTheme =

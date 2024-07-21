@@ -3,11 +3,13 @@ import type {
   CreateDishDto,
   GetDishesDto,
   GetDishesWithoutSelectedDishDto,
+  UpdateDishDto,
+  UpdateDishImageDto,
   UploadImageDto,
 } from "@/domain/dtos";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import {
-  AppState,
+  type AppState,
   onLoadDish,
   onLoadDishes,
   onLoadDishesToSearch,
@@ -27,7 +29,7 @@ const dishRepositoryImpl = new DishRepositoryImpl(dishService);
 
 export const useDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
+  const { startSetMessages, typeSuccess } = useMessageStore();
   const {
     dishes,
     dishesToSearch,
@@ -38,36 +40,116 @@ export const useDishStore = () => {
     filters,
   } = useSelector((state: AppState) => state.dish);
 
-  const startCreateDish = async (
+  const startCreatingDish = async (
     createDishDto: CreateDishDto,
-    uploadImageDto: [UploadImageDto?, string[]?],
+    uploadImageDto: UploadImageDto,
   ) => {
-    const [uploadImageDtoValidated, errors] = uploadImageDto;
-    if (errors) {
-      startSetMessages(errors, typeError);
-      throw new Error("Error uploading image");
-    }
+    uploadImageDto.validate();
 
     dispatch(onLoadingDish());
     await dishRepositoryImpl
-      .create(createDishDto, uploadImageDtoValidated!)
+      .create(createDishDto, uploadImageDto)
       .then(({ dish, message }) => {
-        dispatch(onLoadDish(dish));
         startSetMessages([message], typeSuccess);
+
+        // Add new dish to dishes to search
+        const newDishesToSearch = [dish, ...dishesToSearch];
+        dispatch(onLoadDishesToSearch(newDishesToSearch));
+        setStorage(DISHES_TO_SEARCH, newDishesToSearch);
       })
       .catch((error) => {
         throw error;
       });
   };
 
-  const startLoadingDishes = async (
-    getDishesDto: [GetDishesDto?, string[]?],
-  ) => {
-    const [validatedGetDishesDto, errors] = getDishesDto;
-    if (errors) return startSetMessages(errors, typeError);
+  const startUpdatingDish = async (updateDishDto: UpdateDishDto) => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .update(updateDishDto)
+      .then(({ dish, message }) => {
+        dispatch(onLoadDish(dish));
+        startSetMessages([message], typeSuccess);
+
+        // Update dishes to search
+        const newDishesToSearch = dishesToSearch.map((d) =>
+          d.id === dish.id ? dish : d,
+        );
+        dispatch(onLoadDishesToSearch(newDishesToSearch));
+        setStorage(DISHES_TO_SEARCH, newDishesToSearch);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startUpdatingDishImage = async (updateImageDto: UpdateDishImageDto) => {
+    updateImageDto.validate();
+
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .updateImage(updateImageDto)
+      .then(({ message, dishImages }) => {
+        dispatch(onLoadDish({ ...dish, images: dishImages }));
+        startSetMessages([message], typeSuccess);
+
+        // Update dishes to search
+        const newDishesToSearch = dishesToSearch.map((dish) => {
+          if (dish.id === updateImageDto.dishId) {
+            return { ...dish, images: dishImages };
+          }
+          return dish;
+        });
+        dispatch(onLoadDishesToSearch(newDishesToSearch));
+        setStorage(DISHES_TO_SEARCH, newDishesToSearch);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startDeletingDish = async (id: number) => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .delete(id)
+      .then(({ message }) => {
+        startSetMessages([message], typeSuccess);
+
+        // Update dishes to search
+        const newDishesToSearch = dishesToSearch.filter(
+          (dish) => dish.id !== id,
+        );
+        dispatch(onLoadDishesToSearch(newDishesToSearch));
+        setStorage(DISHES_TO_SEARCH, newDishesToSearch);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startDeletingManyDishes = async (ids: number[]) => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .deleteMany(ids)
+      .then(({ message }) => {
+        startSetMessages([message], typeSuccess);
+
+        // Update dishes to search
+        const newDishesToSearch = dishesToSearch.filter(
+          (dish) => !ids.includes(dish.id),
+        );
+        dispatch(onLoadDishesToSearch(newDishesToSearch));
+        setStorage(DISHES_TO_SEARCH, newDishesToSearch);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+  const startLoadingDishes = async (getDishesDto: GetDishesDto) => {
+    getDishesDto.validate();
+
     dispatch(onLoadingDish());
     dishRepositoryImpl
-      .getAll(validatedGetDishesDto!)
+      .getAll(getDishesDto)
       .then((data) => {
         dispatch(
           onLoadDishes({
@@ -97,13 +179,13 @@ export const useDishStore = () => {
   };
 
   const startLoadingDishesWithoutSelectedDish = async (
-    dto: [GetDishesWithoutSelectedDishDto?, string[]?],
+    getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
   ) => {
+    getDishesWithoutSelectedDishDto.validate();
+
     dispatch(onLoadingDish());
-    const [validatedDto, errors] = dto;
-    if (errors) return startSetMessages(errors, typeError);
     dishRepositoryImpl
-      .getAllWithoutSelectedDish(validatedDto!)
+      .getAllWithoutSelectedDish(getDishesWithoutSelectedDishDto)
       .then((data) => {
         dispatch(onLoadDishesWithoutSelectedDish(data.dishes));
       })
@@ -137,7 +219,11 @@ export const useDishStore = () => {
     filters,
 
     //* Methods
-    startCreateDish,
+    startCreatingDish,
+    startUpdatingDish,
+    startUpdatingDishImage,
+    startDeletingDish,
+    startDeletingManyDishes,
     startLoadingDishes,
     startFilterDishes,
     startLoadingDishById,

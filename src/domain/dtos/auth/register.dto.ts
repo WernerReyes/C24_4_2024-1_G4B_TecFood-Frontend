@@ -1,9 +1,12 @@
-import { ZodError, z } from "zod";
 import { RoleEnum } from "@/domain/entities";
-import { regularExpressions } from "@/presentation/utilities";
+import { dtoValidator, regularExpressions } from "@/presentation/utilities";
+import { z } from "zod";
+import { AuthDto } from "./auth.dto";
 
-export class RegisterUserDto {
-  private constructor(
+const { DNI, PHONE } = regularExpressions;
+
+export class RegisterDto extends AuthDto {
+  constructor(
     public firstName: string,
     public lastName: string,
     public email: string,
@@ -11,21 +14,15 @@ export class RegisterUserDto {
     public dni?: string,
     public phoneNumber?: string,
     public role?: RoleEnum,
-  ) {}
-
-  public static create(data: RegisterUserDto): [RegisterUserDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(data);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  ) {
+    super(email, password);
   }
 
-  public static get validations() {
-    const { EMAIL, PASSWORD, DNI, PHONE } = regularExpressions;
+  public validate() {
+    dtoValidator(this, RegisterDto.schema);
+  }
+
+  public static get schema() {
     return z.object({
       firstName: z
         .string({
@@ -45,16 +42,6 @@ export class RegisterUserDto {
         .max(200, {
           message: "Lastname must be at most 200 characters long",
         }),
-      email: z.string().refine((value) => EMAIL.test(value), {
-        message: "Email invalid, follow the suggestions and try again",
-      }),
-      password: z
-        .string({
-          message: "Invalid password",
-        })
-        .refine((value) => PASSWORD.test(value), {
-          message: "Password invalid, follow the suggestions and try again",
-        }),
       dni: z
         .string()
         .optional()
@@ -68,6 +55,7 @@ export class RegisterUserDto {
           message: "Phone must be 9 characters long and contain only numbers",
         }),
       role: z.nativeEnum(RoleEnum).optional().default(RoleEnum.ROLE_USER),
+      ...super.schema.shape,
     });
   }
 }

@@ -7,7 +7,7 @@ import { SidebarContent } from "./SidebarContent";
 
 const {
   ADMIN,
-  admin: { PROFILE },
+  common: { PROFILE },
 } = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [

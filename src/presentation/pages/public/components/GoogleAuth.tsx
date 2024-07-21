@@ -1,4 +1,4 @@
-import { LoginGoogleUserDto } from "@/domain/dtos";
+import { LoginGoogleDto } from "@/domain/dtos";
 import { RoleEnum } from "@/domain/entities";
 import { Button, Image } from "@/presentation/components";
 import { useAuthStore } from "@/presentation/hooks";
@@ -40,36 +40,35 @@ export const GoogleAuth = () => {
 
 const CustomGoogleLogin = () => {
   const navigate = useNavigate();
-  const { startGoogleLoginUser } = useAuthStore();
+  const { startLoginGoogle } = useAuthStore();
   const [isLoginGoogle, setIsLoadinGoogle] = useState(false);
 
   const handleGoogleLogin = () => {
     setIsLoadinGoogle(true);
     login();
-  }
+  };
 
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       const userInfo = await userGoogleInfo<GoogleResponse>(
         tokenResponse.access_token,
       );
-      const loginGoogleUserDto = LoginGoogleUserDto.create({
-        firstName: userInfo.given_name,
-        lastName: userInfo.family_name,
-        email: userInfo.email,
-        imgUrl: userInfo.picture,
-        isGoogleAccount: true,
-        isEmailVerified: userInfo.email_verified,
-        role: RoleEnum.ROLE_USER,
-      });
-      startGoogleLoginUser(loginGoogleUserDto).then((role) => {
-        navigate(PrivateRoutes[routeRole(role!)] as string)
+      const loginGoogleDto = new LoginGoogleDto(
+        userInfo.given_name,
+        userInfo.family_name,
+        userInfo.email,
+        userInfo.picture,
+        true,
+        userInfo.email_verified,
+        RoleEnum.ROLE_USER,
+      );
+      startLoginGoogle(loginGoogleDto).then((role) => {
+        navigate(PrivateRoutes[routeRole(role!)] as string);
       });
     },
     onError: (error) => console.log("Login Failed:", error),
     onNonOAuthError: () => setIsLoadinGoogle(false),
   });
-
 
   return (
     <Button

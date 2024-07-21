@@ -1,4 +1,5 @@
-import { CreateDishDto } from "@/domain/dtos";
+import type { DishDto } from "@/domain/dtos";
+import { DishModel } from "@/model";
 import {
   Button,
   InputNumber,
@@ -8,26 +9,33 @@ import {
 } from "@/presentation/components";
 import { useDishCategoryStore } from "@/presentation/hooks";
 import { FormEventHandler, useEffect } from "react";
-import {
-  Control,
-  Controller,
-  UseFormReset
-} from "react-hook-form";
+import { Control, Controller, UseFormReset } from "react-hook-form";
 
 type Props = {
-  control: Control<CreateDishDto, any>;
+  dish: DishModel;
+  control: Control<DishDto, any>;
   handleSubmit: FormEventHandler<HTMLFormElement>;
-  reset: UseFormReset<CreateDishDto>;
+  reset: UseFormReset<DishDto>;
   errors: boolean;
 };
 
-export const FormAddDish = ({ control, handleSubmit, reset, errors }: Props) => {
+export const FormDish = ({
+  control,
+  handleSubmit,
+  dish,
+  reset,
+  errors,
+}: Props) => {
   const { startLoadingDishCategories, isLoading, dishCategories } =
     useDishCategoryStore();
 
   useEffect(() => {
     startLoadingDishCategories();
   }, []);
+
+  useEffect(() => {
+    reset(dish);
+  }, [dish]);
 
   return (
     <form className="flex h-full flex-col space-y-4" onSubmit={handleSubmit}>
@@ -133,22 +141,24 @@ export const FormAddDish = ({ control, handleSubmit, reset, errors }: Props) => 
         )}
       />
 
-      <div className="flex h-full items-end justify-end">
-        <Button
-          type="button"
-          onClick={() => reset()}
-          label="Cancel"
-          icon="pi pi-eraser"
-          className="me-3 w-32 rounded-md bg-primary-darker/20   text-primary shadow-sm transition-all duration-300"
-          //   isLoading={isLoading}
-        />
+      <div className="flex h-full items-end">
+        {!dish.name && (
+          <Button
+            type="button"
+            onClick={() => reset()}
+            label="Cancel"
+            icon="pi pi-eraser"
+            className="me-3 w-32 rounded-md bg-primary-darker/20   text-primary shadow-sm transition-all duration-300"
+          />
+        )}
+        
+      
         <Button
           type="submit"
-          label="Add Dish"
+          label="Save"
           icon="pi pi-save"
           className="mx-auto mb-auto w-32 rounded-md dark:text-slate-100"
           disabled={errors}
-          //   isLoading={isLoading}
         />
       </div>
     </form>

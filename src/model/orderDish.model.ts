@@ -11,8 +11,6 @@ export interface OrderDishModel {
   user: UserModel;
 }
 
-export interface OrderDishModel extends OrderDishModel {}
-
 export type OrderDishFilter = {
   status: { status: OrderDishStatusEnum }[];
 };

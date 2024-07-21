@@ -4,16 +4,12 @@ import { PrivateRoutes } from "../routes";
 import { RouterWithNotFound } from "./RouterWithNotFound";
 const HomePage = lazy(() => import("../pages/private/user/pages/Home.page"));
 
-const ProfilePage = lazy(
-  () => import("../pages/private/user/pages/Profile.page"),
-);
-
 const DishesPage = lazy(
   () => import("../pages/private/user/pages/Dishes.page"),
 );
 
 const DetailDishPage = lazy(
-  () => import("../pages/private/user/pages/Detail-dish.page"),
+  () => import("../pages/private/user/pages/DetailDish.page"),
 );
 
 const CartPage = lazy(() => import("../pages/private/user/pages/Cart.page"));
@@ -26,7 +22,7 @@ const PaymentPage = lazy(
   () => import("../pages/private/user/pages/Payment.page"),
 );
 
-const { HOME, DISHES, PROFILE, CART, ORDER_HISTORY, PAYMENT } =
+const { HOME, DISHES,  CART, ORDER_HISTORY, PAYMENT } =
   PrivateRoutes.user;
 
 export const UserRouter = () => {
@@ -38,7 +34,7 @@ export const UserRouter = () => {
       <Route path={`${DISHES}/:id`} element={<DetailDishPage />} />
       <Route path={CART} element={<CartPage />} />
       <Route path={ORDER_HISTORY} element={<OrderHistoryPage />} />
-      <Route path={PROFILE} element={<ProfilePage />} />
+      {/* <Route path={PROFILE} element={<ProfilePage />} /> */}
       <Route path={`${PAYMENT}/:orderDishId`} element={<PaymentPage />} />
     </RouterWithNotFound>
   );

@@ -1,19 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
-import type {
-  LoginGoogleUserDto,
-  LoginUserDto,
-  RegisterUserDto,
-} from "@/domain/dtos";
+import type { LoginGoogleDto, LoginDto, RegisterDto } from "@/domain/dtos";
 import { AuthRepositoryImpl } from "@/infraestructure/repositories";
 import { AuthService } from "@/infraestructure/services";
 import {
-  AppState,
+  type AppState,
   AuthStatus,
   onCheking,
   onLogin,
   onLogout,
   onResetCartDish,
   onResetChatMessages,
+  onResetDish,
+  onResetDishCategory,
   onResetOrderDish,
   onResetOrderDishItem,
   onResetPayment,
@@ -31,7 +29,7 @@ const authService = new AuthService();
 const authRepositoryImpl = new AuthRepositoryImpl(authService);
 
 export const useAuthStore = () => {
-  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
+  const { startSetMessages, typeSuccess } = useMessageStore();
   const { status, authenticatedUser } = useSelector(
     (state: AppState) => state.auth,
   );
@@ -40,19 +38,16 @@ export const useAuthStore = () => {
 
   const startCheking = () => dispatch(onCheking());
 
-  const startGoogleLoginUser = async (
-    loginGoogleUserDto: [LoginGoogleUserDto?, string[]?],
-  ) => {
-    const [validatedData, errors] = loginGoogleUserDto;
-    if (errors) return startSetMessages(errors, typeError);
+  const startLoginGoogle = async (loginGoogleDto: LoginGoogleDto) => {
+    loginGoogleDto.validate();
     dispatch(onCheking());
 
     return await authRepositoryImpl
-      .loginGoogle(validatedData!)
+      .loginGoogle(loginGoogleDto)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
         setStorage(TOKEN, token);
-        return user.role
+        return user.role;
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -60,15 +55,15 @@ export const useAuthStore = () => {
       });
   };
 
-  const startLoginUser = async (loginUserDto: LoginUserDto) => {
+  const startLogin = async (loginDto: LoginDto) => {
     dispatch(onCheking());
 
     return await authRepositoryImpl
-      .login(loginUserDto)
+      .login(loginDto)
       .then(({ user, token }) => {
         dispatch(onLogin(user));
         setStorage(TOKEN, token);
-        return user.role
+        return user.role;
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -76,11 +71,11 @@ export const useAuthStore = () => {
       });
   };
 
-  const startRegisteringUser = async (registerUserDto: RegisterUserDto) => {
+  const startRegistering = async (registerDto: RegisterDto) => {
     dispatch(onCheking());
 
     await authRepositoryImpl
-      .register(registerUserDto)
+      .register(registerDto)
       .then(({ message }) => startSetMessages([message], typeSuccess))
       .catch((error) => {
         dispatch(onLogout());
@@ -106,6 +101,8 @@ export const useAuthStore = () => {
 
   const startLogout = () => {
     dispatch(onLogout());
+    dispatch(onResetDish());
+    dispatch(onResetDishCategory());
     dispatch(onResetCartDish());
     dispatch(onResetChatMessages());
     dispatch(onResetOrderDish());
@@ -124,9 +121,9 @@ export const useAuthStore = () => {
     status,
 
     //* Methods
-    startRegisteringUser,
-    startGoogleLoginUser,
-    startLoginUser,
+    startRegistering,
+    startLoginGoogle,
+    startLogin,
     startRevalidateToken,
     startCheking,
     startLogout,

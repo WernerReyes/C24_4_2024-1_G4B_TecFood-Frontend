@@ -12,19 +12,19 @@ interface Props {
   scrollId: string;
   role: RoleEnum;
   className?: string;
-  unistyled?: boolean;
+  unstyled?: boolean;
 }
 
 const DEFAULT_CLASSNAME =
   "dark:bg-skeleton-dark bg-skeleton rounded-none border-none";
 
-export const BreadCrumb = ({ role, scrollId, className, unistyled }: Props) => {
+export const BreadCrumb = ({ role, scrollId, className, unstyled }: Props) => {
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
   const { orderDishId } = useParams<{ orderDishId: string }>();
   const { dish, startLoadingDishById } = useDishStore();
   const roleRoute = PrivateRoutes[routeRole(role)].toString();
-  
+
   const home = {
     template: () => (
       <Link
@@ -45,9 +45,7 @@ export const BreadCrumb = ({ role, scrollId, className, unistyled }: Props) => {
   };
 
   useEffect(() => {
-    if (id) {
-      startLoadingDishById(parseInt(id));
-    }
+    if (id) startLoadingDishById(parseInt(id));
   }, [id]);
 
   useEffect(() => {
@@ -100,8 +98,8 @@ export const BreadCrumb = ({ role, scrollId, className, unistyled }: Props) => {
       id={scrollId}
       home={home}
       model={items}
-      unstyled={unistyled}
-      className={clsx(!unistyled && DEFAULT_CLASSNAME, className)}
+      unstyled={unstyled}
+      className={clsx(!unstyled && DEFAULT_CLASSNAME, className)}
     />
   );
 };

@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type ChatMessages } from "@/model";
+import type { OpenAIRoleEnum } from "@/domain/entities";
 import {
   StorageKeys,
   getStorage,
@@ -9,21 +9,28 @@ import {
 
 const { CHAT_MESSAGES } = StorageKeys;
 
-export type OpenIASliceState = {
-  isLoading: boolean;
-  isAvailableChat: boolean;
-  chatMessages: ChatMessages[];
+type Messages = {
+  role: OpenAIRoleEnum;
+  content: string;
 };
 
-export const openIASlice = createSlice({
+export type OpenAISliceState = {
+  isLoading: boolean;
+  isAvailableChat: boolean;
+  chatMessages: Messages[];
+};
+
+const initialState: OpenAISliceState = {
+  isLoading: false,
+  isAvailableChat: false,
+  chatMessages: getStorage<Messages[]>(CHAT_MESSAGES) || [],
+};
+
+export const openAISlice = createSlice({
   name: "openIA",
-  initialState: {
-    isLoading: false,
-    isAvailableChat: false,
-    chatMessages: getStorage<ChatMessages[]>(CHAT_MESSAGES) || [],
-  },
+  initialState,
   reducers: {
-    onAddChatMessage: (state, action: PayloadAction<ChatMessages>) => {
+    onAddChatMessage: (state, action: PayloadAction<Messages>) => {
       setStorage(CHAT_MESSAGES, [...state.chatMessages, action.payload]);
       return {
         ...state,
@@ -31,7 +38,7 @@ export const openIASlice = createSlice({
         isLoading: false,
       };
     },
-    onLoadChatMessages: (state, action: PayloadAction<ChatMessages[]>) => {
+    onLoadChatMessages: (state, action: PayloadAction<Messages[]>) => {
       return { ...state, chatMessages: action.payload, isLoading: false };
     },
 
@@ -39,9 +46,9 @@ export const openIASlice = createSlice({
       return { ...state, isAvailableChat: true };
     },
 
-    onResetChatMessages: (state) => {
-      removeStorage("chatMessages");
-      return { ...state, chatMessages: [], isLoading: false };
+    onResetChatMessages: () => {
+      removeStorage(CHAT_MESSAGES);
+      return { ...initialState, chatMessages: [] };
     },
 
     onLoadingopenIA: (state) => {
@@ -56,4 +63,4 @@ export const {
   onSetAvailableChat,
   onAddChatMessage,
   onResetChatMessages,
-} = openIASlice.actions;
+} = openAISlice.actions;

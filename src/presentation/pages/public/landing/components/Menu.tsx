@@ -46,13 +46,13 @@ export const Menu = ({ marginContainer }: Props) => {
   };
 
   useEffect(() => {
-    const getDishesDto = GetDishesDto.create({
-      page: 1,
-      limit: 10,
-      idCategory: selectedCategoryId,
-      priceRange: null,
-      search: null,
-    });
+    const getDishesDto = new GetDishesDto(
+      1,
+      10,
+      selectedCategoryId,
+      null,
+      null,
+    );
     startLoadingDishes(getDishesDto);
   }, [selectedCategoryId]);
 
@@ -117,16 +117,7 @@ export const Menu = ({ marginContainer }: Props) => {
         >
           {dishes.map((dish) => (
             <SwiperSlide key={dish.id}>
-              <Card
-                {...dish}
-                
-                key={dish.id}
-                // title={dish.name}
-                // description={dish.description}
-                rating={5}
-                // price={dish.price}
-                // image={dish.img}
-              />
+              <Card {...dish} key={dish.id} rating={5} />
             </SwiperSlide>
           ))}
         </Swiper>

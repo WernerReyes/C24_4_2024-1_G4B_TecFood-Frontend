@@ -29,9 +29,7 @@ export class CartDishService implements ICartDishService {
     this.prefix = "/cart-dish";
   }
 
-  public async addOneDish(
-    dishId: number,
-  ): Promise<AddOneDishResponse<CartDishModel>> {
+  public async addOneDish(dishId: number) {
     try {
       const { data } = await httpRequest<AddOneDishResponse<CartDishEntity>>(
         this.prefix,
@@ -44,9 +42,7 @@ export class CartDishService implements ICartDishService {
     }
   }
 
-  public async getDishesByUser(): Promise<
-    GetDishesByUserResponse<CartDishModel>
-  > {
+  public async getDishesByUser() {
     try {
       const { data } = await httpRequest<
         GetDishesByUserResponse<CartDishEntity>
@@ -59,7 +55,7 @@ export class CartDishService implements ICartDishService {
     }
   }
 
-  public async deleteOneDish(dishId: number): Promise<DeleteOneDishResponse> {
+  public async deleteOneDish(dishId: number) {
     try {
       const { data } = await httpRequest<DeleteOneDishResponse>(
         `${this.prefix}/${dishId}`,
@@ -71,9 +67,7 @@ export class CartDishService implements ICartDishService {
     }
   }
 
-  public async deleteAllDishes(
-    dishId: number,
-  ): Promise<DeleteAllDishesResponse> {
+  public async deleteAllDishes(dishId: number) {
     try {
       const { data } = await httpRequest<DeleteAllDishesResponse>(
         `${this.prefix}/all/${dishId}`,
@@ -85,10 +79,7 @@ export class CartDishService implements ICartDishService {
     }
   }
 
-  public async getDishByDishId(
-    dishId: number,
-  ): Promise<GetDishByDishIdResponse<CartDishModel>> {
-    console.log(dishId);
+  public async getDishByDishId(dishId: number) {
     try {
       const { data } = await httpRequest<
         GetDishByDishIdResponse<CartDishEntity>
@@ -99,7 +90,7 @@ export class CartDishService implements ICartDishService {
     }
   }
 
-  public async getTotalDishesByUser(): Promise<GetTotalDishesByUserResponse> {
+  public async getTotalDishesByUser() {
     try {
       const { data } = await httpRequest<GetTotalDishesByUserResponse>(
         `${this.prefix}/total`,

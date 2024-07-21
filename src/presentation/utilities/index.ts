@@ -1,4 +1,4 @@
-export * from "./breakPointsSwiper";
+export * from "./breakPoints";
 export * from "./convertToRequestParam";
 export * from "./formatNumber";
 export * from "./fromDateToString";
@@ -12,3 +12,4 @@ export * from "./routesRoles";
 export * from "./sonnerManager";
 export * from "./userGoogleInfo";
 export * from "./randomValues";
+export * from "./dtoValidator";

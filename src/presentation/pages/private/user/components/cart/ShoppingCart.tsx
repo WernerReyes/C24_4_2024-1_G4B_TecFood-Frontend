@@ -1,11 +1,11 @@
-import { type CartState } from "@/model";
+import { type CartDishModel } from "@/model";
 import { Column, DataTable, Image, Link } from "@/presentation/components";
 import { useCart } from "@/presentation/hooks";
 import { AddAndRemoveDish } from "../";
 import { PrivateRoutes } from "@/presentation/routes";
 
 type Props = {
-  cart: CartState[];
+  cart: CartDishModel[];
 };
 
 const {
@@ -33,19 +33,23 @@ export const ShoppingCart = ({ cart }: Props) => {
       <Column
         header="Products"
         className="min-w-56 max-w-72"
-        body={(cartItem: CartState) => <ProductTemplate cartItem={cartItem} />}
+        body={(cartItem: CartDishModel) => (
+          <ProductTemplate cartItem={cartItem} />
+        )}
       ></Column>
       <Column
         header="Price"
-        body={(cartItem: CartState) => `S/.${cartItem.dish.price}`}
+        body={(cartItem: CartDishModel) => `S/.${cartItem.dish.price}`}
       ></Column>
       <Column
         header="Quantity"
-        body={(cartItem: CartState) => <QuantityTemplate cartItem={cartItem} />}
+        body={(cartItem: CartDishModel) => (
+          <QuantityTemplate cartItem={cartItem} />
+        )}
       ></Column>
       <Column
         header="Sub-Total"
-        body={(cartItem: CartState) =>
+        body={(cartItem: CartDishModel) =>
           `S/.${(cartItem.dish.price * cartItem.quantity).toFixed(2)}`
         }
       ></Column>
@@ -53,7 +57,7 @@ export const ShoppingCart = ({ cart }: Props) => {
   );
 };
 
-const ProductTemplate = ({ cartItem }: { cartItem: CartState }) => {
+const ProductTemplate = ({ cartItem }: { cartItem: CartDishModel }) => {
   const { handleResetCart } = useCart(
     cartItem.dish.id,
     cartItem.quantity,
@@ -82,7 +86,7 @@ const ProductTemplate = ({ cartItem }: { cartItem: CartState }) => {
   );
 };
 
-const QuantityTemplate = ({ cartItem }: { cartItem: CartState }) => {
+const QuantityTemplate = ({ cartItem }: { cartItem: CartDishModel }) => {
   const { isAddToCart, handleAddToCart, quantityMemory, handleRemoveToCart } =
     useCart(cartItem.dish.id, cartItem.quantity, "table");
 

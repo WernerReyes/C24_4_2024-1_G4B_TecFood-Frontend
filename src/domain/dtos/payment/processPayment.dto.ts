@@ -1,26 +1,18 @@
-import { ZodError, z } from "zod";
 import { PaymentMethodEnum } from "@/domain/entities";
+import { dtoValidator } from "@/presentation/utilities";
+import { z } from "zod";
 
 export class ProcessPaymentDto {
-  private constructor(
+  constructor(
     public readonly orderDishId: number,
     public readonly paymentMethod: PaymentMethodEnum,
   ) {}
 
-  public static create(
-    data: ProcessPaymentDto,
-  ): [ProcessPaymentDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(data);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  public validate() {
+    dtoValidator(this, ProcessPaymentDto.schema);
   }
 
-  private static get validations() {
+  private static get schema() {
     return z.object({
       orderDishId: z
         .number({

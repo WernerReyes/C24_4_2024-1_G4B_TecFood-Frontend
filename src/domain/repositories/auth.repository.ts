@@ -6,17 +6,17 @@ import type {
   RevalidateTokenResponse,
 } from "@/model";
 import type {
-  LoginGoogleUserDto,
-  LoginUserDto,
-  RegisterUserDto,
+  LoginGoogleDto,
+  LoginDto,
+  RegisterDto,
 } from "../dtos";
 export abstract class AuthRepository {
   abstract loginGoogle(
-    loginGoogleUserDto: LoginGoogleUserDto,
+    loginGoogleDto: LoginGoogleDto,
   ): Promise<LoginGoogleResponse<UserModel>>;
-  abstract login(loginUserDto: LoginUserDto): Promise<LoginResponse<UserModel>>;
+  abstract login(loginDto: LoginDto): Promise<LoginResponse<UserModel>>;
   abstract register(
-    registerUserDto: RegisterUserDto,
+    registerDto: RegisterDto,
   ): Promise<RegisterResponse>;
   abstract revalidateToken(): Promise<RevalidateTokenResponse<UserModel>>;
 }

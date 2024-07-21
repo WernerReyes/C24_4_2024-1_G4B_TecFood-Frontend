@@ -2,7 +2,7 @@ import { useOrderDishItemStore, useOrderDishStore } from "@/presentation/hooks";
 import { OrderSummaryLayout } from "../../layout";
 import { useEffect, useState } from "react";
 import { OrderList } from "primereact/orderlist";
-import { OrderDishItemState } from "@/model";
+import { OrderDishItemModel } from "@/model";
 
 type Props = {
   orderDishId: number;
@@ -13,7 +13,7 @@ export const OrderDishItems = ({ orderDishId }: Props) => {
     useOrderDishItemStore();
     const { orderDish, startGetOrderDishById } = useOrderDishStore();
 
-    const [dishItems, setDishItems] = useState<OrderDishItemState[]>([]);
+    const [dishItems, setDishItems] = useState<OrderDishItemModel[]>([]);
 
   useEffect(() => {
     startLoadingOrderDishItemsByOrder(Number(orderDishId));
@@ -33,7 +33,7 @@ export const OrderDishItems = ({ orderDishId }: Props) => {
 };
 
 
-const itemTemplate = (item: OrderDishItemState) => {
+const itemTemplate = (item: OrderDishItemModel) => {
     return (
         <div className="flex flex-wrap p-2 align-items-center gap-3">
             <img className="w-20 shadow-2 flex-shrink-0 border-round" src={item.dish.img} alt={item.dish.name} />

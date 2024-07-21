@@ -1,4 +1,5 @@
-import { ZodError, z } from "zod";
+import { z } from "zod";
+import { dtoValidator } from "@/presentation/utilities";
 
 export class GetDishesWithoutSelectedDishDto {
   constructor(
@@ -6,20 +7,11 @@ export class GetDishesWithoutSelectedDishDto {
     public readonly limit: number | null,
   ) {}
 
-  public static create(
-    dto: GetDishesWithoutSelectedDishDto,
-  ): [GetDishesWithoutSelectedDishDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(dto);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  public validate() {
+    dtoValidator(this, GetDishesWithoutSelectedDishDto.schema);
   }
 
-  private static get validations() {
+  private static get schema() {
     return z.object({
       idDish: z.number({
         message: "dishId is required",

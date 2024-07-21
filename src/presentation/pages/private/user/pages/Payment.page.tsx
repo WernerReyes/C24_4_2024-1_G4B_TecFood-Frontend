@@ -10,10 +10,10 @@ const PaymentPage = () => {
   const { startProcessPayment } = usePaymentStore();
  
   const handleProcessPayment = async (paymentMethod: PaymentMethodEnum) => {
-    const processPaymentDto = ProcessPaymentDto.create({
-      orderDishId: Number(orderDishId),
+    const processPaymentDto = new ProcessPaymentDto(
+      Number(orderDishId),
       paymentMethod,
-    });
+    );
     await startProcessPayment(processPaymentDto).catch((error) => {
       throw error;
     });

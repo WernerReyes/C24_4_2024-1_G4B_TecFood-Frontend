@@ -1,3 +1,5 @@
+import { GalleriaResponsiveOptions } from "../components";
+
 type Props = {
   slidesPerViewSm?: number;
   slidesPerViewMd?: number;
@@ -26,3 +28,23 @@ export const breakPointsSwiper = ({
     },
   };
 };
+
+export const breakPointsGallery: GalleriaResponsiveOptions[] = [
+  {
+    breakpoint: "1024px",
+    numVisible: 3,
+  },
+
+  {
+    breakpoint: "768px",
+    numVisible: 3,
+  },
+  {
+    breakpoint: "640px",
+    numVisible: 2,
+  },
+  {
+    breakpoint: "420px",
+    numVisible: 1,
+  },
+];

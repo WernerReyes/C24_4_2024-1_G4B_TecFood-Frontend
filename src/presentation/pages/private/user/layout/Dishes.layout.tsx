@@ -17,13 +17,13 @@ export const DishesLayout = ({ rowPerPage, children, paginators }: Props) => {
   const { startLoadingDishesByUser, totalQuantity } = useCartStore();
 
   useEffect(() => {
-    const getDishesDto = GetDishesDto.create({
-      page: currentPage,
-      limit: limit,
-      idCategory: filters.idCategory,
-      priceRange: filters.priceRange,
-      search: null,
-    });
+    const getDishesDto = new GetDishesDto(
+      currentPage,
+      limit,
+      filters.idCategory,
+      filters.priceRange,
+      null,
+    );
     startLoadingDishes(getDishesDto);
   }, [currentPage, limit, filters]);
 
@@ -40,7 +40,7 @@ export const DishesLayout = ({ rowPerPage, children, paginators }: Props) => {
           totalRecords={total}
           onPageChange={handlePageChange}
           rowsPerPage={rowPerPage}
-          className="mt-auto flex mb-4 justify-end bg-transparent"
+          className="mb-4 mt-auto flex justify-end bg-transparent"
         />
       )}
       {children}
@@ -51,7 +51,7 @@ export const DishesLayout = ({ rowPerPage, children, paginators }: Props) => {
           totalRecords={total}
           onPageChange={handlePageChange}
           rowsPerPage={rowPerPage}
-          className="flex mt-5 lg:mt-auto justify-end bg-transparent"
+          className="mt-5 flex justify-end bg-transparent lg:mt-auto"
         />
       )}
     </>

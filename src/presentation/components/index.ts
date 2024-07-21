@@ -43,5 +43,7 @@ export * from "./Menubar";
 export * from "./PanelMenu";
 export * from './MultiSelect';
 export * from './InputTextarea';
+export * from './Toolbar';
+export * from './ConfirmDialog';
 
 

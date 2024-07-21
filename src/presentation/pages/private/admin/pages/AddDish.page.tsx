@@ -1,31 +1,22 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Inplace, InplaceContent, InplaceDisplay } from "primereact/inplace";
+import { CreateDishDto, DishDto, UploadImageDto } from "@/domain/dtos";
 import { ProgressSpinner } from "@/presentation/components";
-import { CreateDishDto, UploadImageDto } from "@/domain/dtos";
-import { FormAddDish, UploadDishImages } from "../components";
-import { AdminLayout } from "../layout";
 import { useDishStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { ActionDish } from "../components";
+import { AdminLayout } from "../layout";
 
 const {
   ADMIN,
-  admin: { DISHES_LIST },
+  admin: { LIST_DISHES },
 } = PrivateRoutes;
 
+
+
 const AddDishPage = () => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<CreateDishDto>({
-    resolver: zodResolver(CreateDishDto.schema),
-  });
   const navigate = useNavigate();
-  const { startCreateDish, isLoading } = useDishStore();
+  const { startCreatingDish, isLoading, dish } = useDishStore();
   const [files, setFiles] = useState<File[]>([]);
   const [file, setFile] = useState<{
     file: File;
@@ -33,21 +24,20 @@ const AddDishPage = () => {
   } | null>(null);
   const [uploadedSuccess, setUploadedSuccess] = useState(false);
 
-  const handleSaveDish = async (data: CreateDishDto) => {
+  const handleSaveDish = async (dishDto: DishDto) => {
     const createDishDto = new CreateDishDto(
-      data.name,
-      data.description,
-      data.price,
-      data.categories,
-      data.stock,
+      dishDto.name,
+      dishDto.description,
+      dishDto.price,
+      dishDto.categories,
+      dishDto.stock,
     );
-    const uploadImageDto = new UploadImageDto(files).validate();
-    startCreateDish(createDishDto, uploadImageDto).then(() => {
+    const uploadImageDto = new UploadImageDto(files)
+    startCreatingDish(createDishDto, uploadImageDto).then(() => {
       setUploadedSuccess(true);
-      reset();
       setFiles([]);
       setFile(null);
-      navigate(`${ADMIN}/${DISHES_LIST}`);
+      navigate(`${ADMIN}/${LIST_DISHES}`);
     });
   };
 
@@ -71,53 +61,13 @@ const AddDishPage = () => {
         />
       )}
       <AdminLayout>
-        <section className="container mx-auto mt-5 grid grid-cols-1 gap-4 p-4 lg:grid-cols-2">
-          <div className="col-span-1 flex flex-col rounded-md border-2 border-skeleton p-4 dark:border-skeleton-dark">
-            <div className="mx-auto">
-              <UploadDishImages
-                setFile={setFile}
-                uploadedSuccess={uploadedSuccess}
-                size="large"
-              />
-            </div>
-            <h6 className="mt-4">Aditional Images</h6>
-            <div className="flex justify-evenly">
-              <UploadDishImages
-                setFile={setFile}
-                uploadedSuccess={uploadedSuccess}
-              />
-              <UploadDishImages
-                setFile={setFile}
-                uploadedSuccess={uploadedSuccess}
-              />
-            </div>
-            <Inplace>
-              <InplaceDisplay>
-                <small className="text-slate-600">More Images</small>
-              </InplaceDisplay>
-              <InplaceContent>
-                <div className="flex justify-evenly">
-                  <UploadDishImages
-                    setFile={setFile}
-                    uploadedSuccess={uploadedSuccess}
-                  />
-                  <UploadDishImages
-                    setFile={setFile}
-                    uploadedSuccess={uploadedSuccess}
-                  />
-                </div>
-              </InplaceContent>
-            </Inplace>
-          </div>
-          <div className="col-span-1 flex flex-col rounded-md border-2 border-skeleton p-4 dark:border-skeleton-dark">
-            <FormAddDish
-              control={control}
-              handleSubmit={handleSubmit(handleSaveDish)}
-              errors={!!Object.keys(errors).length}
-              reset={reset}
-            />
-          </div>
-        </section>
+        <ActionDish
+          dish={dish}
+          handleSaveDish={handleSaveDish}
+          setFile={setFile}
+          uploadedSuccess={uploadedSuccess}
+        />
+        
       </AdminLayout>
     </>
   );

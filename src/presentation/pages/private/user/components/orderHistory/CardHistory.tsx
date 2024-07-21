@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { OrderDishStatusEnum } from "@/domain/entities";
-import { OrderDishItemState, OrderDishModel } from "@/model";
+import { OrderDishItemModel, OrderDishModel } from "@/model";
 import {
   Card,
   Column,
@@ -97,9 +97,9 @@ export const CardHistory = ({
           <Column field="dish.name" header="Dish"></Column>
           <Column
             header="Image"
-            body={(rowData: OrderDishItemState) => (
+            body={(rowData: OrderDishItemModel) => (
               <Image
-                src={rowData.dish.img}
+                src={rowData.dish.images[0].url}
                 alt={rowData.dish.name}
                 imageClassName="w-20"
               />
@@ -108,7 +108,7 @@ export const CardHistory = ({
           <Column field="quantity" header="Quantity"></Column>
           <Column
             header="Price"
-            body={(rowData: OrderDishItemState) => (
+            body={(rowData: OrderDishItemModel) => (
               <span>S/.{rowData.dish.price}</span>
             )}
           ></Column>

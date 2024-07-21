@@ -1,9 +1,13 @@
-import { ZodError, z } from "zod";
+import { z } from "zod";
 import { RoleEnum } from "@/domain/entities";
-import { regularExpressions } from "@/presentation/utilities";
+import { dtoValidator, regularExpressions } from "@/presentation/utilities";
+import { AuthDto } from "./auth.dto";
+const { URL } = regularExpressions;
 
-export class LoginGoogleUserDto {
-  private constructor(
+const LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+export class LoginGoogleDto extends AuthDto {
+  constructor(
     public readonly firstName: string,
     public readonly lastName: string,
     public readonly email: string,
@@ -11,23 +15,20 @@ export class LoginGoogleUserDto {
     public readonly isGoogleAccount: boolean,
     public readonly isEmailVerified: boolean,
     public readonly role: RoleEnum,
-  ) {}
-
-  public static create(
-    data: LoginGoogleUserDto,
-  ): [LoginGoogleUserDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(data);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  ) {
+    super(
+      email,
+      Array.from({ length: 8 }, () => LETTERS[Math.floor(Math.random() * 52)])
+        .join("")
+        .concat(Math.floor(Math.random() * 1000).toString()),
+    );
   }
 
-  private static get validations() {
-    const { EMAIL, URL } = regularExpressions;
+  public validate() {
+    dtoValidator(this, LoginGoogleDto.schema);
+  }
+
+  public static get schema() {
     return z.object({
       firstName: z
         .string({
@@ -47,9 +48,6 @@ export class LoginGoogleUserDto {
         .max(200, {
           message: "Lastname must be at most 200 characters long",
         }),
-      email: z.string().refine((value) => EMAIL.test(value), {
-        message: "Email invalid, follow the suggestions and try again",
-      }),
       imgUrl: z.string().refine((value) => URL.test(value), {
         message: "Invalid URL",
       }),
@@ -60,6 +58,7 @@ export class LoginGoogleUserDto {
         message: "This account must be verified",
       }),
       role: z.nativeEnum(RoleEnum).optional().default(RoleEnum.ROLE_USER),
+      ...super.schema.shape,
     });
   }
 }

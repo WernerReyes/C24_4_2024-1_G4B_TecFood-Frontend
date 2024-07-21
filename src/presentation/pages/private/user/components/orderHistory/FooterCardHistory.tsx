@@ -28,10 +28,10 @@ export const FooterCardHistory = ({
   
 
   const handleCancelOrder = () => {
-    const updateOrderDishStatusDto = UpdateOrderDishStatusDto.create({
-      orderDishId: id,
-      status: OrderDishStatusEnum.CANCELLED,
-    });
+    const updateOrderDishStatusDto = new UpdateOrderDishStatusDto(
+      id,
+      OrderDishStatusEnum.CANCELLED,
+    );
 
     startUpdateOrderDishStatus(
       updateOrderDishStatusDto,

@@ -1,6 +1,17 @@
 export interface CreateDishResponse<T>
   extends Pick<GetDishByIdResponse<T>, "message" | "dish"> {}
 
+export interface UpdateDishResponse<T> extends CreateDishResponse<T> {}
+
+export interface DeleteDishResponse {
+  message: string;
+}
+
+export interface UpdateDishImageResponse<T> {
+  message: string;
+  dishImages: T[];
+}
+
 export interface GetDishesResponse<T> {
   message: string;
   dishes: T[];

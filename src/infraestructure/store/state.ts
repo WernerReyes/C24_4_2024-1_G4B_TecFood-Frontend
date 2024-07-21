@@ -1,18 +1,18 @@
 import type { AuthSliceState } from "./slice/auth.slice";
-import type { CartDishSliceState } from "./slice/cart-dish.slice";
+import type { CartDishSliceState } from "./slice/cartDish.slice";
 import type { DishOfferSliceState } from "./slice/dis-offer.slice";
-import type { DishCategorySliceState } from "./slice/dish-category.slice";
+import type { DishCategorySliceState } from "./slice/dishCategory.slice";
 import type { DishSliceState } from "./slice/dish.slice";
 import type { MessageSliceState } from "./slice/message.slice";
-import type { OpenIASliceState } from "./slice/open-ia.slice";
-import type { OrderDishItemSliceState } from "./slice/order-dish-item.slice";
-import type { OrderDishSliceState } from "./slice/order-dish.slice";
+import type { OpenAISliceState } from "./slice/openAI.slice";
+import type { OrderDishItemSliceState } from "./slice/orderDishItem.slice";
+import type { OrderDishSliceState } from "./slice/orderDish.slice";
 import type { PaymentSliceState } from "./slice/payment.slice";
 import type { ThemeSliceState } from "./slice/theme.slice";
 import type { UserSliceState } from "./slice/user.slice";
 
 export interface AppState {
-  themes: ThemeSliceState;
+  theme: ThemeSliceState;
   message: MessageSliceState;
   user: UserSliceState;
   dishOffer: DishOfferSliceState;
@@ -23,5 +23,5 @@ export interface AppState {
   orderDish: OrderDishSliceState;
   orderDishItem: OrderDishItemSliceState;
   payment: PaymentSliceState;
-  openIA: OpenIASliceState;
+  openAI: OpenAISliceState;
 }

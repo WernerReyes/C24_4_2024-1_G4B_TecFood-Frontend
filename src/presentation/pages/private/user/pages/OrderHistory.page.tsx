@@ -79,11 +79,11 @@ const OrderHistoryPage = () => {
   >(filters.status);
 
   useEffect(() => {
-    const getOrderDishesByUserDto = GetOrderDishesByUserDto.create({
+    const getOrderDishesByUserDto = new GetOrderDishesByUserDto(
+      currentPage,
       limit,
-      page: currentPage,
-      status: currentStatus,
-    });
+      currentStatus,
+    );
     startLoadingOrderDishesByUser(getOrderDishesByUserDto);
   }, [filters.status, status, currentStatus, currentPage, limit, payment]);
 

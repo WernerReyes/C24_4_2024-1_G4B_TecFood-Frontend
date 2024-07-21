@@ -14,7 +14,7 @@ export class DishCategoryService implements IDishCategoryService {
     this.prefix = "/dish-category";
   }
 
-  public async getAll(): Promise<GetDishCategoriesResponse<DishCategoryModel>> {
+  public async getAll() {
     try {
       const { data } = await httpRequest<
         GetDishCategoriesResponse<DishCategoryEntity>

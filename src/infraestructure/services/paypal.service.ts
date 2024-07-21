@@ -12,9 +12,7 @@ export class PaypalService implements IPaypalService {
     this.prefix = "/paypal";
   }
 
-  public async createPayment(
-    orderDishId: number,
-  ): Promise<CreatePaymentResponse> {
+  public async createPayment(orderDishId: number) {
     try {
       const { data } = await httpRequest<CreatePaymentResponse>(
         `${this.prefix}/create-payment`,
@@ -30,9 +28,7 @@ export class PaypalService implements IPaypalService {
     }
   }
 
-  public async completePayment(
-    orderId: string,
-  ): Promise<CompletePaymentResponse> {
+  public async completePayment(orderId: string) {
     try {
       const { data } = await httpRequest<CompletePaymentResponse>(
         `${this.prefix}/capture`,

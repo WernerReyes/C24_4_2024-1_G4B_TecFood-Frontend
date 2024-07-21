@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { UploadProfileDto } from "@/domain/dtos/user";
+import { UploadImageDto } from "@/domain/dtos";
 import {
   FileUpload,
   FileUploadRef,
@@ -20,14 +20,10 @@ export const UploadProfile = () => {
 
   const handleSelect = async (e: FileUploadSelectEvent) => {
     setIsUploading(true);
-    const file = new FormData();
-    file.append("file", e.files[0]);
 
-    const uploadProfileDto = UploadProfileDto.create({
-      file,
-    });
+    const uploadImageDto = new UploadImageDto(e.files[0]);
 
-    await startUploadingProfile(uploadProfileDto);
+    await startUploadingProfile(uploadImageDto);
     if (fileUploadRef.current) fileUploadRef.current.clear();
     setIsUploading(false);
   };

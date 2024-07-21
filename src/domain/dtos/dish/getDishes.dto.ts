@@ -1,8 +1,9 @@
-import { ZodError, z } from "zod";
+import { z } from "zod";
+import { dtoValidator } from "@/presentation/utilities";
 import { PaginationDto } from "../common";
 
 export class GetDishesDto extends PaginationDto {
-  private constructor(
+  constructor(
     public readonly page: number,
     public readonly limit: number,
     public readonly idCategory: { idCategory: number }[] | null,
@@ -12,20 +13,12 @@ export class GetDishesDto extends PaginationDto {
     super(page, limit);
   }
 
-  public static create(data: GetDishesDto): [GetDishesDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(data);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  public validate() {
+    dtoValidator(this, GetDishesDto.validations);
   }
 
   protected static get validations() {
     return z.object({
-      ...PaginationDto.validations.shape,
       idCategory: z
         .array(
           z.object({
@@ -48,6 +41,7 @@ export class GetDishesDto extends PaginationDto {
         .nullable()
         .default(null),
       search: z.nullable(z.string()).default(null),
+      ...super.schema.shape,
     });
   }
 }

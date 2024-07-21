@@ -1,8 +1,9 @@
+import type { DishImageModel } from "@/model";
 import {
   FileUpload,
-  type FileUploadSelectEvent,
   Image,
   type FileUploadRef,
+  type FileUploadSelectEvent,
 } from "@/presentation/components";
 import clsx from "clsx";
 import { FileUploadHeaderTemplateOptions } from "primereact/fileupload";
@@ -11,6 +12,7 @@ import { useRef, useState } from "react";
 type Size = "small" | "medium" | "large";
 
 type Props = {
+  image?: DishImageModel;
   size?: Size;
   setFile: (
     files: {
@@ -19,6 +21,7 @@ type Props = {
     } | null,
   ) => void;
   uploadedSuccess: boolean;
+  setImageIdToUpdate?: (id: number | null) => void;
 };
 
 const MAX_FILE_SIZE = 1000000; // 1MB
@@ -27,6 +30,8 @@ export const UploadDishImages = ({
   setFile,
   size = "small",
   uploadedSuccess,
+  image,
+  setImageIdToUpdate
 }: Props) => {
   const fileUploadRef = useRef<FileUploadRef>(null);
   const [currentFile, setCurrentFile] = useState<File | null>(null);
@@ -37,6 +42,8 @@ export const UploadDishImages = ({
     setFile({ file: e.files[0], isDeleted: false });
     setCurrentFile(e.files[0]);
     setUploadingImage(true);
+
+    if (setImageIdToUpdate) setImageIdToUpdate(image  ? image.id : null);
   };
 
   return (
@@ -99,14 +106,14 @@ export const UploadDishImages = ({
         }}
         accept="image/jpeg, image/png, image/jpg"
         maxFileSize={MAX_FILE_SIZE}
-        itemTemplate={(file: any) => <ItemTemplate file={file} size={size} />}
+        itemTemplate={(file) => <ItemTemplate file={file} size={size} />}
         onSelect={handleSelect}
         onClear={() => {
           if (!currentFile) return;
           setFile({ file: currentFile, isDeleted: true });
           setUploadingImage(false);
         }}
-        emptyTemplate={() => <EmptyTemplate size={size} />}
+        emptyTemplate={() => <EmptyTemplate size={size} image={image} />}
       />
     </div>
   );
@@ -131,7 +138,13 @@ const ItemTemplate = ({ file, size }: { file: any; size: Size }) => {
   );
 };
 
-const EmptyTemplate = ({ size }: { size: Size }) => {
+const EmptyTemplate = ({
+  size,
+  image,
+}: {
+  size: Size;
+  image?: DishImageModel;
+}) => {
   return (
     <div
       className={clsx(
@@ -140,20 +153,33 @@ const EmptyTemplate = ({ size }: { size: Size }) => {
         "flex flex-col items-center justify-center border border-primary p-4 text-center",
       )}
     >
-      <i
-        className={clsx(
-          "pi pi-image mb-3 rounded-full bg-[var(--surface-b)] text-[var(--surface-d)]",
-          sizeClass(size, ["text-5xl", "text-6xl", "text-9xl"]),
-        )}
-      ></i>
-      <span
-        className={clsx(
-          "text-center text-[var(--text-color-secondary)]",
-          sizeClass(size, ["text-xs", "text-xl", "text-2xl"]),
-        )}
-      >
-        Drag and Drop Image Here
-      </span>
+      {image ? (
+        <Image
+          src={image.url}
+          alt="Dish Image"
+          className={clsx(
+            sizeClass(size, ["h-28 w-28", "h-44 w-44", "h-60 w-60"]),
+          )}
+          imageClassName={clsx("object-cover w-full h-full rounded-lg")}
+        />
+      ) : (
+        <>
+          <i
+            className={clsx(
+              "pi pi-image mb-3 rounded-full bg-[var(--surface-b)] text-[var(--surface-d)]",
+              sizeClass(size, ["text-5xl", "text-6xl", "text-9xl"]),
+            )}
+          ></i>
+          <span
+            className={clsx(
+              "text-center text-[var(--text-color-secondary)]",
+              sizeClass(size, ["text-xs", "text-xl", "text-2xl"]),
+            )}
+          >
+            Drag and Drop Image Here
+          </span>
+        </>
+      )}
     </div>
   );
 };

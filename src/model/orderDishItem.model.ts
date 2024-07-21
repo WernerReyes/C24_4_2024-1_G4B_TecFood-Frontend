@@ -9,9 +9,7 @@ export interface OrderDishItemModel {
   dish: DishModel;
 }
 
-export interface OrderDishItemState extends OrderDishItemModel {}
-
-export const orderDishItemEmptyState: OrderDishItemState = {
+export const orderDishItemEmptyState: OrderDishItemModel = {
   id: 0,
   quantity: 0,
   price: 0,

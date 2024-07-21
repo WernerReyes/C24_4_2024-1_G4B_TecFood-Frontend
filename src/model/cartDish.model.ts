@@ -1,6 +1,5 @@
-import { DishModel, DishModel, dishEmptyState } from "./dish.model";
-import { UserModel, UserState, userEmptyState } from "./user.model";
-
+import { type DishModel, dishEmptyState } from "./dish.model";
+import { type UserModel, userEmptyState } from "./user.model";
 
 export interface CartDishModel {
   id: number;
@@ -9,14 +8,7 @@ export interface CartDishModel {
   user: UserModel;
 }
 
-export interface CartState {
-  id: number;
-  quantity: number;
-  dish: DishModel;
-  user: UserState;
-}
-
-export const cartEmptyState: CartState = {
+export const cartEmptyState: CartDishModel = {
   id: 0,
   quantity: 0,
   dish: dishEmptyState,

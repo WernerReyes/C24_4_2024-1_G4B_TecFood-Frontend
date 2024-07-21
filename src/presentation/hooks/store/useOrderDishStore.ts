@@ -25,7 +25,7 @@ const orderDishRepositoryImpl = new OrderDishRepositoryImpl(orderDishService);
 
 export const useOrderDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
+  const { startSetMessages, typeSuccess } = useMessageStore();
 
   const { orderDish, orderDishes, filters, status, isLoading, total } =
     useSelector((state: AppState) => state.orderDish);
@@ -44,14 +44,15 @@ export const useOrderDishStore = () => {
   };
 
   const startUpdateOrderDishStatus = async (
-    updateOrderDishStatusDto: [UpdateOrderDishStatusDto?, string[]?],
+    updateOrderDishStatusDto: UpdateOrderDishStatusDto,
     message: string,
   ) => {
+    updateOrderDishStatusDto.validate();
+    
     dispatch(onLoadingOrderDish());
-    const [orderDishStatus, errors] = updateOrderDishStatusDto;
-    if (errors) return startSetMessages(errors, typeError);
+    
     orderDishRepositoryImpl
-      .updateOrderDishStatus(orderDishStatus!)
+      .updateOrderDishStatus(updateOrderDishStatusDto)
       .then(({ status }) => {
         dispatch(onUpdateOrderDishStatus(status));
         startSetMessages([message], typeSuccess);
@@ -62,13 +63,14 @@ export const useOrderDishStore = () => {
   };
 
   const startLoadingOrderDishesByUser = async (
-    getOrderDishesByUserDto: [GetOrderDishesByUserDto?, string[]?],
+    getOrderDishesByUserDto: GetOrderDishesByUserDto
   ) => {
+    getOrderDishesByUserDto.validate();
+
     dispatch(onLoadingOrderDish());
-    const [getOrderDishesByUserDtoValidated, errors] = getOrderDishesByUserDto;
-    if (errors) return startSetMessages(errors, typeError);
+
     orderDishRepositoryImpl
-      .getOrderDishesByUser(getOrderDishesByUserDtoValidated!)
+      .getOrderDishesByUser(getOrderDishesByUserDto)
       .then(({ orderDishes, total }) => {
         dispatch(onLoadOrderDishes({ orderDishes, total }));
       })

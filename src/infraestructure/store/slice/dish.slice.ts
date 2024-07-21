@@ -16,17 +16,19 @@ export type DishSliceState = {
   filters: DishFilters;
 };
 
+const initialState: DishSliceState = {
+  isLoading: false,
+  dish: dishEmptyState,
+  total: 0,
+  dishes: [],
+  dishesToSearch: [],
+  dishesWithoutSelectedDish: [],
+  filters: dishFilterEmptyState,
+};
+
 export const dishSlice = createSlice({
   name: "dish",
-  initialState: {
-    isLoading: false,
-    dish: dishEmptyState,
-    total: 0,
-    dishes: [] as DishModel[],
-    dishesToSearch: [] as DishModel[],
-    dishesWithoutSelectedDish: [] as DishModel[],
-    filters: dishFilterEmptyState,
-  },
+  initialState,
   reducers: {
     onLoadDishes(
       state,
@@ -64,6 +66,10 @@ export const dishSlice = createSlice({
       };
     },
 
+    onResetDish: () => {
+      return { ...initialState };
+    },
+
     onLoadingDish: (state) => {
       return { ...state, isLoading: true };
     },
@@ -77,4 +83,5 @@ export const {
   onSetDishFilters,
   onLoadDishesToSearch,
   onLoadDishesWithoutSelectedDish,
+  onResetDish,
 } = dishSlice.actions;

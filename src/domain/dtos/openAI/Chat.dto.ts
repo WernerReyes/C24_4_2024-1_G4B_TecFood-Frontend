@@ -1,5 +1,6 @@
-import { ZodError, z } from "zod";
 import { OpenAIRoleEnum } from "@/domain/entities";
+import { dtoValidator } from "@/presentation/utilities";
+import { z } from "zod";
 
 type Message = {
   role: OpenAIRoleEnum;
@@ -9,18 +10,10 @@ type Message = {
 export class ChatDto {
   constructor(public readonly messages: Message[]) {}
 
-  public static create(data: ChatDto): [ChatDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(data);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  public validate() {
+    dtoValidator(this, ChatDto.schema);
   }
-
-  protected static get validations() {
+  private static get schema() {
     return z.object({
       messages: z.array(
         z.object({

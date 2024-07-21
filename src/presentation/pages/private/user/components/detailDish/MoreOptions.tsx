@@ -22,7 +22,6 @@ export const MoreOptions = () => {
     dishesWithoutSelectedDish,
     startLoadingDishesWithoutSelectedDish,
   } = useDishStore();
- 
 
   const handleLoadCartQuantity = (dish: DishModel): number => {
     const cartItem = cart.find((cartItem) => cartItem.dish.id === dish.id);
@@ -30,11 +29,10 @@ export const MoreOptions = () => {
   };
 
   useEffect(() => {
-    const getDishesWithoutSelectedDishDto =
-      GetDishesWithoutSelectedDishDto.create({
-        idDish: dish.id,
-        limit: QUANTITY_EXTRA_DISHES,
-      });
+    const getDishesWithoutSelectedDishDto = new GetDishesWithoutSelectedDishDto(
+      dish.id,
+      QUANTITY_EXTRA_DISHES,
+    );
 
     startLoadingDishesWithoutSelectedDish(getDishesWithoutSelectedDishDto);
   }, [dish]);

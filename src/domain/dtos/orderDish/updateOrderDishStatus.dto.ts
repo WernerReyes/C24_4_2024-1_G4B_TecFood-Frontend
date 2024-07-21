@@ -1,26 +1,18 @@
-import { ZodError, z } from "zod";
 import { OrderDishStatusEnum } from "@/domain/entities";
+import { dtoValidator } from "@/presentation/utilities";
+import { z } from "zod";
 
 export class UpdateOrderDishStatusDto {
-  private constructor(
+  constructor(
     public readonly orderDishId: number,
     public readonly status: OrderDishStatusEnum,
   ) {}
 
-  public static create(
-    data: UpdateOrderDishStatusDto,
-  ): [UpdateOrderDishStatusDto?, string[]?] {
-    try {
-      const validatedData = this.validations.parse(data);
-      return [validatedData, undefined];
-    } catch (error) {
-      if (error instanceof ZodError)
-        return [undefined, error.issues.map((issue) => issue.message)];
-      throw error;
-    }
+  public validate() {
+    dtoValidator(this, UpdateOrderDishStatusDto.schema);
   }
 
-  private static get validations() {
+  private static get schema() {
     return z.object({
       orderDishId: z
         .number({

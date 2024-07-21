@@ -1,18 +1,20 @@
-import { Chip, Image } from "@/presentation/components";
+import { Chip, Galleria, Image } from "@/presentation/components";
 import { useCart, useCartStore, useDishStore } from "@/presentation/hooks";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
+import { Heart } from "../../../components";
 import {
   AddAndRemoveDish,
   ButtonAddAndRemoveDish,
   DetailDishSkeleton,
-} from "..";
-import { Heart } from "../../../components";
+} from "../";
+import { DishImageModel } from "@/model";
 
 export const DetailDish = () => {
   const { cart } = useCartStore();
-  const { dish } = useDishStore();
+  const { dish, isLoading } = useDishStore();
   const [quantity, setQuantity] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState(0);
   const {
     handleAddToCart,
     handleRemoveToCart,
@@ -43,16 +45,47 @@ export const DetailDish = () => {
           loaded ? "visible" : "hidden",
         )}
       >
-        <div className="group mb-5 h-full lg:mb-0">
-          <Image
-            src={dish.img}
-            alt={dish.name}
-            className="h-full"
-            onLoad={handleLoaded}
-            imageClassName="rounded-lg w-full max-h-80 object-cover transition-all group-hover:scale-105"
+        <div className="mb-5 h-full rounded-lg border p-5 dark:border-slate-700 lg:mb-0">
+          {!isLoading && dish.images.length && (
+          <Galleria
+            value={dish.images}
+            numVisible={3}
+            circular
+            item={(image: DishImageModel) => (
+              <Image
+                src={image.url}
+                alt={dish.name}
+                preview
+                width="100%"
+                height="100%"
+                zoomSrc={image.url}
+                onLoad={handleLoaded}
+                className="md:max-h-80 w-full lg:h-64 rounded-lg object-cover transition-all h-full"
+                imageClassName="w-full h-full max-h-80 lg:h-64 rounded-t-lg object-cover "
+              />
+            )}
+            thumbnail={(image: DishImageModel) => (
+              <Image
+                src={image?.url}
+                alt={dish.name}
+                className="object-cover transition-all"
+                imageClassName="h-20 w-24 sm:w-32"
+              />
+            )}
+            activeIndex={activeIndex}
+            onItemChange={(e) => setActiveIndex(e.index)}
+            showThumbnails={dish.images.length > 1}
+            autoPlay
+            // fullScreen
+            transitionInterval={5000}
+            pt={{
+              thumbnailContainer: { className: "rounded-b-lg" },
+            }}
+
           />
+          )}
         </div>
-        <div className="flex h-full flex-col">
+        <div className="mt-5 flex h-full flex-col rounded-lg border p-5 dark:border-slate-700  lg:mt-0">
           <div className="flex items-center justify-between">
             <h5 className="text-2xl font-semibold lg:text-3xl">{dish.name}</h5>
             <div className="flex items-center justify-between">
@@ -63,10 +96,13 @@ export const DetailDish = () => {
             {dish.description}
           </p>
           <div className="mb-5 lg:mb-0">
-            <Chip
-              label={dish.category.name}
-              className="mt-3 border-2 border-skeleton bg-transparent text-xs dark:border-skeleton-dark"
-            />
+            {dish.categories.map((category) => (
+              <Chip
+                key={category.id}
+                label={category.name}
+                className="me-2 mt-3 border-2 border-skeleton bg-transparent text-xs dark:border-skeleton-dark"
+              />
+            ))}
           </div>
 
           <div className="mb-5 mt-auto flex items-center">

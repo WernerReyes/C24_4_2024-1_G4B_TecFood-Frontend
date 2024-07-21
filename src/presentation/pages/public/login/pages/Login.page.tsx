@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { LoginUserDto } from "@/domain/dtos";
+import { LoginDto } from "@/domain/dtos";
 import { Button, InputPassword, InputText } from "@/presentation/components";
 import { useAuthStore, useMessageStore, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes, PublicRoutes } from "@/presentation/routes";
@@ -11,7 +11,7 @@ import { AuthLayout } from "../../layout";
 
 export const LoginPage = () => {
   const { isDark } = useThemeStore();
-  const { isLoading, startLoginUser } = useAuthStore();
+  const { isLoading, startLogin } = useAuthStore();
   const { startSetMessages, typeError } = useMessageStore();
   const navigate = useNavigate();
 
@@ -19,12 +19,12 @@ export const LoginPage = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginUserDto>({
-    resolver: zodResolver(LoginUserDto.validations),
+  } = useForm<LoginDto>({
+    resolver: zodResolver(LoginDto.schema),
   });
 
-  const handleLogin: SubmitHandler<LoginUserDto> = async (data) => {
-    await startLoginUser(data).then((role) => {
+  const handleLogin: SubmitHandler<LoginDto> = async (data) => {
+    await startLogin(data).then((role) => {
       navigate(PrivateRoutes[routeRole(role)] as string)
     });
   };

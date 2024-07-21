@@ -40,7 +40,7 @@ export const useCartStore = () => {
   const startDeleteOneDish = async (dishId: number) => {
     dispatch(onLoadingCartDish());
     cartDishRepositoryImpl
-      .getDishByDishId(dishId)
+      .deleteOneDish(dishId)
       .then(() => dispatch(onDeleteOneDish()))
       .catch((error) => {
         throw error;

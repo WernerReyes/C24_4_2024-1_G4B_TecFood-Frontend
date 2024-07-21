@@ -1,12 +1,12 @@
 import { MouseEvent } from "react";
 import clsx from "clsx";
-import { type CartState } from "@/model";
+import { type CartDishModel } from "@/model";
 import { Button, ConfirmPopup, confirmPopup } from "@/presentation/components";
 import { useOrderDishStore } from "@/presentation/hooks";
 import { OrderSummaryLayout } from "../../layout";
 
 type Props = {
-  cart: CartState[];
+  cart: CartDishModel[];
   startResetCartDish: () => void;
 };
 

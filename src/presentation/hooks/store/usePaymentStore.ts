@@ -14,19 +14,18 @@ const paymentRepositoryImpl = new PaymentRepositoryImpl(paymentService);
 
 export const usePaymentStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
+  const { startSetMessages, typeSuccess } = useMessageStore();
   const { isLoading, payment, payments } = useSelector(
     (state: AppState) => state.payment,
   );
 
-  const startProcessPayment = async (
-    processPaymentDto: [ProcessPaymentDto?, string[]?],
-  ) => {
+  const startProcessPayment = async (processPaymentDto: ProcessPaymentDto) => {
+    processPaymentDto.validate();
+
     dispatch(onLoadingPayment());
-    const [processPaymentDtoValidated, errors] = processPaymentDto;
-    if (errors) return startSetMessages(errors, typeError);
+
     paymentRepositoryImpl
-      .processPayment(processPaymentDtoValidated!)
+      .processPayment(processPaymentDto)
       .then(({ message, payment }) => {
         dispatch(onProcessPayment(payment));
         startSetMessages([message], typeSuccess);

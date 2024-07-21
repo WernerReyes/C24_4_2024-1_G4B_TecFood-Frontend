@@ -1,21 +1,23 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { type PaymentState, paymentEmptyState } from "@/model";
+import { type PaymentModel, paymentEmptyState } from "@/model";
 
 export type PaymentSliceState = {
   isLoading: boolean;
-  payment: PaymentState;
-  payments: PaymentState[];
+  payment: PaymentModel;
+  payments: PaymentModel[];
+};
+
+const initialState: PaymentSliceState = {
+  isLoading: false,
+  payment: paymentEmptyState,
+  payments: [],
 };
 
 export const paymentSlice = createSlice({
   name: "payment",
-  initialState: {
-    isLoading: true,
-    payment: paymentEmptyState,
-    payments: [] as PaymentState[],
-  },
+  initialState,
   reducers: {
-    onProcessPayment: (state, action: PayloadAction<PaymentState>) => {
+    onProcessPayment: (state, action: PayloadAction<PaymentModel>) => {
       return {
         ...state,
         payment: action.payload,
@@ -23,11 +25,8 @@ export const paymentSlice = createSlice({
       };
     },
 
-    onResetPayment: (state) => {
-      return {
-        ...state,
-        payment: paymentEmptyState,
-      };
+    onResetPayment: () => {
+      return { ...initialState };
     },
 
     onLoadingPayment: (state) => {

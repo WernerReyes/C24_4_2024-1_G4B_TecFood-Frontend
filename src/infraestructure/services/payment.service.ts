@@ -17,9 +17,7 @@ export class PaymentService implements IPaymentService {
     this.prefix = "/payment";
   }
 
-  public async processPayment(
-    processPaymentDto: ProcessPaymentDto,
-  ): Promise<ProcessPaymentResponse<PaymentModel>> {
+  public async processPayment(processPaymentDto: ProcessPaymentDto) {
     try {
       const { data } = await httpRequest<ProcessPaymentResponse<PaymentEntity>>(
         `${this.prefix}/process`,

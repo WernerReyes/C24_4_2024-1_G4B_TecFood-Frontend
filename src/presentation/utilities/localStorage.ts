@@ -4,7 +4,6 @@ export const StorageKeys = {
   DISH_FILTERS: "dishFilters",
   DISHES_TO_SEARCH: "dishesToSearch",
   HISTORY_SEARCH: "historySearch",
-  DISH_TO_SEARCH: "dishToSearch",
   ORDER_DISH: "orderDish",
   CHAT_MESSAGES: "chatMessages",
   THEME: "theme",

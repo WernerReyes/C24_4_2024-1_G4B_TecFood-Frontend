@@ -13,7 +13,7 @@ export const ProfileForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<UpdateUserDto>({
-    resolver: zodResolver(UpdateUserDto.validations),
+    resolver: zodResolver(UpdateUserDto.schema),
   });
 
   const handleUpdateUser: SubmitHandler<UpdateUserDto> = async (data) => {

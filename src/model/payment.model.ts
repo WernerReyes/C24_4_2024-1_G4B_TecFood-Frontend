@@ -9,9 +9,7 @@ export interface PaymentModel {
   orderDish: OrderDishModel;
 }
 
-export interface PaymentState extends PaymentModel {}
-
-export const paymentEmptyState: PaymentState = {
+export const paymentEmptyState: PaymentModel = {
   id: 0,
   amount: 0,
   paymentMethod: PaymentMethodEnum.CARD,

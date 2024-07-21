@@ -1,5 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { UpdateUserDto, UploadProfileDto } from "@/domain/dtos";
+import type {
+  UpdateUserDto,
+  UploadImageDto
+} from "@/domain/dtos";
 import { UserRepositoryImpl } from "@/infraestructure/repositories";
 import { UserService } from "@/infraestructure/services";
 import {
@@ -7,6 +9,7 @@ import {
   onLoadProfile,
   onLoadingUsers,
 } from "@/infraestructure/store";
+import { useDispatch, useSelector } from "react-redux";
 import { useMessageStore } from "./useMessageStore";
 
 const userService = new UserService();
@@ -14,7 +17,7 @@ const userRepositoryImpl = new UserRepositoryImpl(userService);
 
 export const useUserStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeError, typeSuccess } = useMessageStore();
+  const { startSetMessages, typeSuccess } = useMessageStore();
 
   const { user, users, isLoading } = useSelector(
     (state: AppState) => state.user,
@@ -31,7 +34,7 @@ export const useUserStore = () => {
 
   const startUpdatingUser = async (updateUserDto: UpdateUserDto) => {
     dispatch(onLoadingUsers());
-    
+
     await userRepositoryImpl
       .update(updateUserDto)
       .then(({ message }) => {
@@ -42,15 +45,13 @@ export const useUserStore = () => {
       });
   };
 
-  const startUploadingProfile = async (
-    uploadProfileDto: [UploadProfileDto?, string[]?],
-  ) => {
+  const startUploadingProfile = async (uploadImageDto: UploadImageDto) => {
+    uploadImageDto.validate();
+
     dispatch(onLoadingUsers());
-    const [uploadProfileDtoValidated, errors] = uploadProfileDto;
-    if (errors) return startSetMessages(errors, typeError);
-    
+
     await userRepositoryImpl
-      .uploadProfile(uploadProfileDtoValidated!)
+      .uploadProfile(uploadImageDto)
       .then(({ profileUrl, message }) => {
         dispatch(onLoadProfile(profileUrl));
         startSetMessages([message], typeSuccess);

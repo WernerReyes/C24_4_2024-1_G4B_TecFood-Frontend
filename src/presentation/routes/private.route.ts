@@ -6,7 +6,6 @@ export type IPrivateRoutes = {
   user: {
     HOME: string;
     DISHES: string;
-    PROFILE: string;
     CART: string;
     ORDER_HISTORY: string;
     PAYMENT: string;
@@ -14,10 +13,17 @@ export type IPrivateRoutes = {
   ADMIN: string;
   admin: {
     HOME: string;
-    PROFILE: string;
     ADD_DISH: string;
-    DISHES_LIST: string;
+    VIEW_DISH: (id?: number) => string;
+    EDIT_DISH: (id?: number) => string;
+    LIST_DISHES: string;
   };
+
+  common: {
+    HOME: string;
+    PROFILE: string;
+  };
+
 };
 
 export const PrivateRoutes: IPrivateRoutes = {
@@ -26,7 +32,6 @@ export const PrivateRoutes: IPrivateRoutes = {
   user: {
     HOME: "home",
     DISHES: "dishes",
-    PROFILE: "profile",
     CART: "cart",
     ORDER_HISTORY: "order-history",
     PAYMENT: "payment",
@@ -36,8 +41,15 @@ export const PrivateRoutes: IPrivateRoutes = {
   ADMIN: ADMIN_BASE,
   admin: {
     HOME: "home",
+    ADD_DISH: `dishes/add`,
+    VIEW_DISH: (id?: number) => (id ? `dishes/${id}` : "dishes/:id"),
+    EDIT_DISH: (id?: number) => (id ? `dishes/${id}/edit` : 'dishes/:id/edit'),
+    LIST_DISHES: "dishes",
+  },
+
+  // <-- COMMON ROUTES -->
+  common: {
+    HOME: "home",
     PROFILE: "profile",
-    ADD_DISH: "add-dish",
-    DISHES_LIST: "dishes-list",
   },
 };
