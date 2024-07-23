@@ -4,8 +4,11 @@ import { DishCategoryService } from "@/infraestructure/services";
 import {
   AppState,
   onLoadDishCategories,
+  onLoadDishCategory,
   onLoadingDishCategory,
 } from "@/infraestructure/store";
+import { CreateDishCategoryDto, UploadImageDto } from "@/domain/dtos";
+import { useMessageStore } from "./useMessageStore";
 
 const dishCategoryService = new DishCategoryService();
 const dishCategoryRepositoryImpl = new DishCategoryRepositoryImpl(
@@ -14,10 +17,32 @@ const dishCategoryRepositoryImpl = new DishCategoryRepositoryImpl(
 
 export const useDishCategoryStore = () => {
   const dispatch = useDispatch();
+  const { startSetSuccessMessages } = useMessageStore();
 
   const { dishCategories, isLoading } = useSelector(
     (state: AppState) => state.dishCategory,
   );
+
+  const startCreatingDishCategory = async (
+    createDishCategoryDto: CreateDishCategoryDto,
+    uploadImageDto: UploadImageDto,
+  ) => {
+    uploadImageDto.validate();
+
+    dispatch(onLoadingDishCategory());
+
+    await dishCategoryRepositoryImpl
+      .create(createDishCategoryDto, uploadImageDto)
+      .then(({ dishCategory, message }) => {
+        dispatch(onLoadDishCategory(dishCategory));
+        startSetSuccessMessages([message]);
+
+        dispatch(onLoadDishCategories([...dishCategories, dishCategory]));
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
 
   const startLoadingDishCategories = async () => {
     dispatch(onLoadingDishCategory());
@@ -38,6 +63,7 @@ export const useDishCategoryStore = () => {
     isLoading,
 
     //* Methods
+    startCreatingDishCategory,
     startLoadingDishCategories,
   };
 };

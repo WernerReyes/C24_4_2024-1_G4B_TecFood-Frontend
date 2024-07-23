@@ -12,4 +12,6 @@ export * from "./UploadProfile";
 export * from "./HeaderSearch";
 export * from "./RecommendationSearch";
 export * from "./HistorySearch";
-export * from './Profile';
+export * from './Card'
+export * from './AddAndRemoveDish';
+export * from './ButtonAddAndRemoveDish';

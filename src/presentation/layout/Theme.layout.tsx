@@ -1,4 +1,4 @@
-import { ChangeTheme } from "@/presentation/components";
+import { ChangeTheme } from "@/presentation/core/components";
 import clsx from "clsx";
 import { ReactNode } from "react";
 

@@ -1,32 +1,19 @@
 import { useEffect } from "react";
 import { RoleEnum } from "@/domain/entities";
-import { BreadCrumb, Sidebar } from "@/presentation/components";
-import { useCartStore, useWindowSize } from "@/presentation/hooks";
+import { BreadCrumb } from "@/presentation/core/components";
+import { useCartStore } from "@/presentation/hooks";
 import { ThemeLayout } from "@/presentation/layout";
-import { FilterSection, Header } from "../components";
 import { ChatBot } from "../../components";
+import { Header } from "../components";
 
 const SCROLL_ID = "user-panel";
 
 type Props = {
   children: React.ReactNode;
-  visibleSidebar?: boolean;
-  setVisibleSidebar?: (value: boolean) => void;
 };
 
-export const UserLayout = ({
-  children,
-  visibleSidebar,
-  setVisibleSidebar,
-}: Props) => {
-  const { isDesktop } = useWindowSize();
+export const UserLayout = ({ children }: Props) => {
   const { startLoadingTotalDishesByUser } = useCartStore();
-
-  useEffect(() => {
-    if (isDesktop && visibleSidebar) {
-      setVisibleSidebar!(false);
-    }
-  }, [isDesktop]);
 
   useEffect(() => {
     startLoadingTotalDishesByUser();
@@ -39,16 +26,6 @@ export const UserLayout = ({
     >
       <Header />
       <BreadCrumb scrollId={SCROLL_ID} role={RoleEnum.ROLE_USER} />
-      <Sidebar
-        visible={visibleSidebar}
-        onHide={() => {
-          if (setVisibleSidebar) {
-            setVisibleSidebar(false);
-          }
-        }}
-      >
-        <FilterSection />
-      </Sidebar>
       {children}
       <ChatBot to={SCROLL_ID} />
     </ThemeLayout>

@@ -4,7 +4,7 @@ import {
   InputIcon,
   InputText,
   type PanelFooterTemplateOptions,
-} from "@/presentation/components";
+} from "@/presentation/core/components";
 
 interface PanelFooter extends PanelFooterTemplateOptions {
   setWriteMessage: (writeMessage: string) => void;

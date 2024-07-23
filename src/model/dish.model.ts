@@ -1,5 +1,5 @@
 import { getStorage } from "@/presentation/utilities";
-import type { DishCategoryModel, DishImageModel } from "./";
+import { type DishCategoryModel, type DishImageModel } from "./";
 
 export interface DishModel {
   id: number;
@@ -8,11 +8,10 @@ export interface DishModel {
   price: number;
   images: DishImageModel[];
   stock: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   categories: DishCategoryModel[];
 }
-
 
 export type DishFilters = {
   idCategory: { idCategory: number }[] | null;
@@ -28,8 +27,8 @@ export const dishEmptyState: DishModel = {
   images: [],
   stock: 0,
   categories: [],
-  createdAt: "" as any as Date,
-  updatedAt: "" as any as Date,
+  createdAt: "",
+  updatedAt: "",
 };
 
 export const dishFilterEmptyState: DishFilters = getStorage("dishFilters") || {

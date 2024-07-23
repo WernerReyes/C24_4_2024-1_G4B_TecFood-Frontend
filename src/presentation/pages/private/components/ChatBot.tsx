@@ -6,7 +6,7 @@ import {
   Panel,
   ScrollPanel,
   SpinnerMessage,
-} from "@/presentation/components";
+} from "@/presentation/core/components";
 import { useOpenAIStore } from "@/presentation/hooks";
 import clsx from "clsx";
 import DOMPurify from "dompurify";

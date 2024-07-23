@@ -1,4 +1,4 @@
-import { Image, Sidebar } from "@/presentation/components";
+import { Image, Sidebar } from "@/presentation/core/components";
 import { useThemeStore, useWindowSize } from "@/presentation/hooks";
 import { useEffect } from "react";
 

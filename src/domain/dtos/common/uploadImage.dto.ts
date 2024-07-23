@@ -27,8 +27,7 @@ export class UploadImageDto {
       this.files.forEach((file) => {
         formData.append("files", file);
       });
-    }
-    if (!Array.isArray(this.files)) {
+    } else {
       formData.append("file", this.files);
     }
 

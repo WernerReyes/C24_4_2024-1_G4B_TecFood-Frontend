@@ -48,10 +48,10 @@ export class DishDto {
             name: z.string({
               message: "Category name is required",
             }),
-            createdAt: z.date({
+            createdAt: z.string({
               message: "Category creation date is required",
             }),
-            updatedAt: z.date({
+            updatedAt: z.string({
               message: "Category update date is required",
             }),
           }),

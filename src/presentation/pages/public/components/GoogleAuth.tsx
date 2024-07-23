@@ -1,6 +1,6 @@
 import { LoginGoogleDto } from "@/domain/dtos";
 import { RoleEnum } from "@/domain/entities";
-import { Button, Image } from "@/presentation/components";
+import { Button, Image } from "@/presentation/core/components";
 import { useAuthStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import { getEnvs, routeRole, userGoogleInfo } from "@/presentation/utilities";

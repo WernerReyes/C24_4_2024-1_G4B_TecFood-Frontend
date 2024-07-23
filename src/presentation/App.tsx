@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { PrimeReactProvider } from "primereact/api";
 import { store } from "@/infraestructure/store";
 import { AppRouter } from "./router/App.router";
-import { ProgressSpinner } from "./components";
+import { ProgressSpinner } from "./core/components";
 import "./App.css";
 
 function App() {

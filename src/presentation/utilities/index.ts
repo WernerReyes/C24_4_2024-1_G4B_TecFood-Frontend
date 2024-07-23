@@ -13,3 +13,4 @@ export * from "./sonnerManager";
 export * from "./userGoogleInfo";
 export * from "./randomValues";
 export * from "./dtoValidator";
+export * from './exportDocument';

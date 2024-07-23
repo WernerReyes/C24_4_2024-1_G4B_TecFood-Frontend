@@ -2,15 +2,15 @@ import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import type { DishModel } from "@/model";
 import { useEffect, useState } from "react";
-import { StorageKeys, setStorage } from "@/presentation/utilities";
+import { StorageKeys, routeRole, setStorage } from "@/presentation/utilities";
 import { PrivateRoutes } from "@/presentation/routes";
 import { HighlightedText } from "@/presentation/pages/private/components";
+import { useAuthStore } from "@/presentation/hooks";
 
 const { HISTORY_SEARCH } = StorageKeys;
 
 const {
-  USER,
-  user: { DISHES },
+  common: { DETAIL_DISH },
 } = PrivateRoutes;
 
 type Props = {
@@ -27,6 +27,7 @@ export const RecommendationSearch = ({
   search,
 }: Props) => {
   const navigate = useNavigate();
+  const { authenticatedUser } = useAuthStore();
   const [hoverName, setHoverName] = useState(recommendations[0].name);
   const [lastEventWasKeyboard, setLastEventWasKeyboard] = useState(false);
 
@@ -39,7 +40,11 @@ export const RecommendationSearch = ({
       ]);
     }
     setEnterPressed(true);
-    navigate(`${USER}/${DISHES}/${dish.id}`);
+    navigate(
+      `${PrivateRoutes[
+        routeRole(authenticatedUser.role)
+      ].toString()}/${DETAIL_DISH(dish.id)}`,
+    );
   };
 
   useEffect(() => {

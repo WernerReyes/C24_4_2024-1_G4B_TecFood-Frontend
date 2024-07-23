@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useMatch } from "react-router-dom";
-import { Link } from "@/presentation/components";
+import { Link } from "@/presentation/core/components";
 
 type Props = {
   links: { label: string; url: string; onClick?: () => void }[];

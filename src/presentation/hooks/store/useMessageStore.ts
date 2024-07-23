@@ -14,6 +14,14 @@ export const useMessageStore = () => {
     dispatch(setMessages({ messages: [], type: "" as TypeMessage }));
   };
 
+  const startSetSuccessMessages = (messages: string[]) => {
+    startSetMessages(messages, TypeMessage.SUCCESS);
+  };
+
+  const startSetErrorMessages = (messages: string[]) => {
+    startSetMessages(messages, TypeMessage.ERROR);
+  };
+
   return {
     //* Attributes
     messages,
@@ -24,6 +32,8 @@ export const useMessageStore = () => {
     typeInfo: TypeMessage.INFO,
 
     //* Methods
+    startSetSuccessMessages,
+    startSetErrorMessages,
     startSetMessages,
     startClearMessages,
   };

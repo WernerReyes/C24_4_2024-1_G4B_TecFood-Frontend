@@ -85,6 +85,8 @@ export class DishService implements IDishService {
         "PUT",
         updateDishDto.toRequestBody,
       );
+
+      console.log("formData", updateDishDto.toRequestBody);
       return { ...data, dish: dishAdapter(data.dish) };
     } catch (error) {
       throw error;
@@ -119,7 +121,6 @@ export class DishService implements IDishService {
   public async updateImage(updateDishImageDto: UpdateDishImageDto) {
     try {
       const formData = updateDishImageDto.toFormData;
-      console.log(formData);
       const { data } = await httpRequest<
         UpdateDishImageResponse<DishImageEntity>
       >(this.prefix + "/image", "PUT", formData);

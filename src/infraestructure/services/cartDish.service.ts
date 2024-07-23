@@ -50,7 +50,6 @@ export class CartDishService implements ICartDishService {
 
       return { ...data, cart: data.cart.map(cartAdapter) };
     } catch (error) {
-      console.log("error", error);
       throw error;
     }
   }

@@ -12,6 +12,6 @@ export const RoleGuard = ({ roles }: Props) => {
   return roles.includes(authenticatedUser.role) ? (
     <Outlet />
   ) : (
-    <Navigate to={PublicRoutes.HOME} />
+    <Navigate to={PublicRoutes.LOGIN} />
   );
 };

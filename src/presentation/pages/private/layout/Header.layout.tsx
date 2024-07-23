@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { AlertOffers } from "@/presentation/components";
+import { AlertOffers } from "@/presentation/core/components";
 
 type Props = {
   children?: ReactNode;
@@ -15,7 +15,7 @@ export const HeaderLayout = ({
   return (
     <header
       id={scrollId}
-      className="sticky left-0 right-0 top-0 z-50 flex min-h-[80px] transform  flex-col border-b  bg-white   font-[sans-serif] shadow-md backdrop-blur-md backdrop-filter transition-transform duration-500 dark:border-slate-700 dark:bg-dashboard-dark dark:text-white"
+      className="sticky left-0 right-0 top-0 z-[999] flex min-h-[80px] transform  flex-col border-b  bg-white   font-[sans-serif] shadow-md backdrop-blur-md backdrop-filter transition-transform duration-500 dark:border-slate-700 dark:bg-dashboard-dark dark:text-white"
     >
       {visibleAlert && (
         <AlertOffers

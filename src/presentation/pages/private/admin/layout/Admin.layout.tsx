@@ -1,5 +1,5 @@
 import { RoleEnum } from "@/domain/entities";
-import { BreadCrumb, Image, Sidebar } from "@/presentation/components";
+import { BreadCrumb, Image, Sidebar } from "@/presentation/core/components";
 import { useThemeStore } from "@/presentation/hooks";
 import { ThemeLayout } from "@/presentation/layout";
 import { ChatBot } from "../../components";

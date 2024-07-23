@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { Divider, Image, Link } from "@/presentation/components";
+import { Divider, Image, Link } from "@/presentation/core/components";
 import { ThemeLayout } from "@/presentation/layout";
 import { GoogleAuth } from "../components";
 

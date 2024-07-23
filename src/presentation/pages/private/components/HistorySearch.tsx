@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { PrivateRoutes } from "@/presentation/routes";
-import { StorageKeys, setStorage } from "@/presentation/utilities";
+import { StorageKeys,  setStorage } from "@/presentation/utilities";
 import { useNavigate } from "react-router-dom";
-
+import { useAuthStore } from "@/presentation/hooks";
 
 const { HISTORY_SEARCH } = StorageKeys;
 
 const {
-  USER,
-  user: { DISHES },
+  common: { DETAIL_DISH },
 } = PrivateRoutes;
 
 type Props = {
@@ -24,6 +23,7 @@ export const HistorySearch = ({
   setHistorySearch,
 }: Props) => {
   const navigate = useNavigate();
+  const { routeRole } = useAuthStore();
   const [hoverHistory, setHoverHistory] = useState(histories[0]?.name);
   const [lastEventWasKeyboard, setLastEventWasKeyboard] = useState(false);
 
@@ -34,7 +34,7 @@ export const HistorySearch = ({
   };
 
   const handleNavigate = (id: number) => {
-    navigate(`${USER}/${DISHES}/${id}`);
+    navigate(`${routeRole}/${DETAIL_DISH(id)}`);
     setEnterPressed(true);
   };
 

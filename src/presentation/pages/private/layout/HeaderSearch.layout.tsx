@@ -1,4 +1,4 @@
-import { Dialog } from "@/presentation/components";
+import { Dialog } from "@/presentation/core/components";
 
 type Props = {
   visible: boolean;

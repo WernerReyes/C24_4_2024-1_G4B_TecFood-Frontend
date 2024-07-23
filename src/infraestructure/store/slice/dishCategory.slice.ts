@@ -17,6 +17,10 @@ export const dishCategorySlice = createSlice({
   name: "dishCategory",
   initialState,
   reducers: {
+    onLoadDishCategory(state, action: PayloadAction<DishCategoryModel>) {
+      return { ...state, dishCategory: action.payload, isLoading: false };
+    },
+
     onLoadDishCategories(state, action: PayloadAction<DishCategoryModel[]>) {
       return { ...state, dishCategories: action.payload, isLoading: false };
     },
@@ -35,4 +39,5 @@ export const {
   onLoadingDishCategory,
   onResetDishCategory,
   onLoadDishCategories,
+  onLoadDishCategory,
 } = dishCategorySlice.actions;

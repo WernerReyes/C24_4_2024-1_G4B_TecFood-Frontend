@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdateUserDto } from "@/domain/dtos";
-import { Button, InputText } from "@/presentation/components";
+import { Button, InputText } from "@/presentation/core/components";
 import { useAuthStore, useUserStore } from "@/presentation/hooks";
 
 export const ProfileForm = () => {
@@ -27,14 +27,14 @@ export const ProfileForm = () => {
           name="firstName"
           control={control}
           defaultValue={authenticatedUser.name}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <InputText
               {...field}
               label="First Name"
               className="dark:border-skeleton-dark"
               placeholder="Enter your first name"
-              error={!!errors[field.name]?.message}
-              smallDescription={errors[field.name]?.message}
+              error={!!error?.message}
+              smallDescription={error?.message}
             />
           )}
         />
@@ -43,14 +43,14 @@ export const ProfileForm = () => {
           name="lastName"
           control={control}
           defaultValue={authenticatedUser.lastname}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <InputText
               {...field}
               label="Last Name"
               className="dark:border-skeleton-dark"
               placeholder="Enter your last name"
-              error={!!errors[field.name]?.message}
-              smallDescription={errors[field.name]?.message}
+              error={!!error?.message}
+              smallDescription={error?.message}
             />
           )}
         />
@@ -67,15 +67,15 @@ export const ProfileForm = () => {
           name="phoneNumber"
           control={control}
           defaultValue={authenticatedUser.phone || ""}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <InputText
               {...field}
               type="number"
               label="Phone number"
               className="dark:border-skeleton-dark"
               placeholder="Enter your phone number"
-              error={!!errors[field.name]?.message}
-              smallDescription={errors[field.name]?.message}
+              error={!!error?.message}
+              smallDescription={error?.message}
             />
           )}
         />
@@ -84,12 +84,12 @@ export const ProfileForm = () => {
           name="dni"
           control={control}
           defaultValue={authenticatedUser.dni || ""}
-          render={({ field }) => (
+          render={({ field, fieldState: { error } }) => (
             <InputText
               {...field}
               label="Dni"
-              error={!!errors[field.name]?.message}
-              smallDescription={errors[field.name]?.message}
+              error={!!error?.message}
+              smallDescription={error?.message}
               className="dark:border-skeleton-dark"
               placeholder="Enter your Dni"
             />
@@ -102,7 +102,6 @@ export const ProfileForm = () => {
         label="Save changes"
         className="me-auto mt-8 w-full max-w-48 rounded-md  dark:text-slate-100"
         disabled={Object.keys(errors).length > 0}
-        // isLoading={isLoading}
       />
     </form>
   );

@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { InputSearch } from "@/presentation/components";
+import { InputSearch } from "@/presentation/core/components";
 import { HeaderSearchLayout } from "../layout";
 import { useDishStore } from "@/presentation/hooks";
 import type {  DishModel } from "@/model";

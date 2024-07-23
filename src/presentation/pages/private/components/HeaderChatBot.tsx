@@ -1,4 +1,4 @@
-import { type PanelHeaderTemplateOptions } from "@/presentation/components";
+import { type PanelHeaderTemplateOptions } from "@/presentation/core/components";
 import clsx from "clsx";
 
 interface PanelHeader extends PanelHeaderTemplateOptions {

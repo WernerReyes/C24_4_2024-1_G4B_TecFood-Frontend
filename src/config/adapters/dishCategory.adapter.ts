@@ -1,5 +1,6 @@
 import type { DishCategoryEntity } from "@/domain/entities";
 import type { DishCategoryModel } from "@/model";
+import { convertDateToShortString } from "@/presentation/utilities";
 
 export const dishCategoryAdapter = (
   dishCategotyEntity: DishCategoryEntity,
@@ -7,7 +8,8 @@ export const dishCategoryAdapter = (
   return {
     id: dishCategotyEntity.id,
     name: dishCategotyEntity.name,
-    createdAt: new Date(dishCategotyEntity.createdAt),
-    updatedAt: new Date(dishCategotyEntity.updatedAt),
+    imageUrl: dishCategotyEntity.imageUrl,
+    createdAt: convertDateToShortString(dishCategotyEntity.createdAt),
+    updatedAt: convertDateToShortString(dishCategotyEntity.updatedAt),
   };
 };

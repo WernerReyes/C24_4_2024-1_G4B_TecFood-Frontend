@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PaginatorPageChangeEvent } from "../components";
+import { PaginatorPageChangeEvent } from "../core/components";
 
 export const usePaginator = (initialLimit: number) => {
   const [currentPage, setCurrentPage] = useState<number>(1);

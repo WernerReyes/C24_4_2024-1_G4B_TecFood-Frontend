@@ -19,9 +19,12 @@ import {
 import {
   StorageKeys,
   clearStorage,
+  routeRole,
   setStorage,
 } from "@/presentation/utilities";
 import { useMessageStore } from "./useMessageStore";
+import { RoleEnum } from "@/domain/entities";
+import { PrivateRoutes } from "@/presentation/routes";
 
 const { TOKEN } = StorageKeys;
 
@@ -116,6 +119,9 @@ export const useAuthStore = () => {
   return {
     //* Attributes
     authenticatedUser,
+    isUser: authenticatedUser?.role === RoleEnum.ROLE_USER,
+    isAdmin: authenticatedUser?.role === RoleEnum.ROLE_ADMIN,
+    routeRole: PrivateRoutes[routeRole(authenticatedUser?.role)].toString(),
     isAuthenticate: status === AuthStatus.AUTHENTICATE,
     isLoading: status === AuthStatus.CHECKING,
     status,

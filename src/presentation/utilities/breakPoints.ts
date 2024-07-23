@@ -1,4 +1,4 @@
-import { GalleriaResponsiveOptions } from "../components";
+import { GalleriaResponsiveOptions } from "../core/components";
 
 type Props = {
   slidesPerViewSm?: number;

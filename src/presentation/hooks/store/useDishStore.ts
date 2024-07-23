@@ -148,7 +148,7 @@ export const useDishStore = () => {
     getDishesDto.validate();
 
     dispatch(onLoadingDish());
-    dishRepositoryImpl
+    await dishRepositoryImpl
       .getAll(getDishesDto)
       .then((data) => {
         dispatch(
@@ -169,7 +169,7 @@ export const useDishStore = () => {
         onLoadDishesToSearch(getStorage<DishModel[]>(DISHES_TO_SEARCH)!),
       );
     }
-    dishRepositoryImpl
+    await dishRepositoryImpl
       .getAllToSearch()
       .then((data) => {
         dispatch(onLoadDishesToSearch(data.dishes));
@@ -184,7 +184,7 @@ export const useDishStore = () => {
     getDishesWithoutSelectedDishDto.validate();
 
     dispatch(onLoadingDish());
-    dishRepositoryImpl
+    await dishRepositoryImpl
       .getAllWithoutSelectedDish(getDishesWithoutSelectedDishDto)
       .then((data) => {
         dispatch(onLoadDishesWithoutSelectedDish(data.dishes));
@@ -196,7 +196,7 @@ export const useDishStore = () => {
 
   const startLoadingDishById = async (id: number) => {
     dispatch(onLoadingDish());
-    dishRepositoryImpl
+    await dishRepositoryImpl
       .getById(id)
       .then(({ dish }) => dispatch(onLoadDish(dish)))
       .catch(console.error);

@@ -6,7 +6,7 @@ import {
   FileUploadRef,
   FileUploadSelectEvent,
   Image,
-} from "@/presentation/components";
+} from "@/presentation/core/components";
 import { useAuthStore, useUserStore } from "@/presentation/hooks";
 
 const MAX_FILE_SIZE = 5000000;

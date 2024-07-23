@@ -1,6 +1,6 @@
 import { useState } from "react";
 import clsx from "clsx";
-import { Button } from "@/presentation/components";
+import { Button } from "@/presentation/core/components";
 
 const ICON_DEFAULT_CLASSNAME =
   "relative z-10 cursor-pointer text-2xl transition-all hover:text-red-500";

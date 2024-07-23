@@ -1,4 +1,4 @@
-import { Avatar } from "@/presentation/components";
+import { Avatar } from "@/presentation/core/components";
 import { forwardRef } from "react";
 
 
