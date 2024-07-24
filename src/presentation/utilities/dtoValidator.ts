@@ -1,9 +1,9 @@
 import { ZodError, ZodType } from "zod";
 import { errorMessage } from "./sonnerManager";
 
-export const dtoValidator = <T>(dto: T, schema: ZodType<any>): void => {
+export const dtoValidator = <T>(dto: T, schema: ZodType<T>): void => {
   try {
-     schema.parse(dto) as T;
+     schema.parse(dto);
   } catch (error) {
     if (error instanceof ZodError)
       errorMessage(error.errors.map((error) => error.message));

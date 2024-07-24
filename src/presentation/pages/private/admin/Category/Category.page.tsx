@@ -12,7 +12,7 @@ import {
 import { AdminLayout } from "../layout";
 import { useDishCategoryStore } from "@/presentation/hooks";
 import type { DishCategoryModel } from "@/model";
-import { AddCategoryDialog } from "./components";
+import { CategoryDialog } from "./components";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -22,12 +22,22 @@ const CategoryPage = () => {
     DishCategoryModel[]
   >([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
-  const [addCategoryDialog, setAddCategoryDialog] = useState(false);
+  const [showCategoryDialog, setShowCategoryDialog] = useState(false);
+  const [currentCategory, setCurrentCategory] =
+    useState<DishCategoryModel | null>(null);
   const dt = useRef<DataTableRef>(null);
 
   useEffect(() => {
     startLoadingDishCategories();
   }, []);
+
+  useEffect(() => {
+    if (currentCategory) {
+      setShowCategoryDialog(true);
+    } else {
+      setShowCategoryDialog(false);
+    }
+  }, [currentCategory]);
 
   return (
     <AdminLayout>
@@ -49,7 +59,7 @@ const CategoryPage = () => {
                 icon="pi pi-plus"
                 severity="success"
                 className="bg-transparent dark:text-white"
-                onClick={() => setAddCategoryDialog(true)}
+                onClick={() => setShowCategoryDialog(true)}
               />
               <Button
                 label="Delete"
@@ -62,9 +72,7 @@ const CategoryPage = () => {
           )}
         />
         <DataTable
-          editMode="row"
           ref={dt}
-          onRowEditComplete={(e) => console.log(e)}
           value={dishCategories}
           selection={selectedCategories}
           onSelectionChange={(
@@ -112,12 +120,42 @@ const CategoryPage = () => {
           />
           <Column field="createdAt" header="Created At" sortable />
           <Column field="updatedAt" header="Updated At" sortable />
-          <Column rowEditor showAddButton exportable={false} />
+          <Column
+            body={(category: DishCategoryModel) => (
+              <div className="flex items-center justify-evenly gap-x-4">
+                <Button
+                  unstyled
+                  icon="pi pi-pencil"
+                  rounded
+                  outlined
+                  onClick={() => setCurrentCategory(category)}
+                />
+                <Button
+                  unstyled
+                  icon="pi pi-trash"
+                  rounded
+                  outlined
+                  severity="danger"
+                  // onClick={() => {
+                  //   setConfirmDialog({
+                  //     visible: true,
+                  //     message:
+                  //       "Are you sure you want to delete: " + dish.name + "?",
+                  //     dishId: dish.id,
+                  //   });
+                  // }}
+                />
+              </div>
+            )}
+            exportable={false}
+          ></Column>
         </DataTable>
 
-        <AddCategoryDialog
-          visible={addCategoryDialog}
-          onHide={() => setAddCategoryDialog(false)}
+        <CategoryDialog
+          currentCategory={currentCategory}
+          visible={showCategoryDialog}
+          onHide={() => setShowCategoryDialog(false)}
+          setCurrentCategory={setCurrentCategory}
         />
       </div>
     </AdminLayout>

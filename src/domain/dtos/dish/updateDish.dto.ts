@@ -1,9 +1,12 @@
-import { z } from "zod";
 import type { DishCategoryModel } from "@/model";
-import { DishDto } from "./dish.dto";
 import { dtoValidator } from "@/presentation/utilities";
+import { z, ZodSchema } from "zod";
+import { DishDto, DishDtoModel, DishDtoSchema } from "./dish.dto";
 
-export class UpdateDishDto extends DishDto {
+interface UpdateDishDtoModel extends DishDtoModel {
+  readonly dishId: number;
+}
+export class UpdateDishDto extends DishDto implements UpdateDishDtoModel {
   constructor(
     public readonly dishId: number,
     public readonly name: string,
@@ -30,12 +33,14 @@ export class UpdateDishDto extends DishDto {
     };
   }
 
-  public static get schema() {
-    return z.object({
-      dishId: z.number({
-        message: "dishId must be a number greater than or equal to 0",
-      }),
-      ...super.schema.shape,
-    });
+  public static get schema(): ZodSchema<UpdateDishDtoModel> {
+    return UpdateDishDtoSchema;
   }
 }
+
+const UpdateDishDtoSchema = z.object({
+  dishId: z.number({
+    message: "Dish id is required",
+  }),
+  ...DishDtoSchema.shape,
+});

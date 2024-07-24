@@ -1,6 +1,11 @@
-import { DishCategoryDto } from "./dishCategory.dto";
+import { DishCategoryDto, type DishCategoryDtoModel } from "./dishCategory.dto";
 
-export class CreateDishCategoryDto extends DishCategoryDto {
+interface CreateDishCategoryDtoModel extends DishCategoryDtoModel {}
+
+export class CreateDishCategoryDto
+  extends DishCategoryDto
+  implements CreateDishCategoryDtoModel
+{
   constructor(public readonly name: string) {
     super(name);
   }

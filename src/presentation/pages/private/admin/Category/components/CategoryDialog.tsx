@@ -1,6 +1,6 @@
+import { useEffect, useState } from "react";
 import { Button, Dialog, InputText } from "@/presentation/core/components";
 import { UploadDishImages } from "../../components";
-import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -9,16 +9,25 @@ import {
   UploadImageDto,
 } from "@/domain/dtos";
 import { useDishCategoryStore, useMessageStore } from "@/presentation/hooks";
+import { DishCategoryModel } from "@/model";
 
 type Props = {
+  currentCategory: DishCategoryModel | null;
+  setCurrentCategory: (category: DishCategoryModel | null) => void;
   visible: boolean;
   onHide: () => void;
 };
 
-export const AddCategoryDialog = ({ visible, onHide }: Props) => {
+export const CategoryDialog = ({
+  currentCategory,
+  setCurrentCategory,
+  visible,
+  onHide,
+}: Props) => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<DishCategoryDto>({
     resolver: zodResolver(DishCategoryDto.schema),
@@ -31,37 +40,65 @@ export const AddCategoryDialog = ({ visible, onHide }: Props) => {
   } | null>(null);
   const [uploadedSuccess, setUploadedSuccess] = useState(false);
 
-  const handleCreateCategory = (dishCategoryDto: DishCategoryDto) => {
+  const handleSaveCategory = (dishCategoryDto: DishCategoryDto) => {
     if (!file) return startSetErrorMessages(["Image is required"]);
 
-    const createDishCategoryDto = new CreateDishCategoryDto(
-      dishCategoryDto.name,
-    );
-    const uploadImageDto = new UploadImageDto(file.file);
-    startCreatingDishCategory(createDishCategoryDto, uploadImageDto).then(
-      () => {
-        setUploadedSuccess(true);
-        onHide();
-      },
-    );
+    if (currentCategory) {
+      // update
+    } else {
+      const createDishCategoryDto = new CreateDishCategoryDto(
+        dishCategoryDto.name,
+      );
+      const uploadImageDto = new UploadImageDto(file.file);
+      startCreatingDishCategory(createDishCategoryDto, uploadImageDto).then(
+        () => {
+          setUploadedSuccess(true);
+          onHide();
+        },
+      );
+    }
   };
+
+  useEffect(() => {
+    console.log("currentCategory", currentCategory);
+    if (currentCategory) {
+      reset({
+        name: currentCategory.name,
+      });
+    } else
+      reset({
+        name: "",
+      });
+  }, [currentCategory]);
 
   return (
     <Dialog
       visible={visible}
-      onHide={onHide}
+      onHide={() => {
+        if (!visible) return;
+        onHide();
+        setCurrentCategory(null);
+      }}
       className="h-[75%] w-[75%] max-w-screen-md"
     >
       <div className="flex justify-center">
         <UploadDishImages
+          image={
+            currentCategory
+              ? {
+                  id: currentCategory.id,
+                  url: currentCategory.imageUrl,
+                }
+              : undefined
+          }
           size="medium"
           setFile={setFile}
           uploadedSuccess={uploadedSuccess}
         />
       </div>
       <form
-        className="mx-20 mt-4 flex flex-col space-y-4"
-        onSubmit={handleSubmit(handleCreateCategory)}
+        className="mt-4 flex flex-col space-y-4 md:mx-20"
+        onSubmit={handleSubmit(handleSaveCategory)}
       >
         <Controller
           name="name"

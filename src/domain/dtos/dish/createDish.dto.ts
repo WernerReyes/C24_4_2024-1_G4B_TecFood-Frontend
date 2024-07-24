@@ -1,7 +1,9 @@
 import type { DishCategoryModel } from "@/model";
-import { DishDto } from "./dish.dto";
+import { DishDto, type DishDtoModel } from "./dish.dto";
 
-export class CreateDishDto extends DishDto {
+interface CreateDishDtoModel extends DishDtoModel {}
+
+export class CreateDishDto extends DishDto implements CreateDishDtoModel {
   constructor(
     public readonly name: string,
     public readonly description: string,
