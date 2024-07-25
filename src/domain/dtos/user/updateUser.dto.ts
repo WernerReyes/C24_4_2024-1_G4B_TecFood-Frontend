@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { dtoValidator, regularExpressions } from "@/presentation/utilities";
 
+const { DNI, PHONE } = regularExpressions;
+
 type UpdateUserDtoModel = {
   readonly firstName: string;
   readonly lastName: string;
@@ -8,7 +10,6 @@ type UpdateUserDtoModel = {
   readonly dni?: string;
 };
 
-const { DNI, PHONE } = regularExpressions;
 export class UpdateUserDto implements UpdateUserDtoModel {
   private constructor(
     public readonly firstName: string,

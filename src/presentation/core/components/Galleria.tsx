@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
 import { Image } from "./Image";
 
+
 type Props = {
   images: string[];
   onLoad: () => void;
@@ -14,19 +15,17 @@ export const Galleria = ({ images, onLoad }: Props) => {
   return (
     <div>
       <Swiper
-        loop={true}
+        loop
         spaceBetween={10}
-        navigation={true}
+        navigation
         thumbs={{
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
         modules={[FreeMode, Navigation, Thumbs]}
-        
+        className="mySwiper2"
       >
         {images.map((image, index) => (
-          <SwiperSlide
-         
-           key={index}>
+          <SwiperSlide key={index}>
             <Image
               src={image}
               onLoad={onLoad}
@@ -38,11 +37,11 @@ export const Galleria = ({ images, onLoad }: Props) => {
       {images.length > 1 && (
         <Swiper
           onSwiper={setThumbsSwiper}
-          loop={true}
+          loop
           spaceBetween={10}
           slidesPerView={4}
-          freeMode={true}
-          watchSlidesProgress={true}
+          freeMode
+          watchSlidesProgress
           modules={[FreeMode, Navigation, Thumbs]}
           className="mySwiper"
         >
