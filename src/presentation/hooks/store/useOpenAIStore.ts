@@ -10,7 +10,9 @@ import {
   onSetAvailableChat,
   type AppState,
 } from "@/infraestructure/store";
-import { getStorage } from "@/presentation/utilities";
+import { getStorage, StorageKeys } from "@/presentation/utilities";
+
+const { CHAT_MESSAGES } = StorageKeys;
 
 const openAIService = new OpenAIService();
 const openAIRepositoryImpl = new OpenAIRepositoryImpl(openAIService);
@@ -24,8 +26,8 @@ export const useOpenAIStore = () => {
   const startGetGreetUser = async () => {
     dispatch(onLoadingopenIA());
 
-    if (getStorage("chatMessages"))
-      return dispatch(onLoadChatMessages(getStorage("chatMessages")!));
+    if (getStorage(CHAT_MESSAGES))
+      return dispatch(onLoadChatMessages(getStorage(CHAT_MESSAGES)!));
     openAIRepositoryImpl
       .greetUser()
       .then(({ data }) => {

@@ -19,31 +19,8 @@ export const userSlice = createSlice({
       return { ...state, user: action.payload, isLoading: false };
     },
 
-    onLoadProfile: (state, action: PayloadAction<string>) => {
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          img: action.payload,
-        },
-        isLoading: false,
-      };
-    },
-
-    onUpdateUser: (state, action: PayloadAction<UserModel>) => {
-      return { ...state, user: action.payload, isLoading: false };
-    },
-
-    deleteUser: (state) => {
-      return { ...state, user: userEmptyState, isLoading: false };
-    },
-
     onLoadUsers: (state, action: PayloadAction<UserModel[]>) => {
       return { ...state, users: action.payload, isLoading: false };
-    },
-
-    onResetUser: (state) => {
-      return { ...state, user: userEmptyState, users: [] };
     },
 
     onLoadingUsers: (state) => {
@@ -52,11 +29,4 @@ export const userSlice = createSlice({
   },
 });
 
-export const {
-  onUpdateUser,
-  onLoadProfile,
-  deleteUser,
-  onLoadUsers,
-  onLoadingUsers,
-  onLoadUser,
-} = userSlice.actions;
+export const { onLoadUsers, onLoadingUsers, onLoadUser } = userSlice.actions;

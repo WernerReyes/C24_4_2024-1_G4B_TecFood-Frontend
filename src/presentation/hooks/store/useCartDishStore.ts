@@ -1,17 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { CartDishRepositoryImpl } from "@/infraestructure/repositories";
+import { CartDishService } from "@/infraestructure/services";
 import {
   type AppState,
-  onAddOneDish,
-  onDeleteOneDish,
   onLoadCartDish,
   onLoadCartDishItem,
-  onLoadTotalDishesByUser,
+  onLoadTotalQuantity,
   onLoadingCartDish,
-  onDeleteAllDishes,
-  onResetCartDish,
+  onResetCartDish
 } from "@/infraestructure/store";
-import { CartDishService } from "@/infraestructure/services";
 import { useMessageStore } from "../";
 
 const cartDishService = new CartDishService();
@@ -29,7 +26,7 @@ export const useCartStore = () => {
     cartDishRepositoryImpl
       .addOneDish(dishId)
       .then(({ message, status }) => {
-        dispatch(onAddOneDish());
+        dispatch(onLoadTotalQuantity(totalQuantity + 1));
         startSetMessages([message], status);
       })
       .catch((error) => {
@@ -41,7 +38,7 @@ export const useCartStore = () => {
     dispatch(onLoadingCartDish());
     cartDishRepositoryImpl
       .deleteOneDish(dishId)
-      .then(() => dispatch(onDeleteOneDish()))
+      .then(() => dispatch(onLoadTotalQuantity(totalQuantity - 1)))
       .catch((error) => {
         throw error;
       });
@@ -52,7 +49,7 @@ export const useCartStore = () => {
     cartDishRepositoryImpl
       .deleteAllDishes(cartId)
       .then(({ data }) => {
-        dispatch(onDeleteAllDishes(data));
+        dispatch(onLoadTotalQuantity(totalQuantity - data));
       })
       .catch((error) => {
         throw error;
@@ -93,7 +90,7 @@ export const useCartStore = () => {
     dispatch(onLoadingCartDish());
     cartDishRepositoryImpl
       .getTotalDishesByUser()
-      .then(({ data }) => dispatch(onLoadTotalDishesByUser(data)))
+      .then(({ data }) => dispatch(onLoadTotalQuantity(data)))
       .catch((error) => {
         throw error;
       });

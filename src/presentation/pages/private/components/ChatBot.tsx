@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from "react";
+import clsx from "clsx";
 import { ChatDto } from "@/domain/dtos";
-import { OpenAIRoleEnum } from "@/domain/entities";
 import {
   ChangeTheme,
   Image,
@@ -8,10 +9,9 @@ import {
   SpinnerMessage,
 } from "@/presentation/core/components";
 import { useOpenAIStore } from "@/presentation/hooks";
-import clsx from "clsx";
 import DOMPurify from "dompurify";
-import { useEffect, useRef, useState } from "react";
 import { ChatBotResponse, FooterChatBot, HeaderChatBot } from "./";
+import { OpenAIRoleEnum } from "@/domain/entities";
 
 type Props = {
   to: string;

@@ -3,7 +3,7 @@ import { UserRepositoryImpl } from "@/infraestructure/repositories";
 import { UserService } from "@/infraestructure/services";
 import {
   type AppState,
-  onLoadProfile,
+  onLoadUser,
   onLoadingUsers,
 } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,8 +34,9 @@ export const useUserStore = () => {
 
     await userRepositoryImpl
       .update(updateUserDto)
-      .then(({ message, status }) => {
+      .then(({ message, status, data }) => {
         startSetMessages([message], status);
+        dispatch(onLoadUser(data));
       })
       .catch((error) => {
         throw error;
@@ -50,11 +51,16 @@ export const useUserStore = () => {
     await userRepositoryImpl
       .uploadProfile(uploadImageDto)
       .then(({ data, message, status }) => {
-        dispatch(onLoadProfile(data));
+        dispatch(
+          onLoadUser({
+            ...user,
+            img: data,
+          }),
+        );
         startSetMessages([message], status);
       })
       .catch((error) => {
-        dispatch(onLoadProfile(""));
+        dispatch(onLoadUser(user));
         throw error;
       });
   };

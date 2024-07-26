@@ -1,8 +1,4 @@
-export enum OpenAIRoleEnum {
-  USER = "user",
-  ASSISTANT = "assistant",
-  SYSTEM = "system",
-}
+import type { OpenAIRoleEnum } from "@/domain/entities";
 
 export type Message = {
   role: OpenAIRoleEnum;

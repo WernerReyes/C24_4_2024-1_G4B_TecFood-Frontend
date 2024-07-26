@@ -26,28 +26,8 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    onAddOneDish(state) {
-      return {
-        ...state,
-        isLoading: false,
-        totalQuantity: state.totalQuantity + 1,
-      };
-    },
-
-    onDeleteOneDish(state) {
-      return {
-        ...state,
-        isLoading: false,
-        totalQuantity: state.totalQuantity - 1,
-      };
-    },
-
-    onDeleteAllDishes(state, action: PayloadAction<number>) {
-      return {
-        ...state,
-        isLoading: false,
-        totalQuantity: state.totalQuantity - action.payload,
-      };
+    onLoadTotalQuantity: (state, action: PayloadAction<number>) => {
+      return { ...state, totalQuantity: action.payload, isLoading: false };
     },
 
     onLoadCartDish(state, action: PayloadAction<onLoadCartDishType>) {
@@ -57,10 +37,6 @@ export const cartSlice = createSlice({
 
     onLoadCartDishItem(state, action: PayloadAction<CartDishModel>) {
       return { ...state, cartItem: action.payload, isLoading: false };
-    },
-
-    onLoadTotalDishesByUser(state, action: PayloadAction<number>) {
-      return { ...state, totalQuantity: action.payload, isLoading: false };
     },
 
     onResetCartDish: () => {
@@ -77,9 +53,7 @@ export const {
   onLoadingCartDish,
   onLoadCartDish,
   onLoadCartDishItem,
-  onAddOneDish,
-  onDeleteOneDish,
-  onLoadTotalDishesByUser,
-  onDeleteAllDishes,
+
   onResetCartDish,
+  onLoadTotalQuantity,
 } = cartSlice.actions;

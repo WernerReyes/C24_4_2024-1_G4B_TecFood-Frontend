@@ -1,4 +1,4 @@
-import { ApiResponseStatus } from "@/config/api";
+import { ApiResponseStatus } from "@/domain/dtos";
 import { toast } from "sonner";
 
 export const showMessage = (type: ApiResponseStatus, message: string[]) => {

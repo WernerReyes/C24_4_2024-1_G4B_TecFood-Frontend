@@ -4,7 +4,7 @@ import {
   UploadImageDto,
   UploadImageDtoSchema,
   type UploadImageDtoModel,
-} from "../requests/common";
+} from "../common";
 
 interface UpdateDishImageDtoModel extends UploadImageDtoModel {
   readonly dishId: number;
