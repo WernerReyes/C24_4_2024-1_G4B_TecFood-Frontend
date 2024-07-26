@@ -28,9 +28,9 @@ export const useOpenAIStore = () => {
       return dispatch(onLoadChatMessages(getStorage("chatMessages")!));
     openAIRepositoryImpl
       .greetUser()
-      .then(({ choices, id }) => {
-        if (id !== "Error") dispatch(onSetAvailableChat());
-        dispatch(onAddChatMessage(choices[0].message));
+      .then(({ data }) => {
+        if (data.id !== "Error") dispatch(onSetAvailableChat());
+        dispatch(onAddChatMessage(data.choices[0].message));
       })
       .catch((error) => {
         throw error;
@@ -44,9 +44,9 @@ export const useOpenAIStore = () => {
     dispatch(onAddChatMessage(chatDto.messages[chatDto.messages.length - 1]));
     openAIRepositoryImpl
       .chat(chatDto)
-      .then(({ choices, id }) => {
-        if (id !== "Error") dispatch(onSetAvailableChat());
-        dispatch(onAddChatMessage(choices[0].message));
+      .then(({ data }) => {
+        if (data.id !== "Error") dispatch(onSetAvailableChat());
+        dispatch(onAddChatMessage(data.choices[0].message));
       })
       .catch((error) => {
         throw error;

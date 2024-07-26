@@ -1,22 +1,18 @@
-import type {
-  LoginGoogleResponse,
-  LoginResponse,
-  UserModel,
-  RegisterResponse,
-  RevalidateTokenResponse,
-} from "@/model";
+import type { UserModel } from "@/model";
 import type {
   LoginGoogleDto,
   LoginDto,
   RegisterDto,
+  ApiResponse,
+  LoginResponse,
 } from "../dtos";
 export abstract class AuthRepository {
   abstract loginGoogle(
     loginGoogleDto: LoginGoogleDto,
-  ): Promise<LoginGoogleResponse<UserModel>>;
-  abstract login(loginDto: LoginDto): Promise<LoginResponse<UserModel>>;
-  abstract register(
-    registerDto: RegisterDto,
-  ): Promise<RegisterResponse>;
-  abstract revalidateToken(): Promise<RevalidateTokenResponse<UserModel>>;
+  ): Promise<ApiResponse<LoginResponse<UserModel>>>;
+  abstract login(
+    loginDto: LoginDto,
+  ): Promise<ApiResponse<LoginResponse<UserModel>>>;
+  abstract register(registerDto: RegisterDto): Promise<ApiResponse<void>>;
+  abstract revalidateToken(): Promise<ApiResponse<UserModel>>;
 }

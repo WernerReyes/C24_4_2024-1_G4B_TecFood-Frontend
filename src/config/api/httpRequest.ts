@@ -1,12 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { getEnvs } from "@/presentation/utilities";
 import { setupInterceptors } from "./interceptors";
-
-type ResponseData<T> = {
-  data: T;
-  status: number;
-  statusText: string;
-};
+import type { ApiResponse } from "@/domain/dtos";
 
 type Methods = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -17,17 +12,20 @@ export const httpRequest = async <T>(
   method: Methods,
   data?: any,
   options?: AxiosRequestConfig,
-): Promise<ResponseData<T>> => {
+): Promise<ApiResponse<T>> => {
   try {
-    const response: AxiosResponse<T> = await axios(`${baseURL}${url}`, {
-      method,
-      ...options,
-      data,
-    });
+    const response: AxiosResponse<ApiResponse<T>> = await axios(
+      `${baseURL}${url}`,
+      {
+        method,
+        ...options,
+        data,
+      },
+    );
     return {
-      data: response.data,
-      status: response.status,
-      statusText: response.statusText,
+      data: response.data.data,
+      status: response.data.status,
+      message: response.data.message,
     };
   } catch (error) {
     throw error;

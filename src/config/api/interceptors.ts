@@ -1,8 +1,16 @@
 import axios, { AxiosInstance } from "axios";
 import daysjs from "dayjs";
-import type { LoginUserResponse } from "@/infraestructure/services";
-import { errorMessage, getEnvs, getStorage } from "@/presentation/utilities";
+import {
+  errorMessage,
+  getEnvs,
+  getStorage,
+  setStorage,
+  StorageKeys,
+} from "@/presentation/utilities";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import type { ApiResponse } from "@/domain/dtos";
+
+const { TOKEN } = StorageKeys;
 
 const { VITE_API_URL } = getEnvs();
 
@@ -13,7 +21,9 @@ const axiosInstanceForTokenRenewal = axios.create({
 export const setupInterceptors = (axiosInstance: AxiosInstance) => {
   //* Token refresh interceptor
   axiosInstance.interceptors.request.use(async (req) => {
-    let token = getStorage<string>("token") ? getStorage<string>("token") : null;
+    let token = getStorage<string>("token")
+      ? getStorage<string>("token")
+      : null;
 
     if (token) {
       const user = jwtDecode<JwtPayload>(token);
@@ -24,12 +34,14 @@ export const setupInterceptors = (axiosInstance: AxiosInstance) => {
         return req;
       }
 
-      const { data } =
-        await axiosInstanceForTokenRenewal.post<LoginUserResponse>(
-          `/auth/renovate-token?expiredToken=${token}`,
-        );
-      token = data.token;
+      const {
+        data: { data },
+      } = await axiosInstanceForTokenRenewal.post<ApiResponse<string>>(
+        `/auth/renovate-token?expiredToken=${token}`,
+      );
+      token = data;
       req.headers.Authorization = `Bearer ${token}`;
+      setStorage(TOKEN, token);
     }
 
     return req;

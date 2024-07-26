@@ -7,5 +7,3 @@ export * from "./orderDish.model";
 export * from "./orderDishItem.model";
 export * from "./payment.model";
 export * from "./dishImage.model";
-
-export * from "./responses";

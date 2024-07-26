@@ -1,10 +1,10 @@
 import type {
-  GetOrderDishItemByOrderResponse,
-  OrderDishItemModel,
+  OrderDishItemModel
 } from "@/model";
+import type { ApiResponse } from "../dtos";
 
 export abstract class OrderDishItemRepository {
   abstract getOrderDishItemByOrder(
     orderId: number,
-  ): Promise<GetOrderDishItemByOrderResponse<OrderDishItemModel>>;
+  ): Promise<ApiResponse<OrderDishItemModel[]>>;;
 }

@@ -1,50 +1,43 @@
-import type { DishEntity, DishImageEntity } from "@/domain/entities";
+import { dishAdapter, dishImageAdapter } from "@/config/adapters";
+import { httpRequest } from "@/config/api";
 import type {
-  CreateDishResponse,
-  DeleteDishResponse,
-  DishImageModel,
-  DishModel,
-  GetDishByIdResponse,
-  GetDishesResponse,
-  GetDishesToSearchResponse,
-  GetDishesWithoutSelectedDishResponse,
-  UpdateDishImageResponse,
-  UpdateDishResponse,
-} from "@/model";
-import type {
+  ApiResponse,
   CreateDishDto,
   GetDishesDto,
   GetDishesWithoutSelectedDishDto,
+  PagedResponse,
   UpdateDishDto,
   UpdateDishImageDto,
   UploadImageDto,
 } from "@/domain/dtos";
-import { dishAdapter, dishImageAdapter } from "@/config/adapters";
-import { httpRequest } from "@/config/api";
+import type { DishEntity, DishImageEntity } from "@/domain/entities";
+import type { DishImageModel, DishModel } from "@/model";
 import {
-  convertToRequestParam,
-  convertArrayToRequestParam,
   concatRequestParams,
+  convertArrayToRequestParam,
   convertSimpleArrayToRequestParam,
+  convertToRequestParam,
 } from "@/presentation/utilities";
 
 interface IDishService {
   create(
     createDishDto: CreateDishDto,
     uploadDishImages: UploadImageDto,
-  ): Promise<CreateDishResponse<DishModel>>;
-  update(updateDishDto: UpdateDishDto): Promise<UpdateDishResponse<DishModel>>;
+  ): Promise<ApiResponse<DishModel>>;
+  update(updateDishDto: UpdateDishDto): Promise<ApiResponse<DishModel>>;
   updateImage(
     updateDishImageDto: UpdateDishImageDto,
-  ): Promise<UpdateDishImageResponse<DishImageModel>>;
-  delete(id: number): Promise<DeleteDishResponse>;
-  deleteMany(ids: number[]): Promise<DeleteDishResponse>;
-  getAll(getDishesDto: GetDishesDto): Promise<GetDishesResponse<DishModel>>;
-  getAllToSearch(): Promise<GetDishesToSearchResponse<DishModel>>;
+  ): Promise<ApiResponse<DishImageModel[]>>;
+  delete(id: number): Promise<ApiResponse<void>>;
+  deleteMany(ids: number[]): Promise<ApiResponse<void>>;
+  getAllPaginated(
+    getDishesDto: GetDishesDto,
+  ): Promise<ApiResponse<PagedResponse<DishModel[]>>>;
+  getAll(): Promise<ApiResponse<DishModel[]>>;
   getAllWithoutSelectedDish(
     getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
-  ): Promise<GetDishesWithoutSelectedDishResponse<DishModel>>;
-  getById(id: number): Promise<GetDishByIdResponse<DishModel>>;
+  ): Promise<ApiResponse<DishModel[]>>;
+  getById(id: number): Promise<ApiResponse<DishModel>>;
 }
 
 export class DishService implements IDishService {
@@ -67,12 +60,13 @@ export class DishService implements IDishService {
         formData.append(key, value),
       );
 
-      const { data } = await httpRequest<CreateDishResponse<DishEntity>>(
+      const { data, ...rest } = await httpRequest<DishEntity>(
         this.prefix,
         "POST",
         formData,
       );
-      return { ...data, dish: dishAdapter(data.dish) };
+
+      return { ...rest, data: dishAdapter(data) };
     } catch (error) {
       throw error;
     }
@@ -80,14 +74,13 @@ export class DishService implements IDishService {
 
   public async update(updateDishDto: UpdateDishDto) {
     try {
-      const { data } = await httpRequest<UpdateDishResponse<DishEntity>>(
+      const { data, ...rest } = await httpRequest<DishEntity>(
         this.prefix + "/update",
         "PUT",
         updateDishDto.toRequestBody,
       );
 
-      console.log("formData", updateDishDto.toRequestBody);
-      return { ...data, dish: dishAdapter(data.dish) };
+      return { ...rest, data: dishAdapter(data) };
     } catch (error) {
       throw error;
     }
@@ -95,11 +88,7 @@ export class DishService implements IDishService {
 
   public async delete(id: number) {
     try {
-      const { data } = await httpRequest<DeleteDishResponse>(
-        this.prefix + "/" + id,
-        "DELETE",
-      );
-      return { ...data };
+      return await httpRequest<void>(this.prefix + "/" + id, "DELETE");
     } catch (error) {
       throw error;
     }
@@ -108,12 +97,11 @@ export class DishService implements IDishService {
   public async deleteMany(ids: number[]) {
     try {
       const requestParamIds = convertSimpleArrayToRequestParam(ids, "dishesId");
-      const requestParams = concatRequestParams([requestParamIds]);;
-      const { data } = await httpRequest<DeleteDishResponse>(
+      const requestParams = concatRequestParams([requestParamIds]);
+      return await httpRequest<void>(
         this.prefix + "/delete-many" + requestParams,
         "DELETE",
       );
-      return { ...data };
     } catch (error) {
       throw error;
     }
@@ -121,16 +109,22 @@ export class DishService implements IDishService {
   public async updateImage(updateDishImageDto: UpdateDishImageDto) {
     try {
       const formData = updateDishImageDto.toFormData;
-      const { data } = await httpRequest<
-        UpdateDishImageResponse<DishImageEntity>
-      >(this.prefix + "/image", "PUT", formData);
-      return { ...data, dishImages: data.dishImages.map(dishImageAdapter) };
+      const { data, ...rest } = await httpRequest<DishImageEntity[]>(
+        this.prefix + "/image",
+        "PUT",
+        formData,
+      );
+      return { ...rest, data: data.map(dishImageAdapter) };
     } catch (error) {
       throw error;
     }
   }
 
-  public async getAll({ priceRange, idCategory, ...rest }: GetDishesDto) {
+  public async getAllPaginated({
+    priceRange,
+    idCategory,
+    ...rest
+  }: GetDishesDto) {
     try {
       const requestParam = convertToRequestParam(rest);
       const requestParamPriceRange = convertToRequestParam(priceRange!);
@@ -145,23 +139,25 @@ export class DishService implements IDishService {
         requestParamCategory,
       ]);
 
-      const { data } = await httpRequest<GetDishesResponse<DishEntity>>(
-        this.prefix + requestParams,
-        "GET",
-      );
-      return { ...data, dishes: data.dishes.map(dishAdapter) };
+      const { data, ...restResponse } = await httpRequest<
+        PagedResponse<DishEntity[]>
+      >(this.prefix + "/all-paginated" + requestParams, "GET");
+      return {
+        ...restResponse,
+        data: { ...data, content: data.content.map(dishAdapter) },
+      };
     } catch (error) {
       throw error;
     }
   }
 
-  public async getAllToSearch() {
+  public async getAll() {
     try {
-      const { data } = await httpRequest<GetDishesToSearchResponse<DishEntity>>(
-        this.prefix + "/search",
+      const { data, ...rest } = await httpRequest<DishEntity[]>(
+        this.prefix,
         "GET",
       );
-      return { ...data, dishes: data.dishes.map(dishAdapter) };
+      return { ...rest, data: data.map(dishAdapter) };
     } catch (error) {
       throw error;
     }
@@ -173,10 +169,11 @@ export class DishService implements IDishService {
   }: GetDishesWithoutSelectedDishDto) {
     try {
       const requestParam = convertToRequestParam({ limit });
-      const { data } = await httpRequest<
-        GetDishesWithoutSelectedDishResponse<DishEntity>
-      >(this.prefix + "/without/" + idDish + "?" + requestParam, "GET");
-      return { ...data, dishes: data.dishes.map(dishAdapter) };
+      const { data, ...rest } = await httpRequest<DishEntity[]>(
+        this.prefix + "/without/" + idDish + "?" + requestParam,
+        "GET",
+      );
+      return { ...rest, data: data.map(dishAdapter) };
     } catch (error) {
       throw error;
     }
@@ -184,11 +181,11 @@ export class DishService implements IDishService {
 
   public async getById(id: number) {
     try {
-      const { data } = await httpRequest<GetDishByIdResponse<DishEntity>>(
+      const { data, ...rest } = await httpRequest<DishEntity>(
         this.prefix + "/" + id,
         "GET",
       );
-      return { ...data, dish: dishAdapter(data.dish) };
+      return { ...rest, data: dishAdapter(data) };
     } catch (error) {
       throw error;
     }

@@ -1,25 +1,18 @@
 import { cartAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
+import type { ApiResponse, GetDishesToCartByUserResponse } from "@/domain/dtos";
 import type { CartDishEntity } from "@/domain/entities";
-import type {
-  AddOneDishResponse,
-  DeleteOneDishResponse,
-  DeleteAllDishesResponse,
-  GetDishesByUserResponse,
-  GetDishByDishIdResponse,
-  GetTotalDishesByUserResponse,
-  CartDishModel,
-} from "@/model";
+import type { CartDishModel } from "@/model";
 
 interface ICartDishService {
-  addOneDish(dishId: number): Promise<AddOneDishResponse<CartDishModel>>;
-  getDishesByUser(): Promise<GetDishesByUserResponse<CartDishModel>>;
-  deleteOneDish(dishId: number): Promise<DeleteOneDishResponse>;
-  deleteAllDishes(cartId: number): Promise<DeleteAllDishesResponse>;
-  getDishByDishId(
-    dishId: number,
-  ): Promise<GetDishByDishIdResponse<CartDishModel>>;
-  getTotalDishesByUser(): Promise<GetTotalDishesByUserResponse>;
+  addOneDish(dishId: number): Promise<ApiResponse<CartDishModel>>;
+  getDishesByUser(): Promise<
+    ApiResponse<GetDishesToCartByUserResponse<CartDishModel>>
+  >;
+  deleteOneDish(dishId: number): Promise<ApiResponse<number>>;
+  deleteAllDishes(cartId: number): Promise<ApiResponse<number>>;
+  getDishByDishId(dishId: number): Promise<ApiResponse<CartDishModel>>;
+  getTotalDishesByUser(): Promise<ApiResponse<number>>;
 }
 
 export class CartDishService implements ICartDishService {
@@ -31,12 +24,14 @@ export class CartDishService implements ICartDishService {
 
   public async addOneDish(dishId: number) {
     try {
-      const { data } = await httpRequest<AddOneDishResponse<CartDishEntity>>(
+      const { data, ...rest } = await httpRequest<CartDishEntity>(
         this.prefix,
         "POST",
-        { dishId },
+        {
+          dishId,
+        },
       );
-      return { ...data, cartItem: cartAdapter(data.cartItem) };
+      return { data: cartAdapter(data), ...rest };
     } catch (error) {
       throw error;
     }
@@ -44,11 +39,17 @@ export class CartDishService implements ICartDishService {
 
   public async getDishesByUser() {
     try {
-      const { data } = await httpRequest<
-        GetDishesByUserResponse<CartDishEntity>
+      const { data, ...rest } = await httpRequest<
+        GetDishesToCartByUserResponse<CartDishEntity>
       >(`${this.prefix}/user`, "GET");
 
-      return { ...data, cart: data.cart.map(cartAdapter) };
+      return {
+        data: {
+          ...data,
+          cart: data.cart.map(cartAdapter),
+        },
+        ...rest,
+      };
     } catch (error) {
       throw error;
     }
@@ -56,11 +57,7 @@ export class CartDishService implements ICartDishService {
 
   public async deleteOneDish(dishId: number) {
     try {
-      const { data } = await httpRequest<DeleteOneDishResponse>(
-        `${this.prefix}/${dishId}`,
-        "DELETE",
-      );
-      return data;
+      return await httpRequest<number>(`${this.prefix}/${dishId}`, "DELETE");
     } catch (error) {
       throw error;
     }
@@ -68,11 +65,10 @@ export class CartDishService implements ICartDishService {
 
   public async deleteAllDishes(dishId: number) {
     try {
-      const { data } = await httpRequest<DeleteAllDishesResponse>(
+      return await httpRequest<number>(
         `${this.prefix}/all/${dishId}`,
         "DELETE",
       );
-      return data;
     } catch (error) {
       throw error;
     }
@@ -80,10 +76,11 @@ export class CartDishService implements ICartDishService {
 
   public async getDishByDishId(dishId: number) {
     try {
-      const { data } = await httpRequest<
-        GetDishByDishIdResponse<CartDishEntity>
-      >(`${this.prefix}/dish/${dishId}`, "GET");
-      return { ...data, cartItem: cartAdapter(data.cartItem) };
+      const { data, ...rest } = await httpRequest<CartDishEntity>(
+        `${this.prefix}/dish/${dishId}`,
+        "GET",
+      );
+      return { data: cartAdapter(data), ...rest };
     } catch (error) {
       throw error;
     }
@@ -91,11 +88,7 @@ export class CartDishService implements ICartDishService {
 
   public async getTotalDishesByUser() {
     try {
-      const { data } = await httpRequest<GetTotalDishesByUserResponse>(
-        `${this.prefix}/total`,
-        "GET",
-      );
-      return data;
+      return await httpRequest<number>(`${this.prefix}/total`, "GET");
     } catch (error) {
       throw error;
     }

@@ -1,6 +1,10 @@
 import type { DishCategoryRepository } from "@/domain/repositories";
 import type { DishCategoryService } from "../services";
-import { CreateDishCategoryDto, UploadImageDto } from "@/domain/dtos";
+import type {
+  CreateDishCategoryDto,
+  UpdateDishCategoryDto,
+  UploadImageDto,
+} from "@/domain/dtos";
 
 export class DishCategoryRepositoryImpl implements DishCategoryRepository {
   constructor(private readonly dishCategoryService: DishCategoryService) {}
@@ -13,6 +17,10 @@ export class DishCategoryRepositoryImpl implements DishCategoryRepository {
       createDishCategoryDto,
       uploadImageDto,
     );
+  }
+
+  async update(updateDishCategoryDto: UpdateDishCategoryDto) {
+    return await this.dishCategoryService.update(updateDishCategoryDto);
   }
 
   async getAll() {

@@ -13,8 +13,8 @@ type Props = {
 
 export const HeaderSearch = ({ visible, setVisible }: Props) => {
   const {
-    dishesToSearch,
-    startLoadingDishesToSearch,
+    dishes,
+    startLoadingDishes,
     startFilterDishes,
     filters,
   } = useDishStore();
@@ -28,7 +28,7 @@ export const HeaderSearch = ({ visible, setVisible }: Props) => {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value;
     if (search) {
-      setRecommendations(filterSearch(dishesToSearch, search));
+      setRecommendations(filterSearch(dishes, search));
     } else {
       setRecommendations([]);
     }
@@ -37,7 +37,7 @@ export const HeaderSearch = ({ visible, setVisible }: Props) => {
   };
 
   useEffect(() => {
-    startLoadingDishesToSearch();
+    startLoadingDishes();
   }, []);
 
   useEffect(() => {

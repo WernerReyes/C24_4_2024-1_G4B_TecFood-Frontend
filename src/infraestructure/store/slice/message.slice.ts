@@ -1,27 +1,23 @@
+import type { ApiResponseStatus } from "@/config/api";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export const enum TypeMessage {
-  SUCCESS = "success",
-  ERROR = "error",
-  WARNING = "warning",
-  INFO = "info",
-}
-
 export type MessageSliceState = {
-  type: TypeMessage;
+  type: ApiResponseStatus;
   messages: string[];
+};
+
+const initialState: MessageSliceState = {
+  type: "" as ApiResponseStatus,
+  messages: [],
 };
 
 export const messageSlice = createSlice({
   name: "message",
-  initialState: {
-    type: "" as TypeMessage,
-    messages: [] as string[],
-  },
+  initialState,
   reducers: {
     setMessages: (
       state,
-      action: PayloadAction<{ type: TypeMessage; messages: string[] }>,
+      action: PayloadAction<{ type: ApiResponseStatus; messages: string[] }>,
     ) => {
       return { ...state, ...action.payload };
     },

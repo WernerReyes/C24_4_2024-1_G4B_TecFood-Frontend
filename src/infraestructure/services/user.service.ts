@@ -1,17 +1,13 @@
 import { userAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import type { UpdateUserDto, UploadImageDto } from "@/domain/dtos";
+import type { ApiResponse, UpdateUserDto, UploadImageDto } from "@/domain/dtos";
 import type { UserEntity } from "@/domain/entities";
-import type {
-  UpdateUserResponse,
-  UploadProfileResponse,
-  UserModel,
-} from "@/model";
+import type { UserModel } from "@/model";
 
 export interface IUserService {
-  update(updateUserDto: UpdateUserDto): Promise<UpdateUserResponse>;
-  getAll(): Promise<UserModel[]>;
-  uploadProfile(uploadImageDto: UploadImageDto): Promise<UploadProfileResponse>;
+  update(updateUserDto: UpdateUserDto): Promise<ApiResponse<UserModel>>;
+  uploadProfile(uploadImageDto: UploadImageDto): Promise<ApiResponse<string>>;
+  getAll(): Promise<ApiResponse<UserModel[]>>;
 }
 
 export class UserService implements IUserService {
@@ -23,12 +19,12 @@ export class UserService implements IUserService {
 
   public async update(updateUserDto: UpdateUserDto) {
     try {
-      const { data } = await httpRequest<UpdateUserResponse>(
+      const { data, ...rest } = await httpRequest<UserEntity>(
         `${this.prefix}/update`,
         "PUT",
         updateUserDto,
       );
-      return data;
+      return { data: userAdapter(data), ...rest };
     } catch (error) {
       throw error;
     }
@@ -36,8 +32,11 @@ export class UserService implements IUserService {
 
   public async getAll() {
     try {
-      const { data } = await httpRequest<UserEntity[]>(this.prefix, "GET");
-      return data.map(userAdapter);
+      const { data, ...rest } = await httpRequest<UserEntity[]>(
+        this.prefix,
+        "GET",
+      );
+      return { data: data.map(userAdapter), ...rest };
     } catch (error) {
       throw error;
     }
@@ -45,12 +44,11 @@ export class UserService implements IUserService {
 
   public async uploadProfile(uploadImageDto: UploadImageDto) {
     try {
-      const { data } = await httpRequest<UploadProfileResponse>(
+      return await httpRequest<string>(
         `${this.prefix}/upload-profile`,
         "POST",
         uploadImageDto.toFormData,
       );
-      return data;
     } catch (error) {
       throw error;
     }

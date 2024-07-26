@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { CartDishRepositoryImpl } from "@/infraestructure/repositories";
 import {
-  AppState,
+  type AppState,
   onAddOneDish,
   onDeleteOneDish,
   onLoadCartDish,
@@ -19,7 +19,7 @@ const cartDishRepositoryImpl = new CartDishRepositoryImpl(cartDishService);
 
 export const useCartStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeSuccess } = useMessageStore();
+  const { startSetMessages } = useMessageStore();
 
   const { isLoading, cart, cartItem, totalQuantity, totalPayment } =
     useSelector((state: AppState) => state.cartDish);
@@ -28,9 +28,9 @@ export const useCartStore = () => {
     dispatch(onLoadingCartDish());
     cartDishRepositoryImpl
       .addOneDish(dishId)
-      .then(({ message }) => {
+      .then(({ message, status }) => {
         dispatch(onAddOneDish());
-        startSetMessages([message], typeSuccess);
+        startSetMessages([message], status);
       })
       .catch((error) => {
         throw error;
@@ -51,8 +51,8 @@ export const useCartStore = () => {
     dispatch(onLoadingCartDish());
     cartDishRepositoryImpl
       .deleteAllDishes(cartId)
-      .then(({ quantity }) => {
-        dispatch(onDeleteAllDishes(quantity));
+      .then(({ data }) => {
+        dispatch(onDeleteAllDishes(data));
       })
       .catch((error) => {
         throw error;
@@ -63,7 +63,7 @@ export const useCartStore = () => {
     dispatch(onLoadingCartDish());
     cartDishRepositoryImpl
       .getDishesByUser()
-      .then((data) => {
+      .then(({ data }) => {
         dispatch(
           onLoadCartDish({
             cart: data.cart,
@@ -81,12 +81,8 @@ export const useCartStore = () => {
     cartDishRepositoryImpl
       .getDishByDishId(dishId)
 
-      .then(({ cartItem }) => {
-        dispatch(
-          onLoadCartDishItem({
-            ...cartItem,
-          }),
-        );
+      .then(({ data }) => {
+        dispatch(onLoadCartDishItem(data));
       })
       .catch((error) => {
         throw error;
@@ -97,9 +93,7 @@ export const useCartStore = () => {
     dispatch(onLoadingCartDish());
     cartDishRepositoryImpl
       .getTotalDishesByUser()
-      .then(({ totalQuantity }) =>
-        dispatch(onLoadTotalDishesByUser(totalQuantity)),
-      )
+      .then(({ data }) => dispatch(onLoadTotalDishesByUser(data)))
       .catch((error) => {
         throw error;
       });

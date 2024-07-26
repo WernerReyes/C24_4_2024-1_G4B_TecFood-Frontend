@@ -1,21 +1,21 @@
-import { TypeMessage } from "@/infraestructure/store";
+import { ApiResponseStatus } from "@/config/api";
 import { toast } from "sonner";
 
-export const showMessage = (type: TypeMessage, message: string[]) => {
+export const showMessage = (type: ApiResponseStatus, message: string[]) => {
   switch (type) {
-    case TypeMessage.SUCCESS:
+    case ApiResponseStatus.SUCCESS:
       successMessage(message);
       break;
 
-    case TypeMessage.ERROR:
+    case ApiResponseStatus.ERROR:
       errorMessage(message);
       break;
 
-    case TypeMessage.INFO:
-      infoMessage(message);
-      break;
+    // case TypeMessage.INFO:
+    //   infoMessage(message);
+    //   break;
 
-    case TypeMessage.WARNING:
+    case ApiResponseStatus.WARNING:
       warningMessage(message);
       break;
 

@@ -1,13 +1,13 @@
 import { paymentAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import type { ProcessPaymentDto } from "@/domain/dtos";
+import type { ApiResponse, ProcessPaymentDto } from "@/domain/dtos";
 import type { PaymentEntity } from "@/domain/entities";
-import type { PaymentModel, ProcessPaymentResponse } from "@/model";
+import type { PaymentModel } from "@/model";
 
 interface IPaymentService {
   processPayment(
     processPaymentDto: ProcessPaymentDto,
-  ): Promise<ProcessPaymentResponse<PaymentModel>>;
+  ): Promise<ApiResponse<PaymentModel>>;
 }
 
 export class PaymentService implements IPaymentService {
@@ -19,16 +19,13 @@ export class PaymentService implements IPaymentService {
 
   public async processPayment(processPaymentDto: ProcessPaymentDto) {
     try {
-      const { data } = await httpRequest<ProcessPaymentResponse<PaymentEntity>>(
+      const { data, ...rest } = await httpRequest<PaymentEntity>(
         `${this.prefix}/process`,
         "POST",
         processPaymentDto,
       );
 
-      return {
-        ...data,
-        payment: paymentAdapter(data.payment),
-      };
+      return { data: paymentAdapter(data), ...rest };
     } catch (error) {
       throw error;
     }

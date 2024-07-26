@@ -19,7 +19,8 @@ type Props = {
 
 export const PaypalPayment = ({ orderDishId, handleProcessPayment }: Props) => {
   const navigate = useNavigate();
-  const { startSetMessages, typeSuccess, typeError } = useMessageStore();
+  const { startSetMessagesError, startSetMessagesSuccess } =
+    useMessageStore();
   const { startCreatePaymentByPaypal, startCompletePaymentByPaypal } =
     usePaypal();
 
@@ -33,7 +34,7 @@ export const PaypalPayment = ({ orderDishId, handleProcessPayment }: Props) => {
         }}
         createOrder={async () => {
           const payment = await startCreatePaymentByPaypal(orderDishId);
-          return payment?.id!;
+          return payment.data;
         }}
         onApprove={async (data: any) => {
           try {
@@ -46,14 +47,13 @@ export const PaypalPayment = ({ orderDishId, handleProcessPayment }: Props) => {
 
             navigate(`${USER}/${ORDER_HISTORY}`);
           } catch (error) {
-            startSetMessages(
-              ["An error occurred while processing the payment"],
-              typeError,
-            );
+            startSetMessagesError([
+              "An error occurred while processing the payment",
+            ]);
           }
         }}
         onCancel={() => {
-          startSetMessages(["Payment was cancelled successfully"], typeSuccess);
+          startSetMessagesSuccess(["Payment was cancelled successfully"]);
         }}
       />
     </PayPalScriptProvider>

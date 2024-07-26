@@ -1,22 +1,22 @@
 import type { UserEntity } from "@/domain/entities";
-import type {
-  LoginGoogleResponse,
-  LoginResponse,
-  RegisterResponse,
-  RevalidateTokenResponse,
-  UserModel,
-} from "@/model";
+import type { UserModel } from "@/model";
 import { httpRequest } from "@/config/api";
-import { RegisterDto, LoginGoogleDto, LoginDto } from "@/domain/dtos";
+import {
+  RegisterDto,
+  LoginGoogleDto,
+  LoginDto,
+  type ApiResponse,
+  type LoginResponse,
+} from "@/domain/dtos";
 import { userAdapter } from "@/config/adapters";
 
 interface IAuthService {
   loginGoogle(
     loginGoogleDto: LoginGoogleDto,
-  ): Promise<LoginGoogleResponse<UserModel>>;
-  login(loginDto: LoginDto): Promise<LoginResponse<UserModel>>;
-  register(registerDto: RegisterDto): Promise<RegisterResponse>;
-  revalidateToken(): Promise<RevalidateTokenResponse<UserModel>>;
+  ): Promise<ApiResponse<LoginResponse<UserModel>>>;
+  login(loginDto: LoginDto): Promise<ApiResponse<LoginResponse<UserModel>>>;
+  register(registerDto: RegisterDto): Promise<ApiResponse<void>>;
+  revalidateToken(): Promise<ApiResponse<UserModel>>;
 }
 
 export class AuthService implements IAuthService {
@@ -28,13 +28,19 @@ export class AuthService implements IAuthService {
 
   public async loginGoogle(loginGoogleDto: LoginGoogleDto) {
     try {
-      const { data } = await httpRequest<LoginGoogleResponse<UserEntity>>(
+      const { data, ...rest } = await httpRequest<LoginResponse<UserEntity>>(
         this.prefix + "/login-google",
         "POST",
         loginGoogleDto,
       );
 
-      return { ...data, user: userAdapter(data.user) };
+      return {
+        ...rest,
+        data: {
+          ...data,
+          user: userAdapter(data.user),
+        },
+      };
     } catch (error) {
       throw error;
     }
@@ -42,12 +48,12 @@ export class AuthService implements IAuthService {
 
   public async login(loginDto: LoginDto) {
     try {
-      const { data } = await httpRequest<LoginResponse<UserEntity>>(
+      const { data, ...rest } = await httpRequest<LoginResponse<UserEntity>>(
         this.prefix + "/login",
         "POST",
         loginDto,
       );
-      return { ...data, user: userAdapter(data.user) };
+      return { ...rest, data: { ...data, user: userAdapter(data.user) } };
     } catch (error) {
       throw error;
     }
@@ -55,12 +61,11 @@ export class AuthService implements IAuthService {
 
   public async register(registerDto: RegisterDto) {
     try {
-      const { data } = await httpRequest<RegisterResponse>(
+      return await httpRequest<void>(
         this.prefix + "/register",
         "POST",
         registerDto,
       );
-      return data;
     } catch (error) {
       throw error;
     }
@@ -68,11 +73,11 @@ export class AuthService implements IAuthService {
 
   public async revalidateToken() {
     try {
-      const { data } = await httpRequest<RevalidateTokenResponse<UserEntity>>(
+      const { data, ...rest } = await httpRequest<UserEntity>(
         this.prefix + "/revalidate-token",
         "GET",
       );
-      return { ...data, user: userAdapter(data.user) };
+      return { ...rest, data: userAdapter(data) };
     } catch (error) {
       throw error;
     }

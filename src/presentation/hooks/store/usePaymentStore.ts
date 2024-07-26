@@ -14,7 +14,7 @@ const paymentRepositoryImpl = new PaymentRepositoryImpl(paymentService);
 
 export const usePaymentStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeSuccess } = useMessageStore();
+  const { startSetMessages } = useMessageStore();
   const { isLoading, payment, payments } = useSelector(
     (state: AppState) => state.payment,
   );
@@ -26,9 +26,9 @@ export const usePaymentStore = () => {
 
     paymentRepositoryImpl
       .processPayment(processPaymentDto)
-      .then(({ message, payment }) => {
-        dispatch(onProcessPayment(payment));
-        startSetMessages([message], typeSuccess);
+      .then(({ message, data, status }) => {
+        dispatch(onProcessPayment(data));
+        startSetMessages([message], status);
       })
       .catch((error) => {
         throw error;

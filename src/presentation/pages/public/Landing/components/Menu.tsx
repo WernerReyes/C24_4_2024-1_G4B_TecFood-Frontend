@@ -32,7 +32,7 @@ type Props = {
 };
 
 export const Menu = ({ marginContainer }: Props) => {
-  const { dishes, startLoadingDishes } = useDishStore();
+  const { dishesPaginated, startLoadingDishesPaginated } = useDishStore();
   const { dishCategories, startLoadingDishCategories } = useDishCategoryStore();
   const { width } = useWindowSize();
   const [selectedButton, setSelectedButton] = useState<string>("all");
@@ -53,7 +53,7 @@ export const Menu = ({ marginContainer }: Props) => {
       null,
       null,
     );
-    startLoadingDishes(getDishesDto);
+    startLoadingDishesPaginated(getDishesDto);
   }, [selectedCategoryId]);
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export const Menu = ({ marginContainer }: Props) => {
           className="mt-10"
           breakpoints={BREAK_POINTS_MENU}
         >
-          {dishes.map((dish) => (
+          {dishesPaginated.map((dish) => (
             <SwiperSlide key={dish.id}>
               <Card {...dish} key={dish.id} rating={5} />
             </SwiperSlide>
@@ -131,7 +131,7 @@ export const Menu = ({ marginContainer }: Props) => {
             "xl:grid-cols-4",
           )}
         >
-          {dishes.map((dish) => (
+          {dishesPaginated.map((dish) => (
             <Card
               key={dish.id}
               {...dish}

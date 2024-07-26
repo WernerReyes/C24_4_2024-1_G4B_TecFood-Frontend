@@ -1,11 +1,8 @@
-import type {
-  UpdateUserDto,
-  UploadImageDto
-} from "@/domain/dtos";
+import type { UpdateUserDto, UploadImageDto } from "@/domain/dtos";
 import { UserRepositoryImpl } from "@/infraestructure/repositories";
 import { UserService } from "@/infraestructure/services";
 import {
-  AppState,
+  type AppState,
   onLoadProfile,
   onLoadingUsers,
 } from "@/infraestructure/store";
@@ -17,7 +14,7 @@ const userRepositoryImpl = new UserRepositoryImpl(userService);
 
 export const useUserStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeSuccess } = useMessageStore();
+  const { startSetMessages } = useMessageStore();
 
   const { user, users, isLoading } = useSelector(
     (state: AppState) => state.user,
@@ -37,8 +34,8 @@ export const useUserStore = () => {
 
     await userRepositoryImpl
       .update(updateUserDto)
-      .then(({ message }) => {
-        startSetMessages([message], typeSuccess);
+      .then(({ message, status }) => {
+        startSetMessages([message], status);
       })
       .catch((error) => {
         throw error;
@@ -52,9 +49,9 @@ export const useUserStore = () => {
 
     await userRepositoryImpl
       .uploadProfile(uploadImageDto)
-      .then(({ profileUrl, message }) => {
-        dispatch(onLoadProfile(profileUrl));
-        startSetMessages([message], typeSuccess);
+      .then(({ data, message, status }) => {
+        dispatch(onLoadProfile(data));
+        startSetMessages([message], status);
       })
       .catch((error) => {
         dispatch(onLoadProfile(""));

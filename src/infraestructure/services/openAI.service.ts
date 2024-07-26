@@ -1,10 +1,9 @@
 import { httpRequest } from "@/config/api";
-import type { ChatDto } from "@/domain/dtos";
-import type { ChatResponse, ChoiceBackend, ChoiceFrontend } from "@/model";
+import type { ApiResponse, ChatDto, ChatResponse } from "@/domain/dtos";
 
 interface IOpenAIService {
-  chat(chatDto: ChatDto): Promise<ChatResponse<ChoiceFrontend>>;
-  greetUser(): Promise<ChatResponse<ChoiceFrontend>>;
+  chat(chatDto: ChatDto): Promise<ApiResponse<ChatResponse>>;
+  greetUser(): Promise<ApiResponse<ChatResponse>>;
 }
 
 export class OpenAIService implements IOpenAIService {
@@ -16,13 +15,11 @@ export class OpenAIService implements IOpenAIService {
 
   public async chat(chatDto: ChatDto) {
     try {
-      const { data } = await httpRequest<ChatResponse<ChoiceBackend>>(
+      return await httpRequest<ChatResponse>(
         `${this.prefix}/chat`,
         "POST",
         chatDto,
       );
-
-      return { ...data, choices: choiseAdapter(data.choices) };
     } catch (error) {
       throw error;
     }
@@ -30,21 +27,9 @@ export class OpenAIService implements IOpenAIService {
 
   public async greetUser() {
     try {
-      const { data } = await httpRequest<ChatResponse<ChoiceBackend>>(
-        `${this.prefix}/greet`,
-        "GET",
-      );
-
-      return { ...data, choices: choiseAdapter(data.choices) };
+      return await httpRequest<ChatResponse>(`${this.prefix}/greet`, "GET");
     } catch (error) {
       throw error;
     }
   }
 }
-
-const choiseAdapter = (choices: ChoiceBackend[]): ChoiceFrontend[] => {
-  return choices.map((choice) => ({
-    finishReason: choice.finish_reason,
-    message: choice.message,
-  }));
-};

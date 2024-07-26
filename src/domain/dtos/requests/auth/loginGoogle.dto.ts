@@ -33,7 +33,7 @@ export class LoginGoogleDto extends AuthDto implements LoginGoogleDtoModel {
     );
   }
 
-  protected override validate() {
+  public override validate() {
     dtoValidator(this, LoginGoogleDto.schema);
   }
 

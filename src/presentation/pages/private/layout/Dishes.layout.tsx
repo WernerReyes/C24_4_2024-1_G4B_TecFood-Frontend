@@ -13,7 +13,7 @@ export const DishesLayout = ({ rowPerPage, children, paginators }: Props) => {
   const { handlePageChange, currentPage, limit, first } = usePaginator(
     rowPerPage[0],
   );
-  const { total, startLoadingDishes, filters } = useDishStore();
+  const { total, startLoadingDishesPaginated, filters } = useDishStore();
   const { startLoadingDishesByUser, totalQuantity } = useCartStore();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ export const DishesLayout = ({ rowPerPage, children, paginators }: Props) => {
       filters.priceRange,
       null,
     );
-    startLoadingDishes(getDishesDto);
+    startLoadingDishesPaginated(getDishesDto);
   }, [currentPage, limit, filters]);
 
   useEffect(() => {

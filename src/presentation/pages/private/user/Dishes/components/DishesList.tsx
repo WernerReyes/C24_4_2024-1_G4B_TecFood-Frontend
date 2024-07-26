@@ -7,7 +7,7 @@ import { DishesLayout } from "../../../layout";
 const ROW_PER_PAGE = [10, 20, 30];
 
 export const DishesList = () => {
-  const { dishes } = useDishStore();
+  const { dishesPaginated } = useDishStore();
   const { cart } = useCartStore();
 
   const handleLoadCartQuantity = (dish: DishModel): number => {
@@ -18,11 +18,11 @@ export const DishesList = () => {
   return (
     <DishesLayout
       rowPerPage={ROW_PER_PAGE}
-      paginators={dishes.length > 0 ? [true, true] : [false, false]}
+      paginators={dishesPaginated.length > 0 ? [true, true] : [false, false]}
     >
       <section className="grid grid-cols-1 gap-5">
-        {dishes.length ? (
-          dishes.map((dish) => (
+        {dishesPaginated.length ? (
+          dishesPaginated.map((dish) => (
             <CardList
               key={dish.id}
               dish={dish}

@@ -25,7 +25,7 @@ const orderDishRepositoryImpl = new OrderDishRepositoryImpl(orderDishService);
 
 export const useOrderDishStore = () => {
   const dispatch = useDispatch();
-  const { startSetMessages, typeSuccess } = useMessageStore();
+  const { startSetMessages } = useMessageStore();
 
   const { orderDish, orderDishes, filters, status, isLoading, total } =
     useSelector((state: AppState) => state.orderDish);
@@ -34,9 +34,9 @@ export const useOrderDishStore = () => {
     dispatch(onLoadingOrderDish());
     orderDishRepositoryImpl
       .createOrderDish()
-      .then(({ message, orderDish }) => {
-        dispatch(onCreateOrderDish(orderDish));
-        startSetMessages([message], typeSuccess);
+      .then(({ message, data, status }) => {
+        dispatch(onCreateOrderDish(data));
+        startSetMessages([message], status);
       })
       .catch((error) => {
         throw error;
@@ -48,14 +48,14 @@ export const useOrderDishStore = () => {
     message: string,
   ) => {
     updateOrderDishStatusDto.validate();
-    
+
     dispatch(onLoadingOrderDish());
-    
+
     orderDishRepositoryImpl
       .updateOrderDishStatus(updateOrderDishStatusDto)
-      .then(({ status }) => {
-        dispatch(onUpdateOrderDishStatus(status));
-        startSetMessages([message], typeSuccess);
+      .then(({ status, data }) => {
+        dispatch(onUpdateOrderDishStatus(data));
+        startSetMessages([message], status);
       })
       .catch((error) => {
         throw error;
@@ -63,7 +63,7 @@ export const useOrderDishStore = () => {
   };
 
   const startLoadingOrderDishesByUser = async (
-    getOrderDishesByUserDto: GetOrderDishesByUserDto
+    getOrderDishesByUserDto: GetOrderDishesByUserDto,
   ) => {
     getOrderDishesByUserDto.validate();
 
@@ -71,8 +71,13 @@ export const useOrderDishStore = () => {
 
     orderDishRepositoryImpl
       .getOrderDishesByUser(getOrderDishesByUserDto)
-      .then(({ orderDishes, total }) => {
-        dispatch(onLoadOrderDishes({ orderDishes, total }));
+      .then(({ data }) => {
+        dispatch(
+          onLoadOrderDishes({
+            orderDishes: data.content.orderDishes,
+            total: data.total,
+          }),
+        );
       })
       .catch((error) => {
         throw error;
@@ -83,8 +88,8 @@ export const useOrderDishStore = () => {
     dispatch(onLoadingOrderDish());
     orderDishRepositoryImpl
       .getOrderDishById(orderDishId)
-      .then((orderDish) => {
-        dispatch(onCreateOrderDish(orderDish));
+      .then(({ data }) => {
+        dispatch(onCreateOrderDish(data));
       })
       .catch(console.error);
   };

@@ -46,7 +46,7 @@ const COLS_TO_EXPORT: ColumnMeta[] = [
 
 const ListDishesPage = () => {
   const navigate = useNavigate();
-  const { dishesToSearch, startDeletingDish, startDeletingManyDishes } =
+  const { dishes, startDeletingDish, startDeletingManyDishes } =
     useDishStore();
   const [selectedDishes, setSelectedDishes] = useState<DishModel[]>([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -64,11 +64,11 @@ const ListDishesPage = () => {
   };
 
   const handleExportPdf = () => {
-    exportTableToPdf("Dishes", COLS_TO_EXPORT, dishesToSearch, "dishes.pdf");
+    exportTableToPdf("Dishes", COLS_TO_EXPORT, dishes, "dishes.pdf");
   };
 
   const handleExportExcel = () => {
-    exportTableToExcel(COLS_TO_EXPORT, dishesToSearch, "dishes.xlsx");
+    exportTableToExcel(COLS_TO_EXPORT, dishes, "dishes.xlsx");
   };
 
   return (
@@ -128,7 +128,7 @@ const ListDishesPage = () => {
         />
         <DataTable
           ref={dt}
-          value={dishesToSearch}
+          value={dishes}
           selection={selectedDishes}
           onSelectionChange={(
             e: DataTableSelectionMultipleChangeEvent<DishModel[]>,

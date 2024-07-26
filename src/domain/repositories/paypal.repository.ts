@@ -1,6 +1,6 @@
-import type { CompletePaymentResponse, CreatePaymentResponse } from "@/model";
+import type { ApiResponse } from "../dtos";
 
 export abstract class PaypalRepository {
-  abstract createPayment(orderDishId: number): Promise<CreatePaymentResponse>;
-  abstract completePayment(orderId: string): Promise<CompletePaymentResponse>;
+  abstract createPayment(orderDishId: number): Promise<ApiResponse<string>>;
+  abstract completePayment(orderId: string): Promise<ApiResponse<string>>;
 }

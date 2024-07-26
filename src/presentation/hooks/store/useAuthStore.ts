@@ -32,7 +32,7 @@ const authService = new AuthService();
 const authRepositoryImpl = new AuthRepositoryImpl(authService);
 
 export const useAuthStore = () => {
-  const { startSetMessages, typeSuccess } = useMessageStore();
+  const { startSetMessages } = useMessageStore();
   const { status, authenticatedUser } = useSelector(
     (state: AppState) => state.auth,
   );
@@ -47,10 +47,10 @@ export const useAuthStore = () => {
 
     return await authRepositoryImpl
       .loginGoogle(loginGoogleDto)
-      .then(({ user, token }) => {
-        dispatch(onLogin(user));
-        setStorage(TOKEN, token);
-        return user.role;
+      .then(({ data }) => {
+        dispatch(onLogin(data.user));
+        setStorage(TOKEN, data.token);
+        return data.user.role;
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -63,10 +63,10 @@ export const useAuthStore = () => {
 
     return await authRepositoryImpl
       .login(loginDto)
-      .then(({ user, token }) => {
-        dispatch(onLogin(user));
-        setStorage(TOKEN, token);
-        return user.role;
+      .then(({ data }) => {
+        dispatch(onLogin(data.user));
+        setStorage(TOKEN, data.token);
+        return data.user.role;
       })
       .catch((error) => {
         dispatch(onLogout());
@@ -79,7 +79,7 @@ export const useAuthStore = () => {
 
     await authRepositoryImpl
       .register(registerDto)
-      .then(({ message }) => startSetMessages([message], typeSuccess))
+      .then(({ message, status }) => startSetMessages([message], status))
       .catch((error) => {
         dispatch(onLogout());
         throw error;
@@ -93,8 +93,8 @@ export const useAuthStore = () => {
 
     await authRepositoryImpl
       .revalidateToken()
-      .then(({ user }) => {
-        dispatch(onLogin(user));
+      .then(({ data }) => {
+        dispatch(onLogin(data));
       })
       .catch((error) => {
         dispatch(onLogout());

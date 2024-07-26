@@ -5,7 +5,7 @@ import { useDishStore } from "@/presentation/hooks";
 
 export const FilterSection = () => {
   const {
-    dishes,
+    dishesPaginated,
     filters: { priceRange },
   } = useDishStore();
 
@@ -22,11 +22,11 @@ export const FilterSection = () => {
         </AccordionTab>
       </Accordion>
 
-      {dishes.length && (<Card
+      {dishesPaginated.length && (<Card
         className="mt-4"
         header={
           <Image
-            src={dishes[0].images[0].url}
+            src={dishesPaginated[0].images[0].url}
             alt="dish-offer"
             className="h-full w-full object-cover"
           />
@@ -35,17 +35,17 @@ export const FilterSection = () => {
           <>
             <Button icon="pi pi-arrow-right" label="Order now"   />
             <div className="flex justify-between mt-5">
-              <p className="text-xs font-bold">{dishes[0].categories[0].name}</p>
-              <p className="text-xs font-bold">Stock: {dishes[0].description}</p>
+              <p className="text-xs font-bold">{dishesPaginated[0].categories[0].name}</p>
+              <p className="text-xs font-bold">Stock: {dishesPaginated[0].description}</p>
             </div>
           </>
         }
       >
         <div className="text-center">
-          <h2 className="text-2xl font-bold">{dishes[0].name}</h2>
-          <p className="text-md">{dishes[0].description}</p>
+          <h2 className="text-2xl font-bold">{dishesPaginated[0].name}</h2>
+          <p className="text-md">{dishesPaginated[0].description}</p>
           <p className="text-sm font-bold mt-5 block">
-            Avalilable at: <strong className="text-lg block">S/.{dishes[0].price}</strong>
+            Avalilable at: <strong className="text-lg block">S/.{dishesPaginated[0].price}</strong>
           </p>
         </div>
       </Card>

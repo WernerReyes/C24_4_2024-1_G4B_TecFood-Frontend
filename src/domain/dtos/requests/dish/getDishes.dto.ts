@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { dtoValidator } from "@/presentation/utilities";
-import { PaginationDto, PaginationDtoSchema } from "../common";
+import { PaginationDto, PaginationDtoSchema } from "../requests/common";
 
 interface GetDishesDtoModel extends PaginationDto {
   readonly idCategory: { idCategory: number }[] | null;

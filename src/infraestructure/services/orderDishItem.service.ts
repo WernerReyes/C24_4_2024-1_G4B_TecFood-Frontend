@@ -1,15 +1,13 @@
 import { orderDishItemAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
+import type { ApiResponse } from "@/domain/dtos";
 import type { OrderDishItemEntity } from "@/domain/entities";
-import type {
-  GetOrderDishItemByOrderResponse,
-  OrderDishItemModel,
-} from "@/model";
+import type { OrderDishItemModel } from "@/model";
 
 interface IOrderDishItemService {
   getOrderDishItemByOrder(
     orderId: number,
-  ): Promise<GetOrderDishItemByOrderResponse<OrderDishItemModel>>;
+  ): Promise<ApiResponse<OrderDishItemModel[]>>;
 }
 
 export class OrderDishItemService implements IOrderDishItemService {
@@ -21,12 +19,13 @@ export class OrderDishItemService implements IOrderDishItemService {
 
   public async getOrderDishItemByOrder(orderDishId: number) {
     try {
-      const { data } = await httpRequest<
-        GetOrderDishItemByOrderResponse<OrderDishItemEntity>
-      >(this.prefix + "/order/" + orderDishId, "GET");
+      const { data, ...rest } = await httpRequest<OrderDishItemEntity[]>(
+        this.prefix + "/order/" + orderDishId,
+        "GET",
+      );
       return {
-        ...data,
-        orderDishItem: data.orderDishItem.map(orderDishItemAdapter),
+        data: data.map(orderDishItemAdapter),
+        ...rest,
       };
     } catch (error) {
       throw error;

@@ -1,7 +1,6 @@
-import type { ChatResponse, ChoiceFrontend } from "@/model";
-import type { ChatDto } from "../dtos";
+import type { ApiResponse, ChatDto, ChatResponse } from "../dtos";
 
 export abstract class OpenAIRepository {
-  abstract chat(chatDto: ChatDto): Promise<ChatResponse<ChoiceFrontend>>;
-  abstract greetUser(): Promise<ChatResponse<ChoiceFrontend>>;
+  abstract chat(chatDto: ChatDto): Promise<ApiResponse<ChatResponse>>;
+  abstract greetUser(): Promise<ApiResponse<ChatResponse>>;
 }

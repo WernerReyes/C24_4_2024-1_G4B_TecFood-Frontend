@@ -1,21 +1,14 @@
 import type {
-  AddOneDishResponse,
-  DeleteOneDishResponse,
-  DeleteAllDishesResponse,
-  GetDishesByUserResponse,
-  GetDishByDishIdResponse,
-  GetTotalDishesByUserResponse,
-  CartDishModel,
+  CartDishModel
 } from "@/model";
+import type { ApiResponse, GetDishesToCartByUserResponse } from "../dtos";
 export abstract class CartDishRepository {
-  abstract addOneDish(
-    dishId: number,
-  ): Promise<AddOneDishResponse<CartDishModel>>;
-  abstract getDishesByUser(): Promise<GetDishesByUserResponse<CartDishModel>>;
-  abstract deleteOneDish(dishId: number): Promise<DeleteOneDishResponse>;
-  abstract deleteAllDishes(cartId: number): Promise<DeleteAllDishesResponse>;
-  abstract getDishByDishId(
-    dishId: number,
-  ): Promise<GetDishByDishIdResponse<CartDishModel>>;
-  abstract getTotalDishesByUser(): Promise<GetTotalDishesByUserResponse>;
+  abstract addOneDish(dishId: number): Promise<ApiResponse<CartDishModel>>;
+  abstract getDishesByUser(): Promise<
+    ApiResponse<GetDishesToCartByUserResponse<CartDishModel>>
+  >;
+  abstract deleteOneDish(dishId: number): Promise<ApiResponse<number>>;
+  abstract deleteAllDishes(cartId: number): Promise<ApiResponse<number>>;
+  abstract getDishByDishId(dishId: number): Promise<ApiResponse<CartDishModel>>;
+  abstract getTotalDishesByUser(): Promise<ApiResponse<number>>;
 }

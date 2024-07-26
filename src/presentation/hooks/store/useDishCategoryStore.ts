@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DishCategoryRepositoryImpl } from "@/infraestructure/repositories";
 import { DishCategoryService } from "@/infraestructure/services";
 import {
-  AppState,
+  type AppState,
   onLoadDishCategories,
   onLoadDishCategory,
   onLoadingDishCategory,
@@ -17,7 +17,7 @@ const dishCategoryRepositoryImpl = new DishCategoryRepositoryImpl(
 
 export const useDishCategoryStore = () => {
   const dispatch = useDispatch();
-  const { startSetSuccessMessages } = useMessageStore();
+  const { startSetMessages } = useMessageStore();
 
   const { dishCategories, isLoading } = useSelector(
     (state: AppState) => state.dishCategory,
@@ -33,11 +33,11 @@ export const useDishCategoryStore = () => {
 
     await dishCategoryRepositoryImpl
       .create(createDishCategoryDto, uploadImageDto)
-      .then(({ dishCategory, message }) => {
-        dispatch(onLoadDishCategory(dishCategory));
-        startSetSuccessMessages([message]);
+      .then(({ data, message, status }) => {
+        dispatch(onLoadDishCategory(data));
+        startSetMessages([message], status);
 
-        dispatch(onLoadDishCategories([...dishCategories, dishCategory]));
+        dispatch(onLoadDishCategories([...dishCategories, data]));
       })
       .catch((error) => {
         throw error;
@@ -49,9 +49,7 @@ export const useDishCategoryStore = () => {
 
     dishCategoryRepositoryImpl
       .getAll()
-      .then(({ dishCategories }) =>
-        dispatch(onLoadDishCategories(dishCategories)),
-      )
+      .then(({ data }) => dispatch(onLoadDishCategories(data)))
       .catch((error) => {
         throw error;
       });

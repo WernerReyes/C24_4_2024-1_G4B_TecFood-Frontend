@@ -32,12 +32,12 @@ export class DishRepositoryImpl implements DishRepository {
     return await this.dishService.deleteMany(ids);
   }
 
-  async getAll(getDishesDto: GetDishesDto) {
-    return await this.dishService.getAll(getDishesDto);
+  async getAllPaginated(getDishesDto: GetDishesDto) {
+    return await this.dishService.getAllPaginated(getDishesDto);
   }
 
-  async getAllToSearch() {
-    return await this.dishService.getAllToSearch();
+  async getAll() {
+    return await this.dishService.getAll();
   }
 
   async getAllWithoutSelectedDish(

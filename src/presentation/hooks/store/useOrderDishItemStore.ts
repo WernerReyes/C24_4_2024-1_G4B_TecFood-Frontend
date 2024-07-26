@@ -17,9 +17,7 @@ export const useOrderDishItemStore = () => {
   const startLoadingOrderDishItemsByOrder = async (orderDishId: number) => {
     orderDishItemRepositoryImpl
       .getOrderDishItemByOrder(orderDishId)
-      .then(({ orderDishItem }) =>
-        dispatch(onLoadOrderDishItems(orderDishItem)),
-      )
+      .then(({ data }) => dispatch(onLoadOrderDishItems(data)))
       .catch(console.error);
   };
 

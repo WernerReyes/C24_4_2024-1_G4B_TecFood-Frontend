@@ -1,4 +1,5 @@
-import { AppState, TypeMessage, setMessages } from "@/infraestructure/store";
+import { ApiResponseStatus } from "@/domain/dtos";
+import { AppState, setMessages } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
 
 export const useMessageStore = () => {
@@ -6,35 +7,31 @@ export const useMessageStore = () => {
 
   const { messages, type } = useSelector((state: AppState) => state.message);
 
-  const startSetMessages = (messages: string[], type: TypeMessage) => {
+  const startSetMessages = (messages: string[], type: ApiResponseStatus) => {
     dispatch(setMessages({ messages, type }));
   };
 
   const startClearMessages = () => {
-    dispatch(setMessages({ messages: [], type: "" as TypeMessage }));
+    dispatch(setMessages({ messages: [], type: "" as ApiResponseStatus }));
   };
 
-  const startSetSuccessMessages = (messages: string[]) => {
-    startSetMessages(messages, TypeMessage.SUCCESS);
+  const startSetMessagesSuccess = (messages: string[]) => {
+    startSetMessages(messages, ApiResponseStatus.SUCCESS);
   };
 
-  const startSetErrorMessages = (messages: string[]) => {
-    startSetMessages(messages, TypeMessage.ERROR);
+  const startSetMessagesError = (messages: string[]) => {
+    startSetMessages(messages, ApiResponseStatus.ERROR);
   };
 
   return {
     //* Attributes
     messages,
     type,
-    typeError: TypeMessage.ERROR,
-    typeSuccess: TypeMessage.SUCCESS,
-    typeWarning: TypeMessage.WARNING,
-    typeInfo: TypeMessage.INFO,
 
     //* Methods
-    startSetSuccessMessages,
-    startSetErrorMessages,
     startSetMessages,
+    startSetMessagesSuccess,
+    startSetMessagesError,
     startClearMessages,
   };
 };

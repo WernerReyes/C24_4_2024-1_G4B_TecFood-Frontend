@@ -12,7 +12,7 @@ import { Card } from "../../../components";
 const ROW_PER_PAGE = [5, 10, 15];
 
 export const Dishes = () => {
-  const { dishes } = useDishStore();
+  const { dishesPaginated } = useDishStore();
   const { isExtraLargeDesktop } = useWindowSize();
   const { cart } = useCartStore();
 
@@ -24,26 +24,26 @@ export const Dishes = () => {
   return (
     <DishesLayout
       rowPerPage={ROW_PER_PAGE}
-      paginators={dishes.length > 0 ? [false, true] : [false, false]}
+      paginators={dishesPaginated.length > 0 ? [false, true] : [false, false]}
     >
       <section
         className={clsx(
           "grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3",
-          dishes.length === 1 && isExtraLargeDesktop ? "h-[28rem]" : "h-full",
+          dishesPaginated.length === 1 && isExtraLargeDesktop ? "h-[28rem]" : "h-full",
         )}
       >
         <Image
           className={clsx(
             "order-1",
-            dishes.length ? "sm:col-span-2" : "col-span-3",
+            dishesPaginated.length ? "sm:col-span-2" : "col-span-3",
           )}
           imageClassName="object-cover w-full h-full"
           src="/user/offert.png"
           alt="dish"
         />
 
-        {dishes.length ? (
-          dishes.map((dish) => (
+        {dishesPaginated.length ? (
+          dishesPaginated.map((dish) => (
             <Card
               key={dish.id}
               dish={dish}

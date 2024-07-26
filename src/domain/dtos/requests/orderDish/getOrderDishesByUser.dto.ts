@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OrderDishStatusEnum } from "@/domain/entities";
 import { dtoValidator } from "@/presentation/utilities";
-import { PaginationDto, type PaginationDtoModel, PaginationDtoSchema } from "../common";
+import { PaginationDto, type PaginationDtoModel, PaginationDtoSchema } from "../requests/common";
 
 interface GetOrderDishesByUserDtoModel extends PaginationDtoModel {
   readonly status: { status: OrderDishStatusEnum }[];

@@ -10,8 +10,8 @@ export type DishSliceState = {
   isLoading: boolean;
   dish: DishModel;
   total: number;
+  dishesPaginated: DishModel[];
   dishes: DishModel[];
-  dishesToSearch: DishModel[];
   dishesWithoutSelectedDish: DishModel[];
   filters: DishFilters;
 };
@@ -20,8 +20,8 @@ const initialState: DishSliceState = {
   isLoading: false,
   dish: dishEmptyState,
   total: 0,
+  dishesPaginated: [],
   dishes: [],
-  dishesToSearch: [],
   dishesWithoutSelectedDish: [],
   filters: dishFilterEmptyState,
 };
@@ -30,20 +30,20 @@ export const dishSlice = createSlice({
   name: "dish",
   initialState,
   reducers: {
-    onLoadDishes(
+    onLoadDishesPaginated(
       state,
       action: PayloadAction<{ total: number; dishes: DishModel[] }>,
     ) {
       return {
         ...state,
-        dishes: action.payload.dishes,
+        dishesPaginated: action.payload.dishes,
         total: action.payload.total,
         isLoading: false,
       };
     },
 
-    onLoadDishesToSearch(state, action: PayloadAction<DishModel[]>) {
-      return { ...state, dishesToSearch: action.payload, isLoading: false };
+    onLoadDishes(state, action: PayloadAction<DishModel[]>) {
+      return { ...state, dishes: action.payload, isLoading: false };
     },
 
     onLoadDishesWithoutSelectedDish(state, action: PayloadAction<DishModel[]>) {
@@ -79,9 +79,9 @@ export const dishSlice = createSlice({
 export const {
   onLoadingDish,
   onLoadDishes,
+  onLoadDishesPaginated,
   onLoadDish,
   onSetDishFilters,
-  onLoadDishesToSearch,
   onLoadDishesWithoutSelectedDish,
   onResetDish,
 } = dishSlice.actions;

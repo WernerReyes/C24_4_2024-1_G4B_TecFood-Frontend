@@ -1,20 +1,25 @@
-import type { DishCategoryEntity } from "@/domain/entities";
-import type {
-  CreateDishCategoryResponse,
-  DishCategoryModel,
-  GetDishCategoriesResponse,
-} from "@/model";
 import { dishCategoryAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import { CreateDishCategoryDto } from "@/domain/dtos";
-import { UploadImageDto } from "../../domain/dtos/common/uploadImage.dto";
+import {
+  ApiResponse,
+  CreateDishCategoryDto,
+  UpdateDishCategoryDto,
+  UploadImageDto,
+} from "@/domain/dtos";
+import type { DishCategoryEntity } from "@/domain/entities";
+import type {
+  DishCategoryModel
+} from "@/model";
 
 interface IDishCategoryService {
   create(
     createDishCategoryDto: CreateDishCategoryDto,
     uploadImageDto: UploadImageDto,
-  ): Promise<CreateDishCategoryResponse<DishCategoryModel>>;
-  getAll(): Promise<GetDishCategoriesResponse<DishCategoryModel>>;
+  ): Promise<ApiResponse<DishCategoryModel>>;
+  update(
+    updateDishCategoryDto: UpdateDishCategoryDto,
+  ): Promise<ApiResponse<DishCategoryModel>>;
+  getAll(): Promise<ApiResponse<DishCategoryModel[]>>;
 }
 
 export class DishCategoryService implements IDishCategoryService {
@@ -38,14 +43,30 @@ export class DishCategoryService implements IDishCategoryService {
         formData.append(key, value),
       );
 
-      console.log("formData", formData.get("createDishCategoryDto"));
-
-      const { data } = await httpRequest<
-        CreateDishCategoryResponse<DishCategoryEntity>
-      >(this.prefix, "POST", formData);
+      const { data, ...rest } = await httpRequest<DishCategoryEntity>(
+        this.prefix,
+        "POST",
+        formData,
+      );
       return {
-        ...data,
-        dishCategory: dishCategoryAdapter(data.dishCategory),
+        data: dishCategoryAdapter(data),
+        ...rest,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async update(updateDishCategoryDto: UpdateDishCategoryDto) {
+    try {
+      const { data, ...rest } = await httpRequest<DishCategoryEntity>(
+        this.prefix,
+        "PUT",
+        updateDishCategoryDto,
+      );
+      return {
+        data: dishCategoryAdapter(data),
+        ...rest,
       };
     } catch (error) {
       throw error;
@@ -54,12 +75,13 @@ export class DishCategoryService implements IDishCategoryService {
 
   public async getAll() {
     try {
-      const { data } = await httpRequest<
-        GetDishCategoriesResponse<DishCategoryEntity>
-      >(this.prefix, "GET");
+      const { data, ...rest } = await httpRequest<DishCategoryEntity[]>(
+        this.prefix,
+        "GET",
+      );
       return {
-        ...data,
-        dishCategories: data.dishCategories.map(dishCategoryAdapter),
+        data: data.map(dishCategoryAdapter),
+        ...rest,
       };
     } catch (error) {
       throw error;
