@@ -19,9 +19,8 @@ export class OrderDishItemService implements IOrderDishItemService {
 
   public async getOrderDishItemByOrder(orderDishId: number) {
     try {
-      const { data, ...rest } = await httpRequest<OrderDishItemEntity[]>(
-        this.prefix + "/order/" + orderDishId,
-        "GET",
+      const { data, ...rest } = await httpRequest.get<OrderDishItemEntity[]>(
+        `${this.prefix}/order/${orderDishId}`,
       );
       return {
         data: data.map(orderDishItemAdapter),

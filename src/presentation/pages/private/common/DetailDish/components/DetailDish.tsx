@@ -74,7 +74,7 @@ export const DetailDish = React.memo(() => {
           <p className="mt-4 text-justify text-sm text-slate-400">
             {dish.description}
           </p>
-          <div className="mb-5 lg:mb-0 flex items-center">
+          <div className="mb-5 lg:mb-0 flex items-center flex-wrap">
             {dish.categories.map((category) => (
               <Chip
                 image={category.imageUrl}
@@ -82,7 +82,7 @@ export const DetailDish = React.memo(() => {
                 label={category.name}
                 className="me-2 mt-3 border-2 border-skeleton bg-transparent text-xs dark:border-skeleton-dark"
                 pt={{
-                  image: { className: "h-10" }
+                  image: { className: "h-7 w-7" }
                 }}
               />
             ))}

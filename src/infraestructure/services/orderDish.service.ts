@@ -37,9 +37,8 @@ export class OrderDishService implements IOrderDishService {
 
   public async createOrderDish() {
     try {
-      const { data, ...rest } = await httpRequest<OrderDishEntity>(
+      const { data, ...rest } = await httpRequest.post<OrderDishEntity>(
         this.prefix,
-        "POST",
       );
       return { data: orderDishAdapter(data), ...rest };
     } catch (error) {
@@ -52,9 +51,8 @@ export class OrderDishService implements IOrderDishService {
     status,
   }: UpdateOrderDishStatusRequest) {
     try {
-      return await httpRequest<OrderDishStatusEnum>(
+      return await httpRequest.put<OrderDishStatusEnum>(
         `${this.prefix}/${orderDishId}/status`,
-        "PUT",
         { status },
       );
     } catch (error) {
@@ -74,9 +72,9 @@ export class OrderDishService implements IOrderDishService {
         requestParamCategory,
       ]);
 
-      const { data, ...restResponse } = await httpRequest<
+      const { data, ...restResponse } = await httpRequest.get<
         PagedResponse<GetOrderDishesByUserResponse<OrderDishEntity>>
-      >(`${this.prefix}/user${requestParams}`, "GET");
+      >(`${this.prefix}/user${requestParams}`);
 
       return {
         ...restResponse,
@@ -95,9 +93,8 @@ export class OrderDishService implements IOrderDishService {
 
   public async getOrderDishById(orderDishId: number) {
     try {
-      const { data, ...rest } = await httpRequest<OrderDishEntity>(
+      const { data, ...rest } = await httpRequest.get<OrderDishEntity>(
         `${this.prefix}/${orderDishId}`,
-        "GET",
       );
       return { data: orderDishAdapter(data), ...rest };
     } catch (error) {

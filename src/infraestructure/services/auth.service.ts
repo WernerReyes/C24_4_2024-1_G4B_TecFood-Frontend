@@ -14,7 +14,9 @@ interface IAuthService {
   loginGoogle(
     loginGoogleRequest: LoginGoogleRequest,
   ): Promise<ApiResponse<LoginResponse<UserModel>>>;
-  login(loginRequest: LoginRequest): Promise<ApiResponse<LoginResponse<UserModel>>>;
+  login(
+    loginRequest: LoginRequest,
+  ): Promise<ApiResponse<LoginResponse<UserModel>>>;
   register(registerRequest: RegisterRequest): Promise<ApiResponse<void>>;
   revalidateToken(): Promise<ApiResponse<UserModel>>;
 }
@@ -28,9 +30,11 @@ export class AuthService implements IAuthService {
 
   public async loginGoogle(loginGoogleRequest: LoginGoogleRequest) {
     try {
-      const { data, ...rest } = await httpRequest<LoginResponse<UserEntity>>(
+      const { data, ...rest } = await httpRequest.post<
+        LoginResponse<UserEntity>
+      >(
         this.prefix + "/login-google",
-        "POST",
+
         loginGoogleRequest,
       );
 
@@ -48,9 +52,11 @@ export class AuthService implements IAuthService {
 
   public async login(loginRequest: LoginRequest) {
     try {
-      const { data, ...rest } = await httpRequest<LoginResponse<UserEntity>>(
+      const { data, ...rest } = await httpRequest.post<
+        LoginResponse<UserEntity>
+      >(
         this.prefix + "/login",
-        "POST",
+
         loginRequest,
       );
       return { ...rest, data: { ...data, user: userAdapter(data.user) } };
@@ -61,9 +67,8 @@ export class AuthService implements IAuthService {
 
   public async register(registerRequest: RegisterRequest) {
     try {
-      return await httpRequest<void>(
+      return await httpRequest.post<void>(
         this.prefix + "/register",
-        "POST",
         registerRequest,
       );
     } catch (error) {
@@ -73,9 +78,8 @@ export class AuthService implements IAuthService {
 
   public async revalidateToken() {
     try {
-      const { data, ...rest } = await httpRequest<UserEntity>(
+      const { data, ...rest } = await httpRequest.get<UserEntity>(
         this.prefix + "/revalidate-token",
-        "GET",
       );
       return { ...rest, data: userAdapter(data) };
     } catch (error) {

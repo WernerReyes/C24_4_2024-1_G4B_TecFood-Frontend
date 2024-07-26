@@ -13,11 +13,9 @@ export class PaypalService implements IPaypalService {
 
   public async createPayment(orderDishId: number) {
     try {
-      return await httpRequest<string>(
-        `${this.prefix}/create-payment`,
-        "POST",
-        { orderDishId },
-      );
+      return await httpRequest.post<string>(`${this.prefix}/create-payment`, {
+        orderDishId,
+      });
     } catch (error) {
       throw error;
     }
@@ -25,7 +23,7 @@ export class PaypalService implements IPaypalService {
 
   public async completePayment(orderId: string) {
     try {
-      return await httpRequest<string>(`${this.prefix}/capture`, "POST", {
+      return await httpRequest.post<string>(`${this.prefix}/capture`, {
         orderId,
       });
     } catch (error) {

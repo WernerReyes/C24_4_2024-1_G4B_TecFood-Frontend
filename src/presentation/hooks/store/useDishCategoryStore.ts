@@ -7,8 +7,14 @@ import {
   onLoadDishCategory,
   onLoadingDishCategory,
 } from "@/infraestructure/store";
-import { CreateDishCategoryRequest, UploadImageRequest } from "@/domain/dtos";
+import {
+  CreateDishCategoryRequest,
+  UpdateDishCategoryImageRequest,
+  UpdateDishCategoryRequest,
+  UploadImageRequest,
+} from "@/domain/dtos";
 import { useMessageStore } from "./useMessageStore";
+import { DishCategoryModel } from "@/model";
 
 const dishCategoryService = new DishCategoryService();
 const dishCategoryRepositoryImpl = new DishCategoryRepositoryImpl(
@@ -19,7 +25,7 @@ export const useDishCategoryStore = () => {
   const dispatch = useDispatch();
   const { startSetMessages } = useMessageStore();
 
-  const { dishCategories, isLoading } = useSelector(
+  const { dishCategories, dishCategory, isLoading } = useSelector(
     (state: AppState) => state.dishCategory,
   );
 
@@ -44,6 +50,98 @@ export const useDishCategoryStore = () => {
       });
   };
 
+  const startUpdatingDishCategory = async (
+    updateDishCategoryRequest: UpdateDishCategoryRequest,
+  ) => {
+    dispatch(onLoadingDishCategory());
+
+    await dishCategoryRepositoryImpl
+      .update(updateDishCategoryRequest)
+      .then(({ data, message, status }) => {
+        dispatch(onLoadDishCategory(data));
+        startSetMessages([message], status);
+
+        dispatch(
+          onLoadDishCategories(
+            dishCategories.map((dishCategory) =>
+              dishCategory.id === data.id ? data : dishCategory,
+            ),
+          ),
+        );
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startUpdatingDishCategoryImage = async (
+    updateDishCategoryImageRequest: UpdateDishCategoryImageRequest,
+  ) => {
+    updateDishCategoryImageRequest.validate();
+
+    dispatch(onLoadingDishCategory());
+
+    await dishCategoryRepositoryImpl
+      .updateImage(updateDishCategoryImageRequest)
+      .then(({ data, message, status }) => {
+        dispatch(onLoadDishCategory(data));
+        startSetMessages([message], status);
+
+        dispatch(
+          onLoadDishCategories(
+            dishCategories.map((dishCategory) =>
+              dishCategory.id === data.id ? data : dishCategory,
+            ),
+          ),
+        );
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startDeletingDishCategory = async (dishCategoryId: number) => {
+    dispatch(onLoadingDishCategory());
+
+    await dishCategoryRepositoryImpl
+      .delete(dishCategoryId)
+      .then(({ message, status }) => {
+        startSetMessages([message], status);
+
+        dispatch(
+          onLoadDishCategories(
+            dishCategories.filter(
+              (dishCategory) => dishCategory.id !== dishCategoryId,
+            ),
+          ),
+        );
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startDeletingManyDishCategories = async (dishCategoryIds: number[]) => {
+    dispatch(onLoadingDishCategory());
+
+    await dishCategoryRepositoryImpl
+      .deleteMany(dishCategoryIds)
+      .then(({ message, status }) => {
+        startSetMessages([message], status);
+
+        dispatch(
+          onLoadDishCategories(
+            dishCategories.filter(
+              (dishCategory) => !dishCategoryIds.includes(dishCategory.id),
+            ),
+          ),
+        );
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   const startLoadingDishCategories = async () => {
     dispatch(onLoadingDishCategory());
 
@@ -55,13 +153,29 @@ export const useDishCategoryStore = () => {
       });
   };
 
+  const startLoadingDishCategory = async (
+    dishCategory: DishCategoryModel | number,
+  ) => {
+    dispatch(onLoadingDishCategory());
+    if (typeof dishCategory !== "number") {
+      dispatch(onLoadDishCategory(dishCategory));
+      return;
+    }
+  };
+
   return {
     //* Attributes
+    dishCategory,
     dishCategories,
     isLoading,
 
     //* Methods
     startCreatingDishCategory,
+    startUpdatingDishCategory,
+    startUpdatingDishCategoryImage,
+    startDeletingDishCategory,
+    startDeletingManyDishCategories,
+    startLoadingDishCategory,
     startLoadingDishCategories,
   };
 };

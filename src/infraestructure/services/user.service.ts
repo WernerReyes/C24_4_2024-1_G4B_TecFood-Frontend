@@ -1,12 +1,18 @@
 import { userAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import type { ApiResponse, UpdateUserRequest, UploadImageRequest } from "@/domain/dtos";
+import type {
+  ApiResponse,
+  UpdateUserRequest,
+  UploadImageRequest,
+} from "@/domain/dtos";
 import type { UserEntity } from "@/domain/entities";
 import type { UserModel } from "@/model";
 
 export interface IUserService {
   update(updateUserRequest: UpdateUserRequest): Promise<ApiResponse<UserModel>>;
-  uploadProfile(uploadImageRequest: UploadImageRequest): Promise<ApiResponse<string>>;
+  uploadProfile(
+    uploadImageRequest: UploadImageRequest,
+  ): Promise<ApiResponse<string>>;
   getAll(): Promise<ApiResponse<UserModel[]>>;
 }
 
@@ -19,9 +25,8 @@ export class UserService implements IUserService {
 
   public async update(updateUserRequest: UpdateUserRequest) {
     try {
-      const { data, ...rest } = await httpRequest<UserEntity>(
+      const { data, ...rest } = await httpRequest.put<UserEntity>(
         `${this.prefix}/update`,
-        "PUT",
         updateUserRequest,
       );
       return { data: userAdapter(data), ...rest };
@@ -32,9 +37,8 @@ export class UserService implements IUserService {
 
   public async getAll() {
     try {
-      const { data, ...rest } = await httpRequest<UserEntity[]>(
+      const { data, ...rest } = await httpRequest.get<UserEntity[]>(
         this.prefix,
-        "GET",
       );
       return { data: data.map(userAdapter), ...rest };
     } catch (error) {
@@ -44,9 +48,8 @@ export class UserService implements IUserService {
 
   public async uploadProfile(uploadImageRequest: UploadImageRequest) {
     try {
-      return await httpRequest<string>(
+      return await httpRequest.post<string>(
         `${this.prefix}/upload-profile`,
-        "POST",
         uploadImageRequest.toFormData,
       );
     } catch (error) {

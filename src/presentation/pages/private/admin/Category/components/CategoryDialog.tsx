@@ -1,29 +1,24 @@
 import { useEffect, useState } from "react";
-import { Button, Dialog, InputText } from "@/presentation/core/components";
-import { UploadDishImages } from "../../components";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Dialog, InputText } from "@/presentation/core/components";
+import { UploadDishImages } from "../../components";
 import {
   CreateDishCategoryRequest,
   DishCategoryRequest,
+  UpdateDishCategoryImageRequest,
+  UpdateDishCategoryRequest,
   UploadImageRequest,
 } from "@/domain/dtos";
 import { useDishCategoryStore, useMessageStore } from "@/presentation/hooks";
-import { DishCategoryModel } from "@/model";
+import { dishCategoryEmptyState } from "@/model";
 
 type Props = {
-  currentCategory: DishCategoryModel | null;
-  setCurrentCategory: (category: DishCategoryModel | null) => void;
   visible: boolean;
   onHide: () => void;
 };
 
-export const CategoryDialog = ({
-  currentCategory,
-  setCurrentCategory,
-  visible,
-  onHide,
-}: Props) => {
+export const CategoryDialog = ({ visible, onHide }: Props) => {
   const {
     control,
     handleSubmit,
@@ -32,44 +27,81 @@ export const CategoryDialog = ({
   } = useForm<DishCategoryRequest>({
     resolver: zodResolver(DishCategoryRequest.schema),
   });
-  const { startSetErrorMessages } = useMessageStore();
-  const { startCreatingDishCategory } = useDishCategoryStore();
+  const { startSetMessagesError } = useMessageStore();
+  const {
+    startCreatingDishCategory,
+    startLoadingDishCategory,
+    startUpdatingDishCategoryImage,
+    startUpdatingDishCategory,
+    dishCategory,
+  } = useDishCategoryStore();
   const [file, setFile] = useState<{
     file: File;
     isDeleted: boolean;
   } | null>(null);
   const [uploadedSuccess, setUploadedSuccess] = useState(false);
 
-  const handleSaveCategory = (dishCategoryRequest: DishCategoryRequest) => {
-    if (!file) return startSetErrorMessages(["Image is required"]);
+  const handleUpdateImage = () => {
+    if (!file) return startSetMessagesError(["Image is required"]);
 
-    if (currentCategory) {
-      // update
+    const updateDishCategoryImageRequest = new UpdateDishCategoryImageRequest(
+      dishCategory.id,
+      file.file,
+    );
+    startUpdatingDishCategoryImage(updateDishCategoryImageRequest)
+      .then(() => {
+        setUploadedSuccess(true);
+        onHide();
+      })
+      .catch(() => {
+        setUploadedSuccess(true);
+        onHide();
+      });
+  };
+
+  const handleSaveCategory = (dishCategoryRequest: DishCategoryRequest) => {
+    if (dishCategory.id) {
+      const updateDishCategoryRequest = new UpdateDishCategoryRequest(
+        dishCategory.id,
+        dishCategoryRequest.name,
+      );
+      startUpdatingDishCategory(updateDishCategoryRequest).then(() => {
+        onHide();
+        startLoadingDishCategory(dishCategoryEmptyState);
+      });
     } else {
+      if (!file) return startSetMessagesError(["Image is required"]);
+
       const createDishCategoryRequest = new CreateDishCategoryRequest(
         dishCategoryRequest.name,
       );
       const uploadImageRequest = new UploadImageRequest(file.file);
-      startCreatingDishCategory(createDishCategoryRequest, uploadImageRequest).then(
-        () => {
-          setUploadedSuccess(true);
-          onHide();
-        },
-      );
+      startCreatingDishCategory(
+        createDishCategoryRequest,
+        uploadImageRequest,
+      ).then(() => {
+        setUploadedSuccess(true);
+        onHide();
+      });
     }
   };
 
   useEffect(() => {
-    console.log("currentCategory", currentCategory);
-    if (currentCategory) {
+    if (dishCategory.id) {
       reset({
-        name: currentCategory.name,
+        name: dishCategory.name,
       });
     } else
       reset({
         name: "",
       });
-  }, [currentCategory]);
+  }, [dishCategory]);
+
+  useEffect(() => {
+    if (dishCategory.id) {
+      handleUpdateImage();
+    }
+  }, [file]);
 
   return (
     <Dialog
@@ -77,17 +109,17 @@ export const CategoryDialog = ({
       onHide={() => {
         if (!visible) return;
         onHide();
-        setCurrentCategory(null);
+        startLoadingDishCategory(dishCategoryEmptyState);
       }}
       className="h-[75%] w-[75%] max-w-screen-md"
     >
       <div className="flex justify-center">
         <UploadDishImages
           image={
-            currentCategory
+            dishCategory.id
               ? {
-                  id: currentCategory.id,
-                  url: currentCategory.imageUrl,
+                  id: dishCategory.id,
+                  url: dishCategory.imageUrl,
                 }
               : undefined
           }

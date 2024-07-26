@@ -2,6 +2,7 @@ import type { DishCategoryRepository } from "@/domain/repositories";
 import type { DishCategoryService } from "../services";
 import type {
   CreateDishCategoryRequest,
+  UpdateDishCategoryImageRequest,
   UpdateDishCategoryRequest,
   UploadImageRequest,
 } from "@/domain/dtos";
@@ -21,6 +22,22 @@ export class DishCategoryRepositoryImpl implements DishCategoryRepository {
 
   async update(updateDishCategoryRequest: UpdateDishCategoryRequest) {
     return await this.dishCategoryService.update(updateDishCategoryRequest);
+  }
+
+  async updateImage(
+    updateDishCategoryImageRequest: UpdateDishCategoryImageRequest,
+  ) {
+    return await this.dishCategoryService.updateImage(
+      updateDishCategoryImageRequest,
+    );
+  }
+
+  async delete(dishCategoryId: number) {
+    return await this.dishCategoryService.delete(dishCategoryId);
+  }
+
+  async deleteMany(dishCategoryIds: number[]) {
+    return await this.dishCategoryService.deleteMany(dishCategoryIds);
   }
 
   async getAll() {

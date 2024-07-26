@@ -19,9 +19,8 @@ export class PaymentService implements IPaymentService {
 
   public async processPayment(processPaymentRequest: ProcessPaymentRequest) {
     try {
-      const { data, ...rest } = await httpRequest<PaymentEntity>(
+      const { data, ...rest } = await httpRequest.post<PaymentEntity>(
         `${this.prefix}/process`,
-        "POST",
         processPaymentRequest,
       );
 

@@ -3,13 +3,13 @@ import { httpRequest } from "@/config/api";
 import {
   ApiResponse,
   CreateDishCategoryRequest,
+  UpdateDishCategoryImageRequest,
   UpdateDishCategoryRequest,
   UploadImageRequest,
 } from "@/domain/dtos";
 import type { DishCategoryEntity } from "@/domain/entities";
-import type {
-  DishCategoryModel
-} from "@/model";
+import type { DishCategoryModel } from "@/model";
+import { convertToRequestParam } from "@/presentation/utilities";
 
 interface IDishCategoryService {
   create(
@@ -19,6 +19,11 @@ interface IDishCategoryService {
   update(
     updateDishCategoryRequest: UpdateDishCategoryRequest,
   ): Promise<ApiResponse<DishCategoryModel>>;
+  updateImage(
+    updateDishCategoryImageRequest: UpdateDishCategoryImageRequest,
+  ): Promise<ApiResponse<DishCategoryModel>>;
+  delete(dishCategoryId: number): Promise<ApiResponse<void>>;
+  deleteMany(dishCategoryIds: number[]): Promise<ApiResponse<void>>;
   getAll(): Promise<ApiResponse<DishCategoryModel[]>>;
 }
 
@@ -43,9 +48,8 @@ export class DishCategoryService implements IDishCategoryService {
         formData.append(key, value),
       );
 
-      const { data, ...rest } = await httpRequest<DishCategoryEntity>(
+      const { data, ...rest } = await httpRequest.post<DishCategoryEntity>(
         this.prefix,
-        "POST",
         formData,
       );
       return {
@@ -59,9 +63,8 @@ export class DishCategoryService implements IDishCategoryService {
 
   public async update(updateDishCategoryRequest: UpdateDishCategoryRequest) {
     try {
-      const { data, ...rest } = await httpRequest<DishCategoryEntity>(
+      const { data, ...rest } = await httpRequest.put<DishCategoryEntity>(
         this.prefix,
-        "PUT",
         updateDishCategoryRequest,
       );
       return {
@@ -73,13 +76,50 @@ export class DishCategoryService implements IDishCategoryService {
     }
   }
 
+  public async updateImage(
+    updateDishCategoryImageRequest: UpdateDishCategoryImageRequest,
+  ) {
+    try {
+      const params = convertToRequestParam({
+        dishCategoryId: updateDishCategoryImageRequest.dishCategoryId,
+      });
+      const { data, ...rest } = await httpRequest.put<DishCategoryEntity>(
+        `${this.prefix}/image?${params}`,
+        updateDishCategoryImageRequest.toFormData,
+      );
+      return {
+        data: dishCategoryAdapter(data),
+        ...rest,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async delete(dishCategoryId: number) {
+    try {
+      return await httpRequest.delete<void>(`${this.prefix}/${dishCategoryId}`);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async deleteMany(dishCategoryIds: number[]) {
+    try {
+      const params = convertToRequestParam({ dishCategoryIds });
+      return await httpRequest.delete<void>(
+        `${this.prefix}/delete-many?${params}`,
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async getAll() {
     try {
-      const { data, ...rest } = await httpRequest<DishCategoryEntity[]>(
+      const { data, ...rest } = await httpRequest.get<DishCategoryEntity[]>(
         this.prefix,
-        "GET",
       );
-      console.log(data);
       return {
         data: data.map(dishCategoryAdapter),
         ...rest,

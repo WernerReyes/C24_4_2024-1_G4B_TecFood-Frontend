@@ -8,6 +8,7 @@ import {
   Toolbar,
   Button,
   Image,
+  ConfirmDialog,
 } from "@/presentation/core/components";
 import { AdminLayout } from "../layout";
 import { useDishCategoryStore } from "@/presentation/hooks";
@@ -16,31 +17,57 @@ import { CategoryDialog } from "./components";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
-const CategoryPage = () => {
-  const { dishCategories, startLoadingDishCategories } = useDishCategoryStore();
-  const [selectedCategories, setSelectedCategories] = useState<
+const INITIAL_CONFIRM_DIALOG = {
+  visible: false,
+  message: "",
+  dishCategoryId: undefined,
+};
+
+const DishCategoryPage = () => {
+  const {
+    dishCategories,
+    startDeletingDishCategory,
+    startDeletingManyDishCategories,
+    startLoadingDishCategory,
+    startLoadingDishCategories,
+    isLoading,
+  } = useDishCategoryStore();
+  const [selectedCategories,  setSelectedCategories] = useState<
     DishCategoryModel[]
   >([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const [showCategoryDialog, setShowCategoryDialog] = useState(false);
-  const [currentCategory, setCurrentCategory] =
-    useState<DishCategoryModel | null>(null);
+  const [{ visible, message, dishCategoryId }, setConfirmDialog] = useState<{
+    visible: boolean;
+    message: string;
+    dishCategoryId?: number;
+  }>(INITIAL_CONFIRM_DIALOG);
   const dt = useRef<DataTableRef>(null);
+
+  const handleAcceptDelete = async () => {
+    if (dishCategoryId) startDeletingDishCategory(dishCategoryId);
+    else
+      await startDeletingManyDishCategories(
+        selectedCategories.map((c) => c.id),
+      );
+    setConfirmDialog(INITIAL_CONFIRM_DIALOG);
+  };
 
   useEffect(() => {
     startLoadingDishCategories();
   }, []);
 
-  useEffect(() => {
-    if (currentCategory) {
-      setShowCategoryDialog(true);
-    } else {
-      setShowCategoryDialog(false);
-    }
-  }, [currentCategory]);
-
   return (
     <AdminLayout>
+      <ConfirmDialog
+        message={message}
+        acceptClassName="bg-primary p-2 px-3"
+        rejectClassName="bg-transparent p-2 px-3"
+        accept={handleAcceptDelete}
+        visible={visible}
+        onHide={() => setConfirmDialog(INITIAL_CONFIRM_DIALOG)}
+        reject={() => setConfirmDialog(INITIAL_CONFIRM_DIALOG)}
+      />
       <div className="m-5 rounded-md border-2 dark:border-slate-700 md:m-10">
         <Toolbar
           className=""
@@ -67,6 +94,14 @@ const CategoryPage = () => {
                 severity="danger"
                 className="bg-transparent dark:text-white"
                 disabled={!selectedCategories.length}
+                onClick={() => {
+                  setConfirmDialog({
+                    visible: true,
+                    message: `Are you sure you want to delete ${selectedCategories.length} category${
+                      selectedCategories.length > 1 ? "s" : ""
+                    }?`,
+                  });
+                }}
               />
             </div>
           )}
@@ -128,22 +163,24 @@ const CategoryPage = () => {
                   icon="pi pi-pencil"
                   rounded
                   outlined
-                  onClick={() => setCurrentCategory(category)}
+                  onClick={() => {
+                    startLoadingDishCategory(category);
+                    setShowCategoryDialog(true);
+                  }}
                 />
                 <Button
                   unstyled
                   icon="pi pi-trash"
                   rounded
                   outlined
-                  severity="danger"
-                  // onClick={() => {
-                  //   setConfirmDialog({
-                  //     visible: true,
-                  //     message:
-                  //       "Are you sure you want to delete: " + dish.name + "?",
-                  //     dishId: dish.id,
-                  //   });
-                  // }}
+                  disabled={isLoading}
+                  onClick={() => {
+                    setConfirmDialog({
+                      visible: true,
+                      message: `Are you sure you want to delete "${category.name}"?`,
+                      dishCategoryId: category.id,
+                    });
+                  }}
                 />
               </div>
             )}
@@ -152,14 +189,12 @@ const CategoryPage = () => {
         </DataTable>
 
         <CategoryDialog
-          currentCategory={currentCategory}
           visible={showCategoryDialog}
           onHide={() => setShowCategoryDialog(false)}
-          setCurrentCategory={setCurrentCategory}
         />
       </div>
     </AdminLayout>
   );
 };
 
-export default CategoryPage;
+export default DishCategoryPage;

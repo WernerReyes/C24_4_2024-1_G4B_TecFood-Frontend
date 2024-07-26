@@ -5,7 +5,7 @@ const baseUrl = "/dishOffers";
 
 export const getAllDishOffers = async (): Promise<DishOffer[]> => {
   try {
-    const { data } = await httpRequest<DishOffer[]>(baseUrl, "GET");
+    const { data } = await httpRequest.get<DishOffer[]>(baseUrl);
     return data;
   } catch (error) {
     throw error;

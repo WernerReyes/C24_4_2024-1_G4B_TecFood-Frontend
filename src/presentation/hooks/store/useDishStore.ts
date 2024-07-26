@@ -80,7 +80,9 @@ export const useDishStore = () => {
       });
   };
 
-  const startUpdatingDishImage = async (updateImageDto: UpdateDishImageRequest) => {
+  const startUpdatingDishImage = async (
+    updateImageDto: UpdateDishImageRequest,
+  ) => {
     updateImageDto.validate();
 
     dispatch(onLoadingDish());
@@ -138,7 +140,9 @@ export const useDishStore = () => {
         throw error;
       });
   };
-  const startLoadingDishesPaginated = async (getDishesRequest: GetDishesRequest) => {
+  const startLoadingDishesPaginated = async (
+    getDishesRequest: GetDishesRequest,
+  ) => {
     getDishesRequest.validate();
 
     dispatch(onLoadingDish());
@@ -152,7 +156,9 @@ export const useDishStore = () => {
           }),
         );
       })
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startLoadingDishes = async () => {
@@ -167,7 +173,9 @@ export const useDishStore = () => {
         dispatch(onLoadDishes(data));
         setStorage(DISHES_TO_SEARCH, data);
       })
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startLoadingDishesWithoutSelectedDish = async (
@@ -191,7 +199,9 @@ export const useDishStore = () => {
     await dishRepositoryImpl
       .getById(id)
       .then(({ data }) => dispatch(onLoadDish(data)))
-      .catch(console.error);
+      .catch((error) => {
+        throw error;
+      });
   };
 
   const startFilterDishes = async (filters: DishFilters) => {

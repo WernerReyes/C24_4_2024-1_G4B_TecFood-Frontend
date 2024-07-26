@@ -24,12 +24,9 @@ export class CartDishService implements ICartDishService {
 
   public async addOneDish(dishId: number) {
     try {
-      const { data, ...rest } = await httpRequest<CartDishEntity>(
+      const { data, ...rest } = await httpRequest.post<CartDishEntity>(
         this.prefix,
-        "POST",
-        {
-          dishId,
-        },
+        { dishId },
       );
       return { data: cartAdapter(data), ...rest };
     } catch (error) {
@@ -39,9 +36,9 @@ export class CartDishService implements ICartDishService {
 
   public async getDishesByUser() {
     try {
-      const { data, ...rest } = await httpRequest<
+      const { data, ...rest } = await httpRequest.get<
         GetDishesToCartByUserResponse<CartDishEntity>
-      >(`${this.prefix}/user`, "GET");
+      >(`${this.prefix}/user`);
 
       return {
         data: {
@@ -57,7 +54,7 @@ export class CartDishService implements ICartDishService {
 
   public async deleteOneDish(dishId: number) {
     try {
-      return await httpRequest<number>(`${this.prefix}/${dishId}`, "DELETE");
+      return await httpRequest.delete<number>(`${this.prefix}/${dishId}`);
     } catch (error) {
       throw error;
     }
@@ -65,10 +62,7 @@ export class CartDishService implements ICartDishService {
 
   public async deleteAllDishes(dishId: number) {
     try {
-      return await httpRequest<number>(
-        `${this.prefix}/all/${dishId}`,
-        "DELETE",
-      );
+      return await httpRequest.delete<number>(`${this.prefix}/all/${dishId}`);
     } catch (error) {
       throw error;
     }
@@ -76,9 +70,8 @@ export class CartDishService implements ICartDishService {
 
   public async getDishByDishId(dishId: number) {
     try {
-      const { data, ...rest } = await httpRequest<CartDishEntity>(
+      const { data, ...rest } = await httpRequest.get<CartDishEntity>(
         `${this.prefix}/dish/${dishId}`,
-        "GET",
       );
       return { data: cartAdapter(data), ...rest };
     } catch (error) {
@@ -88,7 +81,7 @@ export class CartDishService implements ICartDishService {
 
   public async getTotalDishesByUser() {
     try {
-      return await httpRequest<number>(`${this.prefix}/total`, "GET");
+      return await httpRequest.get<number>(`${this.prefix}/total`);
     } catch (error) {
       throw error;
     }

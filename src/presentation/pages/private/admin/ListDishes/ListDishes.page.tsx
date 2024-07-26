@@ -46,8 +46,7 @@ const COLS_TO_EXPORT: ColumnMeta[] = [
 
 const ListDishesPage = () => {
   const navigate = useNavigate();
-  const { dishes, startDeletingDish, startDeletingManyDishes } =
-    useDishStore();
+  const { dishes, startDeletingDish, startDeletingManyDishes } = useDishStore();
   const [selectedDishes, setSelectedDishes] = useState<DishModel[]>([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const dt = useRef<DataTableRef>(null);
@@ -117,8 +116,9 @@ const ListDishesPage = () => {
                 onClick={() => {
                   setConfirmDialog({
                     visible: true,
-                    message:
-                      "Are you sure you want to delete the selected dishes?",
+                    message: `Are you sure you want to delete ${selectedDishes.length} category${
+                      selectedDishes.length > 1 ? "s" : ""
+                    }?`,
                   });
                 }}
                 disabled={!selectedDishes.length}
@@ -137,6 +137,7 @@ const ListDishesPage = () => {
           }}
           dataKey="id"
           paginator
+          paginatorPosition="both"
           rows={ROWS_PER_PAGE_OPTIONS[0]}
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
@@ -210,8 +211,8 @@ const ListDishesPage = () => {
                   onClick={() => {
                     setConfirmDialog({
                       visible: true,
-                      message:
-                        "Are you sure you want to delete: " + dish.name + "?",
+
+                      message: `Are you sure you want to delete "${dish.name}"?`,
                       dishId: dish.id,
                     });
                   }}

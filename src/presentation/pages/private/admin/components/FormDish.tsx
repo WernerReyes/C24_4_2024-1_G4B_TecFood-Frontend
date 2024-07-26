@@ -1,7 +1,8 @@
 import type { DishRequest } from "@/domain/dtos";
-import { DishModel } from "@/model";
+import type { DishCategoryModel, DishModel } from "@/model";
 import {
   Button,
+  Image,
   InputNumber,
   InputText,
   InputTextarea,
@@ -71,6 +72,16 @@ export const FormDish = ({
               placeholder="Select..."
               display="chip"
               filter
+              itemTemplate={(option: DishCategoryModel) => (
+                <div className="flex items-center">
+                  <Image
+                    alt={option.name}
+                    src={option.imageUrl}
+                    imageClassName="w-6 h-6 rounded-md me-2"
+                  />
+                  <div>{option.name}</div>
+                </div>
+              )}
               error={!!error?.message}
               smallDescription={error?.message}
               className="border-2 border-skeleton bg-transparent text-sm dark:border-skeleton-dark"
@@ -151,8 +162,7 @@ export const FormDish = ({
             className="me-3 w-32 rounded-md bg-primary-darker/20   text-primary shadow-sm transition-all duration-300"
           />
         )}
-        
-      
+
         <Button
           type="submit"
           label="Save"

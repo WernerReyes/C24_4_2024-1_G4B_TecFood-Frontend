@@ -15,9 +15,8 @@ export class OpenAIService implements IOpenAIService {
 
   public async chat(chatRequest: ChatRequest) {
     try {
-      return await httpRequest<ChatResponse>(
+      return await httpRequest.post<ChatResponse>(
         `${this.prefix}/chat`,
-        "POST",
         chatRequest,
       );
     } catch (error) {
@@ -27,7 +26,7 @@ export class OpenAIService implements IOpenAIService {
 
   public async greetUser() {
     try {
-      return await httpRequest<ChatResponse>(`${this.prefix}/greet`, "GET");
+      return await httpRequest.get<ChatResponse>(`${this.prefix}/greet`);
     } catch (error) {
       throw error;
     }

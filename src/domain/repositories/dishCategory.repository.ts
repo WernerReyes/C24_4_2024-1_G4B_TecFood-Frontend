@@ -1,9 +1,8 @@
-import type {
-  DishCategoryModel
-} from "@/model";
+import type { DishCategoryModel } from "@/model";
 import type {
   ApiResponse,
   CreateDishCategoryRequest,
+  UpdateDishCategoryImageRequest,
   UpdateDishCategoryRequest,
   UploadImageRequest,
 } from "../dtos";
@@ -16,8 +15,10 @@ export abstract class DishCategoryRepository {
   abstract update(
     updateDishCategoryRequest: UpdateDishCategoryRequest,
   ): Promise<ApiResponse<DishCategoryModel>>;
+  abstract updateImage(
+    updateDishCategoryImageRequest: UpdateDishCategoryImageRequest,
+  ): Promise<ApiResponse<DishCategoryModel>>;
+  abstract delete(dishCategoryId: number): Promise<ApiResponse<void>>;
+  abstract deleteMany(dishCategoryIds: number[]): Promise<ApiResponse<void>>;
   abstract getAll(): Promise<ApiResponse<DishCategoryModel[]>>;
-  //   create: (dishOffer: CreateDishOffer) => Promise<DishOffer>;
-  //   update: (dishOffer: UpdateDishOffer) => Promise<DishOffer>;
-  //   delete: (id: string) => Promise<void>;
 }

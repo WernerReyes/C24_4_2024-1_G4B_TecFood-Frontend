@@ -17,8 +17,8 @@ const ListDishesPage = lazy(
   () => import("../pages/private/admin/ListDishes/ListDishes.page"),
 );
 
-const CategoryPage = lazy(
-  () => import("../pages/private/admin/Category/Category.page"),
+const DishCategoryPage = lazy(
+  () => import("../pages/private/admin/Category/DishCategory.page"),
 );
 
 //* Common pages
@@ -45,7 +45,7 @@ const AdminRouter = () => {
       <Route path={EDIT_DISH()} element={<EditDishPage />} />
       <Route path={LIST_DISHES} element={<ListDishesPage />} />
       <Route path={DETAIL_DISH()} element={<DetailDishPage />} />
-      <Route path={CATEGORY} element={<CategoryPage />} />
+      <Route path={CATEGORY} element={<DishCategoryPage />} />
     </RouterWithNotFound>
   );
 };

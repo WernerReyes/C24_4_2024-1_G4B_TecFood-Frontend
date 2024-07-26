@@ -53,7 +53,7 @@ const AddDishPage = () => {
     <AdminLayout>
       {isLoading && (
         <ProgressSpinner
-          containerClassName="z-[999] fixed"
+          containerClassName="z-[999] fixed inset-0 flex items-center justify-center bg-opacity-50"
           darkColor="
         dark:bg-slate-900/40"
           lightColor="bg-white/40"
