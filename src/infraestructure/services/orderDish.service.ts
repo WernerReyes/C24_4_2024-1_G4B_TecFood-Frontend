@@ -2,10 +2,10 @@ import { orderDishAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
 import type {
   ApiResponse,
-  GetOrderDishesByUserDto,
+  GetOrderDishesByUserRequest,
   GetOrderDishesByUserResponse,
   PagedResponse,
-  UpdateOrderDishStatusDto,
+  UpdateOrderDishStatusRequest,
 } from "@/domain/dtos";
 import type { OrderDishEntity, OrderDishStatusEnum } from "@/domain/entities";
 import type { OrderDishModel } from "@/model";
@@ -18,10 +18,10 @@ import {
 interface IOrderDishService {
   createOrderDish(): Promise<ApiResponse<OrderDishModel>>;
   updateOrderDishStatus(
-    updateOrderDishStatusDto: UpdateOrderDishStatusDto,
+    updateOrderDishStatusRequest: UpdateOrderDishStatusRequest,
   ): Promise<ApiResponse<OrderDishStatusEnum>>;
   getOrderDishesByUser(
-    getOrderDishesByUserDto: GetOrderDishesByUserDto,
+    getOrderDishesByUserRequest: GetOrderDishesByUserRequest,
   ): Promise<
     ApiResponse<PagedResponse<GetOrderDishesByUserResponse<OrderDishModel>>>
   >;
@@ -50,7 +50,7 @@ export class OrderDishService implements IOrderDishService {
   public async updateOrderDishStatus({
     orderDishId,
     status,
-  }: UpdateOrderDishStatusDto) {
+  }: UpdateOrderDishStatusRequest) {
     try {
       return await httpRequest<OrderDishStatusEnum>(
         `${this.prefix}/${orderDishId}/status`,
@@ -65,7 +65,7 @@ export class OrderDishService implements IOrderDishService {
   public async getOrderDishesByUser({
     status,
     ...rest
-  }: GetOrderDishesByUserDto) {
+  }: GetOrderDishesByUserRequest) {
     try {
       const requestParam = convertToRequestParam(rest);
       const requestParamCategory = convertArrayToRequestParam(status, "status");

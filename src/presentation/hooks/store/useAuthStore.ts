@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { LoginGoogleDto, LoginDto, RegisterDto } from "@/domain/dtos";
+import type { LoginGoogleRequest, LoginRequest, RegisterRequest } from "@/domain/dtos";
 import { AuthRepositoryImpl } from "@/infraestructure/repositories";
 import { AuthService } from "@/infraestructure/services";
 import {
@@ -41,12 +41,12 @@ export const useAuthStore = () => {
 
   const startCheking = () => dispatch(onCheking());
 
-  const startLoginGoogle = async (loginGoogleDto: LoginGoogleDto) => {
-    loginGoogleDto.validate();
+  const startLoginGoogle = async (loginGoogleRequest: LoginGoogleRequest) => {
+    loginGoogleRequest.validate();
     dispatch(onCheking());
 
     return await authRepositoryImpl
-      .loginGoogle(loginGoogleDto)
+      .loginGoogle(loginGoogleRequest)
       .then(({ data }) => {
         dispatch(onLogin(data.user));
         setStorage(TOKEN, data.token);
@@ -58,11 +58,11 @@ export const useAuthStore = () => {
       });
   };
 
-  const startLogin = async (loginDto: LoginDto) => {
+  const startLogin = async (loginRequest: LoginRequest) => {
     dispatch(onCheking());
 
     return await authRepositoryImpl
-      .login(loginDto)
+      .login(loginRequest)
       .then(({ data }) => {
         dispatch(onLogin(data.user));
         setStorage(TOKEN, data.token);
@@ -74,11 +74,11 @@ export const useAuthStore = () => {
       });
   };
 
-  const startRegistering = async (registerDto: RegisterDto) => {
+  const startRegistering = async (registerRequest: RegisterRequest) => {
     dispatch(onCheking());
 
     await authRepositoryImpl
-      .register(registerDto)
+      .register(registerRequest)
       .then(({ message, status }) => startSetMessages([message], status))
       .catch((error) => {
         dispatch(onLogout());

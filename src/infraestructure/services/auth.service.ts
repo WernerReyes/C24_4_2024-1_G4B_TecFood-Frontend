@@ -2,9 +2,9 @@ import type { UserEntity } from "@/domain/entities";
 import type { UserModel } from "@/model";
 import { httpRequest } from "@/config/api";
 import {
-  RegisterDto,
-  LoginGoogleDto,
-  LoginDto,
+  RegisterRequest,
+  LoginGoogleRequest,
+  LoginRequest,
   type ApiResponse,
   type LoginResponse,
 } from "@/domain/dtos";
@@ -12,10 +12,10 @@ import { userAdapter } from "@/config/adapters";
 
 interface IAuthService {
   loginGoogle(
-    loginGoogleDto: LoginGoogleDto,
+    loginGoogleRequest: LoginGoogleRequest,
   ): Promise<ApiResponse<LoginResponse<UserModel>>>;
-  login(loginDto: LoginDto): Promise<ApiResponse<LoginResponse<UserModel>>>;
-  register(registerDto: RegisterDto): Promise<ApiResponse<void>>;
+  login(loginRequest: LoginRequest): Promise<ApiResponse<LoginResponse<UserModel>>>;
+  register(registerRequest: RegisterRequest): Promise<ApiResponse<void>>;
   revalidateToken(): Promise<ApiResponse<UserModel>>;
 }
 
@@ -26,12 +26,12 @@ export class AuthService implements IAuthService {
     this.prefix = "/auth";
   }
 
-  public async loginGoogle(loginGoogleDto: LoginGoogleDto) {
+  public async loginGoogle(loginGoogleRequest: LoginGoogleRequest) {
     try {
       const { data, ...rest } = await httpRequest<LoginResponse<UserEntity>>(
         this.prefix + "/login-google",
         "POST",
-        loginGoogleDto,
+        loginGoogleRequest,
       );
 
       return {
@@ -46,12 +46,12 @@ export class AuthService implements IAuthService {
     }
   }
 
-  public async login(loginDto: LoginDto) {
+  public async login(loginRequest: LoginRequest) {
     try {
       const { data, ...rest } = await httpRequest<LoginResponse<UserEntity>>(
         this.prefix + "/login",
         "POST",
-        loginDto,
+        loginRequest,
       );
       return { ...rest, data: { ...data, user: userAdapter(data.user) } };
     } catch (error) {
@@ -59,12 +59,12 @@ export class AuthService implements IAuthService {
     }
   }
 
-  public async register(registerDto: RegisterDto) {
+  public async register(registerRequest: RegisterRequest) {
     try {
       return await httpRequest<void>(
         this.prefix + "/register",
         "POST",
-        registerDto,
+        registerRequest,
       );
     } catch (error) {
       throw error;

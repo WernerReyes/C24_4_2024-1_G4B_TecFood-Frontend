@@ -1,11 +1,11 @@
 import { z } from "zod";
 import { RoleEnum } from "@/domain/entities";
 import { dtoValidator, regularExpressions } from "@/presentation/utilities";
-import { AuthDto, type AuthDtoModel, AuthDtoSchema } from "./auth.dto";
+import { AuthRequest, type AuthRequestModel, AuthRequestSchema } from "./auth.request";
 
 const { DNI, PHONE } = regularExpressions;
 
-interface RegisterDtoModel extends AuthDtoModel {
+interface RegisterRequestModel extends AuthRequestModel {
   readonly firstName: string;
   readonly lastName: string;
   readonly dni?: string;
@@ -13,7 +13,7 @@ interface RegisterDtoModel extends AuthDtoModel {
   readonly role?: RoleEnum;
 }
 
-export class RegisterDto extends AuthDto implements RegisterDtoModel {
+export class RegisterRequest extends AuthRequest implements RegisterRequestModel {
   constructor(
     public firstName: string,
     public lastName: string,
@@ -27,15 +27,15 @@ export class RegisterDto extends AuthDto implements RegisterDtoModel {
   }
 
   public override validate() {
-    dtoValidator(this, RegisterDto.schema);
+    dtoValidator(this, RegisterRequest.schema);
   }
 
-  public static override get schema(): z.ZodSchema<RegisterDtoModel> {
-    return RegisterDtoSchema;
+  public static override get schema(): z.ZodSchema<RegisterRequestModel> {
+    return RegisterRequestSchema;
   }
 }
 
-const RegisterDtoSchema = z.object({
+const RegisterRequestSchema = z.object({
   firstName: z
     .string({
       message: "Invalid name",
@@ -59,5 +59,5 @@ const RegisterDtoSchema = z.object({
       message: "Phone must be 9 characters long and contain only numbers",
     }),
   role: z.nativeEnum(RoleEnum).optional().default(RoleEnum.ROLE_USER),
-  ...AuthDtoSchema.shape,
+  ...AuthRequestSchema.shape,
 });

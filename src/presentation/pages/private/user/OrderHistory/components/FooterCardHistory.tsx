@@ -1,4 +1,4 @@
-import { UpdateOrderDishStatusDto } from "@/domain/dtos";
+import { UpdateOrderDishStatusRequest } from "@/domain/dtos";
 import { OrderDishStatusEnum } from "@/domain/entities";
 import type { OrderDishModel } from "@/model";
 import { Button, DowloadFile, Link } from "@/presentation/core/components";
@@ -23,13 +23,13 @@ export const FooterCardHistory = ({
   const { startUpdateOrderDishStatus } = useOrderDishStore();
 
   const handleCancelOrder = () => {
-    const updateOrderDishStatusDto = new UpdateOrderDishStatusDto(
+    const updateOrderDishStatusRequest = new UpdateOrderDishStatusRequest(
       id,
       OrderDishStatusEnum.CANCELLED,
     );
 
     startUpdateOrderDishStatus(
-      updateOrderDishStatusDto,
+      updateOrderDishStatusRequest,
       "Order canceled successfully",
     );
   };

@@ -3,14 +3,14 @@ import { dtoValidator, regularExpressions } from "@/presentation/utilities";
 
 const { DNI, PHONE } = regularExpressions;
 
-type UpdateUserDtoModel = {
+type UpdateUserRequestModel = {
   readonly firstName: string;
   readonly lastName: string;
   readonly phoneNumber?: string;
   readonly dni?: string;
 };
 
-export class UpdateUserDto implements UpdateUserDtoModel {
+export class UpdateUserRequest implements UpdateUserRequestModel {
   private constructor(
     public readonly firstName: string,
     public readonly lastName: string,
@@ -19,15 +19,15 @@ export class UpdateUserDto implements UpdateUserDtoModel {
   ) {}
 
   public validate() {
-    dtoValidator(this, UpdateUserDto.schema);
+    dtoValidator(this, UpdateUserRequest.schema);
   }
 
-  public static get schema(): z.ZodSchema<UpdateUserDtoModel> {
-    return UpdateUserDtoSchema;
+  public static get schema(): z.ZodSchema<UpdateUserRequestModel> {
+    return UpdateUserRequestSchema;
   }
 }
 
-const UpdateUserDtoSchema = z.object({
+const UpdateUserRequestSchema = z.object({
   firstName: z
     .string()
     .min(3, "Name must be at least 3 characters long")

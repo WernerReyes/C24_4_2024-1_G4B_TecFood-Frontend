@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { ChatDto } from "@/domain/dtos";
+import type { ChatRequest } from "@/domain/dtos";
 import { OpenAIRepositoryImpl } from "@/infraestructure/repositories";
 import { OpenAIService } from "@/infraestructure/services";
 import {
@@ -39,13 +39,13 @@ export const useOpenAIStore = () => {
       });
   };
 
-  const startSendingMenssage = async (chatDto: ChatDto) => {
-    chatDto.validate();
+  const startSendingMenssage = async (chatRequest: ChatRequest) => {
+    chatRequest.validate();
 
     dispatch(onLoadingopenIA());
-    dispatch(onAddChatMessage(chatDto.messages[chatDto.messages.length - 1]));
+    dispatch(onAddChatMessage(chatRequest.messages[chatRequest.messages.length - 1]));
     openAIRepositoryImpl
-      .chat(chatDto)
+      .chat(chatRequest)
       .then(({ data }) => {
         if (data.id !== "Error") dispatch(onSetAvailableChat());
         dispatch(onAddChatMessage(data.choices[0].message));

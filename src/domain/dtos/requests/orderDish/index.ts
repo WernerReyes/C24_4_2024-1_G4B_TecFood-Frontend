@@ -1,2 +1,2 @@
-export * from './updateOrderDishStatus.dto';
-export * from './getOrderDishesByUser.dto';
+export * from './updateOrderDishStatus.request';
+export * from './getOrderDishesByUser.request';

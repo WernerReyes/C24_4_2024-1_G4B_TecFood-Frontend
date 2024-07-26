@@ -1,23 +1,23 @@
 import { dtoValidator } from "@/presentation/utilities";
 import { z } from "zod";
 
-export type DishCategoryDtoModel = {
+export type DishCategoryRequestModel = {
   readonly name: string;
 };
 
-export class DishCategoryDto implements DishCategoryDtoModel {
+export class DishCategoryRequest implements DishCategoryRequestModel {
   constructor(public name: string) {}
 
   public validate() {
-    dtoValidator(this, DishCategoryDto.schema);
+    dtoValidator(this, DishCategoryRequest.schema);
   }
 
-  public static get schema(): z.ZodSchema<DishCategoryDtoModel> {
-    return DishCategoryDtoSchema;
+  public static get schema(): z.ZodSchema<DishCategoryRequestModel> {
+    return DishCategoryRequestSchema;
   }
 }
 
-export const DishCategoryDtoSchema = z.object({
+export const DishCategoryRequestSchema = z.object({
   name: z
     .string({
       message: "Name is required",

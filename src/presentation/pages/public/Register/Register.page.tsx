@@ -11,7 +11,7 @@ import {
 import { PublicRoutes } from "@/presentation/routes";
 import { AuthLayout } from "../layout";
 import { fromObjectToArray } from "@/presentation/utilities";
-import { RegisterDto } from "@/domain/dtos";
+import { RegisterRequest } from "@/domain/dtos";
 
 export const RegisterPage = () => {
   const { isDark } = useThemeStore();
@@ -22,11 +22,11 @@ export const RegisterPage = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterDto>({
-    resolver: zodResolver(RegisterDto.schema),
+  } = useForm<RegisterRequest>({
+    resolver: zodResolver(RegisterRequest.schema),
   });
 
-  const handleRegister: SubmitHandler<RegisterDto> = (data) =>
+  const handleRegister: SubmitHandler<RegisterRequest> = (data) =>
     startRegistering(data);
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { UpdateUserDto } from "@/domain/dtos";
+import { UpdateUserRequest } from "@/domain/dtos";
 import { Button, InputText } from "@/presentation/core/components";
 import { useAuthStore, useUserStore } from "@/presentation/hooks";
 
@@ -12,11 +12,11 @@ export const ProfileForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<UpdateUserDto>({
-    resolver: zodResolver(UpdateUserDto.schema),
+  } = useForm<UpdateUserRequest>({
+    resolver: zodResolver(UpdateUserRequest.schema),
   });
 
-  const handleUpdateUser: SubmitHandler<UpdateUserDto> = async (data) => {
+  const handleUpdateUser: SubmitHandler<UpdateUserRequest> = async (data) => {
     await startUpdatingUser(data);
   };
 

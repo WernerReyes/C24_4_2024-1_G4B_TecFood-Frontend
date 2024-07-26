@@ -1,4 +1,4 @@
-import { ProcessPaymentDto } from "@/domain/dtos";
+import { ProcessPaymentRequest } from "@/domain/dtos";
 import { PaymentMethodEnum } from "@/domain/entities";
 import { usePaymentStore } from "@/presentation/hooks";
 import { useParams } from "react-router-dom";
@@ -10,11 +10,11 @@ const PaymentPage = () => {
   const { startProcessPayment } = usePaymentStore();
 
   const handleProcessPayment = async (paymentMethod: PaymentMethodEnum) => {
-    const processPaymentDto = new ProcessPaymentDto(
+    const processPaymentRequest = new ProcessPaymentRequest(
       Number(orderDishId),
       paymentMethod,
     );
-    await startProcessPayment(processPaymentDto).catch((error) => {
+    await startProcessPayment(processPaymentRequest).catch((error) => {
       throw error;
     });
   };

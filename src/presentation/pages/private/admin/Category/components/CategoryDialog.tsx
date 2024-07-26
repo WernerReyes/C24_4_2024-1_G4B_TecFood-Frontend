@@ -4,9 +4,9 @@ import { UploadDishImages } from "../../components";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  CreateDishCategoryDto,
-  DishCategoryDto,
-  UploadImageDto,
+  CreateDishCategoryRequest,
+  DishCategoryRequest,
+  UploadImageRequest,
 } from "@/domain/dtos";
 import { useDishCategoryStore, useMessageStore } from "@/presentation/hooks";
 import { DishCategoryModel } from "@/model";
@@ -29,8 +29,8 @@ export const CategoryDialog = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<DishCategoryDto>({
-    resolver: zodResolver(DishCategoryDto.schema),
+  } = useForm<DishCategoryRequest>({
+    resolver: zodResolver(DishCategoryRequest.schema),
   });
   const { startSetErrorMessages } = useMessageStore();
   const { startCreatingDishCategory } = useDishCategoryStore();
@@ -40,17 +40,17 @@ export const CategoryDialog = ({
   } | null>(null);
   const [uploadedSuccess, setUploadedSuccess] = useState(false);
 
-  const handleSaveCategory = (dishCategoryDto: DishCategoryDto) => {
+  const handleSaveCategory = (dishCategoryRequest: DishCategoryRequest) => {
     if (!file) return startSetErrorMessages(["Image is required"]);
 
     if (currentCategory) {
       // update
     } else {
-      const createDishCategoryDto = new CreateDishCategoryDto(
-        dishCategoryDto.name,
+      const createDishCategoryRequest = new CreateDishCategoryRequest(
+        dishCategoryRequest.name,
       );
-      const uploadImageDto = new UploadImageDto(file.file);
-      startCreatingDishCategory(createDishCategoryDto, uploadImageDto).then(
+      const uploadImageRequest = new UploadImageRequest(file.file);
+      startCreatingDishCategory(createDishCategoryRequest, uploadImageRequest).then(
         () => {
           setUploadedSuccess(true);
           onHide();

@@ -2,7 +2,7 @@ import { z, ZodSchema } from "zod";
 import type { DishCategoryModel } from "@/model";
 import { dtoValidator } from "@/presentation/utilities";
 
-export interface DishDtoModel {
+export interface DishRequestModel {
   readonly name: string;
   readonly description: string;
   readonly price: number;
@@ -10,7 +10,7 @@ export interface DishDtoModel {
   readonly stock: number;
 }
 
-export class DishDto implements DishDtoModel {
+export class DishRequest implements DishRequestModel {
   constructor(
     public readonly name: string,
     public readonly description: string,
@@ -20,19 +20,19 @@ export class DishDto implements DishDtoModel {
   ) {}
 
   public validate() {
-    dtoValidator(this, DishDto.schema);
+    dtoValidator(this, DishRequest.schema);
   }
 
   public get categoriesId(): number[] {
     return this.categories.map((category) => category.id);
   }
 
-  public static get schema(): ZodSchema<DishDtoModel> {
-    return DishDtoSchema;
+  public static get schema(): ZodSchema<DishRequestModel> {
+    return DishRequestSchema;
   }
 }
 
-export const DishDtoSchema = z.object({
+export const DishRequestSchema = z.object({
   name: z
     .string({
       message: "Name is required",

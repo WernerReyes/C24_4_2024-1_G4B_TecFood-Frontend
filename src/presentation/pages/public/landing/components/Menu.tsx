@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { GetDishesDto } from "@/domain/dtos";
+import { GetDishesRequest } from "@/domain/dtos";
 import { Button } from "@/presentation/core/components";
 import {
   useDishCategoryStore,
@@ -46,14 +46,14 @@ export const Menu = ({ marginContainer }: Props) => {
   };
 
   useEffect(() => {
-    const getDishesDto = new GetDishesDto(
+    const getDishesRequest = new GetDishesRequest(
       1,
       10,
       selectedCategoryId,
       null,
       null,
     );
-    startLoadingDishesPaginated(getDishesDto);
+    startLoadingDishesPaginated(getDishesRequest);
   }, [selectedCategoryId]);
 
   useEffect(() => {

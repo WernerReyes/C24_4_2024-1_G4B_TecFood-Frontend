@@ -1,2 +1,2 @@
-export * from './pagination.dto';
-export * from './uploadImage.dto';
+export * from './pagination.request';
+export * from './uploadImage.request';

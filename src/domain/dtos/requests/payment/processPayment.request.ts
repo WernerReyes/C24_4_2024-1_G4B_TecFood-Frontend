@@ -2,27 +2,27 @@ import { PaymentMethodEnum } from "@/domain/entities";
 import { dtoValidator } from "@/presentation/utilities";
 import { z } from "zod";
 
-type ProcessPaymentDtoModel = {
+type ProcessPaymentRequestModel = {
   readonly orderDishId: number;
   readonly paymentMethod: PaymentMethodEnum;
 };
 
-export class ProcessPaymentDto implements ProcessPaymentDtoModel {
+export class ProcessPaymentRequest implements ProcessPaymentRequestModel {
   constructor(
     public readonly orderDishId: number,
     public readonly paymentMethod: PaymentMethodEnum,
   ) {}
 
   public validate() {
-    dtoValidator(this, ProcessPaymentDto.schema);
+    dtoValidator(this, ProcessPaymentRequest.schema);
   }
 
-  private static get schema(): z.ZodSchema<ProcessPaymentDtoModel> {
-    return ProcessPaymentDtoSchema;
+  private static get schema(): z.ZodSchema<ProcessPaymentRequestModel> {
+    return ProcessPaymentRequestSchema;
   }
 }
 
-const ProcessPaymentDtoSchema = z.object({
+const ProcessPaymentRequestSchema = z.object({
   orderDishId: z
     .number({
       message: "orderDishId must be a number",

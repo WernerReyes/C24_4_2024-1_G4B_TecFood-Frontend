@@ -1,4 +1,4 @@
-import { LoginGoogleDto } from "@/domain/dtos";
+import { LoginGoogleRequest } from "@/domain/dtos";
 import { RoleEnum } from "@/domain/entities";
 import { Button, Image } from "@/presentation/core/components";
 import { useAuthStore } from "@/presentation/hooks";
@@ -53,7 +53,7 @@ const CustomGoogleLogin = () => {
       const userInfo = await userGoogleInfo<GoogleResponse>(
         tokenResponse.access_token,
       );
-      const loginGoogleDto = new LoginGoogleDto(
+      const loginGoogleRequest = new LoginGoogleRequest(
         userInfo.given_name,
         userInfo.family_name,
         userInfo.email,
@@ -62,7 +62,7 @@ const CustomGoogleLogin = () => {
         userInfo.email_verified,
         RoleEnum.ROLE_USER,
       );
-      startLoginGoogle(loginGoogleDto).then((role) => {
+      startLoginGoogle(loginGoogleRequest).then((role) => {
         navigate(PrivateRoutes[routeRole(role!)] as string);
       });
     },

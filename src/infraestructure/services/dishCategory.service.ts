@@ -2,9 +2,9 @@ import { dishCategoryAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
 import {
   ApiResponse,
-  CreateDishCategoryDto,
-  UpdateDishCategoryDto,
-  UploadImageDto,
+  CreateDishCategoryRequest,
+  UpdateDishCategoryRequest,
+  UploadImageRequest,
 } from "@/domain/dtos";
 import type { DishCategoryEntity } from "@/domain/entities";
 import type {
@@ -13,11 +13,11 @@ import type {
 
 interface IDishCategoryService {
   create(
-    createDishCategoryDto: CreateDishCategoryDto,
-    uploadImageDto: UploadImageDto,
+    createDishCategoryRequest: CreateDishCategoryRequest,
+    uploadImageRequest: UploadImageRequest,
   ): Promise<ApiResponse<DishCategoryModel>>;
   update(
-    updateDishCategoryDto: UpdateDishCategoryDto,
+    updateDishCategoryRequest: UpdateDishCategoryRequest,
   ): Promise<ApiResponse<DishCategoryModel>>;
   getAll(): Promise<ApiResponse<DishCategoryModel[]>>;
 }
@@ -30,16 +30,16 @@ export class DishCategoryService implements IDishCategoryService {
   }
 
   public async create(
-    createDishCategoryDto: CreateDishCategoryDto,
-    uploadImageDto: UploadImageDto,
+    createDishCategoryRequest: CreateDishCategoryRequest,
+    uploadImageRequest: UploadImageRequest,
   ) {
     try {
       const formData = new FormData();
-      createDishCategoryDto.toFormData.forEach((value, key) =>
+      createDishCategoryRequest.toFormData.forEach((value, key) =>
         formData.append(key, value),
       );
 
-      uploadImageDto.toFormData.forEach((value, key) =>
+      uploadImageRequest.toFormData.forEach((value, key) =>
         formData.append(key, value),
       );
 
@@ -57,12 +57,12 @@ export class DishCategoryService implements IDishCategoryService {
     }
   }
 
-  public async update(updateDishCategoryDto: UpdateDishCategoryDto) {
+  public async update(updateDishCategoryRequest: UpdateDishCategoryRequest) {
     try {
       const { data, ...rest } = await httpRequest<DishCategoryEntity>(
         this.prefix,
         "PUT",
-        updateDishCategoryDto,
+        updateDishCategoryRequest,
       );
       return {
         data: dishCategoryAdapter(data),
@@ -79,6 +79,7 @@ export class DishCategoryService implements IDishCategoryService {
         this.prefix,
         "GET",
       );
+      console.log(data);
       return {
         data: data.map(dishCategoryAdapter),
         ...rest,

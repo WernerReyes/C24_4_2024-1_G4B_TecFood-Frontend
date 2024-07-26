@@ -1,4 +1,4 @@
-import { GetDishesWithoutSelectedDishDto } from "@/domain/dtos";
+import { GetDishesWithoutSelectedDishRequest } from "@/domain/dtos";
 import { DishModel } from "@/model";
 import { useCartStore, useDishStore } from "@/presentation/hooks";
 import { breakPointsSwiper } from "@/presentation/utilities";
@@ -30,12 +30,12 @@ export const MoreOptions = () => {
   };
 
   useEffect(() => {
-    const getDishesWithoutSelectedDishDto = new GetDishesWithoutSelectedDishDto(
+    const getDishesWithoutSelectedDishRequest = new GetDishesWithoutSelectedDishRequest(
       dish.id,
       QUANTITY_EXTRA_DISHES,
     );
 
-    startLoadingDishesWithoutSelectedDish(getDishesWithoutSelectedDishDto);
+    startLoadingDishesWithoutSelectedDish(getDishesWithoutSelectedDishRequest);
   }, [dish]);
 
   return (

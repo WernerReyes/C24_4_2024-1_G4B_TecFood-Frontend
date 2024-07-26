@@ -14,7 +14,7 @@ import {
   useWindowSize,
 } from "@/presentation/hooks";
 import { CardHistory } from "./components";
-import { GetOrderDishesByUserDto } from "@/domain/dtos";
+import { GetOrderDishesByUserRequest } from "@/domain/dtos";
 import { OrderDishStatusEnum } from "@/domain/entities";
 import { UserLayout } from "../layout";
 
@@ -79,12 +79,12 @@ const OrderHistoryPage = () => {
   >(filters.status);
 
   useEffect(() => {
-    const getOrderDishesByUserDto = new GetOrderDishesByUserDto(
+    const getOrderDishesByUserRequest = new GetOrderDishesByUserRequest(
       currentPage,
       limit,
       currentStatus,
     );
-    startLoadingOrderDishesByUser(getOrderDishesByUserDto);
+    startLoadingOrderDishesByUser(getOrderDishesByUserRequest);
   }, [filters.status, status, currentStatus, currentPage, limit, payment]);
 
   useEffect(() => {

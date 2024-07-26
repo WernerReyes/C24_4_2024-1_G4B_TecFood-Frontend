@@ -1,20 +1,20 @@
 import type { OrderDishModel } from "@/model";
 import type {
   ApiResponse,
-  GetOrderDishesByUserDto,
+  GetOrderDishesByUserRequest,
   GetOrderDishesByUserResponse,
   PagedResponse,
-  UpdateOrderDishStatusDto,
+  UpdateOrderDishStatusRequest,
 } from "../dtos";
 import type { OrderDishStatusEnum } from "../entities";
 
 export abstract class OrderDishRepository {
   abstract createOrderDish(): Promise<ApiResponse<OrderDishModel>>;
   abstract updateOrderDishStatus(
-    updateOrderDishStatusDto: UpdateOrderDishStatusDto,
+    updateOrderDishStatusRequest: UpdateOrderDishStatusRequest,
   ): Promise<ApiResponse<OrderDishStatusEnum>>;
   abstract getOrderDishesByUser(
-    getOrderDishesByUserDto: GetOrderDishesByUserDto,
+    getOrderDishesByUserRequest: GetOrderDishesByUserRequest,
   ): Promise<
     ApiResponse<PagedResponse<GetOrderDishesByUserResponse<OrderDishModel>>>
   >;

@@ -1,19 +1,19 @@
 import { z } from "zod";
 import { dtoValidator } from "@/presentation/utilities";
 import {
-  UploadImageDto,
-  UploadImageDtoSchema,
-  type UploadImageDtoModel,
+  UploadImageRequest,
+  UploadImageRequestSchema,
+  type UploadImageRequestModel,
 } from "../common";
 
-interface UpdateDishImageDtoModel extends UploadImageDtoModel {
+interface UpdateDishImageRequestModel extends UploadImageRequestModel {
   readonly dishId: number;
   readonly imageIdToUpdate: number | null;
 }
 
-export class UpdateDishImageDto
-  extends UploadImageDto
-  implements UpdateDishImageDtoModel
+export class UpdateDishImageRequest
+  extends UploadImageRequest
+  implements UpdateDishImageRequestModel
 {
   constructor(
     public readonly dishId: number,
@@ -24,13 +24,13 @@ export class UpdateDishImageDto
   }
 
   public override validate() {
-    dtoValidator(this, UpdateDishImageDto.schema);
+    dtoValidator(this, UpdateDishImageRequest.schema);
   }
 
   public override get toFormData(): FormData {
     const formData = super.toFormData;
     formData.append(
-      "updateDishImageDto",
+      "updateDishImageRequest",
       new Blob(
         [
           JSON.stringify({
@@ -45,12 +45,12 @@ export class UpdateDishImageDto
     return formData;
   }
 
-  protected static get schema(): z.ZodSchema<UpdateDishImageDtoModel> {
-    return UpdateDishImageDtoSchema;
+  protected static get schema(): z.ZodSchema<UpdateDishImageRequestModel> {
+    return UpdateDishImageRequestSchema;
   }
 }
 
-export const UpdateDishImageDtoSchema = z.object({
+export const UpdateDishImageRequestSchema = z.object({
   dishId: z.number({
     message: "dishId must be a number greater than or equal to 0",
   }),
@@ -59,5 +59,5 @@ export const UpdateDishImageDtoSchema = z.object({
       message: "imageIdToUpdate must be a number greater than or equal to 0",
     })
     .nullable(),
-  ...UploadImageDtoSchema.shape,
+  ...UploadImageRequestSchema.shape,
 });

@@ -1,10 +1,10 @@
-import { DishCategoryDto, type DishCategoryDtoModel } from "./dishCategory.dto";
+import { DishCategoryRequest, type DishCategoryRequestModel } from "./dishCategory.request";
 
-interface CreateDishCategoryDtoModel extends DishCategoryDtoModel {}
+interface CreateDishCategoryRequestModel extends DishCategoryRequestModel {}
 
-export class CreateDishCategoryDto
-  extends DishCategoryDto
-  implements CreateDishCategoryDtoModel
+export class CreateDishCategoryRequest
+  extends DishCategoryRequest
+  implements CreateDishCategoryRequestModel
 {
   constructor(public readonly name: string) {
     super(name);
@@ -13,7 +13,7 @@ export class CreateDishCategoryDto
   public get toFormData(): FormData {
     const formData = new FormData();
     formData.append(
-      "createDishCategoryDto",
+      "createDishCategoryRequest",
       new Blob(
         [
           JSON.stringify({

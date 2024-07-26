@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { ProcessPaymentDto } from "@/domain/dtos";
+import type { ProcessPaymentRequest } from "@/domain/dtos";
 import { PaymentRepositoryImpl } from "@/infraestructure/repositories";
 import { PaymentService } from "@/infraestructure/services";
 import {
@@ -19,13 +19,13 @@ export const usePaymentStore = () => {
     (state: AppState) => state.payment,
   );
 
-  const startProcessPayment = async (processPaymentDto: ProcessPaymentDto) => {
-    processPaymentDto.validate();
+  const startProcessPayment = async (processPaymentRequest: ProcessPaymentRequest) => {
+    processPaymentRequest.validate();
 
     dispatch(onLoadingPayment());
 
     paymentRepositoryImpl
-      .processPayment(processPaymentDto)
+      .processPayment(processPaymentRequest)
       .then(({ message, data, status }) => {
         dispatch(onProcessPayment(data));
         startSetMessages([message], status);

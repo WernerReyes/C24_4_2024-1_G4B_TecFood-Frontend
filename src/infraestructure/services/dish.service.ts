@@ -2,13 +2,13 @@ import { dishAdapter, dishImageAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
 import type {
   ApiResponse,
-  CreateDishDto,
-  GetDishesDto,
-  GetDishesWithoutSelectedDishDto,
+  CreateDishRequest,
+  GetDishesRequest,
+  GetDishesWithoutSelectedDishRequest,
   PagedResponse,
-  UpdateDishDto,
-  UpdateDishImageDto,
-  UploadImageDto,
+  UpdateDishRequest,
+  UpdateDishImageRequest,
+  UploadImageRequest,
 } from "@/domain/dtos";
 import type { DishEntity, DishImageEntity } from "@/domain/entities";
 import type { DishImageModel, DishModel } from "@/model";
@@ -21,21 +21,21 @@ import {
 
 interface IDishService {
   create(
-    createDishDto: CreateDishDto,
-    uploadDishImages: UploadImageDto,
+    createDishRequest: CreateDishRequest,
+    uploadDishImages: UploadImageRequest,
   ): Promise<ApiResponse<DishModel>>;
-  update(updateDishDto: UpdateDishDto): Promise<ApiResponse<DishModel>>;
+  update(updateDishRequest: UpdateDishRequest): Promise<ApiResponse<DishModel>>;
   updateImage(
-    updateDishImageDto: UpdateDishImageDto,
+    updateDishImageRequest: UpdateDishImageRequest,
   ): Promise<ApiResponse<DishImageModel[]>>;
   delete(id: number): Promise<ApiResponse<void>>;
   deleteMany(ids: number[]): Promise<ApiResponse<void>>;
   getAllPaginated(
-    getDishesDto: GetDishesDto,
+    getDishesRequest: GetDishesRequest,
   ): Promise<ApiResponse<PagedResponse<DishModel[]>>>;
   getAll(): Promise<ApiResponse<DishModel[]>>;
   getAllWithoutSelectedDish(
-    getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
+    getDishesWithoutSelectedDishRequest: GetDishesWithoutSelectedDishRequest,
   ): Promise<ApiResponse<DishModel[]>>;
   getById(id: number): Promise<ApiResponse<DishModel>>;
 }
@@ -48,12 +48,12 @@ export class DishService implements IDishService {
   }
 
   public async create(
-    createDishDto: CreateDishDto,
-    uploadDishImages: UploadImageDto,
+    createDishRequest: CreateDishRequest,
+    uploadDishImages: UploadImageRequest,
   ) {
     try {
       const formData = new FormData();
-      createDishDto.toFormData.forEach((value, key) =>
+      createDishRequest.toFormData.forEach((value, key) =>
         formData.append(key, value),
       );
       uploadDishImages.toFormData.forEach((value, key) =>
@@ -72,12 +72,12 @@ export class DishService implements IDishService {
     }
   }
 
-  public async update(updateDishDto: UpdateDishDto) {
+  public async update(updateDishRequest: UpdateDishRequest) {
     try {
       const { data, ...rest } = await httpRequest<DishEntity>(
-        this.prefix + "/update",
+        this.prefix,
         "PUT",
-        updateDishDto.toRequestBody,
+        updateDishRequest.toRequestBody,
       );
 
       return { ...rest, data: dishAdapter(data) };
@@ -106,9 +106,9 @@ export class DishService implements IDishService {
       throw error;
     }
   }
-  public async updateImage(updateDishImageDto: UpdateDishImageDto) {
+  public async updateImage(updateDishImageRequest: UpdateDishImageRequest) {
     try {
-      const formData = updateDishImageDto.toFormData;
+      const formData = updateDishImageRequest.toFormData;
       const { data, ...rest } = await httpRequest<DishImageEntity[]>(
         this.prefix + "/image",
         "PUT",
@@ -124,7 +124,7 @@ export class DishService implements IDishService {
     priceRange,
     idCategory,
     ...rest
-  }: GetDishesDto) {
+  }: GetDishesRequest) {
     try {
       const requestParam = convertToRequestParam(rest);
       const requestParamPriceRange = convertToRequestParam(priceRange!);
@@ -166,7 +166,7 @@ export class DishService implements IDishService {
   public async getAllWithoutSelectedDish({
     idDish,
     limit,
-  }: GetDishesWithoutSelectedDishDto) {
+  }: GetDishesWithoutSelectedDishRequest) {
     try {
       const requestParam = convertToRequestParam({ limit });
       const { data, ...rest } = await httpRequest<DishEntity[]>(

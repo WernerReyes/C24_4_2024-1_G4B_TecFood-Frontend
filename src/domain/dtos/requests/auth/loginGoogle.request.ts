@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { RoleEnum } from "@/domain/entities";
 import { dtoValidator, regularExpressions } from "@/presentation/utilities";
-import { AuthDto, type AuthDtoModel, AuthDtoSchema } from "./auth.dto";
+import { AuthRequest, type AuthRequestModel, AuthRequestSchema } from "./auth.request";
 const { URL } = regularExpressions;
 
 const LETTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-interface LoginGoogleDtoModel extends AuthDtoModel {
+interface LoginGoogleRequestModel extends AuthRequestModel {
   readonly firstName: string;
   readonly lastName: string;
   readonly imgUrl: string;
@@ -15,7 +15,7 @@ interface LoginGoogleDtoModel extends AuthDtoModel {
   readonly role?: RoleEnum;
 }
 
-export class LoginGoogleDto extends AuthDto implements LoginGoogleDtoModel {
+export class LoginGoogleRequest extends AuthRequest implements LoginGoogleRequestModel {
   constructor(
     public readonly firstName: string,
     public readonly lastName: string,
@@ -34,15 +34,15 @@ export class LoginGoogleDto extends AuthDto implements LoginGoogleDtoModel {
   }
 
   public override validate() {
-    dtoValidator(this, LoginGoogleDto.schema);
+    dtoValidator(this, LoginGoogleRequest.schema);
   }
 
-  public static override get schema(): z.ZodSchema<LoginGoogleDtoModel> {
-    return LoginGoogleDtoSchema;
+  public static override get schema(): z.ZodSchema<LoginGoogleRequestModel> {
+    return LoginGoogleRequestSchema;
   }
 }
 
-const LoginGoogleDtoSchema = z.object({
+const LoginGoogleRequestSchema = z.object({
   firstName: z
     .string({
       message: "Invalid name",
@@ -63,5 +63,5 @@ const LoginGoogleDtoSchema = z.object({
     message: "This account must be verified",
   }),
   role: z.nativeEnum(RoleEnum).optional().default(RoleEnum.ROLE_USER),
-  ...AuthDtoSchema.shape,
+  ...AuthRequestSchema.shape,
 });

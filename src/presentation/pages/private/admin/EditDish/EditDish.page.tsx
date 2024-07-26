@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DishDto, UpdateDishDto, UpdateDishImageDto } from "@/domain/dtos";
+import { DishRequest, UpdateDishRequest, UpdateDishImageRequest } from "@/domain/dtos";
 import { useDishStore } from "@/presentation/hooks";
 import { ActionDish } from "../components";
 import { AdminLayout } from "../layout";
@@ -14,27 +14,27 @@ const EditDishPage = () => {
   const [uploadedSuccess, setUploadedSuccess] = useState(false);
 
   const handleUploadImage = () => {
-    const updateDishImageDto = new UpdateDishImageDto(
+    const updateDishImageRequest = new UpdateDishImageRequest(
       dish.id,
       file!.file,
       imageIdToUpdate,
     );
-    startUpdatingDishImage(updateDishImageDto).then(() => {
+    startUpdatingDishImage(updateDishImageRequest).then(() => {
       setUploadedSuccess(true);
       setFile(null);
     });
   };
 
-  const handleSaveDish = (dishDto: DishDto) => {
-    const updateDishDto = new UpdateDishDto(
+  const handleSaveDish = (dishRequest: DishRequest) => {
+    const updateDishRequest = new UpdateDishRequest(
       dish.id,
-      dishDto.name,
-      dishDto.description,
-      dishDto.price,
-      dishDto.categories,
-      dishDto.stock,
+      dishRequest.name,
+      dishRequest.description,
+      dishRequest.price,
+      dishRequest.categories,
+      dishRequest.stock,
     );
-    startUpdatingDish(updateDishDto);
+    startUpdatingDish(updateDishRequest);
   };
 
   useEffect(() => {

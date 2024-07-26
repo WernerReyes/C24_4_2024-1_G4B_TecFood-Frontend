@@ -1,22 +1,22 @@
 import { z } from "zod";
 
-export type PaginationDtoModel = {
+export type PaginationRequestModel = {
   readonly page?: number;
   readonly limit?: number;
 };
 
-export class PaginationDto implements PaginationDtoModel {
+export class PaginationRequest implements PaginationRequestModel {
   protected constructor(
     public readonly page: number = 1,
     public readonly limit: number = 10,
   ) {}
 
-  protected static get schema(): z.ZodSchema<PaginationDtoModel> {
-    return PaginationDtoSchema;
+  protected static get schema(): z.ZodSchema<PaginationRequestModel> {
+    return PaginationRequestSchema;
   }
 }
 
-export const PaginationDtoSchema = z.object({
+export const PaginationRequestSchema = z.object({
   page: z
     .number()
     .int("Invalid page, it must be an integer number")

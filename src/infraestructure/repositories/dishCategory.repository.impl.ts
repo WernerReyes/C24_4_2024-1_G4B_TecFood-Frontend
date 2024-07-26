@@ -1,26 +1,26 @@
 import type { DishCategoryRepository } from "@/domain/repositories";
 import type { DishCategoryService } from "../services";
 import type {
-  CreateDishCategoryDto,
-  UpdateDishCategoryDto,
-  UploadImageDto,
+  CreateDishCategoryRequest,
+  UpdateDishCategoryRequest,
+  UploadImageRequest,
 } from "@/domain/dtos";
 
 export class DishCategoryRepositoryImpl implements DishCategoryRepository {
   constructor(private readonly dishCategoryService: DishCategoryService) {}
 
   async create(
-    createDishCategoryDto: CreateDishCategoryDto,
-    uploadImageDto: UploadImageDto,
+    createDishCategoryRequest: CreateDishCategoryRequest,
+    uploadImageRequest: UploadImageRequest,
   ) {
     return await this.dishCategoryService.create(
-      createDishCategoryDto,
-      uploadImageDto,
+      createDishCategoryRequest,
+      uploadImageRequest,
     );
   }
 
-  async update(updateDishCategoryDto: UpdateDishCategoryDto) {
-    return await this.dishCategoryService.update(updateDishCategoryDto);
+  async update(updateDishCategoryRequest: UpdateDishCategoryRequest) {
+    return await this.dishCategoryService.update(updateDishCategoryRequest);
   }
 
   async getAll() {

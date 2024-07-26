@@ -1,3 +1,3 @@
-export * from './dishCategory.dto';
-export * from './createDishCategory.dto';
-export * from './updateDishCategory.dto';
+export * from './dishCategory.request';
+export * from './createDishCategory.request';
+export * from './updateDishCategory.request';

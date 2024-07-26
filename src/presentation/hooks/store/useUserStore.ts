@@ -1,4 +1,4 @@
-import type { UpdateUserDto, UploadImageDto } from "@/domain/dtos";
+import type { UpdateUserRequest, UploadImageRequest } from "@/domain/dtos";
 import { UserRepositoryImpl } from "@/infraestructure/repositories";
 import { UserService } from "@/infraestructure/services";
 import {
@@ -29,11 +29,11 @@ export const useUserStore = () => {
   //     .catch((error) => error);
   // };
 
-  const startUpdatingUser = async (updateUserDto: UpdateUserDto) => {
+  const startUpdatingUser = async (updateUserRequest: UpdateUserRequest) => {
     dispatch(onLoadingUsers());
 
     await userRepositoryImpl
-      .update(updateUserDto)
+      .update(updateUserRequest)
       .then(({ message, status, data }) => {
         startSetMessages([message], status);
         dispatch(onLoadUser(data));
@@ -43,13 +43,13 @@ export const useUserStore = () => {
       });
   };
 
-  const startUploadingProfile = async (uploadImageDto: UploadImageDto) => {
-    uploadImageDto.validate();
+  const startUploadingProfile = async (uploadImageRequest: UploadImageRequest) => {
+    uploadImageRequest.validate();
 
     dispatch(onLoadingUsers());
 
     await userRepositoryImpl
-      .uploadProfile(uploadImageDto)
+      .uploadProfile(uploadImageRequest)
       .then(({ data, message, status }) => {
         dispatch(
           onLoadUser({

@@ -1,6 +1,6 @@
 import type {
-  GetOrderDishesByUserDto,
-  UpdateOrderDishStatusDto,
+  GetOrderDishesByUserRequest,
+  UpdateOrderDishStatusRequest,
 } from "@/domain/dtos";
 import type { OrderDishRepository } from "@/domain/repositories";
 import type { OrderDishService } from "../services";
@@ -13,18 +13,18 @@ export class OrderDishRepositoryImpl implements OrderDishRepository {
   }
 
   public async updateOrderDishStatus(
-    updateOrderDishStatusDto: UpdateOrderDishStatusDto,
+    updateOrderDishStatusRequest: UpdateOrderDishStatusRequest,
   ) {
     return await this.orderDishService.updateOrderDishStatus(
-      updateOrderDishStatusDto,
+      updateOrderDishStatusRequest,
     );
   }
 
   public async getOrderDishesByUser(
-    getOrderDishesByUserDto: GetOrderDishesByUserDto,
+    getOrderDishesByUserRequest: GetOrderDishesByUserRequest,
   ) {
     return await this.orderDishService.getOrderDishesByUser(
-      getOrderDishesByUserDto,
+      getOrderDishesByUserRequest,
     );
   }
 

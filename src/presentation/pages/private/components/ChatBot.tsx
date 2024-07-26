@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
-import { ChatDto } from "@/domain/dtos";
+import { ChatRequest } from "@/domain/dtos";
 import {
   ChangeTheme,
   Image,
@@ -42,13 +42,13 @@ export const ChatBot = ({ to, offset = 50, duration = 1000 }: Props) => {
     if (!isAvailableChat) return;
 
     setAddedMessage(true);
-    const chatDto = new ChatDto(
+    const chatRequest = new ChatRequest(
       [
         ...chatMessages,
         { role: OpenAIRoleEnum.USER, content: writeMessage },
       ],
     );
-    startSendingMenssage(chatDto).then(() => {
+    startSendingMenssage(chatRequest).then(() => {
       setAddedMessage(false);
     });
 

@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import type {
-  CreateDishDto,
-  GetDishesDto,
-  GetDishesWithoutSelectedDishDto,
-  UpdateDishDto,
-  UpdateDishImageDto,
-  UploadImageDto,
+  CreateDishRequest,
+  GetDishesRequest,
+  GetDishesWithoutSelectedDishRequest,
+  UpdateDishRequest,
+  UpdateDishImageRequest,
+  UploadImageRequest,
 } from "@/domain/dtos";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import {
@@ -41,14 +41,14 @@ export const useDishStore = () => {
   } = useSelector((state: AppState) => state.dish);
 
   const startCreatingDish = async (
-    createDishDto: CreateDishDto,
-    uploadImageDto: UploadImageDto,
+    createDishRequest: CreateDishRequest,
+    uploadImageRequest: UploadImageRequest,
   ) => {
-    uploadImageDto.validate();
+    uploadImageRequest.validate();
 
     dispatch(onLoadingDish());
     await dishRepositoryImpl
-      .create(createDishDto, uploadImageDto)
+      .create(createDishRequest, uploadImageRequest)
       .then(({ data, message, status }) => {
         startSetMessages([message], status);
 
@@ -62,10 +62,10 @@ export const useDishStore = () => {
       });
   };
 
-  const startUpdatingDish = async (updateDishDto: UpdateDishDto) => {
+  const startUpdatingDish = async (updateDishRequest: UpdateDishRequest) => {
     dispatch(onLoadingDish());
     await dishRepositoryImpl
-      .update(updateDishDto)
+      .update(updateDishRequest)
       .then(({ data, message, status }) => {
         dispatch(onLoadDish(dish));
         startSetMessages([message], status);
@@ -80,7 +80,7 @@ export const useDishStore = () => {
       });
   };
 
-  const startUpdatingDishImage = async (updateImageDto: UpdateDishImageDto) => {
+  const startUpdatingDishImage = async (updateImageDto: UpdateDishImageRequest) => {
     updateImageDto.validate();
 
     dispatch(onLoadingDish());
@@ -138,12 +138,12 @@ export const useDishStore = () => {
         throw error;
       });
   };
-  const startLoadingDishesPaginated = async (getDishesDto: GetDishesDto) => {
-    getDishesDto.validate();
+  const startLoadingDishesPaginated = async (getDishesRequest: GetDishesRequest) => {
+    getDishesRequest.validate();
 
     dispatch(onLoadingDish());
     await dishRepositoryImpl
-      .getAllPaginated(getDishesDto)
+      .getAllPaginated(getDishesRequest)
       .then(({ data }) => {
         dispatch(
           onLoadDishesPaginated({
@@ -171,13 +171,13 @@ export const useDishStore = () => {
   };
 
   const startLoadingDishesWithoutSelectedDish = async (
-    getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
+    getDishesWithoutSelectedDishRequest: GetDishesWithoutSelectedDishRequest,
   ) => {
-    getDishesWithoutSelectedDishDto.validate();
+    getDishesWithoutSelectedDishRequest.validate();
 
     dispatch(onLoadingDish());
     await dishRepositoryImpl
-      .getAllWithoutSelectedDish(getDishesWithoutSelectedDishDto)
+      .getAllWithoutSelectedDish(getDishesWithoutSelectedDishRequest)
       .then(({ data }) => {
         dispatch(onLoadDishesWithoutSelectedDish(data));
       })

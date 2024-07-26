@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import type {
-  GetOrderDishesByUserDto,
-  UpdateOrderDishStatusDto,
+  GetOrderDishesByUserRequest,
+  UpdateOrderDishStatusRequest,
 } from "@/domain/dtos";
 import { OrderDishRepositoryImpl } from "@/infraestructure/repositories";
 import { OrderDishService } from "@/infraestructure/services";
@@ -44,15 +44,15 @@ export const useOrderDishStore = () => {
   };
 
   const startUpdateOrderDishStatus = async (
-    updateOrderDishStatusDto: UpdateOrderDishStatusDto,
+    updateOrderDishStatusRequest: UpdateOrderDishStatusRequest,
     message: string,
   ) => {
-    updateOrderDishStatusDto.validate();
+    updateOrderDishStatusRequest.validate();
 
     dispatch(onLoadingOrderDish());
 
     orderDishRepositoryImpl
-      .updateOrderDishStatus(updateOrderDishStatusDto)
+      .updateOrderDishStatus(updateOrderDishStatusRequest)
       .then(({ status, data }) => {
         dispatch(onUpdateOrderDishStatus(data));
         startSetMessages([message], status);
@@ -63,14 +63,14 @@ export const useOrderDishStore = () => {
   };
 
   const startLoadingOrderDishesByUser = async (
-    getOrderDishesByUserDto: GetOrderDishesByUserDto,
+    getOrderDishesByUserRequest: GetOrderDishesByUserRequest,
   ) => {
-    getOrderDishesByUserDto.validate();
+    getOrderDishesByUserRequest.validate();
 
     dispatch(onLoadingOrderDish());
 
     orderDishRepositoryImpl
-      .getOrderDishesByUser(getOrderDishesByUserDto)
+      .getOrderDishesByUser(getOrderDishesByUserRequest)
       .then(({ data }) => {
         dispatch(
           onLoadOrderDishes({

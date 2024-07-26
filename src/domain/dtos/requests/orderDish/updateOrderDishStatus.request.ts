@@ -2,27 +2,27 @@ import { z } from "zod";
 import { OrderDishStatusEnum } from "@/domain/entities";
 import { dtoValidator } from "@/presentation/utilities";
 
-type UpdateOrderDishStatusDtoModel = {
+type UpdateOrderDishStatusRequestModel = {
   readonly orderDishId: number;
   readonly status: OrderDishStatusEnum;
 };
 
-export class UpdateOrderDishStatusDto implements UpdateOrderDishStatusDtoModel {
+export class UpdateOrderDishStatusRequest implements UpdateOrderDishStatusRequestModel {
   constructor(
     public readonly orderDishId: number,
     public readonly status: OrderDishStatusEnum,
   ) {}
 
   public validate() {
-    dtoValidator(this, UpdateOrderDishStatusDto.schema);
+    dtoValidator(this, UpdateOrderDishStatusRequest.schema);
   }
 
-  private static get schema(): z.ZodSchema<UpdateOrderDishStatusDtoModel> {
-    return UpdateOrderDishStatusDtoSchema;
+  private static get schema(): z.ZodSchema<UpdateOrderDishStatusRequestModel> {
+    return UpdateOrderDishStatusRequestSchema;
   }
 }
 
-const UpdateOrderDishStatusDtoSchema = z.object({
+const UpdateOrderDishStatusRequestSchema = z.object({
   orderDishId: z
     .number({
       message: "orderDishId must be a number",

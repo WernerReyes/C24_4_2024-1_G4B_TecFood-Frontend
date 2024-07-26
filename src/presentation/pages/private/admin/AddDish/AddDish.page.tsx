@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { CreateDishDto, DishDto, UploadImageDto } from "@/domain/dtos";
+import { CreateDishRequest, DishRequest, UploadImageRequest } from "@/domain/dtos";
 import { ProgressSpinner } from "@/presentation/core/components";
 import { useDishStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
@@ -23,16 +23,16 @@ const AddDishPage = () => {
   } | null>(null);
   const [uploadedSuccess, setUploadedSuccess] = useState(false);
 
-  const handleSaveDish = async (dishDto: DishDto) => {
-    const createDishDto = new CreateDishDto(
-      dishDto.name,
-      dishDto.description,
-      dishDto.price,
-      dishDto.categories,
-      dishDto.stock,
+  const handleSaveDish = async (dishRequest: DishRequest) => {
+    const createDishRequest = new CreateDishRequest(
+      dishRequest.name,
+      dishRequest.description,
+      dishRequest.price,
+      dishRequest.categories,
+      dishRequest.stock,
     );
-    const uploadImageDto = new UploadImageDto(files);
-    startCreatingDish(createDishDto, uploadImageDto).then(() => {
+    const uploadImageRequest = new UploadImageRequest(files);
+    startCreatingDish(createDishRequest, uploadImageRequest).then(() => {
       setUploadedSuccess(true);
       setFiles([]);
       setFile(null);

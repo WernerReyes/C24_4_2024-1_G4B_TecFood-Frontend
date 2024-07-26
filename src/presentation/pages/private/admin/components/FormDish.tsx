@@ -1,4 +1,4 @@
-import type { DishDto } from "@/domain/dtos";
+import type { DishRequest } from "@/domain/dtos";
 import { DishModel } from "@/model";
 import {
   Button,
@@ -13,9 +13,9 @@ import { Control, Controller, UseFormReset } from "react-hook-form";
 
 type Props = {
   dish: DishModel;
-  control: Control<DishDto, any>;
+  control: Control<DishRequest, any>;
   handleSubmit: FormEventHandler<HTMLFormElement>;
-  reset: UseFormReset<DishDto>;
+  reset: UseFormReset<DishRequest>;
   errors: boolean;
 };
 

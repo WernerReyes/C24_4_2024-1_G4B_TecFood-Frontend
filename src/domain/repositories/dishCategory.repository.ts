@@ -3,18 +3,18 @@ import type {
 } from "@/model";
 import type {
   ApiResponse,
-  CreateDishCategoryDto,
-  UpdateDishCategoryDto,
-  UploadImageDto,
+  CreateDishCategoryRequest,
+  UpdateDishCategoryRequest,
+  UploadImageRequest,
 } from "../dtos";
 
 export abstract class DishCategoryRepository {
   abstract create(
-    createDishCategoryDto: CreateDishCategoryDto,
-    uploadImageDto: UploadImageDto,
+    createDishCategoryRequest: CreateDishCategoryRequest,
+    uploadImageRequest: UploadImageRequest,
   ): Promise<ApiResponse<DishCategoryModel>>;
   abstract update(
-    updateDishCategoryDto: UpdateDishCategoryDto,
+    updateDishCategoryRequest: UpdateDishCategoryRequest,
   ): Promise<ApiResponse<DishCategoryModel>>;
   abstract getAll(): Promise<ApiResponse<DishCategoryModel[]>>;
   //   create: (dishOffer: CreateDishOffer) => Promise<DishOffer>;

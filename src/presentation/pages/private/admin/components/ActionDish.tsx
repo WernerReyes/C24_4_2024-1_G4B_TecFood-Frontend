@@ -1,5 +1,5 @@
 import {
-    DishDto
+    DishRequest
 } from "@/domain/dtos";
 import { DishModel } from "@/model";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +9,7 @@ import { FormDish, UploadDishImages } from "./";
  
  type Props = {
     dish: DishModel;
-    handleSaveDish: (dishDto: DishDto) => void;
+    handleSaveDish: (dishRequest: DishRequest) => void;
     setFile: (file: { file: File; isDeleted: boolean } | null) => void;
     uploadedSuccess: boolean;
     setImageIdToUpdate?: (imageId: number | null) => void;
@@ -21,8 +21,8 @@ import { FormDish, UploadDishImages } from "./";
       handleSubmit,
       reset,
       formState: { errors },
-    } = useForm<DishDto>({
-      resolver: zodResolver(DishDto.schema),
+    } = useForm<DishRequest>({
+      resolver: zodResolver(DishRequest.schema),
     });
   
     return (

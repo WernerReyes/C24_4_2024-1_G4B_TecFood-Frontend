@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { GetDishesDto } from "@/domain/dtos";
+import { GetDishesRequest } from "@/domain/dtos";
 import { Paginator } from "@/presentation/core/components";
 import { useCartStore, useDishStore, usePaginator } from "@/presentation/hooks";
 
@@ -17,14 +17,14 @@ export const DishesLayout = ({ rowPerPage, children, paginators }: Props) => {
   const { startLoadingDishesByUser, totalQuantity } = useCartStore();
 
   useEffect(() => {
-    const getDishesDto = new GetDishesDto(
+    const getDishesRequest = new GetDishesRequest(
       currentPage,
       limit,
       filters.idCategory,
       filters.priceRange,
       null,
     );
-    startLoadingDishesPaginated(getDishesDto);
+    startLoadingDishesPaginated(getDishesRequest);
   }, [currentPage, limit, filters]);
 
   useEffect(() => {

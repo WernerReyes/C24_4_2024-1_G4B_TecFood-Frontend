@@ -1,8 +1,8 @@
 import type { PaymentModel } from "@/model";
-import type { ApiResponse, ProcessPaymentDto } from "../dtos";
+import type { ApiResponse, ProcessPaymentRequest } from "../dtos";
 
 export abstract class PaymentRepository {
     abstract  processPayment(
-        processPaymentDto: ProcessPaymentDto,
+        processPaymentRequest: ProcessPaymentRequest,
       ): Promise<ApiResponse<PaymentModel>>;
 }

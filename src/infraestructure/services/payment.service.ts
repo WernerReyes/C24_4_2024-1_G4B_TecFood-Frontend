@@ -1,12 +1,12 @@
 import { paymentAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import type { ApiResponse, ProcessPaymentDto } from "@/domain/dtos";
+import type { ApiResponse, ProcessPaymentRequest } from "@/domain/dtos";
 import type { PaymentEntity } from "@/domain/entities";
 import type { PaymentModel } from "@/model";
 
 interface IPaymentService {
   processPayment(
-    processPaymentDto: ProcessPaymentDto,
+    processPaymentRequest: ProcessPaymentRequest,
   ): Promise<ApiResponse<PaymentModel>>;
 }
 
@@ -17,12 +17,12 @@ export class PaymentService implements IPaymentService {
     this.prefix = "/payment";
   }
 
-  public async processPayment(processPaymentDto: ProcessPaymentDto) {
+  public async processPayment(processPaymentRequest: ProcessPaymentRequest) {
     try {
       const { data, ...rest } = await httpRequest<PaymentEntity>(
         `${this.prefix}/process`,
         "POST",
-        processPaymentDto,
+        processPaymentRequest,
       );
 
       return { data: paymentAdapter(data), ...rest };

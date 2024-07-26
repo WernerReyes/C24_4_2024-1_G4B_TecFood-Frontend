@@ -1,15 +1,15 @@
 import { z } from "zod";
 import { OrderDishStatusEnum } from "@/domain/entities";
 import { dtoValidator } from "@/presentation/utilities";
-import { PaginationDto, type PaginationDtoModel, PaginationDtoSchema } from "../common";
+import { PaginationRequest, type PaginationRequestModel, PaginationRequestSchema } from "../common";
 
-interface GetOrderDishesByUserDtoModel extends PaginationDtoModel {
+interface GetOrderDishesByUserRequestModel extends PaginationRequestModel {
   readonly status: { status: OrderDishStatusEnum }[];
 }
 
-export class GetOrderDishesByUserDto
-  extends PaginationDto
-  implements GetOrderDishesByUserDtoModel
+export class GetOrderDishesByUserRequest
+  extends PaginationRequest
+  implements GetOrderDishesByUserRequestModel
 {
   constructor(
     public readonly page: number,
@@ -20,15 +20,15 @@ export class GetOrderDishesByUserDto
   }
 
   public validate() {
-    dtoValidator(this, GetOrderDishesByUserDto.schema);
+    dtoValidator(this, GetOrderDishesByUserRequest.schema);
   }
 
-  protected static override get schema(): z.ZodSchema<GetOrderDishesByUserDtoModel> {
-    return GetOrderDishesByUserDtoSchema;
+  protected static override get schema(): z.ZodSchema<GetOrderDishesByUserRequestModel> {
+    return GetOrderDishesByUserRequestSchema;
   }
 }
 
-export const GetOrderDishesByUserDtoSchema = z.object({
+export const GetOrderDishesByUserRequestSchema = z.object({
   status: z.array(
     z.object({
       status: z
@@ -38,5 +38,5 @@ export const GetOrderDishesByUserDtoSchema = z.object({
         }),
     }),
   ),
-  ...PaginationDtoSchema.shape,
+  ...PaginationRequestSchema.shape,
 });

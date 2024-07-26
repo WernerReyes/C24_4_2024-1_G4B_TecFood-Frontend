@@ -1,10 +1,10 @@
 import type {
-  CreateDishDto,
-  GetDishesDto,
-  GetDishesWithoutSelectedDishDto,
-  UpdateDishDto,
-  UpdateDishImageDto,
-  UploadImageDto,
+  CreateDishRequest,
+  GetDishesRequest,
+  GetDishesWithoutSelectedDishRequest,
+  UpdateDishRequest,
+  UpdateDishImageRequest,
+  UploadImageRequest,
 } from "@/domain/dtos";
 import type { DishRepository } from "@/domain/repositories";
 import type { DishService } from "../services";
@@ -12,16 +12,16 @@ import type { DishService } from "../services";
 export class DishRepositoryImpl implements DishRepository {
   constructor(private readonly dishService: DishService) {}
 
-  async create(createDishDto: CreateDishDto, uploadDishImages: UploadImageDto) {
-    return await this.dishService.create(createDishDto, uploadDishImages);
+  async create(createDishRequest: CreateDishRequest, uploadDishImages: UploadImageRequest) {
+    return await this.dishService.create(createDishRequest, uploadDishImages);
   }
 
-  async update(updateDishDto: UpdateDishDto) {
-    return await this.dishService.update(updateDishDto);
+  async update(updateDishRequest: UpdateDishRequest) {
+    return await this.dishService.update(updateDishRequest);
   }
 
-  async updateImage(updateDishImageDto: UpdateDishImageDto) {
-    return await this.dishService.updateImage(updateDishImageDto);
+  async updateImage(updateDishImageRequest: UpdateDishImageRequest) {
+    return await this.dishService.updateImage(updateDishImageRequest);
   }
 
   async delete(id: number) {
@@ -32,8 +32,8 @@ export class DishRepositoryImpl implements DishRepository {
     return await this.dishService.deleteMany(ids);
   }
 
-  async getAllPaginated(getDishesDto: GetDishesDto) {
-    return await this.dishService.getAllPaginated(getDishesDto);
+  async getAllPaginated(getDishesRequest: GetDishesRequest) {
+    return await this.dishService.getAllPaginated(getDishesRequest);
   }
 
   async getAll() {
@@ -41,10 +41,10 @@ export class DishRepositoryImpl implements DishRepository {
   }
 
   async getAllWithoutSelectedDish(
-    getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
+    getDishesWithoutSelectedDishRequest: GetDishesWithoutSelectedDishRequest,
   ) {
     return await this.dishService.getAllWithoutSelectedDish(
-      getDishesWithoutSelectedDishDto,
+      getDishesWithoutSelectedDishRequest,
     );
   }
 

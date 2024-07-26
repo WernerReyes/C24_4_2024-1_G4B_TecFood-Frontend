@@ -1,12 +1,12 @@
 import { userAdapter } from "@/config/adapters";
 import { httpRequest } from "@/config/api";
-import type { ApiResponse, UpdateUserDto, UploadImageDto } from "@/domain/dtos";
+import type { ApiResponse, UpdateUserRequest, UploadImageRequest } from "@/domain/dtos";
 import type { UserEntity } from "@/domain/entities";
 import type { UserModel } from "@/model";
 
 export interface IUserService {
-  update(updateUserDto: UpdateUserDto): Promise<ApiResponse<UserModel>>;
-  uploadProfile(uploadImageDto: UploadImageDto): Promise<ApiResponse<string>>;
+  update(updateUserRequest: UpdateUserRequest): Promise<ApiResponse<UserModel>>;
+  uploadProfile(uploadImageRequest: UploadImageRequest): Promise<ApiResponse<string>>;
   getAll(): Promise<ApiResponse<UserModel[]>>;
 }
 
@@ -17,12 +17,12 @@ export class UserService implements IUserService {
     this.prefix = "/user";
   }
 
-  public async update(updateUserDto: UpdateUserDto) {
+  public async update(updateUserRequest: UpdateUserRequest) {
     try {
       const { data, ...rest } = await httpRequest<UserEntity>(
         `${this.prefix}/update`,
         "PUT",
-        updateUserDto,
+        updateUserRequest,
       );
       return { data: userAdapter(data), ...rest };
     } catch (error) {
@@ -42,12 +42,12 @@ export class UserService implements IUserService {
     }
   }
 
-  public async uploadProfile(uploadImageDto: UploadImageDto) {
+  public async uploadProfile(uploadImageRequest: UploadImageRequest) {
     try {
       return await httpRequest<string>(
         `${this.prefix}/upload-profile`,
         "POST",
-        uploadImageDto.toFormData,
+        uploadImageRequest.toFormData,
       );
     } catch (error) {
       throw error;

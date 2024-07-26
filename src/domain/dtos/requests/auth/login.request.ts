@@ -1,6 +1,6 @@
-import { AuthDto } from "./auth.dto";
+import { AuthRequest } from "./auth.request";
 
-export class LoginDto extends AuthDto {
+export class LoginRequest extends AuthRequest {
   constructor(
     public readonly email: string,
     public readonly password: string,

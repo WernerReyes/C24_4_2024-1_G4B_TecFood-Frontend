@@ -3,27 +3,27 @@ import { z } from "zod";
 
 const { EMAIL, PASSWORD } = regularExpressions;
 
-export type AuthDtoModel = {
+export type AuthRequestModel = {
   readonly email: string;
   readonly password: string;
 }
 
-export class AuthDto implements AuthDtoModel {
+export class AuthRequest implements AuthRequestModel {
   constructor(
     public readonly email: string,
     public readonly password: string,
   ) {}
 
   protected validate() {
-    dtoValidator(this, AuthDto.schema);
+    dtoValidator(this, AuthRequest.schema);
   }
 
-  public static get schema(): z.ZodSchema<AuthDtoModel> {
-    return AuthDtoSchema;
+  public static get schema(): z.ZodSchema<AuthRequestModel> {
+    return AuthRequestSchema;
   }
 }
 
-export const AuthDtoSchema = z.object({
+export const AuthRequestSchema = z.object({
   email: z.string().refine((value) => EMAIL.test(value), {
     message: "Email invalid, follow the suggestions and try again",
   }),

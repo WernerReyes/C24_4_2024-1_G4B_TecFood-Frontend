@@ -1,7 +1,7 @@
 import { dtoValidator } from "@/presentation/utilities";
 import { z } from "zod";
 
-export type UploadImageDtoModel = {
+export type UploadImageRequestModel = {
   readonly files: File[] | File;
 };
 
@@ -14,13 +14,13 @@ export enum TypeImage {
 const MAX_FILES_SIZE = 15000000; // 15MB
 const MAX_FILE_SIZE = 5000000; // 5MB
 
-export class UploadImageDto implements UploadImageDtoModel {
+export class UploadImageRequest implements UploadImageRequestModel {
   constructor(public readonly files: File[] | File) {}
 
   public validate() {
     if (Array.isArray(this.files))
-      dtoValidator(this, UploadImageDto.filesSchema);
-    else dtoValidator(this, UploadImageDto.fileSchema);
+      dtoValidator(this, UploadImageRequest.filesSchema);
+    else dtoValidator(this, UploadImageRequest.fileSchema);
   }
 
   public get toFormData(): FormData {
@@ -36,16 +36,16 @@ export class UploadImageDto implements UploadImageDtoModel {
     return formData;
   }
 
-  protected static get fileSchema(): z.ZodSchema<UploadImageDtoModel> {
-    return UploadImageDtoSchema;
+  protected static get fileSchema(): z.ZodSchema<UploadImageRequestModel> {
+    return UploadImageRequestSchema;
   }
 
-  protected static get filesSchema(): z.ZodSchema<UploadImageDtoModel> {
+  protected static get filesSchema(): z.ZodSchema<UploadImageRequestModel> {
     return UploadImagesDtoSchema;
   }
 }
 
-export const UploadImageDtoSchema = z.object({
+export const UploadImageRequestSchema = z.object({
   files: z
     .instanceof(File)
     .refine(

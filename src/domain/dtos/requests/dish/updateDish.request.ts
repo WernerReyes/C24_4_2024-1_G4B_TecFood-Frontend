@@ -1,12 +1,12 @@
 import type { DishCategoryModel } from "@/model";
 import { dtoValidator } from "@/presentation/utilities";
 import { z, ZodSchema } from "zod";
-import { DishDto, DishDtoModel, DishDtoSchema } from "./dish.dto";
+import { DishRequest, DishRequestModel, DishRequestSchema } from "./dish.request";
 
-interface UpdateDishDtoModel extends DishDtoModel {
+interface UpdateDishRequestModel extends DishRequestModel {
   readonly dishId: number;
 }
-export class UpdateDishDto extends DishDto implements UpdateDishDtoModel {
+export class UpdateDishRequest extends DishRequest implements UpdateDishRequestModel {
   constructor(
     public readonly dishId: number,
     public readonly name: string,
@@ -19,7 +19,7 @@ export class UpdateDishDto extends DishDto implements UpdateDishDtoModel {
   }
 
   public validate() {
-    dtoValidator(this, UpdateDishDto.schema);
+    dtoValidator(this, UpdateDishRequest.schema);
   }
 
   public get toRequestBody(): Record<string, unknown> {
@@ -33,14 +33,14 @@ export class UpdateDishDto extends DishDto implements UpdateDishDtoModel {
     };
   }
 
-  public static get schema(): ZodSchema<UpdateDishDtoModel> {
-    return UpdateDishDtoSchema;
+  public static get schema(): ZodSchema<UpdateDishRequestModel> {
+    return UpdateDishRequestSchema;
   }
 }
 
-const UpdateDishDtoSchema = z.object({
+const UpdateDishRequestSchema = z.object({
   dishId: z.number({
     message: "Dish id is required",
   }),
-  ...DishDtoSchema.shape,
+  ...DishRequestSchema.shape,
 });

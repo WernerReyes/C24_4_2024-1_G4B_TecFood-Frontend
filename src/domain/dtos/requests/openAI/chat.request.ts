@@ -4,21 +4,21 @@ import { type Message } from "../../responses/openAI";
 import { OpenAIRoleEnum } from "@/domain/entities";
 
 
-type ChatDtoModel = {
+type ChatRequestModel = {
   readonly messages: Message[];
 };
-export class ChatDto implements ChatDtoModel {
+export class ChatRequest implements ChatRequestModel {
   constructor(public readonly messages: Message[]) {}
 
   public validate() {
-    dtoValidator(this, ChatDto.schema);
+    dtoValidator(this, ChatRequest.schema);
   }
-  private static get schema(): z.ZodSchema<ChatDtoModel> {
-    return ChatDtoSchema;
+  private static get schema(): z.ZodSchema<ChatRequestModel> {
+    return ChatRequestSchema;
   }
 }
 
-const ChatDtoSchema = z.object({
+const ChatRequestSchema = z.object({
   messages: z.array(
     z.object({
       role: z

@@ -1,8 +1,8 @@
 import { httpRequest } from "@/config/api";
-import type { ApiResponse, ChatDto, ChatResponse } from "@/domain/dtos";
+import type { ApiResponse, ChatRequest, ChatResponse } from "@/domain/dtos";
 
 interface IOpenAIService {
-  chat(chatDto: ChatDto): Promise<ApiResponse<ChatResponse>>;
+  chat(chatRequest: ChatRequest): Promise<ApiResponse<ChatResponse>>;
   greetUser(): Promise<ApiResponse<ChatResponse>>;
 }
 
@@ -13,12 +13,12 @@ export class OpenAIService implements IOpenAIService {
     this.prefix = "/openai";
   }
 
-  public async chat(chatDto: ChatDto) {
+  public async chat(chatRequest: ChatRequest) {
     try {
       return await httpRequest<ChatResponse>(
         `${this.prefix}/chat`,
         "POST",
-        chatDto,
+        chatRequest,
       );
     } catch (error) {
       throw error;

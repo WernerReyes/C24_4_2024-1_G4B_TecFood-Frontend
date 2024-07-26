@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { dtoValidator } from "@/presentation/utilities";
-import { PaginationDto, PaginationDtoSchema } from "../common";
+import { PaginationRequest, PaginationRequestSchema } from "../common";
 
-interface GetDishesDtoModel extends PaginationDto {
+interface GetDishesRequestModel extends PaginationRequest {
   readonly idCategory: { idCategory: number }[] | null;
   readonly priceRange: { min: number; max: number } | null;
   readonly search: string | null;
 }
 
-export class GetDishesDto extends PaginationDto implements GetDishesDtoModel {
+export class GetDishesRequest extends PaginationRequest implements GetDishesRequestModel {
   constructor(
     public readonly page: number,
     public readonly limit: number,
@@ -20,15 +20,15 @@ export class GetDishesDto extends PaginationDto implements GetDishesDtoModel {
   }
 
   public validate() {
-    dtoValidator(this, GetDishesDto.schema);
+    dtoValidator(this, GetDishesRequest.schema);
   }
 
   protected static override get schema() {
-    return GetDishesDtoSchema;
+    return GetDishesRequestSchema;
   }
 }
 
-const GetDishesDtoSchema = z.object({
+const GetDishesRequestSchema = z.object({
   idCategory: z
     .array(
       z.object({
@@ -51,5 +51,5 @@ const GetDishesDtoSchema = z.object({
     .nullable()
     .default(null),
   search: z.nullable(z.string()).default(null),
-  ...PaginationDtoSchema.shape,
+  ...PaginationRequestSchema.shape,
 });

@@ -7,7 +7,7 @@ import {
   onLoadDishCategory,
   onLoadingDishCategory,
 } from "@/infraestructure/store";
-import { CreateDishCategoryDto, UploadImageDto } from "@/domain/dtos";
+import { CreateDishCategoryRequest, UploadImageRequest } from "@/domain/dtos";
 import { useMessageStore } from "./useMessageStore";
 
 const dishCategoryService = new DishCategoryService();
@@ -24,15 +24,15 @@ export const useDishCategoryStore = () => {
   );
 
   const startCreatingDishCategory = async (
-    createDishCategoryDto: CreateDishCategoryDto,
-    uploadImageDto: UploadImageDto,
+    createDishCategoryRequest: CreateDishCategoryRequest,
+    uploadImageRequest: UploadImageRequest,
   ) => {
-    uploadImageDto.validate();
+    uploadImageRequest.validate();
 
     dispatch(onLoadingDishCategory());
 
     await dishCategoryRepositoryImpl
-      .create(createDishCategoryDto, uploadImageDto)
+      .create(createDishCategoryRequest, uploadImageRequest)
       .then(({ data, message, status }) => {
         dispatch(onLoadDishCategory(data));
         startSetMessages([message], status);

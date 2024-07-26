@@ -1,34 +1,34 @@
 import type {
   ApiResponse,
-  CreateDishDto,
-  GetDishesDto,
-  GetDishesWithoutSelectedDishDto,
+  CreateDishRequest,
+  GetDishesRequest,
+  GetDishesWithoutSelectedDishRequest,
   PagedResponse,
-  UpdateDishDto,
-  UpdateDishImageDto,
-  UploadImageDto,
+  UpdateDishRequest,
+  UpdateDishImageRequest,
+  UploadImageRequest,
 } from "../dtos";
 import type { DishImageModel, DishModel } from "@/model";
 
 export abstract class DishRepository {
   abstract create(
-    createDishDto: CreateDishDto,
-    uploadDishImages: UploadImageDto,
+    createDishRequest: CreateDishRequest,
+    uploadDishImages: UploadImageRequest,
   ): Promise<ApiResponse<DishModel>>;
   abstract update(
-    updateDishDto: UpdateDishDto,
+    updateDishRequest: UpdateDishRequest,
   ): Promise<ApiResponse<DishModel>>;
   abstract updateImage(
-    updateDishImageDto: UpdateDishImageDto,
+    updateDishImageRequest: UpdateDishImageRequest,
   ): Promise<ApiResponse<DishImageModel[]>>;
   abstract delete(id: number): Promise<ApiResponse<void>>;
   abstract deleteMany(ids: number[]): Promise<ApiResponse<void>>;
   abstract getAllPaginated(
-    getDishesDto: GetDishesDto,
+    getDishesRequest: GetDishesRequest,
   ): Promise<ApiResponse<PagedResponse<DishModel[]>>>;
   abstract getAll(): Promise<ApiResponse<DishModel[]>>;
   abstract getAllWithoutSelectedDish(
-    getDishesWithoutSelectedDishDto: GetDishesWithoutSelectedDishDto,
+    getDishesWithoutSelectedDishRequest: GetDishesWithoutSelectedDishRequest,
   ): Promise<ApiResponse<DishModel[]>>;
   abstract getById(id: number): Promise<ApiResponse<DishModel>>;
 }
