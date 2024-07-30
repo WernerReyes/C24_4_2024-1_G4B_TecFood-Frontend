@@ -29,6 +29,10 @@ export const dishCategorySlice = createSlice({
       return { ...initialState };
     },
 
+    onFinishedLoadingDishCategory: (state) => {
+      return { ...state, isLoading: false };
+    },
+
     onLoadingDishCategory: (state) => {
       return { ...state, isLoading: true };
     },
@@ -39,5 +43,6 @@ export const {
   onLoadingDishCategory,
   onResetDishCategory,
   onLoadDishCategories,
+  onFinishedLoadingDishCategory,
   onLoadDishCategory,
 } = dishCategorySlice.actions;

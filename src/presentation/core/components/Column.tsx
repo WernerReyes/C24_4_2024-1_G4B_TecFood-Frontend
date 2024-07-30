@@ -8,3 +8,4 @@ interface Props extends ColumnProps {}
 export const Column = ({ ...props }: Props) => {
   return <ColumnPrimeReact {...props} />;
 };
+

@@ -1,4 +1,4 @@
-import { dtoValidator, regularExpressions } from "@/presentation/utilities";
+import { requestValidator, regularExpressions } from "@/presentation/utilities";
 import { z } from "zod";
 
 const { EMAIL, PASSWORD } = regularExpressions;
@@ -15,7 +15,7 @@ export class AuthRequest implements AuthRequestModel {
   ) {}
 
   protected validate() {
-    dtoValidator(this, AuthRequest.schema);
+    requestValidator(this, AuthRequest.schema);
   }
 
   public static get schema(): z.ZodSchema<AuthRequestModel> {

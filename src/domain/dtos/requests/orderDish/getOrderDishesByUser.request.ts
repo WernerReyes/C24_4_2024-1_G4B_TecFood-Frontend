@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { OrderDishStatusEnum } from "@/domain/entities";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import { PaginationRequest, type PaginationRequestModel, PaginationRequestSchema } from "../common";
 
 interface GetOrderDishesByUserRequestModel extends PaginationRequestModel {
@@ -20,7 +20,7 @@ export class GetOrderDishesByUserRequest
   }
 
   public validate() {
-    dtoValidator(this, GetOrderDishesByUserRequest.schema);
+    requestValidator(this, GetOrderDishesByUserRequest.schema);
   }
 
   protected static override get schema(): z.ZodSchema<GetOrderDishesByUserRequestModel> {

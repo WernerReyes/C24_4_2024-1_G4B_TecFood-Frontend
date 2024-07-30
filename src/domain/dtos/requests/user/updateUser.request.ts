@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dtoValidator, regularExpressions } from "@/presentation/utilities";
+import { requestValidator, regularExpressions } from "@/presentation/utilities";
 
 const { DNI, PHONE } = regularExpressions;
 
@@ -19,7 +19,7 @@ export class UpdateUserRequest implements UpdateUserRequestModel {
   ) {}
 
   public validate() {
-    dtoValidator(this, UpdateUserRequest.schema);
+    requestValidator(this, UpdateUserRequest.schema);
   }
 
   public static get schema(): z.ZodSchema<UpdateUserRequestModel> {

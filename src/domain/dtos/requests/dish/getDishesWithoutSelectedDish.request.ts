@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 
 type GetDishesWithoutSelectedDishRequestModel = {
   readonly idDish: number;
@@ -15,7 +15,7 @@ export class GetDishesWithoutSelectedDishRequest
   ) {}
 
   public validate() {
-    dtoValidator(this, GetDishesWithoutSelectedDishRequest.schema);
+    requestValidator(this, GetDishesWithoutSelectedDishRequest.schema);
   }
 
   private static get schema(): z.ZodSchema<GetDishesWithoutSelectedDishRequestModel> {

@@ -70,6 +70,10 @@ export const dishSlice = createSlice({
       return { ...initialState };
     },
 
+    onFinishedLoadingDish: (state) => {
+      return { ...state, isLoading: false };
+    },
+
     onLoadingDish: (state) => {
       return { ...state, isLoading: true };
     },
@@ -83,5 +87,6 @@ export const {
   onLoadDish,
   onSetDishFilters,
   onLoadDishesWithoutSelectedDish,
+  onFinishedLoadingDish,
   onResetDish,
 } = dishSlice.actions;

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import { PaginationRequest, PaginationRequestSchema } from "../common";
 
 interface GetDishesRequestModel extends PaginationRequest {
@@ -20,7 +20,7 @@ export class GetDishesRequest extends PaginationRequest implements GetDishesRequ
   }
 
   public validate() {
-    dtoValidator(this, GetDishesRequest.schema);
+    requestValidator(this, GetDishesRequest.schema);
   }
 
   protected static override get schema() {

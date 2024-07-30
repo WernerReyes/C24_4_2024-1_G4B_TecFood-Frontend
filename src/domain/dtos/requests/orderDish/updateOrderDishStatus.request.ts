@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { OrderDishStatusEnum } from "@/domain/entities";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 
 type UpdateOrderDishStatusRequestModel = {
   readonly orderDishId: number;
@@ -14,7 +14,7 @@ export class UpdateOrderDishStatusRequest implements UpdateOrderDishStatusReques
   ) {}
 
   public validate() {
-    dtoValidator(this, UpdateOrderDishStatusRequest.schema);
+    requestValidator(this, UpdateOrderDishStatusRequest.schema);
   }
 
   private static get schema(): z.ZodSchema<UpdateOrderDishStatusRequestModel> {

@@ -1,6 +1,7 @@
 import { z, ZodSchema } from "zod";
 import type { DishCategoryModel } from "@/model";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
+import { StatusEnum } from "@/domain/entities/enums";
 
 export interface DishRequestModel {
   readonly name: string;
@@ -20,7 +21,7 @@ export class DishRequest implements DishRequestModel {
   ) {}
 
   public validate() {
-    dtoValidator(this, DishRequest.schema);
+    requestValidator(this, DishRequest.schema);
   }
 
   public get categoriesId(): number[] {
@@ -62,6 +63,9 @@ export const DishRequestSchema = z.object({
         }),
         imageUrl: z.string({
           message: "Category image is required",
+        }),
+        status: z.nativeEnum(StatusEnum, {
+          message: "Category status is required",
         }),
         createdAt: z.string({
           message: "Category creation date is required",

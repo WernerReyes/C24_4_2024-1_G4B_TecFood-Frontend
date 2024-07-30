@@ -5,6 +5,7 @@ import {
   CreateDishCategoryRequest,
   UpdateDishCategoryImageRequest,
   UpdateDishCategoryRequest,
+  UpdateStatusRequest,
   UploadImageRequest,
 } from "@/domain/dtos";
 import type { DishCategoryEntity } from "@/domain/entities";
@@ -22,9 +23,13 @@ interface IDishCategoryService {
   updateImage(
     updateDishCategoryImageRequest: UpdateDishCategoryImageRequest,
   ): Promise<ApiResponse<DishCategoryModel>>;
+  updateStatus(
+    updateStatusRequest: UpdateStatusRequest,
+  ): Promise<ApiResponse<DishCategoryModel>>;
   delete(dishCategoryId: number): Promise<ApiResponse<void>>;
   deleteMany(dishCategoryIds: number[]): Promise<ApiResponse<void>>;
   getAll(): Promise<ApiResponse<DishCategoryModel[]>>;
+  getAllPublished(): Promise<ApiResponse<DishCategoryModel[]>>;
 }
 
 export class DishCategoryService implements IDishCategoryService {
@@ -96,6 +101,21 @@ export class DishCategoryService implements IDishCategoryService {
     }
   }
 
+  public async updateStatus(updateStatusRequest: UpdateStatusRequest) {
+    try {
+      const { data, ...rest } = await httpRequest.put<DishCategoryEntity>(
+        `${this.prefix}/status`,
+        updateStatusRequest,
+      );
+      return {
+        data: dishCategoryAdapter(data),
+        ...rest,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async delete(dishCategoryId: number) {
     try {
       return await httpRequest.delete<void>(`${this.prefix}/${dishCategoryId}`);
@@ -119,6 +139,20 @@ export class DishCategoryService implements IDishCategoryService {
     try {
       const { data, ...rest } = await httpRequest.get<DishCategoryEntity[]>(
         this.prefix,
+      );
+      return {
+        data: data.map(dishCategoryAdapter),
+        ...rest,
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getAllPublished() {
+    try {
+      const { data, ...rest } = await httpRequest.get<DishCategoryEntity[]>(
+        `${this.prefix}/published`,
       );
       return {
         data: data.map(dishCategoryAdapter),

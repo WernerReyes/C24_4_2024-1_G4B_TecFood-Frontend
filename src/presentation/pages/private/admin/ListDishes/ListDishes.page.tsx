@@ -46,7 +46,8 @@ const COLS_TO_EXPORT: ColumnMeta[] = [
 
 const ListDishesPage = () => {
   const navigate = useNavigate();
-  const { dishes, startDeletingDish, startDeletingManyDishes } = useDishStore();
+  const { dishes, startDeletingDish, isLoading, startDeletingManyDishes } =
+    useDishStore();
   const [selectedDishes, setSelectedDishes] = useState<DishModel[]>([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const dt = useRef<DataTableRef>(null);
@@ -86,15 +87,17 @@ const ListDishesPage = () => {
           end={() => (
             <>
               <Button
+                disabled={isLoading}
                 label="Export PDF"
                 icon="pi pi-file-pdf"
-                className="bg-transparent dark:text-white"
+                className="bg-transparent disabled:opacity-50 dark:text-white"
                 onClick={handleExportPdf}
               />
               <Button
+                disabled={isLoading}
                 label="Export Excel"
                 icon="pi pi-file-excel"
-                className="bg-transparent dark:text-white"
+                className="bg-transparent disabled:opacity-50 dark:text-white"
                 onClick={handleExportExcel}
               />
             </>
@@ -104,8 +107,9 @@ const ListDishesPage = () => {
               <Button
                 label="New"
                 icon="pi pi-plus"
+                disabled={isLoading}
                 severity="success"
-                className="bg-transparent dark:text-white"
+                className="bg-transparent disabled:opacity-50 dark:text-white"
                 onClick={() => navigate(`${ADMIN}/${ADD_DISH}`)}
               />
               <Button
@@ -142,7 +146,7 @@ const ListDishesPage = () => {
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-          globalFilter={globalFilter.length ? globalFilter : undefined}
+          globalFilter={globalFilter}
           header={() => (
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h4 className="m-0">Manage Dishes</h4>
@@ -192,6 +196,8 @@ const ListDishesPage = () => {
                   unstyled
                   icon="pi pi-pencil"
                   rounded
+                  disabled={isLoading}
+                  className="disabled:opacity-50"
                   outlined
                   onClick={() => navigate(`${ADMIN}/${EDIT_DISH(dish.id)}`)}
                 />
@@ -199,6 +205,8 @@ const ListDishesPage = () => {
                   unstyled
                   icon="pi pi-eye"
                   rounded
+                  disabled={isLoading}
+                  className="disabled:opacity-50"
                   outlined
                   onClick={() => navigate(`${ADMIN}/${DETAIL_DISH(dish.id)}`)}
                 />
@@ -207,6 +215,8 @@ const ListDishesPage = () => {
                   icon="pi pi-trash"
                   rounded
                   outlined
+                  disabled={isLoading}
+                  className="disabled:opacity-50"
                   severity="danger"
                   onClick={() => {
                     setConfirmDialog({

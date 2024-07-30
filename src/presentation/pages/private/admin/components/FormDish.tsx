@@ -27,11 +27,11 @@ export const FormDish = ({
   reset,
   errors,
 }: Props) => {
-  const { startLoadingDishCategories, isLoading, dishCategories } =
+  const { startLoadingDishCategoriesPublished, isLoading, dishCategories } =
     useDishCategoryStore();
 
   useEffect(() => {
-    startLoadingDishCategories();
+    startLoadingDishCategoriesPublished();
   }, []);
 
   useEffect(() => {

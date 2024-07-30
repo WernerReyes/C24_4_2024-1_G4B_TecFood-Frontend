@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import type { ColumnPassThroughMethodOptions } from "primereact/column";
 import {
   type DataTableSelectionMultipleChangeEvent as DataTableSelectionMultipleChangeEventPrimeReact,
   DataTable as DataTablePrimeReact,
@@ -55,6 +56,38 @@ export const DataTable = forwardRef(function DataTable2<
               },
             ),
           }),
+        },
+        column: {
+          headerCheckbox: ({ context }: ColumnPassThroughMethodOptions) => ({
+            className: clsx(
+              "flex items-center justify-center",
+              "border-2 w-6 h-6 text-gray-600 rounded-lg transition-colors duration-200",
+              context.checked
+                ? "border-none"
+                : "border-gray-300 bg-white dark:border-blue-900/40 dark:bg-gray-900",
+              {
+                "hover:border-primary dark:hover:border-primary focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)] dark:focus:shadow-[inset_0_0_0_0.2rem_rgba(147,197,253,0.5)]":
+                  !context.disabled,
+                "cursor-default opacity-60": context.disabled,
+              },
+            ),
+          }),
+          rowCheckbox({ context }: ColumnPassThroughMethodOptions) {
+            return {
+              className: clsx(
+                "flex items-center justify-center",
+                "border-2 w-6 h-6 text-gray-600 rounded-lg transition-colors duration-200",
+                context.checked
+                  ? "border-none"
+                  : "border-gray-300 bg-white dark:border-blue-900/40 dark:bg-gray-900",
+                {
+                  "hover:border-primary dark:hover:border-primary focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)] dark:focus:shadow-[inset_0_0_0_0.2rem_rgba(147,197,253,0.5)]":
+                    !context.disabled,
+                  "cursor-default opacity-60": context.disabled,
+                },
+              ),
+            };
+          },
         },
       }}
     />

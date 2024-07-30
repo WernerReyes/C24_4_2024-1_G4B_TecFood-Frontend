@@ -1,4 +1,4 @@
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import { z } from "zod";
 
 export type UploadImageRequestModel = {
@@ -19,8 +19,8 @@ export class UploadImageRequest implements UploadImageRequestModel {
 
   public validate() {
     if (Array.isArray(this.files))
-      dtoValidator(this, UploadImageRequest.filesSchema);
-    else dtoValidator(this, UploadImageRequest.fileSchema);
+      requestValidator(this, UploadImageRequest.filesSchema);
+    else requestValidator(this, UploadImageRequest.fileSchema);
   }
 
   public get toFormData(): FormData {
@@ -55,18 +55,18 @@ export const UploadImageRequestSchema = z.object({
         );
       },
       {
-        message: `File must be a valid image type, supported types are: ${Object.values(TypeImage).join(", ")}`,
+        message: `Image must be a valid image type, supported types are: ${Object.values(TypeImage).join(", ")}`,
       },
     )
     .refine((file) => file.size <= MAX_FILE_SIZE, {
-      message: `File must be less than ${MAX_FILE_SIZE / 1000000}MB`,
+      message: `Image must be less than ${MAX_FILE_SIZE / 1000000}MB`,
     }),
 });
 
 export const UploadImagesDtoSchema = z.object({
   files: z
     .array(z.instanceof(File))
-    .nonempty("File is required")
+    .nonempty("Image is required")
     .max(5, "You can upload up to 5 files")
 
     .refine(
@@ -78,7 +78,7 @@ export const UploadImagesDtoSchema = z.object({
         });
       },
       {
-        message: `File must be a valid image type, supported types are: ${Object.values(TypeImage).join(", ")}`,
+        message: `Image must be a valid image type, supported types are: ${Object.values(TypeImage).join(", ")}`,
       },
     )
     .refine(
@@ -86,7 +86,7 @@ export const UploadImagesDtoSchema = z.object({
         return Array.from(files).every((file) => file.size <= MAX_FILE_SIZE);
       },
       {
-        message: `File must be less than ${MAX_FILE_SIZE / 1000000}MB`,
+        message: `Image must be less than ${MAX_FILE_SIZE / 1000000}MB`,
       },
     )
     .refine(
@@ -96,7 +96,7 @@ export const UploadImagesDtoSchema = z.object({
           : true;
       },
       {
-        message: `File must be less than ${MAX_FILES_SIZE / 1000000}MB`,
+        message: `Image must be less than ${MAX_FILES_SIZE / 1000000}MB`,
       },
     ),
 });

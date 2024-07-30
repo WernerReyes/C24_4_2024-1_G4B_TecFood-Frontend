@@ -1,5 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import { Avatar, Menu, MenuItem, MenuRef } from "@/presentation/core/components";
+import clsx from "clsx";
+import {
+  Avatar,
+  Menu,
+  MenuItem,
+  MenuRef,
+} from "@/presentation/core/components";
 import { useAuthStore, useUserStore } from "@/presentation/hooks";
 
 type Props = {
@@ -8,7 +14,9 @@ type Props = {
 
 export const AvatarMenu = ({ items }: Props) => {
   const menuLeft = useRef<MenuRef>(null);
+  const avatarRef = useRef(null);
   const { authenticatedUser, startLogout } = useAuthStore();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
   const { user } = useUserStore();
   const [currentProfile, setCurrentProfile] = useState<string>("");
 
@@ -17,19 +25,29 @@ export const AvatarMenu = ({ items }: Props) => {
   }, [user.img]);
 
   return (
-    <>
-      <Avatar
-        image={currentProfile || authenticatedUser.img}
-        imageAlt="avatar"
-        label={authenticatedUser.name[0].toUpperCase()}
-        shape="circle"
-        className="border-2 border-primary bg-primary text-white"
-        onClick={(event) => menuLeft.current?.toggle(event)}
-        aria-haspopup
-      />
+    <div className="relative">
+      <div ref={avatarRef} onClick={() => setShowMenu(!showMenu)}>
+        <Avatar
+          image={currentProfile || authenticatedUser.img}
+          imageAlt="avatar"
+          label={authenticatedUser.name[0].toUpperCase()}
+          shape="circle"
+          id="popup_menu_left"
+          className="relative border-2 border-primary bg-primary text-white"
+          onClick={(event) => menuLeft.current?.toggle(event)}
+          itemRef="popup_menu_left"
+        />
+      </div>
 
-      <Menu model={addLogout(items, startLogout)} popup ref={menuLeft} />
-    </>
+      <Menu
+        id="popup_menu_left"
+        model={addLogout(items, startLogout)}
+        aria-controls="popup_menu_left"
+        className={clsx(!showMenu ? "hidden" : "fixed", "right-20")}
+        popupAlignment="left"
+        ref={menuLeft}
+      />
+    </div>
   );
 };
 

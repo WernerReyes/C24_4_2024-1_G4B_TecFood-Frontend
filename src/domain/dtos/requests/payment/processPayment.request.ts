@@ -1,5 +1,5 @@
 import { PaymentMethodEnum } from "@/domain/entities";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import { z } from "zod";
 
 type ProcessPaymentRequestModel = {
@@ -14,7 +14,7 @@ export class ProcessPaymentRequest implements ProcessPaymentRequestModel {
   ) {}
 
   public validate() {
-    dtoValidator(this, ProcessPaymentRequest.schema);
+    requestValidator(this, ProcessPaymentRequest.schema);
   }
 
   private static get schema(): z.ZodSchema<ProcessPaymentRequestModel> {

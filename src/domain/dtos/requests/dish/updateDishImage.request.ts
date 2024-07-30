@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import {
   UploadImageRequest,
   UploadImageRequestSchema,
@@ -24,7 +24,7 @@ export class UpdateDishImageRequest
   }
 
   public override validate() {
-    dtoValidator(this, UpdateDishImageRequest.schema);
+    requestValidator(this, UpdateDishImageRequest.schema);
   }
 
   public override get toFormData(): FormData {

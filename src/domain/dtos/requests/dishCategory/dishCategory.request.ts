@@ -1,4 +1,4 @@
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import { z } from "zod";
 
 export type DishCategoryRequestModel = {
@@ -6,10 +6,10 @@ export type DishCategoryRequestModel = {
 };
 
 export class DishCategoryRequest implements DishCategoryRequestModel {
-  constructor(public name: string) {}
+  constructor(public readonly name: string) {}
 
   public validate() {
-    dtoValidator(this, DishCategoryRequest.schema);
+    requestValidator(this, DishCategoryRequest.schema);
   }
 
   public static get schema(): z.ZodSchema<DishCategoryRequestModel> {

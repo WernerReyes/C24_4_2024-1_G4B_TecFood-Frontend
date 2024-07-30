@@ -1,8 +1,3 @@
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Dialog, InputText } from "@/presentation/core/components";
-import { UploadDishImages } from "../../components";
 import {
   CreateDishCategoryRequest,
   DishCategoryRequest,
@@ -10,8 +5,13 @@ import {
   UpdateDishCategoryRequest,
   UploadImageRequest,
 } from "@/domain/dtos";
-import { useDishCategoryStore, useMessageStore } from "@/presentation/hooks";
 import { dishCategoryEmptyState } from "@/model";
+import { Button, Dialog, InputText } from "@/presentation/core/components";
+import { useDishCategoryStore, useMessageStore } from "@/presentation/hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { UploadDishImages } from "../../components";
 
 type Props = {
   visible: boolean;
@@ -41,26 +41,22 @@ export const CategoryDialog = ({ visible, onHide }: Props) => {
   } | null>(null);
   const [uploadedSuccess, setUploadedSuccess] = useState(false);
 
-  const handleUpdateImage = () => {
+  const handleUpdateImage = async () => {
     if (!file) return startSetMessagesError(["Image is required"]);
 
     const updateDishCategoryImageRequest = new UpdateDishCategoryImageRequest(
       dishCategory.id,
       file.file,
     );
-    startUpdatingDishCategoryImage(updateDishCategoryImageRequest)
-      .then(() => {
-        setUploadedSuccess(true);
-        onHide();
-      })
-      .catch(() => {
-        setUploadedSuccess(true);
-        onHide();
-      });
+    await startUpdatingDishCategoryImage(updateDishCategoryImageRequest);
+    setUploadedSuccess(true);
+    onHide();
   };
 
   const handleSaveCategory = (dishCategoryRequest: DishCategoryRequest) => {
     if (dishCategory.id) {
+      if (dishCategoryRequest.name === dishCategory.name)
+        return startSetMessagesError(["No changes detected"]);
       const updateDishCategoryRequest = new UpdateDishCategoryRequest(
         dishCategory.id,
         dishCategoryRequest.name,
@@ -81,26 +77,22 @@ export const CategoryDialog = ({ visible, onHide }: Props) => {
         uploadImageRequest,
       ).then(() => {
         setUploadedSuccess(true);
+        setFile(null);
+        reset();
         onHide();
       });
     }
   };
 
   useEffect(() => {
-    if (dishCategory.id) {
-      reset({
-        name: dishCategory.name,
-      });
-    } else
-      reset({
-        name: "",
-      });
+    reset({
+      name: dishCategory.name,
+    });
   }, [dishCategory]);
 
   useEffect(() => {
-    if (dishCategory.id) {
-      handleUpdateImage();
-    }
+    setUploadedSuccess(false);
+    if (dishCategory.id) handleUpdateImage();
   }, [file]);
 
   return (
@@ -148,6 +140,7 @@ export const CategoryDialog = ({ visible, onHide }: Props) => {
             />
           )}
         />
+
         <Button
           type="submit"
           icon="pi pi-save"

@@ -16,6 +16,7 @@ import {
   onLoadDishesWithoutSelectedDish,
   onLoadingDish,
   onSetDishFilters,
+  onFinishedLoadingDish,
 } from "@/infraestructure/store";
 import type { DishFilters, DishModel } from "@/model";
 import { DishService } from "@/infraestructure/services";
@@ -58,6 +59,7 @@ export const useDishStore = () => {
         setStorage(DISHES_TO_SEARCH, newDishesToSearch);
       })
       .catch((error) => {
+        dispatch(onFinishedLoadingDish());
         throw error;
       });
   };
@@ -120,6 +122,7 @@ export const useDishStore = () => {
         setStorage(DISHES_TO_SEARCH, newDishes);
       })
       .catch((error) => {
+        dispatch(onFinishedLoadingDish());
         throw error;
       });
   };
@@ -137,6 +140,7 @@ export const useDishStore = () => {
         setStorage(DISHES_TO_SEARCH, newDishes);
       })
       .catch((error) => {
+        dispatch(onFinishedLoadingDish());
         throw error;
       });
   };

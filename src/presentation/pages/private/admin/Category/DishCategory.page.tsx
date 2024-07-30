@@ -11,9 +11,12 @@ import {
   ConfirmDialog,
 } from "@/presentation/core/components";
 import { AdminLayout } from "../layout";
-import { useDishCategoryStore } from "@/presentation/hooks";
+import { useDishCategoryStore, useDishStore } from "@/presentation/hooks";
 import type { DishCategoryModel } from "@/model";
-import { CategoryDialog } from "./components";
+import { CategoryActions, CategoryDialog } from "./components";
+import { StatusEnum } from "@/domain/entities/enums";
+import clsx from "clsx";
+import { isCategotyUsed } from "./utilities";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -28,11 +31,10 @@ const DishCategoryPage = () => {
     dishCategories,
     startDeletingDishCategory,
     startDeletingManyDishCategories,
-    startLoadingDishCategory,
     startLoadingDishCategories,
-    isLoading,
   } = useDishCategoryStore();
-  const [selectedCategories,  setSelectedCategories] = useState<
+  const { dishes } = useDishStore();
+  const [selectedCategories, setSelectedCategories] = useState<
     DishCategoryModel[]
   >([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
@@ -49,7 +51,7 @@ const DishCategoryPage = () => {
     else
       await startDeletingManyDishCategories(
         selectedCategories.map((c) => c.id),
-      );
+      ).then(() => setSelectedCategories([]));
     setConfirmDialog(INITIAL_CONFIRM_DIALOG);
   };
 
@@ -97,8 +99,8 @@ const DishCategoryPage = () => {
                 onClick={() => {
                   setConfirmDialog({
                     visible: true,
-                    message: `Are you sure you want to delete ${selectedCategories.length} category${
-                      selectedCategories.length > 1 ? "s" : ""
+                    message: `Are you sure you want to delete ${selectedCategories.length} categor${
+                      selectedCategories.length > 1 ? "ies" : "y"
                     }?`,
                   });
                 }}
@@ -113,17 +115,24 @@ const DishCategoryPage = () => {
           onSelectionChange={(
             e: DataTableSelectionMultipleChangeEvent<DishCategoryModel[]>,
           ) => {
-            if (Array.isArray(e.value)) setSelectedCategories(e.value);
+            if (Array.isArray(e.value)) {
+              setSelectedCategories(
+                e.value.filter((c) => !isCategotyUsed(c, dishes)),
+              );
+            }
           }}
           dataKey="id"
           paginator
+          selectionPageOnly
+          paginatorDropdownAppendTo={document.body}
+          globalFilterFields={["name", "status"]}
           paginatorPosition="both"
           footerColumnGroup
           rows={ROWS_PER_PAGE_OPTIONS[0]}
           rowsPerPageOptions={ROWS_PER_PAGE_OPTIONS}
           paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
           currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
-          globalFilter={globalFilter.length ? globalFilter : undefined}
+          globalFilter={globalFilter}
           header={() => (
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h4 className="m-0">Manage Categories</h4>
@@ -139,7 +148,7 @@ const DishCategoryPage = () => {
           )}
           selectionMode="multiple"
         >
-          <Column selectionMode="multiple" exportable={false} />
+          <Column selectionMode="multiple" showAddButton exportable={false} />
           <Column field="id" header="Code" sortable />
           <Column field="name" header="Name" sortable />
           <Column
@@ -153,36 +162,34 @@ const DishCategoryPage = () => {
               />
             )}
           />
+          <Column
+            field="status"
+            header="Status"
+            body={(category: DishCategoryModel) => (
+              <span
+                className={clsx(
+                  "rounded-full p-4 py-2 text-center text-xs font-bold",
+                  category.status === StatusEnum.PUBLISHED &&
+                    "bg-green-500/10 text-green-500",
+                  category.status === StatusEnum.PRIVATE &&
+                    "bg-red-500/10 text-red-500",
+                )}
+              >
+                {category.status}
+              </span>
+            )}
+          />
           <Column field="createdAt" header="Created At" sortable />
           <Column field="updatedAt" header="Updated At" sortable />
           <Column
+            className="min-w-36"
             body={(category: DishCategoryModel) => (
-              <div className="flex items-center justify-evenly gap-x-4">
-                <Button
-                  unstyled
-                  icon="pi pi-pencil"
-                  rounded
-                  outlined
-                  onClick={() => {
-                    startLoadingDishCategory(category);
-                    setShowCategoryDialog(true);
-                  }}
-                />
-                <Button
-                  unstyled
-                  icon="pi pi-trash"
-                  rounded
-                  outlined
-                  disabled={isLoading}
-                  onClick={() => {
-                    setConfirmDialog({
-                      visible: true,
-                      message: `Are you sure you want to delete "${category.name}"?`,
-                      dishCategoryId: category.id,
-                    });
-                  }}
-                />
-              </div>
+              <CategoryActions
+                category={category}
+                dishes={dishes}
+                setShowCategoryDialog={setShowCategoryDialog}
+                setConfirmDialog={setConfirmDialog}
+              />
             )}
             exportable={false}
           ></Column>

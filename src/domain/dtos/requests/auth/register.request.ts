@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { RoleEnum } from "@/domain/entities";
-import { dtoValidator, regularExpressions } from "@/presentation/utilities";
+import { requestValidator, regularExpressions } from "@/presentation/utilities";
 import { AuthRequest, type AuthRequestModel, AuthRequestSchema } from "./auth.request";
 
 const { DNI, PHONE } = regularExpressions;
@@ -27,7 +27,7 @@ export class RegisterRequest extends AuthRequest implements RegisterRequestModel
   }
 
   public override validate() {
-    dtoValidator(this, RegisterRequest.schema);
+    requestValidator(this, RegisterRequest.schema);
   }
 
   public static override get schema(): z.ZodSchema<RegisterRequestModel> {

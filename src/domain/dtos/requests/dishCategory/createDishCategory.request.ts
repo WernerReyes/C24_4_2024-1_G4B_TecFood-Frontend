@@ -1,4 +1,7 @@
-import { DishCategoryRequest, type DishCategoryRequestModel } from "./dishCategory.request";
+import {
+  DishCategoryRequest,
+  type DishCategoryRequestModel,
+} from "./dishCategory.request";
 
 interface CreateDishCategoryRequestModel extends DishCategoryRequestModel {}
 

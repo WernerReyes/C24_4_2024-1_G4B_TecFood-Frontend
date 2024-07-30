@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import {
   UploadImageRequest,
   UploadImageRequestSchema,
@@ -22,7 +22,7 @@ export class UpdateDishCategoryImageRequest
   }
 
   public override validate() {
-    dtoValidator(this, UpdateDishCategoryImageRequest.schema);
+    requestValidator(this, UpdateDishCategoryImageRequest.schema);
   }
 
   private static get schema(): z.ZodSchema<UpdateDishCategoryImageRequestModel> {

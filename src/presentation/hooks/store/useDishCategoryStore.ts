@@ -3,6 +3,7 @@ import { DishCategoryRepositoryImpl } from "@/infraestructure/repositories";
 import { DishCategoryService } from "@/infraestructure/services";
 import {
   type AppState,
+  onFinishedLoadingDishCategory,
   onLoadDishCategories,
   onLoadDishCategory,
   onLoadingDishCategory,
@@ -11,6 +12,7 @@ import {
   CreateDishCategoryRequest,
   UpdateDishCategoryImageRequest,
   UpdateDishCategoryRequest,
+  UpdateStatusRequest,
   UploadImageRequest,
 } from "@/domain/dtos";
 import { useMessageStore } from "./useMessageStore";
@@ -40,7 +42,6 @@ export const useDishCategoryStore = () => {
     await dishCategoryRepositoryImpl
       .create(createDishCategoryRequest, uploadImageRequest)
       .then(({ data, message, status }) => {
-        dispatch(onLoadDishCategory(data));
         startSetMessages([message], status);
 
         dispatch(onLoadDishCategories([...dishCategories, data]));
@@ -100,6 +101,29 @@ export const useDishCategoryStore = () => {
       });
   };
 
+  const startUpdatingDishCategoryStatus = async (
+    updateStatusRequest: UpdateStatusRequest,
+  ) => {
+    dispatch(onLoadingDishCategory());
+
+    await dishCategoryRepositoryImpl
+      .updateStatus(updateStatusRequest)
+      .then(({ data }) => {
+        dispatch(onLoadDishCategory(data));
+        dispatch(
+          onLoadDishCategories(
+            dishCategories.map((dishCategory) =>
+              dishCategory.id === data.id ? data : dishCategory,
+            ),
+          ),
+        );
+      })
+      .catch((error) => {
+        dispatch(onFinishedLoadingDishCategory());
+        throw error;
+      });
+  };
+
   const startDeletingDishCategory = async (dishCategoryId: number) => {
     dispatch(onLoadingDishCategory());
 
@@ -117,6 +141,7 @@ export const useDishCategoryStore = () => {
         );
       })
       .catch((error) => {
+        dispatch(onFinishedLoadingDishCategory());
         throw error;
       });
   };
@@ -138,6 +163,7 @@ export const useDishCategoryStore = () => {
         );
       })
       .catch((error) => {
+        dispatch(onFinishedLoadingDishCategory());
         throw error;
       });
   };
@@ -147,6 +173,17 @@ export const useDishCategoryStore = () => {
 
     dishCategoryRepositoryImpl
       .getAll()
+      .then(({ data }) => dispatch(onLoadDishCategories(data)))
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startLoadingDishCategoriesPublished = async () => {
+    dispatch(onLoadingDishCategory());
+
+    dishCategoryRepositoryImpl
+      .getAllPublished()
       .then(({ data }) => dispatch(onLoadDishCategories(data)))
       .catch((error) => {
         throw error;
@@ -173,9 +210,11 @@ export const useDishCategoryStore = () => {
     startCreatingDishCategory,
     startUpdatingDishCategory,
     startUpdatingDishCategoryImage,
+    startUpdatingDishCategoryStatus,
     startDeletingDishCategory,
     startDeletingManyDishCategories,
     startLoadingDishCategory,
+    startLoadingDishCategoriesPublished,
     startLoadingDishCategories,
   };
 };

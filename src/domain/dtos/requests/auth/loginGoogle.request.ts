@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { RoleEnum } from "@/domain/entities";
-import { dtoValidator, regularExpressions } from "@/presentation/utilities";
+import { requestValidator, regularExpressions } from "@/presentation/utilities";
 import { AuthRequest, type AuthRequestModel, AuthRequestSchema } from "./auth.request";
 const { URL } = regularExpressions;
 
@@ -34,7 +34,7 @@ export class LoginGoogleRequest extends AuthRequest implements LoginGoogleReques
   }
 
   public override validate() {
-    dtoValidator(this, LoginGoogleRequest.schema);
+    requestValidator(this, LoginGoogleRequest.schema);
   }
 
   public static override get schema(): z.ZodSchema<LoginGoogleRequestModel> {

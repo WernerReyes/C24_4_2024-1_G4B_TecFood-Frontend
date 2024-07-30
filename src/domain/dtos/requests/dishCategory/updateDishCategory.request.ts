@@ -1,10 +1,10 @@
+import { requestValidator } from "@/presentation/utilities";
 import { z } from "zod";
 import {
   DishCategoryRequest,
   type DishCategoryRequestModel,
   DishCategoryRequestSchema,
 } from "./dishCategory.request";
-import { dtoValidator } from "@/presentation/utilities";
 
 interface UpdateDishCategoryRequestModel extends DishCategoryRequestModel {
   readonly id: number;
@@ -22,7 +22,7 @@ export class UpdateDishCategoryRequest
   }
 
   public override validate() {
-    dtoValidator(this, UpdateDishCategoryRequest.schema);
+    requestValidator(this, UpdateDishCategoryRequest.schema);
   }
 
   public static override get schema(): z.ZodSchema<UpdateDishCategoryRequestModel> {

@@ -1,5 +1,5 @@
 import type { DishCategoryModel } from "@/model";
-import { dtoValidator } from "@/presentation/utilities";
+import { requestValidator } from "@/presentation/utilities";
 import { z, ZodSchema } from "zod";
 import { DishRequest, DishRequestModel, DishRequestSchema } from "./dish.request";
 
@@ -19,7 +19,7 @@ export class UpdateDishRequest extends DishRequest implements UpdateDishRequestM
   }
 
   public validate() {
-    dtoValidator(this, UpdateDishRequest.schema);
+    requestValidator(this, UpdateDishRequest.schema);
   }
 
   public get toRequestBody(): Record<string, unknown> {
