@@ -1,5 +1,6 @@
 import { getStorage } from "@/presentation/utilities";
 import { type DishCategoryModel, type DishImageModel } from "./";
+import { StatusEnum } from "@/domain/entities/enums";
 
 export interface DishModel {
   id: number;
@@ -8,6 +9,7 @@ export interface DishModel {
   price: number;
   images: DishImageModel[];
   stock: number;
+  status: StatusEnum;
   createdAt: string;
   updatedAt: string;
   categories: DishCategoryModel[];
@@ -26,6 +28,7 @@ export const dishEmptyState: DishModel = {
   price: 0,
   images: [],
   stock: 0,
+  status: StatusEnum.PRIVATE,
   categories: [],
   createdAt: "",
   updatedAt: "",

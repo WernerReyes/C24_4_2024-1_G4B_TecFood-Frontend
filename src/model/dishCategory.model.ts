@@ -5,6 +5,7 @@ export interface DishCategoryModel {
   name: string;
   imageUrl: string;
   status: StatusEnum;
+  isUsed: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -13,7 +14,8 @@ export const dishCategoryEmptyState: DishCategoryModel = {
   id: 0,
   name: "",
   imageUrl: "",
-  status: StatusEnum.DRAFT,
+  status: StatusEnum.PRIVATE,
+  isUsed: false,
   createdAt: "",
   updatedAt: "",
 };

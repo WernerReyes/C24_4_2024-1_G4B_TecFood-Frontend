@@ -10,6 +10,7 @@ export const dishAdapter = (dishEntity: DishEntity): DishModel => {
     images: dishEntity.images.map(dishImageAdapter),
     stock: dishEntity.stock,
     description: dishEntity.description,
+    status: dishEntity.status,
     createdAt: convertDateToShortString(dishEntity.createdAt),
     updatedAt: convertDateToShortString(dishEntity.updatedAt),
     categories: dishEntity.categories.map(dishCategoryAdapter),

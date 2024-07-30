@@ -46,3 +46,4 @@ export * from "./InputTextarea";
 export * from "./Toolbar";
 export * from "./ConfirmDialog";
 export * from "./Dropdown";
+export * from "./MultiStateCheckbox";

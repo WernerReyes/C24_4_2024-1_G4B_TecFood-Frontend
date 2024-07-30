@@ -16,6 +16,7 @@ import { exportTableToExcel, exportTableToPdf } from "@/presentation/utilities";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AdminLayout } from "../layout/Admin.layout";
+import { StatusColor } from "../components";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -186,6 +187,13 @@ const ListDishesPage = () => {
             body={(dish: DishModel) => `S/.${dish.price}`}
             sortable
           />
+          <Column field="stock" header="Stock" sortable />
+          <Column
+            field="status"
+            header="Status"
+            body={(dish: DishModel) => <StatusColor status={dish.status} />}
+          />
+
           <Column field="createdAt" header="Created At" sortable />
           <Column field="updatedAt" header="Updated At" sortable />
 

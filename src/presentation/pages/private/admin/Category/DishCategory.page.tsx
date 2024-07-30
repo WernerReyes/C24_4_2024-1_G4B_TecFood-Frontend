@@ -11,12 +11,10 @@ import {
   ConfirmDialog,
 } from "@/presentation/core/components";
 import { AdminLayout } from "../layout";
-import { useDishCategoryStore, useDishStore } from "@/presentation/hooks";
+import { useDishCategoryStore } from "@/presentation/hooks";
 import type { DishCategoryModel } from "@/model";
 import { CategoryActions, CategoryDialog } from "./components";
-import { StatusEnum } from "@/domain/entities/enums";
-import clsx from "clsx";
-import { isCategotyUsed } from "./utilities";
+import { StatusColor } from "../components";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -33,7 +31,6 @@ const DishCategoryPage = () => {
     startDeletingManyDishCategories,
     startLoadingDishCategories,
   } = useDishCategoryStore();
-  const { dishes } = useDishStore();
   const [selectedCategories, setSelectedCategories] = useState<
     DishCategoryModel[]
   >([]);
@@ -116,9 +113,7 @@ const DishCategoryPage = () => {
             e: DataTableSelectionMultipleChangeEvent<DishCategoryModel[]>,
           ) => {
             if (Array.isArray(e.value)) {
-              setSelectedCategories(
-                e.value.filter((c) => !isCategotyUsed(c, dishes)),
-              );
+              setSelectedCategories(e.value.filter((c) => !c.isUsed));
             }
           }}
           dataKey="id"
@@ -166,17 +161,7 @@ const DishCategoryPage = () => {
             field="status"
             header="Status"
             body={(category: DishCategoryModel) => (
-              <span
-                className={clsx(
-                  "rounded-full p-4 py-2 text-center text-xs font-bold",
-                  category.status === StatusEnum.PUBLISHED &&
-                    "bg-green-500/10 text-green-500",
-                  category.status === StatusEnum.PRIVATE &&
-                    "bg-red-500/10 text-red-500",
-                )}
-              >
-                {category.status}
-              </span>
+              <StatusColor status={category.status} />
             )}
           />
           <Column field="createdAt" header="Created At" sortable />
@@ -186,7 +171,6 @@ const DishCategoryPage = () => {
             body={(category: DishCategoryModel) => (
               <CategoryActions
                 category={category}
-                dishes={dishes}
                 setShowCategoryDialog={setShowCategoryDialog}
                 setConfirmDialog={setConfirmDialog}
               />

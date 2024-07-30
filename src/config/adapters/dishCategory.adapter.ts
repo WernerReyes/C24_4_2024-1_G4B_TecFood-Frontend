@@ -10,6 +10,7 @@ export const dishCategoryAdapter = (
     name: dishCategotyEntity.name,
     imageUrl: dishCategotyEntity.imageUrl,
     status: dishCategotyEntity.status,
+    isUsed: dishCategotyEntity.isUsed,
     createdAt: convertDateToShortString(dishCategotyEntity.createdAt),
     updatedAt: convertDateToShortString(dishCategotyEntity.updatedAt),
   };

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { UpdateStatusRequest } from "@/domain/dtos";
 import { StatusEnum } from "@/domain/entities/enums";
-import { DishCategoryModel, DishModel } from "@/model";
-import { Button } from "@/presentation/core/components";
+import { DishCategoryModel } from "@/model";
+import { Button, MultiStateCheckbox } from "@/presentation/core/components";
 import { useDishCategoryStore } from "@/presentation/hooks";
-import { MultiStateCheckbox } from "primereact/multistatecheckbox";
-import { isCategotyUsed } from "../utilities";
+
 
 const OPTIONS = [
   { value: StatusEnum.PUBLISHED, icon: "pi pi-globe" },
@@ -14,7 +13,6 @@ const OPTIONS = [
 
 type Props = {
   category: DishCategoryModel;
-  dishes: DishModel[];
   setShowCategoryDialog: (value: boolean) => void;
   setConfirmDialog: (value: {
     visible: boolean;
@@ -25,7 +23,6 @@ type Props = {
 
 export const CategoryActions = ({
   category,
-  dishes,
   setShowCategoryDialog,
   setConfirmDialog,
 }: Props) => {
@@ -58,7 +55,7 @@ export const CategoryActions = ({
         }}
       />
 
-      {!isCategotyUsed(category, dishes) && (
+      {!category.isUsed && (
         <Button
           unstyled
           icon="pi pi-trash"

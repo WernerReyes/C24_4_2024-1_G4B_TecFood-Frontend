@@ -4,6 +4,7 @@ export interface DishCategoryEntity {
   name: string;
   imageUrl: string;
   status: StatusEnum;
+  isUsed: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

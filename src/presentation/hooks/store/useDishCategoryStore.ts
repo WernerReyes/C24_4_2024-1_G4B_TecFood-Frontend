@@ -109,7 +109,6 @@ export const useDishCategoryStore = () => {
     await dishCategoryRepositoryImpl
       .updateStatus(updateStatusRequest)
       .then(({ data }) => {
-        dispatch(onLoadDishCategory(data));
         dispatch(
           onLoadDishCategories(
             dishCategories.map((dishCategory) =>
