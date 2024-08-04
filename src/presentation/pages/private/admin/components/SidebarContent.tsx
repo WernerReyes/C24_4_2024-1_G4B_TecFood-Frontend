@@ -5,7 +5,7 @@ import { DishIcon } from "@/presentation/core/icons";
 
 const {
   ADMIN,
-  admin: { ADD_DISH, LIST_DISHES, CATEGORY },
+  admin: { ADD_DISH, LIST_DISHES, OFFER_DISH, CATEGORY },
 } = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [
@@ -20,6 +20,10 @@ const ITEMS: MenuItem[] = [
       {
         label: "List Dishes",
         url: ADMIN + "/" + LIST_DISHES,
+      },
+      {
+        label: "Offer Dish",
+        url: ADMIN + "/" + OFFER_DISH,
       },
     ],
   },

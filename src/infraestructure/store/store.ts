@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authSlice } from "./slice/auth.slice";
-import { dishOfferSlice } from "./slice/dis-offer.slice";
 import { dishCategorySlice } from "./slice/dishCategory.slice";
 import { dishSlice } from "./slice/dish.slice";
 import { themeSlice } from "./slice/theme.slice";
@@ -18,7 +17,6 @@ export const store = configureStore<AppState>({
     theme: themeSlice.reducer,
     message: messageSlice.reducer,
     user: userSlice.reducer,
-    dishOffer: dishOfferSlice.reducer,
     auth: authSlice.reducer,
     dish: dishSlice.reducer,
     dishCategory: dishCategorySlice.reducer,

@@ -14,7 +14,6 @@ export * from "./store/useMessageStore";
 
 
 export * from "./useCart";
-export * from "./useDishOffer";
 export * from "./usePaginator";
 export * from "./useWindowSize";
 export * from "./usePaypal";

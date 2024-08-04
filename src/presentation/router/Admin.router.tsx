@@ -17,6 +17,10 @@ const ListDishesPage = lazy(
   () => import("../pages/private/admin/ListDishes/ListDishes.page"),
 );
 
+const OfferDishPage = lazy(
+  () => import("../pages/private/admin/OfferDish/OfferDish.page"),
+);
+
 const DishCategoryPage = lazy(
   () => import("../pages/private/admin/Category/DishCategory.page"),
 );
@@ -32,7 +36,7 @@ const DetailDishPage = lazy(
 
 const {
   common: { PROFILE, DETAIL_DISH },
-  admin: { HOME, ADD_DISH, LIST_DISHES, EDIT_DISH, CATEGORY },
+  admin: { HOME, ADD_DISH, LIST_DISHES, EDIT_DISH, OFFER_DISH, CATEGORY },
 } = PrivateRoutes;
 
 const AdminRouter = () => {
@@ -45,6 +49,7 @@ const AdminRouter = () => {
       <Route path={EDIT_DISH()} element={<EditDishPage />} />
       <Route path={LIST_DISHES} element={<ListDishesPage />} />
       <Route path={DETAIL_DISH()} element={<DetailDishPage />} />
+      <Route path={OFFER_DISH} element={<OfferDishPage />} />
       <Route path={CATEGORY} element={<DishCategoryPage />} />
     </RouterWithNotFound>
   );

@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { DishModel } from "@/model";
 import {
   Button,
@@ -13,10 +15,9 @@ import {
 import { useDishStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import { exportTableToExcel, exportTableToPdf } from "@/presentation/utilities";
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AdminLayout } from "../layout/Admin.layout";
-import { StatusColor } from "../components";
+import { AdminLayout } from "../layout";
+import { ActionsLayout } from "../../layout";
+import { StatusColor } from "../../components";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -47,8 +48,13 @@ const COLS_TO_EXPORT: ColumnMeta[] = [
 
 const ListDishesPage = () => {
   const navigate = useNavigate();
-  const { dishes, startDeletingDish, isLoading, startDeletingManyDishes } =
-    useDishStore();
+  const {
+    dishes,
+    startDeletingDish,
+    startUpdatingDishStatus,
+    isLoading,
+    startDeletingManyDishes,
+  } = useDishStore();
   const [selectedDishes, setSelectedDishes] = useState<DishModel[]>([]);
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const dt = useRef<DataTableRef>(null);
@@ -138,7 +144,8 @@ const ListDishesPage = () => {
           onSelectionChange={(
             e: DataTableSelectionMultipleChangeEvent<DishModel[]>,
           ) => {
-            if (Array.isArray(e.value)) setSelectedDishes(e.value);
+            if (Array.isArray(e.value))
+              setSelectedDishes(e.value.filter((d) => !d.isUsed));
           }}
           dataKey="id"
           paginator
@@ -198,8 +205,14 @@ const ListDishesPage = () => {
           <Column field="updatedAt" header="Updated At" sortable />
 
           <Column
+            className="min-w-48"
             body={(dish: DishModel) => (
-              <div className="flex items-center justify-evenly gap-x-4">
+              <ActionsLayout
+                id={dish.id}
+                status={dish.status}
+                startUpdatingStatus={startUpdatingDishStatus}
+                isLoading={isLoading}
+              >
                 <Button
                   unstyled
                   icon="pi pi-pencil"
@@ -218,24 +231,26 @@ const ListDishesPage = () => {
                   outlined
                   onClick={() => navigate(`${ADMIN}/${DETAIL_DISH(dish.id)}`)}
                 />
-                <Button
-                  unstyled
-                  icon="pi pi-trash"
-                  rounded
-                  outlined
-                  disabled={isLoading}
-                  className="disabled:opacity-50"
-                  severity="danger"
-                  onClick={() => {
-                    setConfirmDialog({
-                      visible: true,
+                {!dish.isUsed && (
+                  <Button
+                    unstyled
+                    icon="pi pi-trash"
+                    rounded
+                    outlined
+                    disabled={isLoading}
+                    className="disabled:opacity-50"
+                    severity="danger"
+                    onClick={() => {
+                      setConfirmDialog({
+                        visible: true,
 
-                      message: `Are you sure you want to delete "${dish.name}"?`,
-                      dishId: dish.id,
-                    });
-                  }}
-                />
-              </div>
+                        message: `Are you sure you want to delete "${dish.name}"?`,
+                        dishId: dish.id,
+                      });
+                    }}
+                  />
+                )}
+              </ActionsLayout>
             )}
             exportable={false}
           ></Column>

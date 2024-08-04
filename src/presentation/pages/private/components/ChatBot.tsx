@@ -11,7 +11,7 @@ import {
 import { useOpenAIStore } from "@/presentation/hooks";
 import DOMPurify from "dompurify";
 import { ChatBotResponse, FooterChatBot, HeaderChatBot } from "./";
-import { OpenAIRoleEnum } from "@/domain/entities";
+import { OpenAIRoleEnum } from "@/domain/entities/enums";
 
 type Props = {
   to: string;

@@ -9,6 +9,8 @@ import type {
   UpdateDishRequest,
   UpdateDishImageRequest,
   UploadImageRequest,
+  UpdateStatusRequest,
+  PutDishOfferRequest,
 } from "@/domain/dtos";
 import type { DishEntity, DishImageEntity } from "@/domain/entities";
 import type { DishImageModel, DishModel } from "@/model";
@@ -24,16 +26,23 @@ interface IDishService {
     createDishRequest: CreateDishRequest,
     uploadDishImages: UploadImageRequest,
   ): Promise<ApiResponse<DishModel>>;
+  putOffer(
+    putDishOfferRequest: PutDishOfferRequest,
+  ): Promise<ApiResponse<DishModel>>;
   update(updateDishRequest: UpdateDishRequest): Promise<ApiResponse<DishModel>>;
   updateImage(
     updateDishImageRequest: UpdateDishImageRequest,
   ): Promise<ApiResponse<DishImageModel[]>>;
+  updateStatus(
+    updateStatusRequest: UpdateStatusRequest,
+  ): Promise<ApiResponse<DishModel>>;
   delete(id: number): Promise<ApiResponse<void>>;
   deleteMany(ids: number[]): Promise<ApiResponse<void>>;
   getAllPaginated(
     getDishesRequest: GetDishesRequest,
   ): Promise<ApiResponse<PagedResponse<DishModel[]>>>;
   getAll(): Promise<ApiResponse<DishModel[]>>;
+  getAllPublished(): Promise<ApiResponse<DishModel[]>>;
   getAllWithoutSelectedDish(
     getDishesWithoutSelectedDishRequest: GetDishesWithoutSelectedDishRequest,
   ): Promise<ApiResponse<DishModel[]>>;
@@ -71,6 +80,18 @@ export class DishService implements IDishService {
     }
   }
 
+  public async putOffer(putDishOfferRequest: PutDishOfferRequest) {
+    try {
+      const { data, ...rest } = await httpRequest.put<DishEntity>(
+        `${this.prefix}/offer`,
+        putDishOfferRequest,
+      );
+      return { ...rest, data: dishAdapter(data) };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   public async update(updateDishRequest: UpdateDishRequest) {
     try {
       const { data, ...rest } = await httpRequest.put<DishEntity>(
@@ -78,6 +99,18 @@ export class DishService implements IDishService {
         updateDishRequest.toRequestBody,
       );
 
+      return { ...rest, data: dishAdapter(data) };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async updateStatus(updateStatusRequest: UpdateStatusRequest) {
+    try {
+      const { data, ...rest } = await httpRequest.put<DishEntity>(
+        `${this.prefix}/status`,
+        updateStatusRequest,
+      );
       return { ...rest, data: dishAdapter(data) };
     } catch (error) {
       throw error;
@@ -151,6 +184,17 @@ export class DishService implements IDishService {
     try {
       const { data, ...rest } = await httpRequest.get<DishEntity[]>(
         this.prefix,
+      );
+      return { ...rest, data: data.map(dishAdapter) };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async getAllPublished() {
+    try {
+      const { data, ...rest } = await httpRequest.get<DishEntity[]>(
+        `${this.prefix}/published`,
       );
       return { ...rest, data: data.map(dishAdapter) };
     } catch (error) {

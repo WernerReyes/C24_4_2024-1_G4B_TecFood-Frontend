@@ -1,4 +1,4 @@
-import type { OpenAIRoleEnum } from "@/domain/entities";
+import type { OpenAIRoleEnum } from "@/domain/entities/enums";
 
 export type Message = {
   role: OpenAIRoleEnum;

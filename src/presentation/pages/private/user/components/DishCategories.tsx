@@ -4,7 +4,7 @@ import { Checkbox, CheckboxChangeEvent } from "@/presentation/core/components";
 import { DishCategoryModel } from "@/model";
 
 export const DishCategories = () => {
-  const { dishCategories, startLoadingDishCategories } = useDishCategoryStore();
+  const { dishCategories, startLoadingDishCategoriesPublished } = useDishCategoryStore();
   const { startFilterDishes, filters } = useDishStore();
   const [selectedCategories, setSelectedCategories] = useState<
     DishCategoryModel[]
@@ -30,7 +30,7 @@ export const DishCategories = () => {
   };
 
   useEffect(() => {
-    startLoadingDishCategories();
+    startLoadingDishCategoriesPublished();
   }, []);
 
   useEffect(() => {

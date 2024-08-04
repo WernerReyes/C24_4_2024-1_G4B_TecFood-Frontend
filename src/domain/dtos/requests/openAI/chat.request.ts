@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { requestValidator } from "@/presentation/utilities";
 import { type Message } from "../../responses/openAI";
-import { OpenAIRoleEnum } from "@/domain/entities";
+import { OpenAIRoleEnum } from "@/domain/entities/enums";
 
 
 type ChatRequestModel = {

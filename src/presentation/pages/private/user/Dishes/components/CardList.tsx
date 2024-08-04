@@ -42,7 +42,7 @@ export const CardList = ({ dish, quantity }: Props) => {
               <Image
                 className="img-dish cursor-pointer"
                 unstyled
-                src={dish.img}
+                src={dish.images[0].url}
                 alt={dish.name}
                 onLoad={handleLoaded}
                 imageClassName="rounded-lg h-52 w-full md:w-80 object-cover transition-all group-hover:scale-105"

@@ -3,22 +3,27 @@ import { type DishCategoryModel, type DishImageModel } from "./";
 import { StatusEnum } from "@/domain/entities/enums";
 
 export interface DishModel {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  images: DishImageModel[];
-  stock: number;
-  status: StatusEnum;
-  createdAt: string;
-  updatedAt: string;
-  categories: DishCategoryModel[];
+  readonly id: number;
+  readonly name: string;
+  readonly description: string;
+  readonly price: number;
+  readonly images: DishImageModel[];
+  readonly stock: number;
+  readonly status: StatusEnum;
+  readonly discountPrice: number;
+  readonly discountPercentage: number;
+  readonly saleStartDate: Date;
+  readonly saleEndDate: Date;
+  readonly isUsed: boolean;
+  readonly createdAt: string;
+  readonly updatedAt: string;
+  readonly categories: DishCategoryModel[];
 }
 
 export type DishFilters = {
-  idCategory: { idCategory: number }[] | null;
-  priceRange: { min: number; max: number };
-  search: string;
+  readonly idCategory: { idCategory: number }[] | null;
+  readonly priceRange: { min: number; max: number };
+  readonly search: string;
 };
 
 export const dishEmptyState: DishModel = {
@@ -29,6 +34,11 @@ export const dishEmptyState: DishModel = {
   images: [],
   stock: 0,
   status: StatusEnum.PRIVATE,
+  discountPrice: 0,
+  discountPercentage: 0,
+  saleStartDate: "" as any as Date,
+  saleEndDate: "" as any as Date,
+  isUsed: false,
   categories: [],
   createdAt: "",
   updatedAt: "",

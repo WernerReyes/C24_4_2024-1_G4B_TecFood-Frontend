@@ -15,3 +15,4 @@ export * from "./HistorySearch";
 export * from './Card'
 export * from './AddAndRemoveDish';
 export * from './ButtonAddAndRemoveDish';
+export * from "./StatusColor";

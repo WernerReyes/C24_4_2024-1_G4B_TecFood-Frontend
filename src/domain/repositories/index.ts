@@ -2,7 +2,6 @@ export * from "./auth.repository";
 export * from "./cartDish.repository";
 export * from "./dish.repository";
 export * from "./dishCategory.repository";
-export * from "./dishOffer.repository";
 export * from "./openAI.repository";
 export * from "./orderDish.repository";
 export * from "./orderDishItem.repository";

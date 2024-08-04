@@ -104,8 +104,7 @@ export const useDishCategoryStore = () => {
   const startUpdatingDishCategoryStatus = async (
     updateStatusRequest: UpdateStatusRequest,
   ) => {
-    dispatch(onLoadingDishCategory());
-
+  
     await dishCategoryRepositoryImpl
       .updateStatus(updateStatusRequest)
       .then(({ data }) => {

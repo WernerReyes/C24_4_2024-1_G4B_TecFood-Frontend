@@ -1,20 +1,22 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  DataTable,
-  type DataTableSelectionMultipleChangeEvent,
-  type DataTableRef,
-  InputSearch,
-  Column,
-  Toolbar,
-  Button,
-  Image,
-  ConfirmDialog,
-} from "@/presentation/core/components";
-import { AdminLayout } from "../layout";
-import { useDishCategoryStore } from "@/presentation/hooks";
 import type { DishCategoryModel } from "@/model";
-import { CategoryActions, CategoryDialog } from "./components";
-import { StatusColor } from "../components";
+import {
+  Button,
+  Column,
+  ConfirmDialog,
+  DataTable,
+  type DataTableRef,
+  type DataTableSelectionMultipleChangeEvent,
+  Image,
+  InputSearch,
+  ProgressSpinner,
+  Toolbar,
+} from "@/presentation/core/components";
+import { useDishCategoryStore } from "@/presentation/hooks";
+import { useEffect, useRef, useState } from "react";
+import { AdminLayout } from "../layout";
+import { CategoryDialog } from "./components";
+import { ActionsLayout } from "../../layout";
+import { StatusColor } from "../../components";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -29,6 +31,9 @@ const DishCategoryPage = () => {
     dishCategories,
     startDeletingDishCategory,
     startDeletingManyDishCategories,
+    isLoading,
+    startLoadingDishCategory,
+    startUpdatingDishCategoryStatus,
     startLoadingDishCategories,
   } = useDishCategoryStore();
   const [selectedCategories, setSelectedCategories] = useState<
@@ -58,6 +63,14 @@ const DishCategoryPage = () => {
 
   return (
     <AdminLayout>
+      {isLoading && (
+        <ProgressSpinner
+          containerClassName="z-[999] fixed inset-0 flex items-center justify-center bg-opacity-50"
+          darkColor="
+        dark:bg-slate-900/40"
+          lightColor="bg-white/40"
+        />
+      )}
       <ConfirmDialog
         message={message}
         acceptClassName="bg-primary p-2 px-3"
@@ -69,15 +82,6 @@ const DishCategoryPage = () => {
       />
       <div className="m-5 rounded-md border-2 dark:border-slate-700 md:m-10">
         <Toolbar
-          className=""
-          end={() => (
-            <Button
-              label="Export"
-              icon="pi pi-upload"
-              className="bg-transparent dark:text-white"
-              onClick={() => dt.current?.exportCSV()}
-            />
-          )}
           start={() => (
             <div className="flex flex-wrap gap-2">
               <Button
@@ -169,11 +173,42 @@ const DishCategoryPage = () => {
           <Column
             className="min-w-36"
             body={(category: DishCategoryModel) => (
-              <CategoryActions
-                category={category}
-                setShowCategoryDialog={setShowCategoryDialog}
-                setConfirmDialog={setConfirmDialog}
-              />
+              <ActionsLayout
+                id={category.id}
+                status={category.status}
+                startUpdatingStatus={startUpdatingDishCategoryStatus}
+                isLoading={isLoading}
+                positionCheckbox="right"
+              >
+                <Button
+                  unstyled
+                  icon="pi pi-pencil"
+                  rounded
+                  outlined
+                  onClick={() => {
+                    startLoadingDishCategory(category);
+                    setShowCategoryDialog(true);
+                  }}
+                />
+
+                {!category.isUsed && (
+                  <Button
+                    unstyled
+                    icon="pi pi-trash"
+                    rounded
+                    outlined
+                    className="disabled:opacity-50"
+                    disabled={isLoading}
+                    onClick={() =>
+                      setConfirmDialog({
+                        visible: true,
+                        message: `Are you sure you want to delete "${category.name}"?`,
+                        dishCategoryId: category.id,
+                      })
+                    }
+                  />
+                )}
+              </ActionsLayout>
             )}
             exportable={false}
           ></Column>

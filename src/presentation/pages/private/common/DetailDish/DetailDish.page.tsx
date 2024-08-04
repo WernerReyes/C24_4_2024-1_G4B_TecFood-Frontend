@@ -22,7 +22,7 @@ const DetailDishPage = () => {
 export default DetailDishPage;
 
 const MainContent = ({ dishes }: { dishes: DishModel[] }) => (
-  <main className="m-10 xl:mx-20">
+  <main className="m-10 xl:mx-14">
     <DetailDish />
     {dishes.length > 1 && (
       <>

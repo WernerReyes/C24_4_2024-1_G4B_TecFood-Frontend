@@ -16,6 +16,7 @@ export type IPrivateRoutes = {
     ADD_DISH: string;
     EDIT_DISH: (id?: number) => string;
     LIST_DISHES: string;
+    OFFER_DISH: string;
     CATEGORY: string;
   };
 
@@ -43,6 +44,7 @@ export const PrivateRoutes: IPrivateRoutes = {
     HOME: "home",
     ADD_DISH: "dishes/add",
     EDIT_DISH: (id?: number) => (id ? `dishes/${id}/edit` : "dishes/:id/edit"),
+    OFFER_DISH: "offer-dish",
     LIST_DISHES: "dishes",
     CATEGORY: "categories",
   },

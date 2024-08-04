@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { CreateDishRequest, DishRequest, UploadImageRequest } from "@/domain/dtos";
+import {
+  CreateDishRequest,
+  DishRequest,
+  UploadImageRequest,
+} from "@/domain/dtos";
 import { ProgressSpinner } from "@/presentation/core/components";
 import { useDishStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import { useEffect, useState } from "react";
 import { ActionDish } from "../components";
 import { AdminLayout } from "../layout";
-
 
 const {
   ADMIN,
@@ -15,7 +18,8 @@ const {
 
 const AddDishPage = () => {
   const navigate = useNavigate();
-  const { startCreatingDish, isLoading, dish } = useDishStore();
+  const { startCreatingDish, isLoading, dish, startLoadingEmptyDish } =
+    useDishStore();
   const [files, setFiles] = useState<File[]>([]);
   const [file, setFile] = useState<{
     file: File;
@@ -48,6 +52,10 @@ const AddDishPage = () => {
       setFiles([...files, file.file]);
     }
   }, [file]);
+
+  useEffect(() => {
+    startLoadingEmptyDish();
+  }, []);
 
   return (
     <AdminLayout>

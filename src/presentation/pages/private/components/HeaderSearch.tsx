@@ -1,8 +1,8 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { InputSearch } from "@/presentation/core/components";
 import { HeaderSearchLayout } from "../layout";
-import { useDishStore } from "@/presentation/hooks";
-import type {  DishModel } from "@/model";
+import { useAuthStore, useDishStore } from "@/presentation/hooks";
+import type { DishModel } from "@/model";
 import { RecommendationSearch, HistorySearch } from "./";
 import { getStorage } from "@/presentation/utilities";
 
@@ -12,9 +12,11 @@ type Props = {
 };
 
 export const HeaderSearch = ({ visible, setVisible }: Props) => {
+  const { isAdmin, isUser } = useAuthStore();
   const {
     dishes,
     startLoadingDishes,
+    startLoadingDishesPublished,
     startFilterDishes,
     filters,
   } = useDishStore();
@@ -37,7 +39,8 @@ export const HeaderSearch = ({ visible, setVisible }: Props) => {
   };
 
   useEffect(() => {
-    startLoadingDishes();
+    isAdmin && startLoadingDishes();
+    isUser && startLoadingDishesPublished();
   }, []);
 
   useEffect(() => {

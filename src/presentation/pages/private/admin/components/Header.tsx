@@ -10,7 +10,7 @@ const {
   common: { PROFILE },
 } = PrivateRoutes;
 
-const ITEMS: MenuItem[] = [
+const AVATAR_ITEMS: MenuItem[] = [
   {
     label: "Profile",
     icon: "pi pi-user",
@@ -45,7 +45,7 @@ export const Header = () => {
             onClick={() => setVisible(true)}
             className="pi pi-search cursor-pointer text-xl text-black dark:text-white"
           ></i>
-          <AvatarMenu items={ITEMS} />
+          <AvatarMenu items={AVATAR_ITEMS} />
           <Button unstyled onClick={handleToggleOpen} className="lg:hidden">
             <i className="pi pi-bars text-2xl text-black dark:text-white"></i>
           </Button>

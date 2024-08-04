@@ -6,6 +6,8 @@ import type {
   UpdateDishRequest,
   UpdateDishImageRequest,
   UploadImageRequest,
+  UpdateStatusRequest,
+  PutDishOfferRequest,
 } from "@/domain/dtos";
 import { DishRepositoryImpl } from "@/infraestructure/repositories";
 import {
@@ -18,7 +20,7 @@ import {
   onSetDishFilters,
   onFinishedLoadingDish,
 } from "@/infraestructure/store";
-import type { DishFilters, DishModel } from "@/model";
+import { dishEmptyState, type DishFilters, type DishModel } from "@/model";
 import { DishService } from "@/infraestructure/services";
 import { StorageKeys, getStorage, setStorage } from "../../utilities";
 import { useMessageStore } from "../";
@@ -64,12 +66,32 @@ export const useDishStore = () => {
       });
   };
 
+  const startPuttingDishOffer = async (
+    putDishOfferRequest: PutDishOfferRequest,
+  ) => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .putOffer(putDishOfferRequest)
+      .then(({ data, message, status }) => {
+        // dispatch(onLoadDish(data));
+        startSetMessages([message], status);
+
+        // Update dishes to search
+        const newDishes = dishes.map((d) => (d.id === data.id ? data : d));
+        dispatch(onLoadDishes(newDishes));
+        setStorage(DISHES_TO_SEARCH, newDishes);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   const startUpdatingDish = async (updateDishRequest: UpdateDishRequest) => {
     dispatch(onLoadingDish());
     await dishRepositoryImpl
       .update(updateDishRequest)
       .then(({ data, message, status }) => {
-        dispatch(onLoadDish(dish));
+        dispatch(onLoadDish(data));
         startSetMessages([message], status);
 
         // Update dishes to search
@@ -101,6 +123,25 @@ export const useDishStore = () => {
           }
           return dish;
         });
+        dispatch(onLoadDishes(newDishes));
+        setStorage(DISHES_TO_SEARCH, newDishes);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startUpdatingDishStatus = async (
+    updateStatusRequest: UpdateStatusRequest,
+  ) => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .updateStatus(updateStatusRequest)
+      .then(({ data }) => {
+        dispatch(onLoadDish(data));
+
+        // Update dishes to search
+        const newDishes = dishes.map((d) => (d.id === data.id ? data : d));
         dispatch(onLoadDishes(newDishes));
         setStorage(DISHES_TO_SEARCH, newDishes);
       })
@@ -182,6 +223,19 @@ export const useDishStore = () => {
       });
   };
 
+  const startLoadingDishesPublished = async () => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .getAllPublished()
+      .then(({ data }) => {
+        dispatch(onLoadDishes(data));
+        setStorage(DISHES_TO_SEARCH, data);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   const startLoadingDishesWithoutSelectedDish = async (
     getDishesWithoutSelectedDishRequest: GetDishesWithoutSelectedDishRequest,
   ) => {
@@ -214,6 +268,12 @@ export const useDishStore = () => {
     setStorage(DISH_FILTERS, filters);
   };
 
+  const startLoadingDish = async (dish: DishModel) => {
+    dispatch(onLoadDish(dish));
+  };
+
+  const startLoadingEmptyDish = () => dispatch(onLoadDish(dishEmptyState));
+
   return {
     //* Attributes
     dish,
@@ -226,14 +286,19 @@ export const useDishStore = () => {
 
     //* Methods
     startCreatingDish,
+    startPuttingDishOffer,
     startUpdatingDish,
     startUpdatingDishImage,
+    startUpdatingDishStatus,
     startDeletingDish,
     startDeletingManyDishes,
     startLoadingDishesPaginated,
     startLoadingDishes,
+    startLoadingDishesPublished,
     startFilterDishes,
     startLoadingDishById,
     startLoadingDishesWithoutSelectedDish,
+    startLoadingDish,
+    startLoadingEmptyDish,
   };
 };
