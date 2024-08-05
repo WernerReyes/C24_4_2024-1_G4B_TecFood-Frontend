@@ -25,6 +25,14 @@ export class DishRepositoryImpl implements DishRepository {
     return await this.dishService.putOffer(putDishOfferRequest);
   }
 
+  async deleteOffer(dishId: number) {
+    return await this.dishService.deleteOffer(dishId);
+  }
+
+  async deleteManyOffers(dishIds: number[]) {
+    return await this.dishService.deleteManyOffers(dishIds);
+  }
+
   async update(updateDishRequest: UpdateDishRequest) {
     return await this.dishService.update(updateDishRequest);
   }

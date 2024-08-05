@@ -14,22 +14,17 @@ type Props = {
 };
 
 export const OffertDialog = ({ openDialog, setOpenDialog }: Props) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<PutDishOfferRequest>({
+  const { control, handleSubmit, reset } = useForm<PutDishOfferRequest>({
     resolver: zodResolver(PutDishOfferRequest.schema),
   });
-  const { dish, startLoadingEmptyDish } = useDishStore();
+  const { dish, startLoadingEmptyDish, startPuttingDishOffer } = useDishStore();
   const [dates, setDates] = useState<Nullable<(Date | null)[]>>(null);
   const [discountPercentage, setDiscountPercentage] = useState<number>(
     DEFAULT_DISCOUNT_PERCENTAGE,
   );
 
   const handleSaveOffer = (putDishOfferRequest: PutDishOfferRequest) => {
-    console.log(putDishOfferRequest);
+    startPuttingDishOffer(putDishOfferRequest).then(() => setOpenDialog(false));
   };
 
   useEffect(() => {
@@ -80,86 +75,79 @@ export const OffertDialog = ({ openDialog, setOpenDialog }: Props) => {
       onHide={() => setOpenDialog(false)}
     >
       <form className="w-full" onSubmit={handleSubmit(handleSaveOffer)}>
-        <Calendar
-          value={dates}
-          className="w-full border-none"
-          onChange={(e) => setDates(e.value)}
-          onClearButtonClick={() => setDates(null)}
-          selectionMode="range"
-          readOnlyInput
-          showButtonBar
-          showTime
-          inline
-          hourFormat="12"
-          hideOnRangeSelection
-        />
-        <div className="flex justify-evenly mb-5">
-          <Controller
-            name="saleStartDate"
-            control={control}
-            render={({ field, fieldState: { error } }) => {
-              return (
+        <div className="grid gap-x-5 lg:grid-cols-3">
+          <div className="lg:col-span-2">
+            <Calendar
+              value={dates}
+              onChange={(e) => setDates(e.value)}
+              onClearButtonClick={() => setDates(null)}
+              selectionMode="range"
+              readOnlyInput
+              showButtonBar
+              showTime
+              inline
+              hourFormat="12"
+              hideOnRangeSelection
+            />
+          </div>
+          <div className="flex items-center justify-evenly gap-x-10 max-lg:mt-5 lg:col-span-1 lg:flex-col lg:items-center">
+            <Controller
+              name="saleStartDate"
+              control={control}
+              render={({ field, fieldState: { error } }) => {
+                return (
+                  <Calendar
+                    value={field.value}
+                    name={field.name}
+                    label="Sale Start Date"
+                    placeholder="Dish Name"
+                    showTime
+                    disabled
+                    error={!!error}
+                    smallDescription={error?.message}
+                  />
+                );
+              }}
+            />
+
+            <Controller
+              name="saleEndDate"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
                 <Calendar
                   value={field.value}
                   name={field.name}
-                  label="Sale Start Date"
+                  label="Sale End Date"
                   placeholder="Dish Name"
                   showTime
                   disabled
                   error={!!error}
                   smallDescription={error?.message}
                 />
-              );
-            }}
-          />
+              )}
+            />
 
-          <Controller
-            name="saleEndDate"
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <Calendar
-                value={field.value}
-                name={field.name}
-                label="Sale End Date"
-                placeholder="Dish Name"
-                showTime
-                disabled
-                error={!!error}
-                smallDescription={error?.message}
-              />
-            )}
-          />
+            <Controller
+              name="discountPercentage"
+              control={control}
+              defaultValue={DEFAULT_DISCOUNT_PERCENTAGE}
+              render={() => (
+                <Knob
+                  min={DEFAULT_DISCOUNT_PERCENTAGE}
+                  valueColor="#00B1F7"
+                  labelClassName="text-center"
+                  label="Discount Percentage"
+                  className="cursor-pointer"
+                  value={discountPercentage}
+                  onChange={(e) => setDiscountPercentage(e.value)}
+                  valueTemplate={"{value}%"}
+                />
+              )}
+            />
+          </div>
         </div>
 
-        <Controller
-          name="discountPercentage"
-          control={control}
-          defaultValue={DEFAULT_DISCOUNT_PERCENTAGE}
-          render={({ field }) => {
-            const { value, onChange, ...rest } = field;
-            return (
-              <Knob
-                {...rest}
-                min={DEFAULT_DISCOUNT_PERCENTAGE}
-                valueColor="#00B1F7"
-                label="Discount Percentage"
-                className="cursor-pointer"
-                value={discountPercentage}
-                onChange={(e) => setDiscountPercentage(e.value)}
-                valueTemplate={"{value}%"}
-              />
-            );
-          }}
-        />
-
-        <div className="flex items-center justify-center">
-          <Button
-            icon="pi pi-save"
-            className="w-25 mt-4"
-            label="Save"
-            onClick={() => setOpenDialog(false)}
-          />
-        </div>
+        <Button icon="pi pi-save" className="w-25" label="Save" />
       </form>
     </Dialog>
   );

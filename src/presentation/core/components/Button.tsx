@@ -17,7 +17,7 @@ export const Button = ({
   ...props
 }: Props) => {
   return (
-    <div className="card flex flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center">
       <ButtonPrimeReact
         onClick={onClick}
         loading={isLoading}

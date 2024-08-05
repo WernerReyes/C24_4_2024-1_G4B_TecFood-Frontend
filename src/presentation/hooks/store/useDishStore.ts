@@ -86,6 +86,41 @@ export const useDishStore = () => {
       });
   };
 
+  const startDeletingDishOffer = async (dishId: number) => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .deleteOffer(dishId)
+      .then(({ data, message, status }) => {
+        startSetMessages([message], status);
+
+        // Update dishes to search
+        const newDishes = dishes.map((d) => (d.id === data.id ? data : d));
+        dispatch(onLoadDishes(newDishes));
+        setStorage(DISHES_TO_SEARCH, newDishes);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
+  const startDeletingManyDishOffers = async (dishIds: number[]) => {
+    dispatch(onLoadingDish());
+    await dishRepositoryImpl
+      .deleteManyOffers(dishIds)
+      .then(({ data, message, status }) => {
+        startSetMessages([message], status);
+
+        const dishMap = new Map(data.map((dish) => [dish.id, dish]));
+        const newDishes = dishes.map((d) => dishMap.get(d.id) ?? d);
+        // Update dishes to search
+        dispatch(onLoadDishes(newDishes));
+        setStorage(DISHES_TO_SEARCH, newDishes);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  };
+
   const startUpdatingDish = async (updateDishRequest: UpdateDishRequest) => {
     dispatch(onLoadingDish());
     await dishRepositoryImpl
@@ -287,6 +322,8 @@ export const useDishStore = () => {
     //* Methods
     startCreatingDish,
     startPuttingDishOffer,
+    startDeletingDishOffer,
+    startDeletingManyDishOffers,
     startUpdatingDish,
     startUpdatingDishImage,
     startUpdatingDishStatus,

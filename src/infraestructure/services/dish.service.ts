@@ -29,6 +29,8 @@ interface IDishService {
   putOffer(
     putDishOfferRequest: PutDishOfferRequest,
   ): Promise<ApiResponse<DishModel>>;
+  deleteOffer(dishId: number): Promise<ApiResponse<DishModel>>;
+  deleteManyOffers(dishIds: number[]): Promise<ApiResponse<DishModel[]>>;
   update(updateDishRequest: UpdateDishRequest): Promise<ApiResponse<DishModel>>;
   updateImage(
     updateDishImageRequest: UpdateDishImageRequest,
@@ -87,6 +89,34 @@ export class DishService implements IDishService {
         putDishOfferRequest,
       );
       return { ...rest, data: dishAdapter(data) };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async deleteOffer(dishId: number) {
+    try {
+      const { data, ...rest } = await httpRequest.delete<DishEntity>(
+        `${this.prefix}/offer/${dishId}`,
+      );
+      return { ...rest, data: dishAdapter(data) };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async deleteManyOffers(dishIds: number[]) {
+    try {
+      const requestParamIds = convertSimpleArrayToRequestParam(
+        dishIds,
+        "dishesId",
+      );
+      const requestParams = concatRequestParams([requestParamIds]);
+      console.log(requestParams);
+      const { data, ...rest } = await httpRequest.delete<DishEntity[]>(
+        `${this.prefix}/offer/delete-many${requestParams}`,
+      );
+      return { ...rest, data: data.map(dishAdapter) };
     } catch (error) {
       throw error;
     }

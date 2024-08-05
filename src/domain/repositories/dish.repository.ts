@@ -20,6 +20,10 @@ export abstract class DishRepository {
   abstract putOffer(
     putDishOfferRequest: PutDishOfferRequest,
   ): Promise<ApiResponse<DishModel>>;
+  abstract deleteOffer(dishId: number): Promise<ApiResponse<DishModel>>;
+  abstract deleteManyOffers(
+    dishIds: number[],
+  ): Promise<ApiResponse<DishModel[]>>;
   abstract update(
     updateDishRequest: UpdateDishRequest,
   ): Promise<ApiResponse<DishModel>>;

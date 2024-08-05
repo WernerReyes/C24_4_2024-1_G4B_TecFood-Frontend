@@ -10,15 +10,14 @@ import { StatusEnum } from "@/domain/entities/enums";
 import { OffertDialog, PickListItem } from "./components";
 
 const OfferDishPage = () => {
-  const { dishes } = useDishStore();
+  const { dishes, startDeletingManyDishOffers } = useDishStore();
   const [dishesToChoose, setDishesToChoose] = useState<DishModel[]>([]);
   const [offeredDishes, setOfferedDishes] = useState<DishModel[]>([]);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [removeOfferedDish, setRemoveOfferedDish] = useState<boolean>(false);
+  const [pendingEvent, setPendingEvent] = useState<PickListChangeEvent>();
 
-  const onChange = (event: PickListChangeEvent) => {
-    setDishesToChoose(event.source);
-    setOfferedDishes(event.target);
-  };
+  const handleChange = (e: PickListChangeEvent) => setPendingEvent(e);
 
   useEffect(() => {
     const dishesPublished = dishes.filter(
@@ -28,6 +27,20 @@ const OfferDishPage = () => {
     setOfferedDishes(dishesPublished.filter((dish) => dish.discountPrice));
   }, [dishes]);
 
+  useEffect(() => {
+    if (pendingEvent) {
+      if (removeOfferedDish) {
+        setOfferedDishes(pendingEvent.target);
+        setDishesToChoose(pendingEvent.source);
+        setPendingEvent(undefined);
+        setRemoveOfferedDish(false);
+      }
+      //* Clear the pending event
+      setPendingEvent(undefined);
+      setRemoveOfferedDish(false);
+    }
+  }, [removeOfferedDish, pendingEvent]);
+
   return (
     <AdminLayout>
       <PickList
@@ -35,8 +48,58 @@ const OfferDishPage = () => {
         dataKey="id"
         source={dishesToChoose}
         target={offeredDishes}
-        onChange={onChange}
-        // onMoveToSource={(e) => e.originalEvent.preventDefault()}
+        onChange={handleChange}
+        onMoveToSource={(e) => {
+          const someDishIsOffered = e.value.some(
+            (dish: DishModel) => dish.discountPrice,
+          );
+          if (someDishIsOffered) {
+            const confirm = window.confirm(
+              "Are you sure you want to remove all dishes from the offer?",
+            );
+            if (confirm) {
+              startDeletingManyDishOffers(
+                e.value.map((dish: DishModel) => dish.id),
+              )
+                .then(() => {
+                  setRemoveOfferedDish(true);
+                })
+                .catch(() => {
+                  setRemoveOfferedDish(false);
+                });
+            }
+            return;
+          }
+
+          setRemoveOfferedDish(true);
+        }}
+        onMoveAllToSource={(e) => {
+          const someDishIsOffered = e.value.some(
+            (dish: DishModel) => dish.discountPrice,
+          );
+          if (someDishIsOffered) {
+            const confirm = window.confirm(
+              "Are you sure you want to remove all dishes from the offer?",
+            );
+
+            if (confirm) {
+              startDeletingManyDishOffers(
+                e.value.map((dish: DishModel) => dish.id),
+              )
+                .then(() => {
+                  setRemoveOfferedDish(true);
+                })
+                .catch(() => {
+                  setRemoveOfferedDish(false);
+                });
+            }
+            return;
+          }
+
+          setRemoveOfferedDish(true);
+        }}
+        onMoveToTarget={() => setRemoveOfferedDish(true)}
+        onMoveAllToTarget={() => setRemoveOfferedDish(true)}
         filter
         sourceItemTemplate={(item) => (
           <PickListItem

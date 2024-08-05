@@ -7,13 +7,13 @@ interface Props extends KnobProps {
 }
 export const Knob = ({ label, labelClassName, ...props }: Props) => {
   return (
-    <>
+    <div  className="flex items-center flex-col">
       {label && (
         <label htmlFor={props.name} className={clsx(labelClassName, "mb-1")}>
           {label}
         </label>
       )}
       <KnobPrimeReact {...props} />
-    </>
+    </div >
   );
 };
