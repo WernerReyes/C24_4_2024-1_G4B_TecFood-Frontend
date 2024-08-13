@@ -31,7 +31,7 @@ const EditDishPage = () => {
       dishRequest.name,
       dishRequest.description,
       dishRequest.price,
-      dishRequest.categories,
+      dishRequest.categoriesId,
       dishRequest.stock,
     );
     startUpdatingDish(updateDishRequest);

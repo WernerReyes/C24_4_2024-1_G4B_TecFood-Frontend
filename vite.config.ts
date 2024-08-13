@@ -9,5 +9,18 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     }
+  },
+  server: {
+    proxy: {
+      '/ws': {
+        target: 'http://localhost:8000',
+        ws: true,
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
+  define: {
+   "global": {}
   }
 })

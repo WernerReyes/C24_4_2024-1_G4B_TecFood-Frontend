@@ -1,14 +1,21 @@
 import { z } from "zod";
 import { requestValidator } from "@/presentation/utilities";
-import { PaginationRequest, PaginationRequestSchema } from "../common";
+import {
+  PaginationRequest,
+  type PaginationRequestModel,
+  PaginationRequestSchema,
+} from "../common";
 
-interface GetDishesRequestModel extends PaginationRequest {
+interface GetDishesRequestModel extends PaginationRequestModel {
   readonly idCategory: { idCategory: number }[] | null;
   readonly priceRange: { min: number; max: number } | null;
   readonly search: string | null;
 }
 
-export class GetDishesRequest extends PaginationRequest implements GetDishesRequestModel {
+export class GetDishesRequest
+  extends PaginationRequest
+  implements GetDishesRequestModel
+{
   constructor(
     public readonly page: number,
     public readonly limit: number,
@@ -23,7 +30,7 @@ export class GetDishesRequest extends PaginationRequest implements GetDishesRequ
     requestValidator(this, GetDishesRequest.schema);
   }
 
-  protected static override get schema() {
+  protected static override get schema(): z.ZodSchema<GetDishesRequestModel> {
     return GetDishesRequestSchema;
   }
 }
@@ -37,8 +44,7 @@ const GetDishesRequestSchema = z.object({
         }),
       }),
     )
-    .nullable()
-    .default(null),
+    .nullable(),
   priceRange: z
     .object({
       min: z.number().refine((n) => n >= 0, {
@@ -48,8 +54,7 @@ const GetDishesRequestSchema = z.object({
         message: "max must be a number greater than or equal to 0",
       }),
     })
-    .nullable()
-    .default(null),
-  search: z.nullable(z.string()).default(null),
+    .nullable(),
+  search: z.nullable(z.string()),
   ...PaginationRequestSchema.shape,
 });

@@ -245,7 +245,15 @@ export const useDishStore = () => {
     dispatch(onLoadingDish());
 
     if (getStorage(DISHES_TO_SEARCH)) {
-      return dispatch(onLoadDishes(getStorage<DishModel[]>(DISHES_TO_SEARCH)!));
+      return dispatch(
+        onLoadDishes(
+          getStorage<DishModel[]>(DISHES_TO_SEARCH)!.map((dish) => ({
+            ...dish,
+            saleStartDate: new Date(dish.saleStartDate),
+            saleEndDate: new Date(dish.saleEndDate),
+          })),
+        ),
+      );
     }
     await dishRepositoryImpl
       .getAll()

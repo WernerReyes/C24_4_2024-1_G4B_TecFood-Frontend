@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { useDishStore } from "@/presentation/hooks";
+import { useDishStore, useWindowSize } from "@/presentation/hooks";
 import { Nullable } from "primereact/ts-helpers";
 import { Button, Dialog, Knob, Calendar } from "@/presentation/core/components";
 import { PutDishOfferRequest } from "@/domain/dtos";
@@ -10,13 +10,14 @@ const DEFAULT_DISCOUNT_PERCENTAGE = 1;
 
 type Props = {
   openDialog: boolean;
-  setOpenDialog: (value: boolean) => void;
+  setOpenDialog: ({ value, type }: { value: boolean, type: "offer" }) => void;
 };
 
 export const OffertDialog = ({ openDialog, setOpenDialog }: Props) => {
   const { control, handleSubmit, reset } = useForm<PutDishOfferRequest>({
     resolver: zodResolver(PutDishOfferRequest.schema),
   });
+  const { width, md } = useWindowSize();
   const { dish, startLoadingEmptyDish, startPuttingDishOffer } = useDishStore();
   const [dates, setDates] = useState<Nullable<(Date | null)[]>>(null);
   const [discountPercentage, setDiscountPercentage] = useState<number>(
@@ -24,7 +25,10 @@ export const OffertDialog = ({ openDialog, setOpenDialog }: Props) => {
   );
 
   const handleSaveOffer = (putDishOfferRequest: PutDishOfferRequest) => {
-    startPuttingDishOffer(putDishOfferRequest).then(() => setOpenDialog(false));
+    startPuttingDishOffer(putDishOfferRequest).then(() => setOpenDialog({
+      value: false,
+      type: "offer",
+    }));
   };
 
   useEffect(() => {
@@ -71,8 +75,11 @@ export const OffertDialog = ({ openDialog, setOpenDialog }: Props) => {
     <Dialog
       header="Offer Details"
       visible={openDialog}
-      style={{ width: "70vw" }}
-      onHide={() => setOpenDialog(false)}
+      style={{ width: width <= md ? "90vw" : "70vw" }}
+      onHide={() => setOpenDialog({
+        value: false,
+        type: "offer",
+      })}
     >
       <form className="w-full" onSubmit={handleSubmit(handleSaveOffer)}>
         <div className="grid gap-x-5 lg:grid-cols-3">
@@ -147,7 +154,9 @@ export const OffertDialog = ({ openDialog, setOpenDialog }: Props) => {
           </div>
         </div>
 
-        <Button icon="pi pi-save" className="w-25" label="Save" />
+        <div className="mt-5 flex justify-center">
+          <Button icon="pi pi-save" className="w-25 lg:mt-5" label="Save" />
+        </div>
       </form>
     </Dialog>
   );

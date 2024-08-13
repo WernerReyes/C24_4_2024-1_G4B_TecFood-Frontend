@@ -1,4 +1,3 @@
-import type { DishCategoryModel } from "@/model";
 import { requestValidator } from "@/presentation/utilities";
 import { z, ZodSchema } from "zod";
 import { DishRequest, DishRequestModel, DishRequestSchema } from "./dish.request";
@@ -12,28 +11,18 @@ export class UpdateDishRequest extends DishRequest implements UpdateDishRequestM
     public readonly name: string,
     public readonly description: string,
     public readonly price: number,
-    public readonly categories: DishCategoryModel[],
+    public readonly categoriesId: number[],
     public readonly stock: number,
   ) {
-    super(name, description, price, categories, stock);
+    super(name, description, price, categoriesId, stock);
   }
 
-  public validate() {
+  public override validate() {
     requestValidator(this, UpdateDishRequest.schema);
   }
 
-  public get toRequestBody(): Record<string, unknown> {
-    return {
-      dishId: this.dishId,
-      name: this.name,
-      description: this.description,
-      price: this.price,
-      categoriesId: this.categoriesId,
-      stock: this.stock,
-    };
-  }
 
-  public static get schema(): ZodSchema<UpdateDishRequestModel> {
+  public static override get schema(): ZodSchema<UpdateDishRequestModel> {
     return UpdateDishRequestSchema;
   }
 }

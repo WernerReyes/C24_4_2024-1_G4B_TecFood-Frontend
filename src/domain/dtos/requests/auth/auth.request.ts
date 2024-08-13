@@ -6,7 +6,7 @@ const { EMAIL, PASSWORD } = regularExpressions;
 export type AuthRequestModel = {
   readonly email: string;
   readonly password: string;
-}
+};
 
 export class AuthRequest implements AuthRequestModel {
   constructor(

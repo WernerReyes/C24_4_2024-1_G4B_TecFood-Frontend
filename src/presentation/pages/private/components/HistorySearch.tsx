@@ -23,7 +23,7 @@ export const HistorySearch = ({
   setHistorySearch,
 }: Props) => {
   const navigate = useNavigate();
-  const { routeRole } = useAuthStore();
+  const { authenticatedUser } = useAuthStore();
   const [hoverHistory, setHoverHistory] = useState(histories[0]?.name);
   const [lastEventWasKeyboard, setLastEventWasKeyboard] = useState(false);
 
@@ -34,7 +34,7 @@ export const HistorySearch = ({
   };
 
   const handleNavigate = (id: number) => {
-    navigate(`${routeRole}/${DETAIL_DISH(id)}`);
+    navigate(DETAIL_DISH(authenticatedUser.role,id));
     setEnterPressed(true);
   };
 

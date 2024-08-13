@@ -2,35 +2,36 @@ import clsx from "clsx";
 import { PanelMenu, type MenuItem } from "@/presentation/core/components";
 import { PrivateRoutes } from "@/presentation/routes";
 import { DishIcon } from "@/presentation/core/icons";
+import { RoleEnum } from "@/domain/entities";
 
 const {
-  ADMIN,
-  admin: { ADD_DISH, LIST_DISHES, OFFER_DISH, CATEGORY },
+  common: { LIST_DISHES },
+  admin: { ADD_DISH, OFFER_DISH, CATEGORY },
 } = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [
   {
     label: "Dishes",
-    icon: <DishIcon className="me-1 pb-1 dark:text-white" />,
+    icon: <DishIcon className="me-1 pb-1  dark:text-white" />,
     items: [
       {
         label: "Add Dish",
-        url: ADMIN + "/" + ADD_DISH,
+        url: ADD_DISH,
       },
       {
         label: "List Dishes",
-        url: ADMIN + "/" + LIST_DISHES,
+        url: LIST_DISHES(RoleEnum.ROLE_ADMIN),
       },
       {
         label: "Offer Dish",
-        url: ADMIN + "/" + OFFER_DISH,
+        url: OFFER_DISH,
       },
     ],
   },
   {
     label: "Categories",
     icon: <DishIcon className="me-1 pb-1 dark:text-white" />,
-    url: ADMIN + "/" + CATEGORY,
+    url: CATEGORY,
   },
 ];
 

@@ -1,27 +1,44 @@
+import { z } from "zod";
 import { OrderDishStatusEnum } from "@/domain/entities";
-import { type UserModel, userEmptyState } from "./user.model";
-import { getStorage } from "@/presentation/utilities";
+import { generateEmptyState, getStorage } from "@/presentation/utilities";
+import { UserModelSchema } from "./user.model";
 
-export interface OrderDishModel {
-  id: number;
-  date: Date;
-  invoiceReportUrl: string | null
-  status: OrderDishStatusEnum;
-  total: number;
-  user: UserModel;
-}
 
-export type OrderDishFilter = {
-  status: { status: OrderDishStatusEnum }[];
-};
+//* <------------------- OrderDish -------------------> */
 
+export const OrderDishModelSchema = z.object({
+  id: z.number(),
+  date: z.date(),
+  invoiceReportUrl: z.string().nullable(),
+  status: z.nativeEnum(OrderDishStatusEnum),
+  total: z.number(),
+  user: UserModelSchema,
+});
+
+export type OrderDishModel = z.infer<typeof OrderDishModelSchema>;
+
+/* <== ( STRUCTURE ) ==>
 export const orderDishEmptyState: OrderDishModel = {
-  id: 0, 
+  id: 0,
   date: "" as any as Date,
   status: OrderDishStatusEnum.PENDING,
   total: 0,
   user: userEmptyState,
-  invoiceReportUrl: null
+  invoiceReportUrl: "",
+};
+*/
+const orderDishDefaults: Partial<OrderDishModel> = {
+  status: OrderDishStatusEnum.PENDING,
+};
+
+export const orderDishEmptyState = generateEmptyState<OrderDishModel>(
+  OrderDishModelSchema,
+  orderDishDefaults,
+);
+
+//* <------------------- OrderDishFilter -------------------> */
+export type OrderDishFilter = {
+  status: { status: OrderDishStatusEnum }[];
 };
 
 export const orderDishFilterEmptyState: OrderDishFilter = getStorage(

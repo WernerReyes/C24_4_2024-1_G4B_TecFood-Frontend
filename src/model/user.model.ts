@@ -1,18 +1,25 @@
-import { RoleEnum } from "@/domain/entities";
+import { RoleEnum } from "@/domain/entities/role.entity";
+import { generateEmptyState } from "@/presentation/utilities/generateEmptyState";
+import { z } from "zod";
 
-export interface UserModel {
-  id: number;
-  name: string;
-  lastname: string;
-  phone?: string;
-  email: string;
-  dni?: string;
-  img?: string;
-  role: RoleEnum;
-  createdAt: Date;
-  updatedAt: Date;
-}
+const RoleEnumSchema = z.nativeEnum(RoleEnum);
 
+export const UserModelSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  lastname: z.string(),
+  phone: z.string().nullable(),
+  email: z.string(),
+  dni: z.string().nullable(),
+  img: z.string().nullable(),
+  role: RoleEnumSchema,
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+export type UserModel = z.infer<typeof UserModelSchema>;
+
+/*/ <== ( STRUCTURE ) ==>
 export const userEmptyState: UserModel = {
   id: 0,
   name: "",
@@ -21,7 +28,10 @@ export const userEmptyState: UserModel = {
   email: "",
   dni: "",
   img: "",
-  role: "" as RoleEnum,
+  role: RoleEnum.USER,
   createdAt: "" as any as Date,
   updatedAt: "" as any as Date,
 };
+*/
+
+export const userEmptyState = generateEmptyState<UserModel>(UserModelSchema);

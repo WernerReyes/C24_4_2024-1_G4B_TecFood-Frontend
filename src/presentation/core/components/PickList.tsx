@@ -9,5 +9,13 @@ export interface PickListChangeEvent extends PickListChangeEventPrimeReact {}
 interface Props extends PickListProps {}
 
 export const PickList = ({ ...props }: Props) => {
-  return <PickListPrimeReact {...props} />;
+  return (
+    <PickListPrimeReact
+      {...props}
+      pt={{
+        listWrapper: { className: "shadow-md" },
+        ...props.pt,
+      }}
+    />
+  );
 };

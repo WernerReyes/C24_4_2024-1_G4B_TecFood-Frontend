@@ -14,3 +14,4 @@ export * from "./userGoogleInfo";
 export * from "./randomValues";
 export * from "./requestValidator";
 export * from './exportDocument';
+export * from './generateEmptyState';

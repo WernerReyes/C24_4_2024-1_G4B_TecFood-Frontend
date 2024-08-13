@@ -1,4 +1,5 @@
-import { Button, Image } from "@/presentation/core/components";
+import { Button } from "@/presentation/core/components";
+import { FilterIcon } from "@/presentation/core/icons";
 import { useDishStore } from "@/presentation/hooks";
 
 type Props = {
@@ -11,7 +12,7 @@ export const FilterAndTotalDishes = ({ setVisbleSidebar }: Props) => {
     <section className="m-0 mb-5 flex items-center justify-between p-0">
       <Button
         className="lg:hidden"
-        icon={<Image src="/svg/filter.svg" alt="filter" />}
+        icon={<FilterIcon />}
         iconPos="left"
         label="Filter"
         onClick={() => setVisbleSidebar(true)}

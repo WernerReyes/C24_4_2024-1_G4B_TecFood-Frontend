@@ -20,6 +20,9 @@ importers:
       '@reduxjs/toolkit':
         specifier: ^2.2.2
         version: 2.2.2(react-redux@9.1.0(@types/react@18.2.69)(react@18.2.0)(redux@5.0.1))(react@18.2.0)
+      '@stomp/stompjs':
+        specifier: ^7.0.0
+        version: 7.0.0
       '@types/dompurify':
         specifier: ^3.0.5
         version: 3.0.5
@@ -573,6 +576,9 @@ packages:
     resolution: {integrity: sha512-UKXUQNbO3DOhzLRwHSpa0HnhhCgNODvfoPWv2FCXme8N/ANFfhIPMGuOT+QuKd16+B5yxZ0HdpNlqPvTMS1qfw==}
     cpu: [x64]
     os: [win32]
+
+  '@stomp/stompjs@7.0.0':
+    resolution: {integrity: sha512-fGdq4wPDnSV/KyOsjq4P+zLc8MFWC3lMmP5FBgLWKPJTYcuCbAIrnRGjB7q2jHZdYCOD5vxLuFoKIYLy5/u8Pw==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -2278,6 +2284,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.13.0':
     optional: true
+
+  '@stomp/stompjs@7.0.0': {}
 
   '@types/babel__core@7.20.5':
     dependencies:

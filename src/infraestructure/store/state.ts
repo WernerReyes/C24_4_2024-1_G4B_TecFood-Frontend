@@ -9,6 +9,7 @@ import type { OrderDishSliceState } from "./slice/orderDish.slice";
 import type { PaymentSliceState } from "./slice/payment.slice";
 import type { ThemeSliceState } from "./slice/theme.slice";
 import type { UserSliceState } from "./slice/user.slice";
+import type { NotificationSliceState } from "./slice/notification.slice";
 
 export interface AppState {
   theme: ThemeSliceState;
@@ -22,4 +23,5 @@ export interface AppState {
   orderDishItem: OrderDishItemSliceState;
   payment: PaymentSliceState;
   openAI: OpenAISliceState;
+  notification: NotificationSliceState;
 }

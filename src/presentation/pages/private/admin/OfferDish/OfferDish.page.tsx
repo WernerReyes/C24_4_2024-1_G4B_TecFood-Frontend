@@ -2,29 +2,69 @@ import { useEffect, useState } from "react";
 import { AdminLayout } from "../layout";
 import { useDishStore } from "@/presentation/hooks";
 import {
+  ConfirmDialog,
   PickList,
   type PickListChangeEvent,
 } from "@/presentation/core/components";
 import type { DishModel } from "@/model";
 import { StatusEnum } from "@/domain/entities/enums";
-import { OffertDialog, PickListItem } from "./components";
+import { NotificationDialog, OffertDialog, PickListItem } from "./components";
+
+interface OfferedDish extends DishModel {
+  selected: boolean;
+}
 
 const OfferDishPage = () => {
   const { dishes, startDeletingManyDishOffers } = useDishStore();
   const [dishesToChoose, setDishesToChoose] = useState<DishModel[]>([]);
-  const [offeredDishes, setOfferedDishes] = useState<DishModel[]>([]);
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const [selectedDishes, setSelectedDishes] = useState<
+    Map<string, OfferedDish>
+  >(new Map());
+  const [offeredDishes, setOfferedDishes] = useState<OfferedDish[]>([]);
+  const [{ value: valueDialog, type: typeDialog }, setOpenDialog] = useState<{
+    value: boolean;
+    type: "notification" | "offer";
+  }>({
+    value: false,
+    type: "offer",
+  });
+
   const [removeOfferedDish, setRemoveOfferedDish] = useState<boolean>(false);
   const [pendingEvent, setPendingEvent] = useState<PickListChangeEvent>();
+  const [visible, setVisible] = useState(false);
 
   const handleChange = (e: PickListChangeEvent) => setPendingEvent(e);
+
+  const handleConfirmDeleteOffer = () => {
+    startDeletingManyDishOffers(offeredDishes.map((dish) => dish.id))
+      .then(() => {
+        setRemoveOfferedDish(true);
+      })
+      .catch(() => {
+        setRemoveOfferedDish(false);
+      });
+  };
+
+  const handleReject = () => {
+    setVisible(false);
+    setRemoveOfferedDish(false);
+  };
 
   useEffect(() => {
     const dishesPublished = dishes.filter(
       (dish) => dish.status === StatusEnum.PUBLISHED,
     );
     setDishesToChoose(dishesPublished.filter((dish) => !dish.discountPrice));
-    setOfferedDishes(dishesPublished.filter((dish) => dish.discountPrice));
+
+    setOfferedDishes(
+      dishesPublished
+        .map((dish) => ({ ...dish, selected: false }))
+        .filter((dish) =>
+          selectedDishes.size
+            ? selectedDishes.has(dish.id.toString())
+            : dish.discountPrice,
+        ),
+    );
   }, [dishes]);
 
   useEffect(() => {
@@ -43,8 +83,17 @@ const OfferDishPage = () => {
 
   return (
     <AdminLayout>
+      <ConfirmDialog
+        visible={visible}
+        message={
+          "Some dishes are already offered. Are you sure you want to remove them?"
+        }
+        onHide={() => setVisible(false)}
+        accept={handleConfirmDeleteOffer}
+        reject={handleReject}
+      />
       <PickList
-        className="-z-50 mx-10 mt-10"
+        className="-z-50 mx-10 my-10"
         dataKey="id"
         source={dishesToChoose}
         target={offeredDishes}
@@ -53,23 +102,7 @@ const OfferDishPage = () => {
           const someDishIsOffered = e.value.some(
             (dish: DishModel) => dish.discountPrice,
           );
-          if (someDishIsOffered) {
-            const confirm = window.confirm(
-              "Are you sure you want to remove all dishes from the offer?",
-            );
-            if (confirm) {
-              startDeletingManyDishOffers(
-                e.value.map((dish: DishModel) => dish.id),
-              )
-                .then(() => {
-                  setRemoveOfferedDish(true);
-                })
-                .catch(() => {
-                  setRemoveOfferedDish(false);
-                });
-            }
-            return;
-          }
+          if (someDishIsOffered) return setVisible(true);
 
           setRemoveOfferedDish(true);
         }}
@@ -77,41 +110,35 @@ const OfferDishPage = () => {
           const someDishIsOffered = e.value.some(
             (dish: DishModel) => dish.discountPrice,
           );
-          if (someDishIsOffered) {
-            const confirm = window.confirm(
-              "Are you sure you want to remove all dishes from the offer?",
-            );
-
-            if (confirm) {
-              startDeletingManyDishOffers(
-                e.value.map((dish: DishModel) => dish.id),
-              )
-                .then(() => {
-                  setRemoveOfferedDish(true);
-                })
-                .catch(() => {
-                  setRemoveOfferedDish(false);
-                });
-            }
-            return;
-          }
+          if (someDishIsOffered) return setVisible(true);
 
           setRemoveOfferedDish(true);
         }}
-        onMoveToTarget={() => setRemoveOfferedDish(true)}
+        onMoveToTarget={(e) => {
+          setSelectedDishes(
+            new Map(
+              e.value.map((dish: DishModel) => [
+                dish.id.toString(),
+                { ...dish, selected: true },
+              ]),
+            ),
+          );
+
+          setRemoveOfferedDish(true);
+        }}
         onMoveAllToTarget={() => setRemoveOfferedDish(true)}
         filter
-        sourceItemTemplate={(item) => (
+        sourceItemTemplate={(dish: DishModel) => (
           <PickListItem
             type="source"
-            dish={item}
+            dish={dish}
             setOpenDialog={setOpenDialog}
           />
         )}
-        targetItemTemplate={(item) => (
+        targetItemTemplate={({ selected, ...dish }: OfferedDish) => (
           <PickListItem
             type="target"
-            dish={item}
+            dish={dish}
             setOpenDialog={setOpenDialog}
           />
         )}
@@ -128,7 +155,16 @@ const OfferDishPage = () => {
         targetFilterPlaceholder="Search by name"
       />
 
-      <OffertDialog openDialog={openDialog} setOpenDialog={setOpenDialog} />
+      {typeDialog === "offer" && (
+        <OffertDialog openDialog={valueDialog} setOpenDialog={setOpenDialog} />
+      )}
+
+      {typeDialog === "notification" && (
+        <NotificationDialog
+          openDialog={valueDialog}
+          setOpenDialog={setOpenDialog}
+        />
+      )}
     </AdminLayout>
   );
 };

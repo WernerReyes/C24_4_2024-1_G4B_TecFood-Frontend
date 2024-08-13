@@ -1,5 +1,6 @@
 import type { UserEntity } from "@/domain/entities";
 import type { UserModel } from "@/model";
+import { convertDateToShortString } from "@/presentation/utilities";
 
 export const userAdapter = (user: UserEntity): UserModel => {
   return {
@@ -11,7 +12,7 @@ export const userAdapter = (user: UserEntity): UserModel => {
     dni: user.dni,
     role: user.role.name,
     img: user.imgUrl,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
+    createdAt: convertDateToShortString(user.createdAt),
+    updatedAt: convertDateToShortString(user.updatedAt),
   };
 };

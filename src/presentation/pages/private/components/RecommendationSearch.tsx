@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import clsx from "clsx";
 import type { DishModel } from "@/model";
 import { useEffect, useState } from "react";
-import { StorageKeys, routeRole, setStorage } from "@/presentation/utilities";
+import { StorageKeys, setStorage } from "@/presentation/utilities";
 import { PrivateRoutes } from "@/presentation/routes";
 import { HighlightedText } from "@/presentation/pages/private/components";
 import { useAuthStore } from "@/presentation/hooks";
@@ -40,11 +40,7 @@ export const RecommendationSearch = ({
       ]);
     }
     setEnterPressed(true);
-    navigate(
-      `${PrivateRoutes[
-        routeRole(authenticatedUser.role)
-      ].toString()}/${DETAIL_DISH(dish.id)}`,
-    );
+    navigate(DETAIL_DISH(authenticatedUser.role, dish.id));
   };
 
   useEffect(() => {

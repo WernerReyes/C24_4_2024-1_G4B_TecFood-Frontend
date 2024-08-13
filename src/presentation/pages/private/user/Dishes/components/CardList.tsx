@@ -1,13 +1,22 @@
 import clsx from "clsx";
-import { DishModel } from "@/model";
-import { CardSkeleton, Image, Link, Tooltip } from "@/presentation/core/components";
+import type { DishModel } from "@/model";
+import {
+  CardSkeleton,
+  Image,
+  Link,
+  Tooltip,
+} from "@/presentation/core/components";
 import { useCart } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
-import { AddAndRemoveDish, ButtonAddAndRemoveDish, Heart } from "../../../components";
+import {
+  AddAndRemoveDish,
+  ButtonAddAndRemoveDish,
+  Heart,
+} from "../../../components";
+import { RoleEnum } from "@/domain/entities";
 
 const {
-  USER,
-  user: { DISHES },
+  common: { DETAIL_DISH },
 } = PrivateRoutes;
 
 type Props = {
@@ -38,7 +47,7 @@ export const CardList = ({ dish, quantity }: Props) => {
         <div className="relative flex flex-col justify-center gap-4 md:flex-row md:items-center">
           <div className="shrink-0">
             <Tooltip target=".img-dish" mouseTrack mouseTrackTop={10} />
-            <Link unstyled to={`${USER}/${DISHES}/${dish.id}`}>
+            <Link unstyled to={DETAIL_DISH(RoleEnum.ROLE_USER, dish.id)}>
               <Image
                 className="img-dish cursor-pointer"
                 unstyled

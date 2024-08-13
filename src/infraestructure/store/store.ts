@@ -1,16 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authSlice } from "./slice/auth.slice";
-import { dishCategorySlice } from "./slice/dishCategory.slice";
-import { dishSlice } from "./slice/dish.slice";
-import { themeSlice } from "./slice/theme.slice";
-import { userSlice } from "./slice/user.slice";
-import { AppState } from "./state";
-import { messageSlice } from "./slice/message.slice";
 import { cartSlice } from "./slice/cartDish.slice";
+import { dishSlice } from "./slice/dish.slice";
+import { dishCategorySlice } from "./slice/dishCategory.slice";
+import { messageSlice } from "./slice/message.slice";
+import { notificationSlice } from './slice/notification.slice';
+import { openAISlice } from "./slice/openAI.slice";
 import { orderDishSlice } from "./slice/orderDish.slice";
 import { orderDishItemSlice } from "./slice/orderDishItem.slice";
 import { paymentSlice } from "./slice/payment.slice";
-import { openAISlice } from "./slice/openAI.slice";
+import { themeSlice } from "./slice/theme.slice";
+import { userSlice } from "./slice/user.slice";
+import type { AppState } from "./state";
 
 export const store = configureStore<AppState>({
   reducer: {
@@ -25,6 +26,7 @@ export const store = configureStore<AppState>({
     orderDishItem: orderDishItemSlice.reducer,
     payment: paymentSlice.reducer,
     openAI: openAISlice.reducer,
+    notification: notificationSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

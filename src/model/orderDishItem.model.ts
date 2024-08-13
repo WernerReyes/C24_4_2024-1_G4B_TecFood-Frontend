@@ -1,14 +1,21 @@
-import { type DishModel, dishEmptyState } from "./dish.model";
-import { type OrderDishModel, orderDishEmptyState } from "./orderDish.model";
+import { generateEmptyState } from "@/presentation/utilities";
+import { z } from "zod";
+import { DishModelSchema } from "./dish.model";
+import {
+  OrderDishModelSchema
+} from "./orderDish.model";
 
-export interface OrderDishItemModel {
-  id: number;
-  quantity: number;
-  price: number;
-  orderDish: OrderDishModel;
-  dish: DishModel;
-}
+const OrderDishItemModelSchema = z.object({
+  id: z.number(),
+  quantity: z.number(),
+  price: z.number(),
+  orderDish: OrderDishModelSchema,
+  dish: DishModelSchema,
+});
 
+export type OrderDishItemModel = z.infer<typeof OrderDishItemModelSchema>;
+
+/* <== ( STRUCTURE ) ==>
 export const orderDishItemEmptyState: OrderDishItemModel = {
   id: 0,
   quantity: 0,
@@ -16,3 +23,8 @@ export const orderDishItemEmptyState: OrderDishItemModel = {
   orderDish: orderDishEmptyState,
   dish: dishEmptyState,
 };
+*/
+export const orderDishItemEmptyState = generateEmptyState<OrderDishItemModel>(
+  OrderDishItemModelSchema,
+);
+

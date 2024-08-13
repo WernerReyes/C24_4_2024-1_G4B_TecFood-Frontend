@@ -73,8 +73,6 @@ const DishCategoryPage = () => {
       )}
       <ConfirmDialog
         message={message}
-        acceptClassName="bg-primary p-2 px-3"
-        rejectClassName="bg-transparent p-2 px-3"
         accept={handleAcceptDelete}
         visible={visible}
         onHide={() => setConfirmDialog(INITIAL_CONFIRM_DIALOG)}

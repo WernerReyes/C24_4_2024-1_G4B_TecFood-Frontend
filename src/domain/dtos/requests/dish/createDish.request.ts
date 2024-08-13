@@ -1,17 +1,19 @@
-import type { DishCategoryModel } from "@/model";
 import { DishRequest, type DishRequestModel } from "./dish.request";
 
 interface CreateDishRequestModel extends DishRequestModel {}
 
-export class CreateDishRequest extends DishRequest implements CreateDishRequestModel {
+export class CreateDishRequest
+  extends DishRequest
+  implements CreateDishRequestModel
+{
   constructor(
     public readonly name: string,
     public readonly description: string,
     public readonly price: number,
-    public readonly categories: DishCategoryModel[],
+    public readonly categoriesId: number[],
     public readonly stock: number,
   ) {
-    super(name, description, price, categories, stock);
+    super(name, description, price, categoriesId, stock);
   }
 
   public get toFormData(): FormData {

@@ -35,7 +35,10 @@ export const FormDish = ({
   }, []);
 
   useEffect(() => {
-    reset(dish);
+    reset({
+      ...dish,
+      categoriesId: dish.categories.map((category) => category.id),
+    });
   }, [dish]);
 
   return (
@@ -58,7 +61,7 @@ export const FormDish = ({
       />
 
       <Controller
-        name="categories"
+        name="categoriesId"
         control={control}
         defaultValue={[]}
         render={({ field, fieldState: { error } }) => {
@@ -69,6 +72,7 @@ export const FormDish = ({
               options={dishCategories}
               label="Dish category"
               optionLabel="name"
+              optionValue="id"
               placeholder="Select..."
               display="chip"
               filter

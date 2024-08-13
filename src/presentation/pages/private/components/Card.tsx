@@ -25,7 +25,7 @@ type Props = {
 
 export const Card = ({ dish, quantity }: Props) => {
   const navigate = useNavigate();
-  const { isAdmin, isUser, routeRole } = useAuthStore();
+  const { isAdmin, isUser, authenticatedUser } = useAuthStore();
   const {
     isAddToCart,
     quantityMemory,
@@ -48,7 +48,7 @@ export const Card = ({ dish, quantity }: Props) => {
         <div className="group relative divide-y overflow-hidden rounded-lg">
           <div className="mx-auto mb-4">
             <Tooltip target=".img-dish" mouseTrack mouseTrackTop={10} />
-            <Link unstyled to={`${routeRole}/${DETAIL_DISH(dish.id)}`}>
+            <Link unstyled to={DETAIL_DISH(authenticatedUser.role, dish.id)}>
               <Image
                 className="img-dish"
                 unstyled
@@ -66,7 +66,7 @@ export const Card = ({ dish, quantity }: Props) => {
             <div className="mb-4 flex items-center justify-between">
               <Link
                 unstyled
-                to={`${routeRole}/${DETAIL_DISH(dish.id)}`}
+                to={DETAIL_DISH(authenticatedUser.role, dish.id)}
                 className="text-xl font-semibold"
               >
                 {dish.name}

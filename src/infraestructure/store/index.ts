@@ -11,5 +11,6 @@ export * from "./slice/orderDish.slice";
 export * from "./slice/orderDishItem.slice";
 export * from "./slice/payment.slice";
 export * from "./slice/openAI.slice";
+export * from "./slice/notification.slice";
 
 

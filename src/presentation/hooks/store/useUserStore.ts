@@ -4,6 +4,7 @@ import { UserService } from "@/infraestructure/services";
 import {
   type AppState,
   onLoadUser,
+  onLoadUsers,
   onLoadingUsers,
 } from "@/infraestructure/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,14 +21,13 @@ export const useUserStore = () => {
     (state: AppState) => state.user,
   );
 
-  // const startLoadingUsers = () => {
-  //   dispatch(onLoadingUsers());
+  const startLoadingUsers = () => {
+    dispatch(onLoadingUsers());
 
-  //   getUsers(userRepositoryImpl)
-  //     .execute()
-  //     .then((users) => dispatch(onLoadUsers(users)))
-  //     .catch((error) => error);
-  // };
+    userRepositoryImpl.getAll()
+      .then(({ data }) => dispatch(onLoadUsers(data)))
+      .catch((error) => error);
+  };
 
   const startUpdatingUser = async (updateUserRequest: UpdateUserRequest) => {
     dispatch(onLoadingUsers());
@@ -74,6 +74,6 @@ export const useUserStore = () => {
     //* Methods
     startUpdatingUser,
     startUploadingProfile,
-    // startLoadingUsers,
+    startLoadingUsers,
   };
 };

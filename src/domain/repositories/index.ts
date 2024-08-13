@@ -8,3 +8,4 @@ export * from "./orderDishItem.repository";
 export * from "./payment.repository";
 export * from "./paypal.repository";
 export * from "./user.repository";
+export * from "./notification.repository";

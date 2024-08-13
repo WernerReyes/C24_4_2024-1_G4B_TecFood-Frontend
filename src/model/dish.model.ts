@@ -1,31 +1,37 @@
-import { getStorage } from "@/presentation/utilities";
-import { type DishCategoryModel, type DishImageModel } from "./";
-import { StatusEnum } from "@/domain/entities/enums";
+import { z } from "zod";
+import { StatusEnum } from "@/domain/entities/enums/status.enum";
+import { generateEmptyState } from "@/presentation/utilities/generateEmptyState";
+import { getStorage } from "@/presentation/utilities/localStorage";
+import { DishCategoryModelSchema } from "./dishCategory.model";
+import { DishImageModelSchema } from "./dishImage.model";
 
-export interface DishModel {
-  readonly id: number;
-  readonly name: string;
-  readonly description: string;
-  readonly price: number;
-  readonly images: DishImageModel[];
-  readonly stock: number;
-  readonly status: StatusEnum;
-  readonly discountPrice: number;
-  readonly discountPercentage: number;
-  readonly saleStartDate: Date;
-  readonly saleEndDate: Date;
-  readonly isUsed: boolean;
-  readonly createdAt: string;
-  readonly updatedAt: string;
-  readonly categories: DishCategoryModel[];
-}
+//* <------------------- Dish Model ------------------->
 
-export type DishFilters = {
-  readonly idCategory: { idCategory: number }[] | null;
-  readonly priceRange: { min: number; max: number };
-  readonly search: string;
+export const DishModelSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  description: z.string(),
+  price: z.number(),
+  images: z.array(DishImageModelSchema),
+  stock: z.number(),
+  status: z.nativeEnum(StatusEnum),
+  discountPrice: z.number(),
+  discountPercentage: z.number(),
+  saleStartDate: z.date(),
+  saleEndDate: z.date(),
+  isUsed: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  categories: z.array(DishCategoryModelSchema),
+});
+
+export type DishModel = z.infer<typeof DishModelSchema>;
+
+const dishDefaults: Partial<DishModel> = {
+  status: StatusEnum.PRIVATE,
 };
 
+/* <== ( STRUCTURE ) ==>
 export const dishEmptyState: DishModel = {
   id: 0,
   name: "",
@@ -36,12 +42,26 @@ export const dishEmptyState: DishModel = {
   status: StatusEnum.PRIVATE,
   discountPrice: 0,
   discountPercentage: 0,
-  saleStartDate: "" as any as Date,
-  saleEndDate: "" as any as Date,
+  saleStartDate: "",
+  saleEndDate: "",
   isUsed: false,
-  categories: [],
   createdAt: "",
   updatedAt: "",
+  categories: [],
+};
+*/
+
+export const dishEmptyState = generateEmptyState<DishModel>(
+  DishModelSchema,
+  dishDefaults,
+);
+
+//* <------------------- Dish Filters ------------------->
+
+export type DishFilters = {
+  readonly idCategory: { idCategory: number }[] | null;
+  readonly priceRange: { min: number; max: number };
+  readonly search: string;
 };
 
 export const dishFilterEmptyState: DishFilters = getStorage("dishFilters") || {

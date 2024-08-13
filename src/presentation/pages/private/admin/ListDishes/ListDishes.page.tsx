@@ -18,6 +18,7 @@ import { exportTableToExcel, exportTableToPdf } from "@/presentation/utilities";
 import { AdminLayout } from "../layout";
 import { ActionsLayout } from "../../layout";
 import { StatusColor } from "../../components";
+import { RoleEnum } from "@/domain/entities";
 
 const ROWS_PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
@@ -82,8 +83,6 @@ const ListDishesPage = () => {
     <AdminLayout>
       <ConfirmDialog
         message={message}
-        acceptClassName="bg-primary p-2 px-3"
-        rejectClassName="bg-transparent p-2 px-3"
         accept={handleAcceptDelete}
         visible={visible}
         onHide={() => setConfirmDialog(INITIAL_CONFIRM_DIALOG)}
@@ -220,7 +219,9 @@ const ListDishesPage = () => {
                   disabled={isLoading}
                   className="disabled:opacity-50"
                   outlined
-                  onClick={() => navigate(`${ADMIN}/${EDIT_DISH(dish.id)}`)}
+                  onClick={() =>
+                    navigate(EDIT_DISH(dish.id))
+                  }
                 />
                 <Button
                   unstyled
@@ -229,7 +230,9 @@ const ListDishesPage = () => {
                   disabled={isLoading}
                   className="disabled:opacity-50"
                   outlined
-                  onClick={() => navigate(`${ADMIN}/${DETAIL_DISH(dish.id)}`)}
+                  onClick={() =>
+                    navigate(DETAIL_DISH(RoleEnum.ROLE_ADMIN, dish.id))
+                  }
                 />
                 {!dish.isUsed && (
                   <Button

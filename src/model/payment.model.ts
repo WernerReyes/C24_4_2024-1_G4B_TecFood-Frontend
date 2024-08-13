@@ -1,14 +1,21 @@
+import { z } from "zod";
 import { PaymentMethodEnum, PaymentStatusEnum } from "@/domain/entities";
-import { orderDishEmptyState, type OrderDishModel } from "./orderDish.model";
+import { generateEmptyState } from "@/presentation/utilities";
+import {
+  OrderDishModelSchema
+} from "./orderDish.model";
 
-export interface PaymentModel {
-  id: number;
-  amount: number;
-  paymentMethod: PaymentMethodEnum;
-  status: PaymentStatusEnum;
-  orderDish: OrderDishModel;
-}
+const PaymentModelSchema = z.object({
+  id: z.number(),
+  amount: z.number(),
+  paymentMethod: z.nativeEnum(PaymentMethodEnum),
+  status: z.nativeEnum(PaymentStatusEnum),
+  orderDish: OrderDishModelSchema,
+});
 
+export type PaymentModel = z.infer<typeof PaymentModelSchema>;
+
+/* <== ( STRUCTURE ) ==>
 export const paymentEmptyState: PaymentModel = {
   id: 0,
   amount: 0,
@@ -16,3 +23,13 @@ export const paymentEmptyState: PaymentModel = {
   status: PaymentStatusEnum.PENDING,
   orderDish: orderDishEmptyState,
 };
+*/
+const paymentDefaults: Partial<PaymentModel> = {
+  paymentMethod: PaymentMethodEnum.CARD,
+  status: PaymentStatusEnum.PENDING,
+};
+
+export const paymentEmptyState = generateEmptyState<PaymentModel>(
+  PaymentModelSchema,
+  paymentDefaults,
+);

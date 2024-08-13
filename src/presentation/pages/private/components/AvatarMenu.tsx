@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import {
   Avatar,
   Menu,
   MenuItem,
-  MenuRef,
 } from "@/presentation/core/components";
 import { useAuthStore, useUserStore } from "@/presentation/hooks";
 
@@ -13,8 +12,6 @@ type Props = {
 };
 
 export const AvatarMenu = ({ items }: Props) => {
-  const menuLeft = useRef<MenuRef>(null);
-  const avatarRef = useRef(null);
   const { authenticatedUser, startLogout } = useAuthStore();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { user } = useUserStore();
@@ -26,15 +23,14 @@ export const AvatarMenu = ({ items }: Props) => {
 
   return (
     <div className="relative">
-      <div ref={avatarRef} onClick={() => setShowMenu(!showMenu)}>
+      <div  onClick={() => setShowMenu(!showMenu)}>
         <Avatar
-          image={currentProfile || authenticatedUser.img}
+          image={currentProfile || authenticatedUser.img as string | undefined}
           imageAlt="avatar"
           label={authenticatedUser.name[0].toUpperCase()}
           shape="circle"
           id="popup_menu_left"
-          className="relative border-2 border-primary bg-primary text-white"
-          onClick={(event) => menuLeft.current?.toggle(event)}
+          className="relative border-2 border-primary bg-primary text-white cursor-pointer"
           itemRef="popup_menu_left"
         />
       </div>
@@ -45,7 +41,6 @@ export const AvatarMenu = ({ items }: Props) => {
         aria-controls="popup_menu_left"
         className={clsx(!showMenu ? "hidden" : "fixed", "right-20")}
         popupAlignment="left"
-        ref={menuLeft}
       />
     </div>
   );

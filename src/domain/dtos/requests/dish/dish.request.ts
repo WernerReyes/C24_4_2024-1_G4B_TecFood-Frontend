@@ -1,13 +1,10 @@
 import { z, ZodSchema } from "zod";
-import type { DishCategoryModel } from "@/model";
 import { requestValidator } from "@/presentation/utilities";
-import { StatusEnum } from "@/domain/entities/enums";
-
 export interface DishRequestModel {
   readonly name: string;
   readonly description: string;
   readonly price: number;
-  readonly categories: DishCategoryModel[];
+  readonly categoriesId: number[];
   readonly stock: number;
 }
 
@@ -16,16 +13,12 @@ export class DishRequest implements DishRequestModel {
     public readonly name: string,
     public readonly description: string,
     public readonly price: number,
-    public readonly categories: DishCategoryModel[],
+    public readonly categoriesId: number[],
     public readonly stock: number,
   ) {}
 
   public validate() {
     requestValidator(this, DishRequest.schema);
-  }
-
-  public get categoriesId(): number[] {
-    return this.categories.map((category) => category.id);
   }
 
   public static get schema(): ZodSchema<DishRequestModel> {
@@ -52,29 +45,8 @@ export const DishRequestSchema = z.object({
     })
     .min(0, "Price must be greater than 0")
     .max(999999.99, "Price must be less than 999999.99"),
-  categories: z
-    .array(
-      z.object({
-        id: z.number({
-          message: "Category id is required",
-        }),
-        name: z.string({
-          message: "Category name is required",
-        }),
-        imageUrl: z.string({
-          message: "Category image is required",
-        }),
-        status: z.nativeEnum(StatusEnum, {
-          message: "Category status is required",
-        }),
-        createdAt: z.string({
-          message: "Category creation date is required",
-        }),
-        updatedAt: z.string({
-          message: "Category update date is required",
-        }),
-      }),
-    )
+  categoriesId: z
+    .array(z.number({ message: "Categories must be an array of numbers" }))
     .nonempty("At least one category is required and at most 5"),
   stock: z
     .number({

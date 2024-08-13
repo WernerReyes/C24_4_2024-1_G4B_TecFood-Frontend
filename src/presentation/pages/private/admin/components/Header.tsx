@@ -4,9 +4,9 @@ import { useState } from "react";
 import { AvatarMenu, SidebarPrivate, HeaderSearch } from "../../components";
 import { HeaderLayout } from "../../layout";
 import { SidebarContent } from "./SidebarContent";
+import { RoleEnum } from "@/domain/entities";
 
 const {
-  ADMIN,
   common: { PROFILE },
 } = PrivateRoutes;
 
@@ -14,7 +14,7 @@ const AVATAR_ITEMS: MenuItem[] = [
   {
     label: "Profile",
     icon: "pi pi-user",
-    url: ADMIN + "/" + PROFILE,
+    url: PROFILE(RoleEnum.ROLE_ADMIN),
   },
 
   {

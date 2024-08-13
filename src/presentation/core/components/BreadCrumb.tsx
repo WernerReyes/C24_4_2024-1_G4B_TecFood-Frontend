@@ -8,6 +8,8 @@ import { fromUrlToString, routeRole } from "../../utilities";
 import { Link } from "./Link";
 import { useDishStore } from "../../hooks";
 
+const { HOME } = PrivateRoutes.common;
+
 interface Props {
   scrollId: string;
   role: RoleEnum;
@@ -27,15 +29,11 @@ export const BreadCrumb = ({ role, scrollId, className, unstyled }: Props) => {
 
   const home = {
     template: () => (
-      <Link
-        unstyled
-        to={`${roleRoute}/home`}
-        className="text-black dark:text-white"
-      >
+      <Link unstyled to={HOME(role)} className="text-black dark:text-white">
         <i
           className={clsx(
             "pi pi-home",
-            location.pathname === `${roleRoute}/home`
+            location.pathname === `${HOME(role)}`
               ? "text-primary"
               : "text-black dark:text-white",
           )}
@@ -43,8 +41,6 @@ export const BreadCrumb = ({ role, scrollId, className, unstyled }: Props) => {
       </Link>
     ),
   };
-
-
 
   useEffect(() => {
     if (id) startLoadingDishById(parseInt(id));
@@ -94,7 +90,6 @@ export const BreadCrumb = ({ role, scrollId, className, unstyled }: Props) => {
       };
     });
   }, [urlSegments, roleRoute, location.pathname]);
-
 
   return (
     <BreadCrumbPrimeReact

@@ -12,7 +12,7 @@ import { AuthLayout } from "../layout";
 export const LoginPage = () => {
   const { isDark } = useThemeStore();
   const { isLoading, startLogin } = useAuthStore();
-  const { startSetMessages, typeError } = useMessageStore();
+  const { startSetMessagesError } = useMessageStore();
   const navigate = useNavigate();
 
   const {
@@ -32,7 +32,7 @@ export const LoginPage = () => {
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
       const messages = fromObjectToArray(errors).map((error) => error.message);
-      startSetMessages(messages as string[], typeError);
+      startSetMessagesError(messages as string[]);
     }
   }, [errors]);
 

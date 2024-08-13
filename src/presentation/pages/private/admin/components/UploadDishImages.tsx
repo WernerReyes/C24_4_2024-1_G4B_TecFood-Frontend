@@ -184,8 +184,9 @@ const EmptyTemplate = ({
   );
 };
 
-const sizeClass = (size: string, [small, medium, large]: string[]) => {
-  if (size === "small") return [small];
-  if (size === "medium") return [medium];
-  if (size === "large") return [large];
+const sizeClass = (
+  size: Size,
+  [small, medium, large]: [small: string, medium: string, large: string],
+) => {
+  return { small, medium, large }[size];
 };

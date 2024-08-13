@@ -15,7 +15,7 @@ import { RegisterRequest } from "@/domain/dtos";
 
 export const RegisterPage = () => {
   const { isDark } = useThemeStore();
-  const { startSetMessages, typeError } = useMessageStore();
+  const { startSetMessagesError } = useMessageStore();
   const { startRegistering, isLoading } = useAuthStore();
 
   const {
@@ -31,8 +31,8 @@ export const RegisterPage = () => {
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
-      const messages = fromObjectToArray(errors).map((error) => error.message);
-      startSetMessages(messages as string[], typeError);
+      const messages = fromObjectToArray(errors).map((error) => error.message)!;
+      startSetMessagesError(messages as string[]);
     }
   }, [errors]);
 

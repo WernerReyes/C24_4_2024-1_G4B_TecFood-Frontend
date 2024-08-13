@@ -8,3 +8,5 @@ export * from "./orderDishItem.service";
 export * from "./payment.service";
 export * from "./paypal.service";
 export * from './openAI.service';
+export * from './notification.service';
+export * from './webSocket.service';

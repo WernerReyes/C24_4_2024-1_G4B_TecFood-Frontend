@@ -7,3 +7,4 @@ export * from "./orderDish.entity";
 export * from "./orderDishItem.entity";
 export * from "./payment.entity";
 export * from "./dishImage.entity";
+export * from "./notification.entity";

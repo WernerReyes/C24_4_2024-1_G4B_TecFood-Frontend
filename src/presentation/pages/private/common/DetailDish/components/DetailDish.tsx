@@ -19,7 +19,6 @@ import { StatusColor } from "../../../components";
 import { ActionsLayout } from "../../../layout";
 
 const {
-  ADMIN,
   admin: { EDIT_DISH },
 } = PrivateRoutes;
 
@@ -112,7 +111,7 @@ export const DetailDish = React.memo(() => {
                   label="Edit"
                   icon="pi pi-pencil"
                   onClick={() => {
-                    navigate(`${ADMIN}/${EDIT_DISH(dish.id)}`);
+                    navigate(EDIT_DISH(dish.id));
                   }}
                   className="relative z-10 !w-full items-center  justify-center rounded-lg bg-primary px-6 py-3 text-center text-sm font-medium text-white shadow-sm transition-all duration-300 hover:bg-primary-dark disabled:bg-primary-lighter disabled:dark:cursor-not-allowed lg:w-auto"
                 />

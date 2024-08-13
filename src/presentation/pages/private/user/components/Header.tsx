@@ -10,28 +10,29 @@ import { useCartStore, useThemeStore } from "@/presentation/hooks";
 import { PrivateRoutes } from "@/presentation/routes";
 import {
   AvatarMenu,
-  SidebarPrivate,
-  LinksToNavigate,
   HeaderSearch,
+  LinksToNavigate,
+  SidebarPrivate,
 } from "../../components";
 import { HeaderLayout } from "../../layout";
+import { NotificationPreview } from "./NotificationPreview";
+import { RoleEnum } from "@/domain/entities";
 
 const {
-  USER,
-  common: { PROFILE },
-  user: { HOME, DISHES, CART, ORDER_HISTORY },
+  common: { PROFILE, HOME, LIST_DISHES },
+  user: { CART, ORDER_HISTORY },
 } = PrivateRoutes;
 
 const ITEMS: MenuItem[] = [
   {
     label: "Profile",
     icon: "pi pi-user",
-    url: USER + "/" + PROFILE,
+    url: PROFILE(RoleEnum.ROLE_USER),
   },
   {
     label: "Order History",
     icon: "pi pi-history",
-    url: USER + "/" + ORDER_HISTORY,
+    url: ORDER_HISTORY,
   },
   {
     label: "Logout",
@@ -40,8 +41,8 @@ const ITEMS: MenuItem[] = [
 ];
 
 const LINKS_SIDEBAR = [
-  { label: "Home", url: USER + "/" + HOME },
-  { label: "Dishes", url: USER + "/" + DISHES },
+  { label: "Home", url: HOME(RoleEnum.ROLE_USER) },
+  { label: "Dishes", url: LIST_DISHES(RoleEnum.ROLE_USER) },
 ];
 
 export const Header = () => {
@@ -52,6 +53,7 @@ export const Header = () => {
 
   const handleToggleOpen = () => setCollapseMenu(!collapseMenu);
   const handleToggleClose = () => setCollapseMenu(false);
+
   return (
     <HeaderLayout>
       <Image
@@ -82,7 +84,7 @@ export const Header = () => {
           <Link
             unstyled
             className="pi pi-shopping-cart p-overlay-badge text-2xl text-black dark:text-white"
-            to={USER + "/" + CART}
+            to={CART}
           >
             <Badge
               value={totalQuantity}
@@ -90,6 +92,8 @@ export const Header = () => {
               size="normal"
             />
           </Link>
+
+          <NotificationPreview />
 
           <AvatarMenu items={ITEMS} />
           <Button unstyled onClick={handleToggleOpen} className="lg:hidden">

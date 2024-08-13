@@ -1,8 +1,9 @@
 type Props = {
   className?: string;
+  iconProps?: React.SVGProps<SVGSVGElement>;
 };
 
-export const DishIcon = ({ className }: Props) => {
+export const DishIcon = ({ className, iconProps }: Props) => {
   return (
     <i className={className}>
       <svg
@@ -12,8 +13,9 @@ export const DishIcon = ({ className }: Props) => {
         viewBox="0 0 24 24"
         strokeLinecap="round"
         strokeLinejoin="round"
-        height="20"
-        width="20"
+        height={25}
+        width={25}
+        {...iconProps}
         xmlns="http://www.w3.org/2000/svg"
       >
         <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z"></path>

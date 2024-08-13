@@ -37,7 +37,7 @@ export const FooterChatBot = ({
           isAvailableChat ? "cursor-pointer" : "cursor-not-allowed"
           )}
           onClick={handleSendMessage}
-          disabled={true}
+          disabled={!isAvailableChat}
         />
         <InputText
           disabled={!isAvailableChat}

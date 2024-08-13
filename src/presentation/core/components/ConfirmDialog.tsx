@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import {
   type ConfirmDialogProps,
   ConfirmDialog as ConfirmDialogPrimeReact,
@@ -5,5 +6,11 @@ import {
 
 interface Props extends ConfirmDialogProps {}
 export const ConfirmDialog = ({ ...props }: Props) => {
-  return <ConfirmDialogPrimeReact {...props} />;
+  return (
+    <ConfirmDialogPrimeReact
+      acceptClassName={clsx("bg-primary p-2 px-3", props.acceptClassName)}
+      rejectClassName={clsx("bg-transparent p-2 px-3", props.rejectClassName)}
+      {...props}
+    />
+  );
 };

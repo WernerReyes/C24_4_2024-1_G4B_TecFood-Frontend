@@ -1,5 +1,5 @@
-import type { ApiResponseStatus } from "@/config/api";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import type { ApiResponseStatus } from "@/domain/dtos";
+import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 export type MessageSliceState = {
   type: ApiResponseStatus;

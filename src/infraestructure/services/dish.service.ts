@@ -126,7 +126,7 @@ export class DishService implements IDishService {
     try {
       const { data, ...rest } = await httpRequest.put<DishEntity>(
         this.prefix,
-        updateDishRequest.toRequestBody,
+        updateDishRequest,
       );
 
       return { ...rest, data: dishAdapter(data) };
